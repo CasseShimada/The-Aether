@@ -19,8 +19,9 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import org.apache.commons.lang3.mutable.MutableDouble;
 
@@ -29,19 +30,19 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class AetherCookingRecipeCategory<R extends Recipe<?>> extends AbstractRecipeCategory<AetherCookingRecipeDisplay<R>> {
-    private static final ResourceLocation LIT_PROGRESS_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress");
-    private static final ResourceLocation BURN_PROGRESS_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/burn_progress");
-    private static final ResourceLocation INCUBATION_PROGRESS_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/incubation_progress");
-    private static final ResourceLocation INCUBATION_PROGRESS_BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/incubation_progress_background");
+    private static final Identifier LIT_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress");
+    private static final Identifier BURN_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/burn_progress");
+    private static final Identifier INCUBATION_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/incubation_progress");
+    private static final Identifier INCUBATION_PROGRESS_BACKGROUND_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/incubation_progress_background");
 
     protected final Supplier<WidgetWithBounds> fuelIndicator;
     protected final Supplier<WidgetWithBounds> animatedProgressArrow;
 
-    public AetherCookingRecipeCategory(String id, CategoryIdentifier<AetherCookingRecipeDisplay<R>> categoryIdentifier, int width, int height, Renderer icon, ResourceLocation litTexture, ResourceLocation progressTexture) {
+    public AetherCookingRecipeCategory(String id, CategoryIdentifier<AetherCookingRecipeDisplay<R>> categoryIdentifier, int width, int height, Renderer icon, Identifier litTexture, Identifier progressTexture) {
         this(id, categoryIdentifier, width, height, icon, litTexture, () -> animatedArrow(progressTexture, 100));
     }
 
-    public AetherCookingRecipeCategory(String id, CategoryIdentifier<AetherCookingRecipeDisplay<R>> categoryIdentifier, int width, int height, Renderer icon, ResourceLocation litTexture, Supplier<WidgetWithBounds> progressWidget) {
+    public AetherCookingRecipeCategory(String id, CategoryIdentifier<AetherCookingRecipeDisplay<R>> categoryIdentifier, int width, int height, Renderer icon, Identifier litTexture, Supplier<WidgetWithBounds> progressWidget) {
         super(id, categoryIdentifier, width, height, icon);
 
         this.fuelIndicator = () -> fuelIndicator(litTexture);
@@ -76,19 +77,19 @@ public class AetherCookingRecipeCategory<R extends Recipe<?>> extends AbstractRe
                 int textureLength = 54;
                 int scissorOffset = (int) Math.round(textureLength * (lastTick.getValue() / 5700));
 
-                graphics.blitSprite(INCUBATION_PROGRESS_BACKGROUND_TEXTURE, bound.x, bound.y,  10, 54);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, INCUBATION_PROGRESS_BACKGROUND_TEXTURE, bound.x, bound.y, 10, 54);
                 graphics.enableScissor(bound.x + 1, bound.y + textureLength - scissorOffset, bound.x + 10 + 1, bound.y + (textureLength * 2) - scissorOffset);
-                graphics.blitSprite(INCUBATION_PROGRESS_TEXTURE, bound.x + 1, bound.y, 10, 54);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, INCUBATION_PROGRESS_TEXTURE, bound.x + 1, bound.y, 10, 54);
                 graphics.disableScissor();
             });
         });
     }
 
-    private static WidgetWithBounds fuelIndicator(ResourceLocation texture) {
-        return Widgets.wrapRenderer(new Rectangle(14, 13), (graphics, bounds, mouseX, mouseY, delta) -> graphics.blitSprite(texture, bounds.x, bounds.y, 14, 13));
+    private static WidgetWithBounds fuelIndicator(Identifier texture) {
+        return Widgets.wrapRenderer(new Rectangle(14, 13), (graphics, bounds, mouseX, mouseY, delta) -> graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, bounds.x, bounds.y, 14, 13));
     }
 
-    private static WidgetWithBounds animatedArrow(ResourceLocation texture, int burnTime) {
+    private static WidgetWithBounds animatedArrow(Identifier texture, int burnTime) {
         var lastTick = new MutableDouble(0);
 
         return Widgets.wrapRenderer(new Rectangle(23, 16), (graphics, bound, mouseX, mouseY, delta) -> {
@@ -100,11 +101,11 @@ public class AetherCookingRecipeCategory<R extends Recipe<?>> extends AbstractRe
 
             int xOffset = 23 - (int) Math.round(23 * (lastTick.getValue() / burnTime));
 
-            ResourceLocation blankArrow = REIRuntime.getInstance().getDefaultDisplayTexture(false);
-            graphics.blit(blankArrow, bound.x, bound.y, 106, 91, 24, 17);
+            Identifier blankArrow = REIRuntime.getInstance().getDefaultDisplayTexture(false);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, blankArrow, bound.x, bound.y, 106, 91, 24, 17, 256, 256);
 
             graphics.enableScissor(bound.x - xOffset, bound.y, bound.x + 23 - xOffset, bound.y + 16);
-            graphics.blitSprite(texture, bound.x, bound.y,  24, 16);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, bound.x, bound.y, 24, 16);
             graphics.disableScissor();
         });
     }

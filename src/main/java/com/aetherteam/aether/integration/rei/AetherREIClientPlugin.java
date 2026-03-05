@@ -30,27 +30,26 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.simple.SimpleTransferHandler;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.forge.REIPluginClient;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@REIPluginClient
 public class AetherREIClientPlugin implements REIClientPlugin {
-    private static final ResourceLocation LIT_PROGRESS_TRANSPARENT_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress_transparent");
-    private static final ResourceLocation LIT_PROGRESS_BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress_background");
+    private static final Identifier LIT_PROGRESS_TRANSPARENT_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress_transparent");
+    private static final Identifier LIT_PROGRESS_BACKGROUND_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/lit_progress_background");
 
     public static List<FuelRecipe> getFuelRecipes() {
         List<FuelRecipe> fuelRecipes = new ArrayList<>();
-        BuiltInRegistries.ITEM.getDataMap(AetherDataMaps.ALTAR_FUEL).forEach((item, fuel) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(BuiltInRegistries.ITEM.get(item))), fuel.burnTime(), AetherBlocks.ALTAR.get())));
-        BuiltInRegistries.ITEM.getDataMap(AetherDataMaps.FREEZER_FUEL).forEach((item, fuel) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(BuiltInRegistries.ITEM.get(item))), fuel.burnTime(), AetherBlocks.FREEZER.get())));
-        BuiltInRegistries.ITEM.getDataMap(AetherDataMaps.INCUBATOR_FUEL).forEach((item, fuel) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(BuiltInRegistries.ITEM.get(item))), fuel.burnTime(), AetherBlocks.INCUBATOR.get())));
+        AetherDataMaps.forEachAltarFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.ALTAR.get())));
+        AetherDataMaps.forEachFreezerFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.FREEZER.get())));
+        AetherDataMaps.forEachIncubatorFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.INCUBATOR.get())));
         return fuelRecipes;
     }
 
@@ -71,18 +70,21 @@ public class AetherREIClientPlugin implements REIClientPlugin {
             registry.add(new FuelDisplay(AetherREIServerPlugin.AETHER_FUEL, fuelRecipe.inputItems(), fuelRecipe.burnTime(), fuelRecipe.usageBlock()));
         }
 
-        for (var recipe : registry.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.ENCHANTING.get())) {
-            if (recipe.value() instanceof EnchantingRecipe enchanting) {
+        if (Minecraft.getInstance().level != null && Minecraft.getInstance().level.recipeAccess() instanceof RecipeManager rm) {
+            List<? extends RecipeHolder<?>> allRecipes = rm.getRecipes().stream().toList();
+            for (var enchanting : this.getRecipes(allRecipes, EnchantingRecipe.class)) {
                 registry.add(AetherCookingRecipeDisplay.of(AetherREIServerPlugin.ALTAR_ENCHANTING, enchanting));
-            } else if (recipe.value() instanceof AltarRepairRecipe repair) {
+            }
+            for (var repair : this.getRecipes(allRecipes, AltarRepairRecipe.class)) {
                 registry.add(AetherCookingRecipeDisplay.of(AetherREIServerPlugin.ALTAR_REPAIR, repair));
             }
+            for (var freezing : this.getRecipes(allRecipes, FreezingRecipe.class)) {
+                registry.add(AetherCookingRecipeDisplay.of(AetherREIServerPlugin.FREEZING, freezing));
+            }
+            for (var incubation : this.getRecipes(allRecipes, IncubationRecipe.class)) {
+                registry.add(AetherCookingRecipeDisplay.of(AetherREIServerPlugin.INCUBATING, incubation));
+            }
         }
-
-        registry.registerFiller((o) -> o instanceof RecipeHolder<? extends Recipe<?>> holder && holder.value() instanceof EnchantingRecipe, recipe -> AetherCookingRecipeDisplay.of(AetherREIServerPlugin.ALTAR_ENCHANTING, ((RecipeHolder<EnchantingRecipe>) recipe).value()));
-        registry.registerFiller((o) -> o instanceof RecipeHolder<? extends Recipe<?>> holder && holder.value() instanceof AltarRepairRecipe, recipe -> AetherCookingRecipeDisplay.of(AetherREIServerPlugin.ALTAR_REPAIR, ((RecipeHolder<AltarRepairRecipe>) recipe).value()));
-        registry.registerRecipeFiller(FreezingRecipe.class, AetherRecipeTypes.FREEZING.get(), recipe -> AetherCookingRecipeDisplay.of(AetherREIServerPlugin.FREEZING, recipe.value()));
-        registry.registerRecipeFiller(IncubationRecipe.class, AetherRecipeTypes.INCUBATION.get(), recipe -> AetherCookingRecipeDisplay.of(AetherREIServerPlugin.INCUBATING, recipe.value()));
     }
 
     @Override
@@ -123,5 +125,9 @@ public class AetherREIClientPlugin implements REIClientPlugin {
         registry.register(SimpleTransferHandler.create(AltarMenu.class, AetherREIServerPlugin.ALTAR_REPAIR, new SimpleTransferHandler.IntRange(0, 1)));
         registry.register(SimpleTransferHandler.create(FreezerMenu.class, AetherREIServerPlugin.FREEZING, new SimpleTransferHandler.IntRange(0, 1)));
         registry.register(SimpleTransferHandler.create(IncubatorMenu.class, AetherREIServerPlugin.INCUBATING, new SimpleTransferHandler.IntRange(0, 1)));
+    }
+
+    private <T> List<T> getRecipes(List<? extends RecipeHolder<?>> allRecipes, Class<T> recipeClass) {
+        return allRecipes.stream().map(RecipeHolder::value).filter(recipeClass::isInstance).map(recipeClass::cast).toList();
     }
 }

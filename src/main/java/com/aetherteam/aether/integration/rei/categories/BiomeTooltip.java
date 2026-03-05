@@ -17,13 +17,13 @@ public interface BiomeTooltip {
             tooltip.add(Component.translatable("gui.aether.jei.biome.tooltip").withStyle(ChatFormatting.GRAY));
             if (biomeKey.isPresent()) {
                 tooltip.add(Component.translatable("gui.aether.jei.biome.tooltip.biome").withStyle(ChatFormatting.DARK_GRAY));
-                tooltip.add(Component.literal(biomeKey.get().location().toString()).withStyle(ChatFormatting.DARK_GRAY));
+                tooltip.add(Component.literal(biomeKey.get().identifier().toString()).withStyle(ChatFormatting.DARK_GRAY));
             } else {
                 tooltip.add(Component.translatable("gui.aether.jei.biome.tooltip.tag").withStyle(ChatFormatting.DARK_GRAY));
                 tooltip.add(Component.literal("#" + biomeTag.get().location()).withStyle(ChatFormatting.DARK_GRAY));
 
                 tooltip.add(Component.translatable("gui.aether.jei.biome.tooltip.biomes").withStyle(ChatFormatting.DARK_GRAY));
-                Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getTagOrEmpty(biomeTag.get()).forEach((biomeHolder) -> biomeHolder.unwrapKey().ifPresent((key) -> tooltip.add(Component.literal(key.location().toString()).withStyle(ChatFormatting.DARK_GRAY))));
+                Minecraft.getInstance().level.registryAccess().lookupOrThrow(Registries.BIOME).getTagOrEmpty(biomeTag.get()).forEach((biomeHolder) -> biomeHolder.unwrapKey().ifPresent((key) -> tooltip.add(Component.literal(key.identifier().toString()).withStyle(ChatFormatting.DARK_GRAY))));
             }
         }
     }

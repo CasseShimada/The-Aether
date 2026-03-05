@@ -8,7 +8,7 @@ import me.shedaniel.rei.api.common.display.DisplaySerializer;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,7 +24,7 @@ public class AetherCookingRecipeDisplay<T extends Recipe<?>> extends BasicDispla
 
     private final boolean isIncubation;
 
-    public AetherCookingRecipeDisplay(CategoryIdentifier<AetherCookingRecipeDisplay<T>> identifier, List<EntryIngredient> inputs, List<EntryIngredient> outputs, float experience, int cookingTime, boolean isIncubation, Optional<ResourceLocation> location) {
+    public AetherCookingRecipeDisplay(CategoryIdentifier<AetherCookingRecipeDisplay<T>> identifier, List<EntryIngredient> inputs, List<EntryIngredient> outputs, float experience, int cookingTime, boolean isIncubation, Optional<Identifier> location) {
         super(inputs, outputs, location);
         this.identifier = identifier;
         this.experience = experience;
@@ -37,8 +37,8 @@ public class AetherCookingRecipeDisplay<T extends Recipe<?>> extends BasicDispla
         var experience = 0f;
 
         if (recipe instanceof AbstractCookingRecipe cookingRecipe){
-            cookingTime = cookingRecipe.getCookingTime();
-            experience = cookingRecipe.getExperience();
+            cookingTime = cookingRecipe.cookingTime();
+            experience = cookingRecipe.experience();
         } else if (recipe instanceof IncubationRecipe incubationRecipe){
             cookingTime = incubationRecipe.getIncubationTime();
         }
@@ -47,13 +47,17 @@ public class AetherCookingRecipeDisplay<T extends Recipe<?>> extends BasicDispla
     }
 
     private static List<EntryIngredient> getInput(Recipe<?> recipe) {
-        if (recipe instanceof AltarRepairRecipe) {
-            ItemStack damagedItem = recipe.getIngredients().getFirst().getItems()[0].copy();
+        if (recipe instanceof AltarRepairRecipe repairRecipe) {
+            ItemStack damagedItem = repairRecipe.ingredient.items().findFirst().map((holder) -> new ItemStack(holder.value())).orElse(ItemStack.EMPTY);
             damagedItem.setDamageValue(damagedItem.getMaxDamage() * 3 / 4);
 
             return List.of(EntryIngredients.of(damagedItem));
+        } else if (recipe instanceof AbstractAetherCookingRecipe cookingRecipe) {
+            return List.of(EntryIngredients.ofIngredient(cookingRecipe.input()));
+        } else if (recipe instanceof IncubationRecipe incubationRecipe) {
+            return List.of(EntryIngredients.ofIngredient(incubationRecipe.getIngredients().getFirst()));
         } else {
-            return List.of(EntryIngredients.ofIngredient(recipe.getIngredients().getFirst()));
+            return List.of();
         }
     }
 
@@ -80,9 +84,9 @@ public class AetherCookingRecipeDisplay<T extends Recipe<?>> extends BasicDispla
 
     public static <T extends Recipe<?>> DisplaySerializer<AetherCookingRecipeDisplay<T>> serializer(CategoryIdentifier<AetherCookingRecipeDisplay<T>> identifier) {
         return BasicDisplay.Serializer.of((input, output, location1, tag) -> {
-            var experience = tag.getFloat("experience");
-            var cookingTime = tag.getInt("cookingTime");
-            var isIncubation = tag.getBoolean("isIncubation");
+            var experience = tag.getFloatOr("experience", 0.0F);
+            var cookingTime = tag.getIntOr("cookingTime", 0);
+            var isIncubation = tag.getBooleanOr("isIncubation", false);
 
             return new AetherCookingRecipeDisplay<>(identifier, input, output, experience, cookingTime, isIncubation, location1);
         }, (display, tag) -> {

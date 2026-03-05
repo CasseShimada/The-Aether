@@ -13,14 +13,12 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class FreezingRecipeCategory extends AbstractAetherCookingRecipeCategory<FreezingRecipe> implements IRecipeCategory<FreezingRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "freezing");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/freezer.png");
+    public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "freezing");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/freezer.png");
     public static final RecipeType<FreezingRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "freezing", FreezingRecipe.class);
 
 
@@ -35,10 +33,8 @@ public class FreezingRecipeCategory extends AbstractAetherCookingRecipeCategory<
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, FreezingRecipe recipe, IFocusGroup focusGroup) {
-        NonNullList<Ingredient> recipeIngredients = recipe.getIngredients();
-
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipeIngredients.getFirst());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 19).addItemStack(recipe.getResult());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(recipe.input());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 19).add(recipe.getResult());
     }
 
     @Override
@@ -46,6 +42,6 @@ public class FreezingRecipeCategory extends AbstractAetherCookingRecipeCategory<
         this.animatedProgressArrow.draw(guiGraphics, 24, 18);
         this.fuelIndicator.draw(guiGraphics, 1, 20);
         this.drawExperience(recipe, guiGraphics, 1, this.background);
-        this.drawCookingTime(guiGraphics, 45, recipe.getCookingTime(), this.background);
+        this.drawCookingTime(guiGraphics, 45, recipe.cookingTime(), this.background);
     }
 }
