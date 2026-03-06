@@ -83,6 +83,8 @@ public class AetherClient {
     }
 
     public static void registerTooltipOverrides() {
+        TooltipListeners.onTooltipCreationLowPriority();
+
         TooltipListeners.PREDICATES.put(AetherItems.BLUE_GUMMY_SWET.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
