@@ -26,14 +26,17 @@ import com.aetherteam.nitrogen.network.packet.SyncPacket;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -42,7 +45,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import com.aetherteam.aether.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
@@ -56,7 +61,7 @@ import java.util.function.Supplier;
  * @see com.aetherteam.aether.event.hooks.CapabilityHooks.AetherPlayerHooks
  */
 public class AetherPlayerAttachment implements INBTSynchable {
-    private static final ResourceLocation LIFE_SHARD_HEALTH_ID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
+    private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
     private boolean canGetPortal = true;
     private boolean canSpawnInAether = true;
@@ -114,9 +119,8 @@ public class AetherPlayerAttachment implements INBTSynchable {
     private float savedHealth = 0.0F;
     private int lifeShards;
 
-    private static final ResourceLocation LOGOMARKS = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "logomarks");
-    private static final Style DISCORD = Style.EMPTY.withColor(5793266).withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/aethermod")).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("https://discord.gg/aethermod")));
-    private static final Style PATREON = Style.EMPTY.withColor(16728653).withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.patreon.com/TheAetherTeam")).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("https://www.patreon.com/TheAetherTeam")));
+    private static final Style DISCORD = Style.EMPTY.withColor(5793266).withUnderlined(true);
+    private static final Style PATREON = Style.EMPTY.withColor(16728653).withUnderlined(true);
     private boolean canShowPatreonMessage = true;
     private int loginsUntilPatreonMessage = -1;
 
@@ -177,14 +181,14 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Handles functions when the player logs out of a world from {@link net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent}.
+     * Handles functions when the player logs out of a world.
      */
     public void onLogout(Player player) {
         this.handleLogoutSavedHealth(player);
     }
 
     /**
-     * Handles functions when the player logs in to a world from {@link net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent}.
+     * Handles functions when the player logs in to a world.
      */
     public void onLogin(Player player) {
         this.handleGivePortal(player);
@@ -197,7 +201,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Handles functions when the player joins a world from {@link net.neoforged.neoforge.event.entity.EntityJoinLevelEvent}.
+     * Handles functions when the player joins a world.
      */
     public void onJoinLevel(Player player) {
         if (player.level().isClientSide() && player.isLocalPlayer()) {
@@ -207,7 +211,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Used to correct data between instances of the capability from {@link net.neoforged.neoforge.event.entity.player.PlayerEvent.Clone}. <br>
+     * Used to correct data between instances of the attachment after player cloning. <br>
      * This attachment copies all data by default, this is here to reset certain values that dont need to persist on death.
      *
      * @param wasDeath A {@link Boolean} for whether this copying is from death. If false, the copying is from entering the End Portal.
@@ -220,7 +224,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Handles functions when the player ticks from {@link net.neoforged.neoforge.event.tick.EntityTickEvent}
+     * Handles per-tick player update functions.
      */
     public void onUpdate(Player player) {
         this.syncAfterJoin(player);
@@ -257,7 +261,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
                     PlayerList playerList = server.getPlayerList();
                     for (ServerPlayer serverPlayer : playerList.getPlayers()) {
                         if (!serverPlayer.getUUID().equals(player.getUUID())) {
-                            player.getData(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
+                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
                         }
                     }
                 }
@@ -316,9 +320,9 @@ public class AetherPlayerAttachment implements INBTSynchable {
         if (!player.isCreative() && !player.isShiftKeyDown() && !player.isFallFlying() && !player.isPassenger()) {
             if (player.getDeltaMovement().y() < -1.5) {
                 if (inventory.contains(AetherTags.Items.DEPLOYABLE_PARACHUTES)) {
-                    for (ItemStack stack : inventory.items) {
+                    for (ItemStack stack : inventory.getNonEquipmentItems()) {
                         if (stack.getItem() instanceof ParachuteItem parachuteItem) {
-                            Parachute parachute = parachuteItem.getParachuteEntity().get().create(level);
+                            Parachute parachute = parachuteItem.getParachuteEntity().get().create(level, EntitySpawnReason.TRIGGERED);
                             if (parachute != null) {
                                 parachute.setPos(player.getX(), player.getY() - 1.0, player.getZ());
                                 parachute.setDeltaMovement(player.getDeltaMovement());
@@ -377,7 +381,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
 
     private void removeRemedyDuration(Player player) {
         if (this.remedyStartDuration > 0) {
-            if (!player.hasEffect(AetherEffects.REMEDY)) {
+            if (!player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY.get()))) {
                 this.remedyStartDuration = 0;
             }
         }
@@ -452,8 +456,9 @@ public class AetherPlayerAttachment implements INBTSynchable {
     public void removeAerbunny() {
         if (this.getMountedAerbunny() != null) {
             Aerbunny aerbunny = this.getMountedAerbunny();
-            CompoundTag nbt = new CompoundTag();
-            aerbunny.saveAsPassenger(nbt);
+            TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, aerbunny.registryAccess());
+            aerbunny.saveAsPassenger(output);
+            CompoundTag nbt = output.buildResult();
             this.setMountedAerbunnyTag(Optional.of(nbt));
             aerbunny.stopRiding();
             aerbunny.setRemoved(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
@@ -464,13 +469,13 @@ public class AetherPlayerAttachment implements INBTSynchable {
      * Remounts an Aerbunny to the player if there exists stored NBT when joining the world.
      */
     public void remountAerbunny(Player player) {
-        if (this.getMountedAerbunnyTag().isPresent()) {
-            if (!player.level().isClientSide()) {
-                Aerbunny aerbunny = new Aerbunny(AetherEntityTypes.AERBUNNY.get(), player.level());
-                aerbunny.load(this.getMountedAerbunnyTag().get());
-                player.level().addFreshEntity(aerbunny);
-                aerbunny.startRiding(player);
-                this.setMountedAerbunny(aerbunny);
+            if (this.getMountedAerbunnyTag().isPresent()) {
+                if (!player.level().isClientSide()) {
+                    Aerbunny aerbunny = new Aerbunny(AetherEntityTypes.AERBUNNY.get(), player.level());
+                    aerbunny.load(TagValueInput.create(ProblemReporter.DISCARDING, player.registryAccess(), this.getMountedAerbunnyTag().get()));
+                    player.level().addFreshEntity(aerbunny);
+                    aerbunny.startRiding(player);
+                    this.setMountedAerbunny(aerbunny);
                 if (player instanceof ServerPlayer serverPlayer) {
                     PacketDistributor.sendToPlayer(serverPlayer, new RemountAerbunnyPacket(player.getId(), aerbunny.getId()));
                 }
@@ -566,9 +571,9 @@ public class AetherPlayerAttachment implements INBTSynchable {
             switch (string) {
                 case "%s1" -> Component.literal("The Aether").setStyle(Style.EMPTY.withColor(8445183).withItalic(true));
                 case "%s2" ->
-                    Component.literal("").append(Component.literal("! ").setStyle(DISCORD.withFont(LOGOMARKS))).append(Component.literal("Discord").setStyle(DISCORD));
+                    Component.literal("").append(Component.literal("! ").setStyle(DISCORD)).append(Component.literal("Discord").setStyle(DISCORD));
                 case "%s3" ->
-                    Component.literal("").append(Component.literal(", ").setStyle(PATREON.withFont(LOGOMARKS))).append(Component.literal("Patreon").setStyle(PATREON));
+                    Component.literal("").append(Component.literal(", ").setStyle(PATREON)).append(Component.literal("Patreon").setStyle(PATREON));
                 default -> Component.literal(string);
             }).toList();
         MutableComponent message = Component.literal("");
@@ -946,7 +951,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
      * @param cloudMinionLeft  The left {@link CloudMinion}.
      */
     private void sendCloudMinionPacket(Player player, CloudMinion cloudMinionRight, CloudMinion cloudMinionLeft) {
-        if (player instanceof ServerPlayer serverPlayer && !player.level().isClientSide) {
+        if (player instanceof ServerPlayer serverPlayer && !player.level().isClientSide()) {
             PacketDistributor.sendToPlayer(serverPlayer, new CloudMinionPacket(player.getId(), cloudMinionRight.getId(), cloudMinionLeft.getId()));
         }
     }
