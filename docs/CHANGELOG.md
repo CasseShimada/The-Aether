@@ -54,7 +54,7 @@ Changes
 - The `enchanted_grass` block tag is now used instead of the Enchanted Aether Grass Block for grass coloring and the interaction behavior between Foxes and Berry Bushes.
 - Improved compatibility with Just Enough Effect Descriptions (JEED). Items that apply effects are now displayed with descriptions.
 - Updated Cumulus to 2.0.7. This includes various bug fixes and improved compatibility with mods like Essential.
-- Updated Accessories to 1.1.0-beta.49. This includes various bug fixes and solves crashes with using newer versions of owo-lib.
+- Updated the accessory system with multiple stability fixes.
 
 Fixes
 
