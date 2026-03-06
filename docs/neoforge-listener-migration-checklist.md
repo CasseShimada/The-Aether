@@ -20,7 +20,7 @@ Status legend:
 | `DimensionListener#onWorldLoad` | `ServerWorldEvents.LOAD` -> `DimensionHooks.initializeLevelData` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onSleepFinish` | `ServerLevelMixin#wakeUpAllPlayers` tail -> `DimensionHooks.finishSleep` | DONE | Sleep-finish time rewrite parity restored for Aether dimensions. |
 | `DimensionListener#onTriedToSleep` | `EntitySleepEvents.ALLOW_SLEEPING` -> `DimensionHooks.isEternalDay` | DONE | Eternal-day sleep blocking restored. |
-| `DimensionListener#onAlterGround` | none | MISSING | Needs Fabric equivalent terrain-mod hook. |
+| `DimensionListener#onAlterGround` | `AlterGroundDecoratorMixin#placeBlockAt` podzol replacement guard | DONE | Aether Dirt is preserved when tree decorators attempt podzol replacement. |
 | `EntityListener#onEntityJoin` | `ServerEntityEvents.ENTITY_LOAD` -> `EntityHooks.addGoals` | DONE | Registered in `AetherFabricEvents`. |
 | `EntityListener#onMountEntity` | `PlayerMixin#rideTick()` custom flow | PARTIAL | Dismount prevention path exists; mount event parity not complete. |
 | `EntityListener#onRiderTick` | `ClientTickEvents.END_CLIENT_TICK` -> `EntityHooks.launchMount` | DONE | Client-side rider launch behavior restored. |
