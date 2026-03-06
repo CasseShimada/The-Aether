@@ -28,8 +28,8 @@ Status legend:
 | `EntityListener#onProjectileHitEntity` | `FishingHookMixin#onHitEntity` head cancel -> `EntityHooks.preventEntityHooked` | DONE | Fishing-hook impact cancellation parity restored for unhookable entities. |
 | `EntityListener#onShieldBlock` | `LivingEntityMixin#applyItemBlocking` head override -> `EntityHooks.preventSliderShieldBlock` | DONE | Slider shield-block cancel behavior restored in damage-blocking pipeline. |
 | `EntityListener#onLightningStrike` | `EntityMixin#thunderHit` head cancel -> lightning key/thunder-crystal guards | DONE | Lightning strike cancellation parity restored for protected Aether items. |
-| `EntityListener#onPlayerDrops` | none | MISSING | Needs death-drop callback bridge. |
-| `EntityListener#onDropExperience` | none | MISSING | Needs exp-drop callback bridge. |
+| `EntityListener#onPlayerDrops` | `LivingEntityMixin#dropAllDeathLoot + drop(...)` death-window tracking bridge | DONE | Player death drops now receive owner tracking on spawned `ItemEntity` drops. |
+| `EntityListener#onDropExperience` | `LivingEntityMixin#getExperienceReward` return rewrite -> `EntityHooks.modifyExperience` | DONE | Experience drop modifier parity restored for accessory-equipped mobs. |
 | `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |
 | `EntityListener#onEntitySplit` | none | MISSING | Needs mob split/collision equivalent bridge. |
 | `EntityListener#onLoadPlayerFile` | none | MISSING | Needs player data migration hook in Fabric flow. |

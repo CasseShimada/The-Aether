@@ -1,5 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
@@ -7,8 +8,12 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,6 +21,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
+    @Unique
+    private boolean aether$trackingDeathDrops;
+
     /**
      * Handles vertical swimming for Phoenix Armor in lava without being affected by the upwards speed debuff from lava.
      *
@@ -38,5 +46,34 @@ public class LivingEntityMixin {
         if (EntityHooks.preventSliderShieldBlock(source)) {
             cir.setReturnValue(amount);
         }
+    }
+
+    @Inject(method = "dropAllDeathLoot(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;)V", at = @At("HEAD"))
+    private void aether$beginTrackingDeathDrops(ServerLevel level, DamageSource source, CallbackInfo ci) {
+        this.aether$trackingDeathDrops = true;
+    }
+
+    @Inject(method = "dropAllDeathLoot(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;)V", at = @At("TAIL"))
+    private void aether$stopTrackingDeathDrops(ServerLevel level, DamageSource source, CallbackInfo ci) {
+        this.aether$trackingDeathDrops = false;
+    }
+
+    @Inject(method = "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At("RETURN"))
+    private void aether$trackPlayerDeathDrop(ItemStack stack, boolean dropAround, boolean includeName, CallbackInfoReturnable<ItemEntity> cir) {
+        if (this.aether$trackingDeathDrops) {
+            LivingEntity livingEntity = (LivingEntity) (Object) this;
+            if (livingEntity instanceof Player player) {
+                ItemEntity itemEntity = cir.getReturnValue();
+                if (itemEntity != null) {
+                    itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).setOwner(player);
+                }
+            }
+        }
+    }
+
+    @Inject(method = "getExperienceReward(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/Entity;)I", at = @At("RETURN"), cancellable = true)
+    private void aether$modifyExperienceReward(ServerLevel level, net.minecraft.world.entity.Entity attacker, CallbackInfoReturnable<Integer> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        cir.setReturnValue(EntityHooks.modifyExperience(livingEntity, cir.getReturnValueI()));
     }
 }
