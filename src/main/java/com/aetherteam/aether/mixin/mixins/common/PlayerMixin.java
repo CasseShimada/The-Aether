@@ -2,6 +2,8 @@ package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.CapabilityHooks;
+import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
@@ -61,6 +63,16 @@ public abstract class PlayerMixin {
                 player.setShiftKeyDown(true);
             }
         }
+    }
+
+    /**
+     * Mirrors NeoForge player lifecycle tick callbacks for Fabric, so attachment and dimension travel hooks run every tick.
+     */
+    @Inject(at = @At("TAIL"), method = "tick()V")
+    private void tick(CallbackInfo ci) {
+        Player player = (Player) (Object) this;
+        CapabilityHooks.AetherPlayerHooks.update(player);
+        DimensionHooks.travelling(player);
     }
 
     /**
