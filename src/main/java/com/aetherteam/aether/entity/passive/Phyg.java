@@ -48,7 +48,8 @@ public class Phyg extends WingedAnimal {
     public static AttributeSupplier.Builder createMobAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.25);
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.TEMPT_RANGE, 10.0);
     }
 
     @Override
