@@ -32,7 +32,7 @@ Status legend:
 | `EntityListener#onDropExperience` | `LivingEntityMixin#getExperienceReward` return rewrite -> `EntityHooks.modifyExperience` | DONE | Experience drop modifier parity restored for accessory-equipped mobs. |
 | `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |
 | `EntityListener#onEntitySplit` | `SlimeMixin#remove` split-spawn `addFreshEntity` guard -> `EntityHooks.preventSplit` | DONE | Swet split cancellation restored without altering base removal flow. |
-| `EntityListener#onLoadPlayerFile` | none | MISSING | Needs player data migration hook in Fabric flow. |
+| `EntityListener#onLoadPlayerFile` | `ServerPlayerEvents.JOIN` -> `EntityHooks.loadLegacyCuriosData` using `WorldData#getLoadedPlayerTag` | DONE | Legacy `ForgeCaps`/`neoforge:attachments` Curios payload now migrates into Aether accessory slots on player join. |
 | `ItemListener#onTooltipAdd` | Nitrogen tooltip listener bridge in `AetherClient` | PARTIAL | Tooltip predicate chain exists; full parity needs audit. |
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |
 | `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + `AetherEventDispatch` recipe freeze/convert/ban bridges | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |

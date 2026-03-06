@@ -25,6 +25,7 @@ public final class AetherFabricEvents {
 
     public static void register() {
         ServerPlayerEvents.JOIN.register(player -> {
+            EntityHooks.loadLegacyCuriosData(player);
             CapabilityHooks.AetherPlayerHooks.login(player);
             CapabilityHooks.AetherTimeHooks.login(player);
             PerkHooks.refreshPerks(player);
