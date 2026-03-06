@@ -10,6 +10,7 @@
     "common.BlockMixin",
     "common.EntityMixin",
     "common.ItemMixin",
+    "common.LevelMixin",
     "common.LivingEntityMixin",
     "common.MobMixin",
     "common.PlayerMixin",

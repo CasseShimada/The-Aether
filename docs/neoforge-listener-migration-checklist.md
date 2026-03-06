@@ -12,7 +12,7 @@ Status legend:
 |---|---|---|---|
 | `DimensionListener#onPlayerLogin` | `ServerPlayerEvents.JOIN` -> `DimensionHooks.startInAether` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onInteractWithPortalFrame` | `UseBlockCallback` -> `DimensionHooks.createPortal` | DONE | Registered in `AetherFabric`. |
-| `DimensionListener#onWaterExistsInsidePortalFrame` | none | MISSING | Needs block/fluid neighbor bridge. |
+| `DimensionListener#onWaterExistsInsidePortalFrame` | `LevelMixin#setBlock(..., flags, recursion)` tail -> `DimensionHooks.detectWaterInFrame` | DONE | Server-side water frame detection bridge restored for portal auto-creation. |
 | `DimensionListener#onWorldTick` | `ServerTickEvents.END_WORLD_TICK` -> `DimensionHooks.tickTime/checkEternalDayConfig` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onEntityTravelToDimension` | `EntityMixin#teleport(TeleportTransition)` -> `DimensionHooks.dimensionTravel/removePlayerAerbunny` | DONE | Pre-transfer hook restored for entity/player travel flow. |
 | `DimensionListener#onPlayerChangedDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` | DONE | `remountPlayerAerbunny` + capability/time sync. |
