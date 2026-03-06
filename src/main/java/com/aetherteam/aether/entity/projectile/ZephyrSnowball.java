@@ -3,29 +3,29 @@ package com.aetherteam.aether.entity.projectile;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.aether.mixin.mixins.common.accessor.PlayerAccessor;
 import com.aetherteam.aether.network.packet.clientbound.ZephyrSnowballHitPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.network.PacketDistributor;
 
 public class ZephyrSnowball extends Fireball implements ItemSupplier {
     private int ticksInAir;
@@ -62,7 +62,7 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
                 this.onHit(hitResult);
             }
 
-            this.checkInsideBlocks();
+            this.applyEffectsFromBlocks();
             Vec3 vec3 = this.getDeltaMovement();
             double d0 = this.getX() + vec3.x();
             double d1 = this.getY() + vec3.y();
@@ -102,8 +102,7 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
         Entity entity = result.getEntity();
         if (entity instanceof LivingEntity livingEntity && !EquipmentUtil.hasSentryBoots(livingEntity)) {
             if (livingEntity instanceof Player player && player.isBlocking()) { // Damages the player's shield.
-                PlayerAccessor playerAccessor = (PlayerAccessor) player;
-                playerAccessor.callHurtCurrentlyUsedShield(3.0F);
+                player.getUseItem().hurtAndBreak(3, player, player.getUsedItemHand());
             } else { // Knocks the player back.
                 entity.setDeltaMovement(entity.getDeltaMovement().x(), entity.getDeltaMovement().y() + 0.5, entity.getDeltaMovement().z());
                 entity.setDeltaMovement(entity.getDeltaMovement().x() + (this.getDeltaMovement().x() * 1.5), entity.getDeltaMovement().y(), entity.getDeltaMovement().z() + (this.getDeltaMovement().z() * 1.5));
@@ -135,16 +134,14 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("TicksInAir", this.ticksInAir);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("TicksInAir", this.ticksInAir);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("TicksInAir")) {
-            this.ticksInAir = tag.getInt("TicksInAir");
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.ticksInAir = input.getIntOr("TicksInAir", this.ticksInAir);
     }
 }

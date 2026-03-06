@@ -1,5 +1,5 @@
 {
-  "required": true,
+  "required": false,
   "package": "com.aetherteam.aether.mixin.mixins",
   "plugin": "com.aetherteam.aether.mixin.AetherMixinPlugin",
   "minVersion": "0.8",
@@ -8,12 +8,12 @@
   "mixins": [
     "common.AbstractArrowMixin",
     "common.ArmorStandMixin",
+    "common.BlockMixin",
     "common.DimensionTypeMixin",
     "common.EntityMixin",
-    "common.EventHooksMixin",
+    "common.ItemMixin",
     "common.LivingEntityMixin",
     "common.MobMixin",
-    "common.ModelBuilderMixin",
     "common.PlayerMixin",
     "common.ServerPlayerMixin",
     "common.accessor.AbstractContainerMenuAccessor",
@@ -22,7 +22,6 @@
     "common.accessor.BeeAccessor",
     "common.accessor.BlockLootAccessor",
     "common.accessor.BoatAccessor",
-    "common.accessor.BushBlockAccessor",
     "common.accessor.ChunkAccessAccessor",
     "common.accessor.ConcretePowderBlockAccessor",
     "common.accessor.CraftingMenuAccessor",
@@ -32,11 +31,11 @@
     "common.accessor.LevelAccessor",
     "common.accessor.LivingEntityAccessor",
     "common.accessor.LookAtPlayerGoalAccessor",
-    "common.accessor.LootContextParamSetsAccessor",
     "common.accessor.MinecraftServerAccessor",
-    "common.accessor.PlayerAccessor",
+    "common.accessor.MobAccessor",
     "common.accessor.ServerGamePacketListenerImplAccessor",
     "common.accessor.ServerLevelAccessor",
+    "common.accessor.SpawnPlacementsAccessor",
     "common.accessor.SpreadingSnowyDirtBlockAccessor",
     "common.accessor.StoredUserListAccessor",
     "common.accessor.ZombifiedPiglinAccessor"
@@ -44,32 +43,28 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.AdvancementToastMixin",
-    "client.BossHealthOverlayMixin",
-    "client.ElytraLayerMixin",
     "client.LogoRendererMixin",
     "client.PauseScreenMixin",
     "client.SmithingScreenMixin",
-    "client.SplashRendererMixin",
     "client.TippableArrowRendererMixin",
-    "client.TitleScreenMixin",
+    "client.accessor.AbstractContainerScreenAccessor",
     "client.accessor.AbstractWidgetAccessor",
     "client.accessor.BlockColorsAccessor",
     "client.accessor.BossHealthOverlayAccessor",
     "client.accessor.ButtonAccessor",
+    "client.accessor.ButtonBuilderAccessor",
     "client.accessor.EntityRendererAccessor",
+    "client.accessor.GhostSlotsAccessor",
     "client.accessor.GuiAccessor",
-    "client.accessor.HeartTypeAccessor",
-    "client.accessor.I18nAccessor",
-    "client.accessor.LevelRendererAccessor",
     "client.accessor.MinecraftAccessor",
     "client.accessor.PlayerModelAccessor",
     "client.accessor.QuadrupedModelAccessor",
     "client.accessor.ScreenAccessor",
+    "client.accessor.SplashRendererAccessor",
     "client.accessor.SoundEngineAccessor",
-    "client.accessor.TitleScreenAccessor",
-    "client.optifine.BossHealthOverlayMixin"
+    "client.accessor.TitleScreenAccessor"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
