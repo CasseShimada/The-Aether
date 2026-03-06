@@ -3,8 +3,8 @@ package com.aetherteam.aether.world.trunkplacer;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherTrunkPlacerTypes {
     public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACERS = DeferredRegister.create(Registries.TRUNK_PLACER_TYPE, Aether.MODID);

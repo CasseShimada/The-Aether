@@ -8,7 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -56,11 +56,11 @@ public class BronzeDungeonStructure extends Structure {
         StructureTemplateManager templateManager = context.structureTemplateManager();
         int height = findStartingHeight(chunkGenerator, heightAccessor, chunkPos, randomState, templateManager, this.aboveBottom, this.belowTop);
         // To make structure placement more reliable, we check the surrounding 8 chunks for suitable locations.
-        if (height <= heightAccessor.getMinBuildHeight()) {
+        if (height <= heightAccessor.getMinY()) {
             MutableInt y = new MutableInt(height);
             chunkPos = searchNearbyChunks(chunkPos, y, chunkGenerator, heightAccessor, randomState, templateManager, this.aboveBottom, this.belowTop);
             height = y.getValue();
-            if (height <= heightAccessor.getMinBuildHeight()) {
+            if (height <= heightAccessor.getMinY()) {
                 return Optional.empty();
             }
         }
@@ -91,7 +91,7 @@ public class BronzeDungeonStructure extends Structure {
                 if (x != 0 || z != 0) {
                     ChunkPos offset = new ChunkPos(chunkPos.x + x, chunkPos.z + z);
                     y = BronzeDungeonStructure.findStartingHeight(generator, heightAccessor, offset, randomState, templateManager, aboveBottom, belowTop);
-                    if (y > heightAccessor.getMinBuildHeight()) {
+                    if (y > heightAccessor.getMinY()) {
                         height.setValue(y);
                         return offset;
                     }
@@ -123,9 +123,9 @@ public class BronzeDungeonStructure extends Structure {
                 generator.getBaseColumn(maxX, minZ, heightAccessor, random),
                 generator.getBaseColumn(maxX, maxZ, heightAccessor, random)
         };
-        int roomHeight = checkRoomHeight(templateManager, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/boss_room"));
-        int height = heightAccessor.getMinBuildHeight();
-        int maxHeight = heightAccessor.getMaxBuildHeight() - belowTop;
+        int roomHeight = checkRoomHeight(templateManager, Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/boss_room"));
+        int height = heightAccessor.getMinY();
+        int maxHeight = heightAccessor.getMaxY() - belowTop;
         int thickness = roomHeight + 2;
         int currentThickness = 0;
         for (int y = height + aboveBottom; y <= maxHeight; y++) {
@@ -144,7 +144,7 @@ public class BronzeDungeonStructure extends Structure {
         return height;
     }
 
-    private static int checkRoomHeight(StructureTemplateManager manager, ResourceLocation roomName) {
+    private static int checkRoomHeight(StructureTemplateManager manager, Identifier roomName) {
         StructureTemplate template = manager.getOrCreate(roomName);
         return template.getSize().getY();
     }

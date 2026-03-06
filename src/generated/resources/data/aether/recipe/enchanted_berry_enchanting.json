@@ -3,9 +3,7 @@
   "category": "enchanting_food",
   "cookingtime": 250,
   "experience": 0.35,
-  "ingredient": {
-    "item": "aether:blue_berry"
-  },
+  "ingredient": "aether:blue_berry",
   "result": {
     "count": 1,
     "id": "aether:enchanted_berry"

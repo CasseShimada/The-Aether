@@ -3,9 +3,7 @@
   "category": "freezable_blocks",
   "cookingtime": 500,
   "experience": 0.1,
-  "ingredient": {
-    "item": "aether:skyroot_leaves"
-  },
+  "ingredient": "aether:skyroot_leaves",
   "result": {
     "count": 1,
     "id": "aether:crystal_leaves"

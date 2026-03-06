@@ -7,9 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
@@ -37,15 +37,15 @@ import java.util.stream.Collectors;
  * @see <a href="https://en.wikipedia.org/wiki/Directed_graph">https://en.wikipedia.org/wiki/Directed_graph</a>
  */
 public class BronzeDungeonBuilder {
-    public static final Map<String, SimpleWeightedRandomList.Builder<RoomProvider<?>>> ROOM_OPTIONS_BUILDER = Map.ofEntries(
-        Map.entry("boss_room", new SimpleWeightedRandomList.Builder<>()),
-        Map.entry("chest_room", new SimpleWeightedRandomList.Builder<>()),
-        Map.entry("end_corridor", new SimpleWeightedRandomList.Builder<>()),
-        Map.entry("entrance", new SimpleWeightedRandomList.Builder<>()),
-        Map.entry("lobby", new SimpleWeightedRandomList.Builder<>()),
-        Map.entry("square_tunnel", new SimpleWeightedRandomList.Builder<>())
+    public static final Map<String, WeightedList.Builder<RoomProvider<?>>> ROOM_OPTIONS_BUILDER = Map.ofEntries(
+        Map.entry("boss_room", new WeightedList.Builder<>()),
+        Map.entry("chest_room", new WeightedList.Builder<>()),
+        Map.entry("end_corridor", new WeightedList.Builder<>()),
+        Map.entry("entrance", new WeightedList.Builder<>()),
+        Map.entry("lobby", new WeightedList.Builder<>()),
+        Map.entry("square_tunnel", new WeightedList.Builder<>())
     );
-    private static Map<String, SimpleWeightedRandomList<RoomProvider<?>>> ROOM_OPTIONS;
+    private static Map<String, WeightedList<RoomProvider<?>>> ROOM_OPTIONS;
     
     static {
         ROOM_OPTIONS_BUILDER.get("boss_room").add((manager, pos, rotation, processorList) -> new BronzeBossRoom(manager, "boss_room", pos, rotation, processorList), 1);
@@ -75,10 +75,10 @@ public class BronzeDungeonBuilder {
         this.random = context.random();
         this.processors = processors;
 
-        Vec3i nodeSize = context.structureTemplateManager().getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/chest_room")).getSize();
+        Vec3i nodeSize = context.structureTemplateManager().getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/chest_room")).getSize();
         this.nodeWidth = nodeSize.getX();
 
-        Vec3i edgeSize = context.structureTemplateManager().getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/square_tunnel")).getSize();
+        Vec3i edgeSize = context.structureTemplateManager().getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/square_tunnel")).getSize();
         this.edgeWidth = edgeSize.getX();
         this.edgeLength = edgeSize.getZ();
 
@@ -88,7 +88,7 @@ public class BronzeDungeonBuilder {
     public void initializeDungeon(BlockPos startPos, Structure.GenerationContext genContext, StructurePiecesBuilder builder) {
         ROOM_OPTIONS = ROOM_OPTIONS_BUILDER.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, (e) -> e.getValue().build()));
 
-        StructureTemplate bossTemplate = this.context.structureTemplateManager().getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/boss_room"));
+        StructureTemplate bossTemplate = this.context.structureTemplateManager().getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/boss_room"));
 
         Rotation rotation = getBossRoomRotation(startPos, startPos.offset(bossTemplate.getSize()));
         if (rotation == null) { // The space may not be big enough for multiple rooms. If so, stop trying.
@@ -249,7 +249,7 @@ public class BronzeDungeonBuilder {
      * @return Whether the tunnel should stop generating, as a {@link Boolean}.
      */
     public boolean buildTunnelFromRoom(StructurePiece connectedRoom, List<StructurePiece> list, Rotation rotation, Direction direction, BlockPos origin) {
-        StructureTemplate template = this.manager.getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/entrance"));
+        StructureTemplate template = this.manager.getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/entrance"));
         BlockPos startPos = BlockLogicUtil.tunnelFromEvenSquareRoom(connectedRoom.getBoundingBox(), direction, template.getSize().getX());
         BronzeDungeonPiece entrance = this.chooseRoom("entrance", startPos, rotation, this.processors.roomSettings());
         list.add(entrance);
@@ -293,9 +293,9 @@ public class BronzeDungeonBuilder {
     }
 
     public BronzeDungeonPiece chooseRoom(String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        SimpleWeightedRandomList<RoomProvider<?>> list = ROOM_OPTIONS.get(name);
+        WeightedList<RoomProvider<?>> list = ROOM_OPTIONS.get(name);
         if (list != null) {
-            Optional<RoomProvider<?>> option = list.getRandomValue(this.random);
+            Optional<RoomProvider<?>> option = list.getRandom(this.random);
             if (option.isPresent()) {
                 return option.get().provide(this.manager, pos, rotation, processors);
             }
@@ -379,7 +379,7 @@ public class BronzeDungeonBuilder {
      */
     @Nullable
     private Rotation getBossRoomRotation(BlockPos minPos, BlockPos maxPos) {
-        StructureTemplate template = this.context.structureTemplateManager().getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/chest_room"));
+        StructureTemplate template = this.context.structureTemplateManager().getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze_dungeon/chest_room"));
         RandomSource random = this.context.random();
         BoundingBox bossBox = new BoundingBox(minPos.getX(), minPos.getY(), minPos.getZ(), maxPos.getX(), maxPos.getY(), maxPos.getZ());
 

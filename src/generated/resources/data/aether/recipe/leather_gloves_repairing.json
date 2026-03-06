@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_gloves_repair",
-  "ingredient": {
-    "item": "aether:leather_gloves"
-  },
+  "ingredient": "aether:leather_gloves",
   "repairTime": 250
 }

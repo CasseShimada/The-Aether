@@ -37,10 +37,12 @@ public class LargeAercloudChunk extends StructurePiece {
     public LargeAercloudChunk(StructurePieceSerializationContext context, CompoundTag tag) {
         super(AetherStructurePieceTypes.LARGE_AERCLOUD.get(), tag);
 
-        ListTag positions = tag.getList("Positions", Tag.TAG_INT_ARRAY);
+        ListTag positions = tag.getListOrEmpty("Positions");
         for (Tag value : positions) {
-            int[] position = ((IntArrayTag) value).getAsIntArray();
-            this.positions.add(new BlockPos(position[0], position[1], position[2]));
+            if (value instanceof IntArrayTag arrayTag) {
+                int[] position = arrayTag.getAsIntArray();
+                this.positions.add(new BlockPos(position[0], position[1], position[2]));
+            }
         }
         this.blocks = BlockStateProvider.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("Blocks"))).getPartialOrThrow();
     }
@@ -48,7 +50,7 @@ public class LargeAercloudChunk extends StructurePiece {
     protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
         ListTag positions = new ListTag();
         for (BlockPos position : this.positions) {
-            positions.add(NbtUtils.writeBlockPos(position));
+            positions.add(new IntArrayTag(new int[]{position.getX(), position.getY(), position.getZ()}));
         }
         tag.put("Positions", positions);
         BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.blocks).resultOrPartial(Aether.LOGGER::error).ifPresent(value -> tag.put("Blocks", value));

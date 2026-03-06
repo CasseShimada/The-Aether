@@ -18,10 +18,10 @@ public class AerogelWallBlock extends WallBlock {
     private static final Map<Direction, EnumProperty<WallSide>> WALL_SIDES_BY_DIRECTION = new EnumMap<>(Direction.class);
 
     static {
-        WALL_SIDES_BY_DIRECTION.put(Direction.NORTH, NORTH_WALL);
-        WALL_SIDES_BY_DIRECTION.put(Direction.SOUTH, SOUTH_WALL);
-        WALL_SIDES_BY_DIRECTION.put(Direction.EAST, EAST_WALL);
-        WALL_SIDES_BY_DIRECTION.put(Direction.WEST, WEST_WALL);
+        WALL_SIDES_BY_DIRECTION.put(Direction.NORTH, NORTH);
+        WALL_SIDES_BY_DIRECTION.put(Direction.SOUTH, SOUTH);
+        WALL_SIDES_BY_DIRECTION.put(Direction.EAST, EAST);
+        WALL_SIDES_BY_DIRECTION.put(Direction.WEST, WEST);
     }
 
     public AerogelWallBlock(Properties properties) {
@@ -52,6 +52,7 @@ public class AerogelWallBlock extends WallBlock {
      *
      * This prevents adjacent walls from rendering redundant faces.
      */
+    @Override
     protected boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
         if (adjacentBlockState.is(this)) {
             if (side.getAxis().isHorizontal()) {

@@ -3,8 +3,8 @@ package com.aetherteam.aether.world.structure;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherStructureTypes {
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, Aether.MODID);

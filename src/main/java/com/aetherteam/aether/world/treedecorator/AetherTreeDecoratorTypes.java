@@ -3,8 +3,8 @@ package com.aetherteam.aether.world.treedecorator;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherTreeDecoratorTypes {
     public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATORS = DeferredRegister.create(BuiltInRegistries.TREE_DECORATOR_TYPE, Aether.MODID);

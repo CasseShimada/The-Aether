@@ -1,17 +1,13 @@
 package com.aetherteam.aether.command;
 
-import com.aetherteam.aether.Aether;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 public class AetherCommands {
     /**
-     * @see Aether#eventSetup(IEventBus)
+     * Registers all Aether commands into the provided dispatcher.
      */
-    public static void registerCommands(RegisterCommandsEvent event) {
-        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         AetherTimeCommand.register(dispatcher);
         EternalDayCommand.register(dispatcher);
         PlayerCapabilityCommand.register(dispatcher);

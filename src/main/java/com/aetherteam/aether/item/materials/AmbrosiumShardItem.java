@@ -9,12 +9,11 @@ import com.aetherteam.aether.recipe.recipes.block.AmbrosiumRecipe;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -40,20 +39,18 @@ public class AmbrosiumShardItem extends Item implements ItemUseConversion<Ambros
      * @param player The {@link Player} using this item.
      * @param hand   The {@link InteractionHand} in which the item is being used.
      * @return Consume (cause the item to bob down then up in hand) if the Ambrosium Shard is edible or the player is missing health. Fail (do nothing) if the player has full health. Pass (do nothing) if the Ambrosium Shard isn't edible.
-     * This is an {@link InteractionResultHolder InteractionResultHolder&lt;ItemStack&gt;}.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (AetherConfig.SERVER.edible_ambrosium.get()) {
-            ItemStack itemStack = player.getItemInHand(hand);
             if (player.getHealth() < player.getMaxHealth() || player.isCreative()) {
                 player.startUsingItem(hand);
-                return InteractionResultHolder.consume(itemStack);
+                return InteractionResult.CONSUME;
             } else {
-                return InteractionResultHolder.fail(itemStack);
+                return InteractionResult.FAIL;
             }
         } else {
-            return InteractionResultHolder.pass(player.getItemInHand(hand));
+            return InteractionResult.PASS;
         }
     }
 
@@ -76,11 +73,11 @@ public class AmbrosiumShardItem extends Item implements ItemUseConversion<Ambros
     }
 
     /**
-     * @return The {@link UseAnim#EAT} animation if the Ambrosium Shard is edible according to {@link AetherConfig.Server#edible_ambrosium}, otherwise {@link UseAnim#NONE}.
+     * @return The {@link ItemUseAnimation#EAT} animation if the Ambrosium Shard is edible according to {@link AetherConfig.Server#edible_ambrosium}, otherwise {@link ItemUseAnimation#NONE}.
      */
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return AetherConfig.SERVER.edible_ambrosium.get() ? UseAnim.EAT : UseAnim.NONE;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return AetherConfig.SERVER.edible_ambrosium.get() ? ItemUseAnimation.EAT : ItemUseAnimation.NONE;
     }
 
     /**

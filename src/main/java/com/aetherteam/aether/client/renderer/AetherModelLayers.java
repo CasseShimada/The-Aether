@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.renderer;
 
 import com.aetherteam.aether.Aether;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class AetherModelLayers {
     public static final ModelLayerLocation SKYROOT_BED_FOOT = register("skyroot_bed_foot");
@@ -10,13 +10,16 @@ public class AetherModelLayers {
     public static final ModelLayerLocation CHEST_MIMIC = register("chest_mimic");
 
     public static final ModelLayerLocation PHYG = register("phyg");
+    public static final ModelLayerLocation PHYG_BABY = register("phyg", "baby");
     public static final ModelLayerLocation PHYG_WINGS = register("phyg", "wings");
     public static final ModelLayerLocation PHYG_SADDLE = register("phyg", "saddle");
     public static final ModelLayerLocation PHYG_HALO = register("phyg", "halo");
     public static final ModelLayerLocation FLYING_COW = register("flying_cow");
+    public static final ModelLayerLocation FLYING_COW_BABY = register("flying_cow", "baby");
     public static final ModelLayerLocation FLYING_COW_WINGS = register("flying_cow", "wings");
     public static final ModelLayerLocation FLYING_COW_SADDLE = register("flying_cow", "saddle");
     public static final ModelLayerLocation SHEEPUFF = register("sheepuff");
+    public static final ModelLayerLocation SHEEPUFF_BABY = register("sheepuff", "baby");
     public static final ModelLayerLocation SHEEPUFF_WOOL = register("sheepuff", "outer");
     public static final ModelLayerLocation SHEEPUFF_WOOL_PUFFED = register("sheepuff", "outer_puffed");
     public static final ModelLayerLocation AERBUNNY = register("aerbunny");
@@ -74,10 +77,10 @@ public class AetherModelLayers {
     }
 
     private static ModelLayerLocation register(String name, String type) {
-        return register(ResourceLocation.fromNamespaceAndPath(Aether.MODID, name), type);
+        return register(Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
     }
 
-    private static ModelLayerLocation register(ResourceLocation location, String type) {
+    private static ModelLayerLocation register(Identifier location, String type) {
         return new ModelLayerLocation(location, type);
     }
 }

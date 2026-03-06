@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "aether:carved_stone"
-    }
+    "#": "aether:carved_stone"
   },
   "pattern": [
     "###"

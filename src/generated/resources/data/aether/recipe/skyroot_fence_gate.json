@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "wooden_fence_gate",
   "key": {
-    "/": {
-      "tag": "aether:skyroot_stick"
-    },
-    "M": {
-      "item": "aether:skyroot_planks"
-    }
+    "/": "#aether:skyroot_stick",
+    "M": "aether:skyroot_planks"
   },
   "pattern": [
     "/M/",

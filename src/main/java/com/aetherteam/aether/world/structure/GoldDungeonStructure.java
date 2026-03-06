@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -178,7 +178,7 @@ public class GoldDungeonStructure extends Structure {
      * @return The {@link Integer} for the first available height to place at.
      */
     private int tunnelFromBossRoom(StructureTemplateManager templateManager, StructurePiecesBuilder builder, StructurePiece room, ChunkGenerator chunkGenerator, LevelHeightAccessor heightAccessor, RandomState randomState) {
-        StructureTemplate template = templateManager.getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/tunnel"));
+        StructureTemplate template = templateManager.getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/tunnel"));
         int width = template.getSize().getX();
         Rotation rotation = room.getRotation();
         Direction direction = rotation.rotate(Direction.SOUTH);
@@ -193,13 +193,13 @@ public class GoldDungeonStructure extends Structure {
     }
 
     private Vec3i getStubOffset(StructureTemplateManager templateManager) {
-        StructureTemplate template = templateManager.getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/stub"));
+        StructureTemplate template = templateManager.getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/stub"));
         Vec3i size = template.getSize();
         return new Vec3i(size.getX() / -2, size.getY() / -2, size.getZ() / -2);
     }
 
     private Vec3i getBossRoomOffset(StructureTemplateManager templateManager, Direction direction) {
-        StructureTemplate template = templateManager.getOrCreate(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/boss_room"));
+        StructureTemplate template = templateManager.getOrCreate(Identifier.fromNamespaceAndPath(Aether.MODID, "gold_dungeon/boss_room"));
         Vec3i size = template.getSize();
         Vec3i offset = new Vec3i(size.getX() / -2, size.getY() / -2, (size.getZ()) / -2);
         return offset.relative(direction, -1);

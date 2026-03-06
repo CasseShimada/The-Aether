@@ -4,7 +4,7 @@ import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.levelgen.synth.NormalNoise.NoiseParameters;
 
@@ -13,7 +13,7 @@ public class AetherNoises {
     public static final ResourceKey<NoiseParameters> VEGETATION = createKey("vegetation");
 
     private static ResourceKey<NoiseParameters> createKey(String name) {
-        return ResourceKey.create(Registries.NOISE, ResourceLocation.fromNamespaceAndPath(Aether.MODID, name));
+        return ResourceKey.create(Registries.NOISE, Identifier.fromNamespaceAndPath(Aether.MODID, name));
     }
 
     public static void bootstrap(BootstrapContext<NoiseParameters> context) {

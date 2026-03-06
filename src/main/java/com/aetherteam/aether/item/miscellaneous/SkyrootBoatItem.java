@@ -5,11 +5,12 @@ import com.aetherteam.aether.entity.miscellaneous.SkyrootChestBoat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -39,11 +40,11 @@ public class SkyrootBoatItem extends Item {
      * @param hand   The {@link InteractionHand} in which the item is being used.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         HitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
         if (hitResult.getType() == HitResult.Type.MISS) {
-            return InteractionResultHolder.pass(heldStack);
+            return InteractionResult.PASS;
         } else {
             Vec3 viewVector = player.getViewVector(1.0F);
             List<Entity> list = level.getEntities(player, player.getBoundingBox().expandTowards(viewVector.scale(5.0)).inflate(1.0), ENTITY_PREDICATE);
@@ -52,15 +53,15 @@ public class SkyrootBoatItem extends Item {
                 for (Entity entity : list) {
                     AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
                     if (aabb.contains(eyePosition)) {
-                        return InteractionResultHolder.pass(heldStack);
+                        return InteractionResult.PASS;
                     }
                 }
             }
             if (hitResult.getType() == HitResult.Type.BLOCK) {
-                Boat boat = this.getBoat(level, hitResult);
+                AbstractBoat boat = this.getBoat(level, hitResult);
                 boat.setYRot(player.getYRot());
                 if (!level.noCollision(boat, boat.getBoundingBox())) {
-                    return InteractionResultHolder.fail(heldStack);
+                    return InteractionResult.FAIL;
                 } else {
                     if (!level.isClientSide()) {
                         level.addFreshEntity(boat);
@@ -70,10 +71,10 @@ public class SkyrootBoatItem extends Item {
                         }
                     }
                     player.awardStat(Stats.ITEM_USED.get(this));
-                    return InteractionResultHolder.sidedSuccess(heldStack, level.isClientSide());
+                    return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
                 }
             } else {
-                return InteractionResultHolder.pass(heldStack);
+                return InteractionResult.PASS;
             }
         }
     }
@@ -85,7 +86,7 @@ public class SkyrootBoatItem extends Item {
      * @param hitResult The {@link HitResult} of attempting to place the boat.
      * @return The type of {@link Boat}, either a {@link SkyrootChestBoat} or a {@link SkyrootBoat}.
      */
-    private Boat getBoat(Level level, HitResult hitResult) {
+    private AbstractBoat getBoat(Level level, HitResult hitResult) {
         return this.hasChest ? new SkyrootChestBoat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z) : new SkyrootBoat(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z);
     }
 }

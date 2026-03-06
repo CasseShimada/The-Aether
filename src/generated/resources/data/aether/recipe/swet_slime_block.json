@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "minecraft:slime_block",
   "key": {
-    "B": {
-      "tag": "aether:swet_balls"
-    }
+    "B": "#aether:swet_balls"
   },
   "pattern": [
     "BBB",

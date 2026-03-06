@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:stonecutter",
   "key": {
-    "#": {
-      "item": "aether:holystone"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    }
+    "#": "aether:holystone",
+    "I": "minecraft:iron_ingot"
   },
   "pattern": [
     " I ",

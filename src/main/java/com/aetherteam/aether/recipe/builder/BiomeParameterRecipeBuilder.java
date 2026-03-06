@@ -10,13 +10,14 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class BiomeParameterRecipeBuilder implements RecipeBuilder {
     private final Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome;
     private final BlockPropertyPair result;
     private final BlockStateIngredient ingredient;
-    private Optional<ResourceLocation> function = Optional.empty();
+    private Optional<Identifier> function = Optional.empty();
     private final BiomeParameterRecipeSerializer.Factory<?> factory;
 
     public BiomeParameterRecipeBuilder(BlockPropertyPair result, BlockStateIngredient ingredient, Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BiomeParameterRecipeSerializer.Factory<?> factory) {
@@ -63,7 +64,7 @@ public class BiomeParameterRecipeBuilder implements RecipeBuilder {
         return new BiomeParameterRecipeBuilder(result, ingredient, biome, factory);
     }
 
-    public RecipeBuilder function(Optional<ResourceLocation> function) {
+    public RecipeBuilder function(Optional<Identifier> function) {
         this.function = function;
         return this;
     }
@@ -84,8 +85,8 @@ public class BiomeParameterRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> recipeKey) {
         AbstractBiomeParameterRecipe recipe = this.factory.create(this.biome, this.ingredient, this.result, this.function);
-        recipeOutput.accept(id, recipe, null);
+        recipeOutput.accept(recipeKey, recipe, null);
     }
 }

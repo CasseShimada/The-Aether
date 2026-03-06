@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:jukebox",
   "key": {
-    "G": {
-      "tag": "aether:processed/gravitite"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "G": "#aether:processed/gravitite",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "PPP",

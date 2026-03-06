@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_shovel_repair",
-  "ingredient": {
-    "item": "aether:holystone_shovel"
-  },
+  "ingredient": "aether:holystone_shovel",
   "repairTime": 500
 }

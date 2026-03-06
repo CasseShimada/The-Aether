@@ -165,7 +165,7 @@ public class AetherTimeAttachment implements INBTSynchable {
     }
 
     public static int getTicksPerDay() {
-        return Level.TICKS_PER_DAY * getTicksPerDayMultiplier(); // Time in ticks of how long a day/night cycle lasts.
+        return 24000 * getTicksPerDayMultiplier(); // Time in ticks of how long a day/night cycle lasts.
     }
 
     public static int configMultiplier() {

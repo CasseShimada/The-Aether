@@ -7,12 +7,12 @@ import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public abstract class AbstractBiomeParameterRecipeCategory<T extends AbstractBiomeParameterRecipe> extends AbstractAetherBlockStateRecipeCategory<T> implements BiomeTooltip {
-    public AbstractBiomeParameterRecipeCategory(String id, ResourceLocation uid, IDrawable background, IDrawable icon, RecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
+    public AbstractBiomeParameterRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, RecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
         super(id, uid, background, icon, recipeType, fluidHelper);
     }
 

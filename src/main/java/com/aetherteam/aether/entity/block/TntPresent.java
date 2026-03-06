@@ -2,14 +2,17 @@ package com.aetherteam.aether.entity.block;
 
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 
@@ -97,14 +100,17 @@ public class TntPresent extends Entity implements TraceableEntity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putShort("Fuse", (short) this.getFuse());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putShort("Fuse", (short) this.getFuse());
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-        if (tag.contains("Fuse")) {
-            this.setFuse(tag.getShort("Fuse"));
-        }
+    protected void readAdditionalSaveData(ValueInput input) {
+        this.setFuse(input.getShortOr("Fuse", (short) this.getFuse()));
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        return false;
     }
 }

@@ -7,12 +7,12 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class AccessoryFreezableRecipeCategory extends AbstractAetherBlockStateRecipeCategory<AccessoryFreezableRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "accessory_freezable");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/jei_render.png");
+    public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_freezable");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/jei_render.png");
     public static final RecipeType<AccessoryFreezableRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "accessory_freezable", AccessoryFreezableRecipe.class);
 
     public AccessoryFreezableRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {

@@ -3,7 +3,7 @@ package com.aetherteam.aether.loot;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Collections;
@@ -64,7 +64,7 @@ public class AetherLoot {
     public static final ResourceKey<LootTable> EVIL_WHIRLWIND_JUNK = register("selectors/evil_whirlwind_junk");
 
     private static ResourceKey<LootTable> register(String id) {
-        return register(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Aether.MODID, id)));
+        return register(ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(Aether.MODID, id)));
     }
 
     private static ResourceKey<LootTable> register(ResourceKey<LootTable> id) {

@@ -3,18 +3,10 @@
   "category": "redstone",
   "group": "minecraft:piston",
   "key": {
-    "C": {
-      "item": "minecraft:cobblestone"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "C": "minecraft:cobblestone",
+    "I": "#c:ingots/iron",
+    "P": "#aether:planks_crafting",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "PPP",

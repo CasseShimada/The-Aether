@@ -1,7 +1,6 @@
 package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.AetherConfig;
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -10,6 +9,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.permissions.Permissions;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserWhiteList;
 import net.minecraft.server.players.UserWhiteListEntry;
@@ -28,7 +29,7 @@ public class SunAltarWhitelistCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("aether")
-                .then(Commands.literal("sun_altar_whitelist").requires((commandSourceStack) -> commandSourceStack.hasPermission(4))
+                .then(Commands.literal("sun_altar_whitelist").requires((commandSourceStack) -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_OWNER))
                         .then(Commands.literal("on").executes((context) -> enableWhitelist(context.getSource())))
                         .then(Commands.literal("off").executes((context) -> disableWhitelist(context.getSource())))
                         .then(Commands.literal("list").executes((context) -> showList(context.getSource())))
@@ -36,7 +37,7 @@ public class SunAltarWhitelistCommand {
                                 .then(Commands.argument("targets", GameProfileArgument.gameProfile())
                                         .suggests((context, builder) -> {
                                             PlayerList playerlist = context.getSource().getServer().getPlayerList();
-                                            return SharedSuggestionProvider.suggest(playerlist.getPlayers().stream().filter((serverPlayer) -> !playerlist.getWhiteList().isWhiteListed(serverPlayer.getGameProfile())).map((player) -> player.getGameProfile().getName()), builder);
+                                            return SharedSuggestionProvider.suggest(playerlist.getPlayers().stream().map((player) -> player.getGameProfile().name()), builder);
                                         })
                                         .executes((context) -> addPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets")))
                                 )
@@ -58,15 +59,15 @@ public class SunAltarWhitelistCommand {
         return 1;
     }
 
-    private static int addPlayers(CommandSourceStack source, Collection<GameProfile> players) throws CommandSyntaxException {
+    private static int addPlayers(CommandSourceStack source, Collection<NameAndId> players) throws CommandSyntaxException {
         UserWhiteList sunAltarWhiteList = SunAltarWhitelist.INSTANCE.getSunAltarWhiteList();
         int i = 0;
 
-        for (GameProfile gameProfile : players) {
+        for (NameAndId gameProfile : players) {
             if (!sunAltarWhiteList.isWhiteListed(gameProfile)) {
                 UserWhiteListEntry entry = new UserWhiteListEntry(gameProfile);
                 sunAltarWhiteList.add(entry);
-                source.sendSuccess(() -> Component.translatable("commands.aether.sun_altar_whitelist.add.success", Component.literal(gameProfile.getName())), true);
+                source.sendSuccess(() -> Component.translatable("commands.aether.sun_altar_whitelist.add.success", Component.literal(gameProfile.name())), true);
                 ++i;
             }
         }
@@ -78,15 +79,15 @@ public class SunAltarWhitelistCommand {
         }
     }
 
-    private static int removePlayers(CommandSourceStack source, Collection<GameProfile> players) throws CommandSyntaxException {
+    private static int removePlayers(CommandSourceStack source, Collection<NameAndId> players) throws CommandSyntaxException {
         UserWhiteList sunAltarWhiteList = SunAltarWhitelist.INSTANCE.getSunAltarWhiteList();
         int i = 0;
 
-        for (GameProfile gameProfile : players) {
+        for (NameAndId gameProfile : players) {
             if (sunAltarWhiteList.isWhiteListed(gameProfile)) {
                 UserWhiteListEntry userwhitelistentry = new UserWhiteListEntry(gameProfile);
                 sunAltarWhiteList.remove(userwhitelistentry);
-                source.sendSuccess(() -> Component.translatable("commands.aether.sun_altar_whitelist.remove.success", Component.literal(gameProfile.getName())), true);
+                source.sendSuccess(() -> Component.translatable("commands.aether.sun_altar_whitelist.remove.success", Component.literal(gameProfile.name())), true);
                 ++i;
             }
         }
@@ -94,7 +95,7 @@ public class SunAltarWhitelistCommand {
         if (i == 0) {
             throw ERROR_NOT_WHITELISTED.create();
         } else {
-            source.getServer().kickUnlistedPlayers(source);
+            source.getServer().kickUnlistedPlayers();
             return i;
         }
     }

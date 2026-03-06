@@ -1,13 +1,13 @@
 package com.aetherteam.aether.loot.conditions;
 
 import com.aetherteam.aether.data.ConfigSerializationUtil;
+import com.aetherteam.aether.config.ModConfigSpec;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 /**
  * Checks if a config value is true or false for a loot table.

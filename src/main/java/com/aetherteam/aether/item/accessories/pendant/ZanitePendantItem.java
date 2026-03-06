@@ -10,7 +10,6 @@ public class ZanitePendantItem extends PendantItem implements ZaniteAccessory {
         super("zanite_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_ZANITE_PENDANT, properties);
     }
 
-    @Override
     public boolean isValidRepairItem(ItemStack repairItem, ItemStack repairMaterial) {
         return repairMaterial.is(AetherTags.Items.ZANITE_REPAIRING);
     }

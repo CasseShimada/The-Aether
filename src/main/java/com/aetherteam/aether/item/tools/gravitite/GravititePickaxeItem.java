@@ -9,7 +9,7 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class GravititePickaxeItem extends PickaxeItem implements GravititeTool {
     public GravititePickaxeItem() {
-        super(AetherItemTiers.GRAVITITE,  new Item.Properties().attributes(PickaxeItem.createAttributes(AetherItemTiers.GRAVITITE, 1.0F, -2.8F)));
+        super(AetherItemTiers.GRAVITITE, PickaxeItem.createAttributes(AetherItemTiers.GRAVITITE, 1.0F, -2.8F), new Item.Properties());
     }
 
     /**
@@ -23,7 +23,7 @@ public class GravititePickaxeItem extends PickaxeItem implements GravititeTool {
         if (!this.floatBlock(context)) {
             return super.useOn(context);
         } else {
-            return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
+            return context.getLevel().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         }
     }
 }

@@ -2,13 +2,13 @@ package com.aetherteam.aether.client;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.FileUtil;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.*;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.resources.IoSupplier;
+import net.minecraft.util.FileUtil;
 
 import javax.annotation.Nullable;
 import java.io.InputStream;
@@ -65,13 +65,13 @@ public class CombinedPackResources extends AbstractPackResources {
     @SuppressWarnings("unchecked")
     @Nullable
     @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> deserializer) {
-        return deserializer.getMetadataSectionName().equals("pack") ? (T) this.packInfo : null;
+    public <T> T getMetadataSection(MetadataSectionType<T> deserializer) {
+        return "pack".equals(deserializer.name()) ? (T) this.packInfo : null;
     }
 
     @Nullable
     @Override
-    public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) {
+    public IoSupplier<InputStream> getResource(PackType type, Identifier location) {
         for (PackResources pack : this.getCandidatePacks(type, location)) {
             IoSupplier<InputStream> ioSupplier = pack.getResource(type, location);
             if (ioSupplier != null) {
@@ -106,7 +106,7 @@ public class CombinedPackResources extends AbstractPackResources {
         return this.packs;
     }
 
-    private List<PackResources> getCandidatePacks(PackType type, ResourceLocation location) {
+    private List<PackResources> getCandidatePacks(PackType type, Identifier location) {
         Map<String, List<PackResources>> map = type == PackType.CLIENT_RESOURCES ? this.assets : this.data;
         List<PackResources> packsWithNamespace = map.get(location.getNamespace());
         return packsWithNamespace == null ? Collections.emptyList() : packsWithNamespace;

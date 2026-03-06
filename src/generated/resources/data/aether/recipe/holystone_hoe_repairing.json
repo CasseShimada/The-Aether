@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_hoe_repair",
-  "ingredient": {
-    "item": "aether:holystone_hoe"
-  },
+  "ingredient": "aether:holystone_hoe",
   "repairTime": 500
 }

@@ -4,8 +4,9 @@ import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.ClientAsset;
+import net.minecraft.world.entity.player.PlayerSkin;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -23,9 +24,9 @@ public class AbstractClientPlayerMixin {
         PlayerSkin skin = original.call();
         ItemStack stack = AetherMixinHooks.isCapeVisible(abstractClientPlayer);
         if (!stack.isEmpty()) {
-            ResourceLocation texture = AetherMixinHooks.getCapeTexture(stack);
+            Identifier texture = AetherMixinHooks.getCapeTexture(stack);
             if (texture != null) {
-                return new PlayerSkin(skin.texture(), skin.textureUrl(), texture, skin.elytraTexture(), skin.model(), skin.secure());
+                return new PlayerSkin(skin.body(), new ClientAsset.ResourceTexture(texture), skin.elytra(), skin.model(), skin.secure());
             }
         }
         return skin;

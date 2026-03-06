@@ -4,25 +4,24 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.ICancellableEvent;
-import net.neoforged.fml.LogicalSide;
-import net.neoforged.neoforge.event.entity.EntityEvent;
 
 import javax.annotation.Nullable;
 
 /**
  * EggLayEvent is fired before a Moa lays an egg.
  * <br>
- * This event is {@link ICancellableEvent}.<br>
+ * This event is cancellable.<br>
  * If the event is not canceled, the Moa will lay an egg.
  * <br>
- * This event is fired on the {@link net.neoforged.neoforge.common.NeoForge#EVENT_BUS}.<br>
+ * This event is fired by Aether's local event dispatch.<br>
  * <br>
- * This event is only fired on the {@link LogicalSide#SERVER} side.<br>
+ * This event is only fired on the server side.<br>
  * <br>
  * If this event is canceled, the Moa will not lay an egg.
  */
-public class EggLayEvent extends EntityEvent implements ICancellableEvent {
+public class EggLayEvent {
+    private final Entity entity;
+    private boolean canceled;
     @Nullable
     private ItemStack item;
     @Nullable
@@ -38,11 +37,23 @@ public class EggLayEvent extends EntityEvent implements ICancellableEvent {
      * @param item   The original egg {@link ItemStack} to be laid.
      */
     public EggLayEvent(Entity entity, @Nullable SoundEvent sound, float volume, float pitch, @Nullable ItemStack item) {
-        super(entity);
+        this.entity = entity;
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
         this.item = item;
+    }
+
+    public Entity getEntity() {
+        return this.entity;
+    }
+
+    public boolean isCanceled() {
+        return this.canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 
     /**

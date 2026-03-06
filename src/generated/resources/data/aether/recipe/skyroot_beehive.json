@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:beehive",
   "key": {
-    "C": {
-      "item": "minecraft:honeycomb"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "C": "minecraft:honeycomb",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "PPP",

@@ -2,96 +2,102 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.client.event.listeners.*;
-import com.aetherteam.aether.client.event.listeners.abilities.AccessoryAbilityClientListener;
-import com.aetherteam.aether.client.event.listeners.capability.AetherPlayerClientListener;
+import com.aetherteam.aether.client.event.hooks.AudioHooks;
+import com.aetherteam.aether.client.event.hooks.CapabilityClientHooks;
+import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
+import com.aetherteam.aether.client.event.hooks.GuiHooks;
+import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
+import com.aetherteam.aether.client.event.hooks.MenuHooks;
+import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
-import com.aetherteam.aether.client.gui.screen.menu.AetherReceivingLevelScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
-import com.aetherteam.aether.data.resources.registries.AetherDimensions;
-import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
+import net.fabricmc.loader.api.FabricLoader;
 import com.google.common.reflect.Reflection;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
-import net.neoforged.neoforge.client.event.RegisterDimensionTransitionScreenEvent;
-import net.neoforged.neoforge.client.event.RegisterEntitySpectatorShadersEvent;
-import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public class AetherClient {
-    public static Map<Predicate<ItemStack>, ResourceLocation> CAPE_SECRETS = new HashMap<>();
+    public static Map<Predicate<ItemStack>, Identifier> CAPE_SECRETS = new HashMap<>();
+    private static boolean initialized;
 
-    public static void clientInit(IEventBus bus) {
-        bus.addListener(AetherClient::clientSetup);
-        bus.addListener(AetherClient::registerSpectatorShaders);
-        bus.addListener(AetherClient::registerDimensionTransitionScreens);
+    public static void init() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
 
-        AetherClient.eventSetup(bus);
-    }
-
-    public static void clientSetup(FMLClientSetupEvent event) {
         Reflection.initialize(CustomizationsOptions.class);
         AetherRenderers.registerAccessoryRenderers();
-        event.enqueueWork(() -> {
-            AetherAtlases.registerTreasureChestAtlases();
-            AetherAtlases.registerWoodTypeAtlases();
-            registerItemModelProperties();
-            registerTooltipOverrides();
-        });
+        AetherAtlases.registerTreasureChestAtlases();
+        AetherAtlases.registerWoodTypeAtlases();
+        registerItemModelProperties();
+        registerTooltipOverrides();
         registerLoreOverrides();
+        AetherMenuTypes.registerMenuScreens();
+        AetherColorResolvers.registerBlockColor();
+        AetherColorResolvers.registerItemColor();
+        AetherKeys.registerKeyMappings();
+        AetherRecipeCategories.registerRecipeCategories();
+        AetherParticleTypes.registerParticleFactories();
+        AetherOverlays.registerOverlays();
+        AetherRenderers.registerEntityRenderers();
+        AetherRenderers.registerLayerDefinitions();
+        AetherRenderers.addEntityLayers();
+        AetherRenderers.bakeModels();
+        AetherRenderEffects.registerRenderEffects();
+
+        registerClientCallbacks();
     }
 
     public static void registerItemModelProperties() {
-        ItemProperties.register(AetherItems.PHOENIX_BOW.get(), ResourceLocation.withDefaultNamespace("pulling"),
-                (stack, world, living, i) -> living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F);
-        ItemProperties.register(AetherItems.PHOENIX_BOW.get(), ResourceLocation.withDefaultNamespace("pull"),
-                (stack, world, living, i) -> living != null ? living.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration(living) - living.getUseItemRemainingTicks()) / 20.0F : 0.0F);
+        // 1.21.11 item model properties are data-driven; keep custom cape predicates active.
 
-        ItemProperties.register(AetherItems.CANDY_CANE_SWORD.get(), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "named"), // Easter Egg texture.
-                (stack, world, living, i) -> stack.getHoverName().getString().equalsIgnoreCase("green candy cane sword") ? 1.0F : 0.0F);
-
-        ItemProperties.register(AetherItems.HAMMER_OF_KINGBDOGZ.get(), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "named"), // Easter Egg texture.
-                (stack, world, living, i) -> stack.getHoverName().getString().equalsIgnoreCase("hammer of jeb") ? 1.0F : 0.0F);
-
-        CAPE_SECRETS.put((stack) -> stack.getHoverName().getString().equalsIgnoreCase("swuff_'s cape"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/models/accessory/capes/swuff_accessory.png"));
+        CAPE_SECRETS.put((stack) -> stack.getHoverName().getString().equalsIgnoreCase("swuff_'s cape"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/models/accessory/capes/swuff_accessory.png"));
     }
 
     public static void registerTooltipOverrides() {
-        TooltipListeners.PREDICATES.put(AetherItems.BLUE_GUMMY_SWET, (player, stack, components, context, component) -> {
+        TooltipListeners.PREDICATES.put(AetherItems.BLUE_GUMMY_SWET.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
             } else {
                 return component;
             }
         });
-        TooltipListeners.PREDICATES.put(AetherItems.GOLDEN_GUMMY_SWET, (player, stack, components, context, component) -> {
+        TooltipListeners.PREDICATES.put(AetherItems.GOLDEN_GUMMY_SWET.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
             } else {
                 return component;
             }
         });
-        TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD, (player, stack, components, context, component) -> {
+        TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey(), AetherConfig.SERVER.maximum_life_shards.get());
             } else {
@@ -105,46 +111,73 @@ public class AetherClient {
      */
     public static void registerLoreOverrides() {
         LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> stack.is(AetherItems.HAMMER_OF_KINGBDOGZ.get()) && stack.getHoverName().getString().equalsIgnoreCase("hammer of jeb"), "lore.item.aether.hammer_of_jeb");
-        LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> ItemStack.isSameItemSameComponents(stack, AetherItems.createSwetBannerItemStack(registryAccess.registryOrThrow(Registries.BANNER_PATTERN).asLookup())), "lore.item.aether.swet_banner");
+        LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> ItemStack.isSameItemSameComponents(stack, AetherItems.createSwetBannerItemStack(registryAccess.lookupOrThrow(Registries.BANNER_PATTERN))), "lore.item.aether.swet_banner");
     }
 
-    public static void eventSetup(IEventBus neoBus) {
-        IEventBus bus = NeoForge.EVENT_BUS;
+    private static void registerClientCallbacks() {
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            configureScreen(screen);
+            ScreenEvents.afterRender(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
+                Screens.getButtons(currentScreen).forEach(widget -> {
+                    if (widget instanceof AccessoryButton accessoryButton) {
+                        accessoryButton.updateButtonState();
+                    }
+                });
+                if (!FabricLoader.getInstance().isModLoaded("tipsmod")) {
+                    GuiHooks.drawTrivia(currentScreen, guiGraphics);
+                }
+                GuiHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
+            });
+        });
 
-        AccessoryAbilityClientListener.listen(bus);
-        AetherPlayerClientListener.listen(bus);
-        AudioListener.listen(bus);
-        DimensionClientListener.listen(bus);
-        GuiListener.listen(bus);
-        LevelClientListener.listen(bus);
-        MenuListener.listen(bus);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            AudioHooks.tick();
+            DimensionClientHooks.tickTime();
+            GuiHooks.handlePatreonRefreshRebound();
 
-        bus.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> AbilityHooks.ToolHooks.resetDebuffToolsState());
+            if (client.player != null) {
+                CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
+            }
 
-        neoBus.addListener(AetherMenuTypes::registerMenuScreens);
-        neoBus.addListener(AetherColorResolvers::registerBlockColor);
-        neoBus.addListener(AetherColorResolvers::registerItemColor);
-        neoBus.addListener(AetherKeys::registerKeyMappings);
-        neoBus.addListener(AetherRecipeCategories::registerRecipeCategories);
-        neoBus.addListener(AetherParticleTypes::registerParticleFactories);
-        neoBus.addListener(AetherOverlays::registerOverlays);
-        neoBus.addListener(AetherRenderers::registerEntityRenderers);
-        neoBus.addListener(AetherRenderers::registerLayerDefinitions);
-        neoBus.addListener(AetherRenderers::addEntityLayers);
-        neoBus.addListener(AetherRenderers::bakeModels);
-        neoBus.addListener(AetherRenderEffects::registerRenderEffects);
+            if (client.screen instanceof AbstractContainerScreen<?> containerScreen
+                && !AetherConfig.CLIENT.disable_accessory_button.get()
+                && AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
+                containerScreen.onClose();
+            }
+
+            GuiHooks.openAccessoryMenu();
+        });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            AudioHooks.stop();
+            AbilityHooks.ToolHooks.resetDebuffToolsState();
+        });
+
+        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(context -> {
+            Minecraft minecraft = Minecraft.getInstance();
+            LevelClientHooks.renderDungeonBlockOverlays(context.matrices(), minecraft.gameRenderer.getMainCamera(), null, minecraft);
+        });
     }
 
-    /**
-     * Registers a unique shader for spectating the Sun Spirit, which tints the screen red.
-     */
-    public static void registerSpectatorShaders(RegisterEntitySpectatorShadersEvent event) {
-        event.register(AetherEntityTypes.SUN_SPIRIT.get(), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "shaders/post/sun_spirit.json"));
-    }
+    private static void configureScreen(Screen screen) {
+        if (screen instanceof TitleScreen titleScreen) {
+            MenuHooks.setCustomSplashText(titleScreen);
+        }
 
-    public static void registerDimensionTransitionScreens(RegisterDimensionTransitionScreenEvent event) {
-        event.registerIncomingEffect(AetherDimensions.AETHER_LEVEL, AetherReceivingLevelScreen::new);
-        event.registerOutgoingEffect(AetherDimensions.AETHER_LEVEL, AetherReceivingLevelScreen::new);
+        var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
+        var inventoryAccessoryButton = GuiHooks.setupAccessoryButton(screen, offsets);
+        if (inventoryAccessoryButton != null && GuiHooks.isAccessoryButtonEnabled()) {
+            Screens.getButtons(screen).add(inventoryAccessoryButton);
+        }
+
+        GridLayout layout = GuiHooks.setupPerksButtons(screen);
+        if (layout != null && !GuiHooks.isAccessoryButtonEnabled()) {
+            layout.visitWidgets(widget -> {
+                if (widget instanceof AbstractWidget abstractWidget) {
+                    Screens.getButtons(screen).add(abstractWidget);
+                }
+            });
+        }
     }
 
     /**

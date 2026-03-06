@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "aether:cold_aercloud"
-    }
+    "#": "aether:cold_aercloud"
   },
   "pattern": [
     "##",

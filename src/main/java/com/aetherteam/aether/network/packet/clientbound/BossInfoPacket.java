@@ -1,15 +1,16 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.client.event.hooks.GuiHooks;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.minecraft.resources.Identifier;
+import com.aetherteam.aether.network.AetherPayloadContext;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,7 +29,7 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
      * Adds a boss bar for the client.
      */
     public static class Display extends BossInfoPacket {
-        public static final Type<BossInfoPacket.Display> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "add_custom_bossbar"));
+        public static final Type<BossInfoPacket.Display> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "add_custom_bossbar"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, BossInfoPacket.Display> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -46,8 +47,8 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
             return TYPE;
         }
 
-        public static void execute(BossInfoPacket.Display payload, IPayloadContext context) {
-            GuiHooks.BOSS_EVENTS.put(payload.bossEvent, payload.entityID);
+        public static void execute(BossInfoPacket.Display payload, AetherPayloadContext context) {
+            updateBossEvent(payload.bossEvent, payload.entityID);
         }
     }
 
@@ -55,7 +56,7 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
      * Removes a boss bar for the client.
      */
     public static class Remove extends BossInfoPacket {
-        public static final Type<BossInfoPacket.Remove> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "remove_custom_bossbar"));
+        public static final Type<BossInfoPacket.Remove> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "remove_custom_bossbar"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, BossInfoPacket.Remove> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -73,8 +74,8 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
             return TYPE;
         }
 
-        public static void execute(BossInfoPacket.Remove payload, IPayloadContext context) {
-            GuiHooks.BOSS_EVENTS.remove(payload.bossEvent);
+        public static void execute(BossInfoPacket.Remove payload, AetherPayloadContext context) {
+            updateBossEvent(payload.bossEvent, null);
         }
     }
 
@@ -84,5 +85,20 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
 
     public int getEntityID() {
         return this.entityID;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void updateBossEvent(UUID bossEvent, Integer entityID) {
+        try {
+            Class<?> guiHooksClass = Class.forName("com.aetherteam.aether.client.event.hooks.GuiHooks");
+            Field bossEventsField = guiHooksClass.getField("BOSS_EVENTS");
+            Map<UUID, Integer> events = (Map<UUID, Integer>) bossEventsField.get(null);
+            if (entityID == null) {
+                events.remove(bossEvent);
+            } else {
+                events.put(bossEvent, entityID);
+            }
+        } catch (ReflectiveOperationException ignored) {
+        }
     }
 }

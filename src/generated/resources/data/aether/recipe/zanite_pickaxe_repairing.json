@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_pickaxe_repair",
-  "ingredient": {
-    "item": "aether:zanite_pickaxe"
-  },
+  "ingredient": "aether:zanite_pickaxe",
   "repairTime": 750
 }

@@ -3,19 +3,25 @@ package com.aetherteam.aether.client.renderer.entity;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
 import com.aetherteam.aether.client.renderer.entity.model.CrystalModel;
+import com.aetherteam.aether.client.renderer.entity.state.CrystalRenderState;
 import com.aetherteam.aether.entity.projectile.crystal.ThunderCrystal;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public class ThunderCrystalRenderer extends AbstractCrystalRenderer<ThunderCrystal> {
-    private static final ResourceLocation THUNDER_CRYSTAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/entity/projectile/crystals/electric_ball.png");
+public class ThunderCrystalRenderer extends AbstractCrystalRenderer<ThunderCrystal, CrystalRenderState> {
+    private static final Identifier THUNDER_CRYSTAL_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/projectile/crystals/electric_ball.png");
 
     public ThunderCrystalRenderer(EntityRendererProvider.Context context) {
         super(context, new CrystalModel<>(context.bakeLayer(AetherModelLayers.THUNDER_CRYSTAL)));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ThunderCrystal crystal) {
+    public CrystalRenderState createRenderState() {
+        return new CrystalRenderState();
+    }
+
+    @Override
+    public Identifier getTextureLocation(CrystalRenderState renderState) {
         return THUNDER_CRYSTAL_TEXTURE;
     }
 }

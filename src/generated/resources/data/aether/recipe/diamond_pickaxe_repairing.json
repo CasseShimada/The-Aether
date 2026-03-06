@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_pickaxe_repair",
-  "ingredient": {
-    "item": "minecraft:diamond_pickaxe"
-  },
+  "ingredient": "minecraft:diamond_pickaxe",
   "repairTime": 1500
 }

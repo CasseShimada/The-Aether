@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_shovel_repair",
-  "ingredient": {
-    "item": "minecraft:iron_shovel"
-  },
+  "ingredient": "minecraft:iron_shovel",
   "repairTime": 750
 }

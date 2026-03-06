@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "ambrosium_shard",
   "ingredients": [
-    {
-      "item": "aether:ambrosium_block"
-    }
+    "aether:ambrosium_block"
   ],
   "result": {
     "count": 9,

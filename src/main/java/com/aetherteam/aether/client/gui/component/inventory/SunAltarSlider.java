@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.gui.component.inventory;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 public class SunAltarSlider extends AbstractSliderButton {
     private final int timeScale;

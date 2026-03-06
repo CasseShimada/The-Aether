@@ -16,8 +16,9 @@ public class AetherBushBlock extends BushBlock {
     }
 
     @Override
-    protected MapCodec<? extends BushBlock> codec() {
-        return CODEC;
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public MapCodec<BushBlock> codec() {
+        return (MapCodec) CODEC;
     }
 
     @Override

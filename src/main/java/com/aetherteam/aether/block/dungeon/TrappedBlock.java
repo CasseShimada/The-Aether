@@ -8,7 +8,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -55,7 +55,7 @@ public class TrappedBlock extends Block {
                 if (hitResult.getType() == HitResult.Type.BLOCK) {
                     spawnPos = spawnPos.relative(hitResult.getDirection());
                 }
-                this.spawnableEntityTypeSupplier.get().spawn(serverLevel, spawnPos, MobSpawnType.TRIGGERED);
+                this.spawnableEntityTypeSupplier.get().spawn(serverLevel, spawnPos, EntitySpawnReason.TRIGGERED);
                 serverLevel.playSound(null, pos, AetherSoundEvents.BLOCK_DUNGEON_TRAP_TRIGGER.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
             }
         }

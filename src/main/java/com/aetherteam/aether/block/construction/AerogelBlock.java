@@ -3,7 +3,6 @@ package com.aetherteam.aether.block.construction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,7 +23,7 @@ public class AerogelBlock extends HalfTransparentBlock implements AerogelCulling
      * @return The {@link Integer} of how many light levels are blocked, plus 2 extra by default.
      */
     @Override
-    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+    protected int getLightBlock(BlockState state) {
         return 3;
     }
 
@@ -35,7 +34,7 @@ public class AerogelBlock extends HalfTransparentBlock implements AerogelCulling
      * @return Whether to use the shape for light occlusion, as a {@link Boolean}.
      */
     @Override
-    public boolean useShapeForLightOcclusion(BlockState state) {
+    protected boolean useShapeForLightOcclusion(BlockState state) {
         return true;
     }
 
@@ -58,7 +57,7 @@ public class AerogelBlock extends HalfTransparentBlock implements AerogelCulling
      * @return Whether the neighbor block should skip rendering the neighboring face, as a {@link Boolean}.
      */
     @Override
-    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir) {
-        return AerogelCulling.super.shouldHideNeighboringAerogelFace(level, pos, state, neighborState, dir);
+    protected boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+        return adjacentBlockState.getBlock() instanceof AerogelCulling || super.skipRendering(state, adjacentBlockState, side);
     }
 }

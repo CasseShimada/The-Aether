@@ -1,42 +1,33 @@
 package com.aetherteam.aether.client.renderer.entity.layers;
 
-import com.aetherteam.aether.entity.monster.Swet;
+import com.aetherteam.aether.client.renderer.entity.state.SwetRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.SlimeModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.monster.slime.SlimeModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.resources.Identifier;
 
 /**
  * [CODE COPY] - {@link net.minecraft.client.renderer.entity.layers.SlimeOuterLayer}.
  */
-public class SwetOuterLayer extends RenderLayer<Swet, SlimeModel<Swet>> {
-    private final SlimeModel<Swet> outer;
+public class SwetOuterLayer extends RenderLayer<SwetRenderState, SlimeModel> {
+    private final SlimeModel outer;
+    private final Identifier texture;
 
-    public SwetOuterLayer(RenderLayerParent<Swet, SlimeModel<Swet>> entityRenderer, SlimeModel<Swet> outerModel) {
+    public SwetOuterLayer(RenderLayerParent<SwetRenderState, SlimeModel> entityRenderer, SlimeModel outerModel, Identifier texture) {
         super(entityRenderer);
         this.outer = outerModel;
+        this.texture = texture;
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Swet swet, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = minecraft.shouldEntityAppearGlowing(swet) && swet.isInvisible();
-        if (!swet.isInvisible() || flag) {
-            VertexConsumer consumer;
-            if (flag) {
-                consumer = buffer.getBuffer(RenderType.outline(this.getTextureLocation(swet)));
-            } else {
-                consumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(swet)));
-            }
-            this.getParentModel().copyPropertiesTo(this.outer);
-            this.outer.prepareMobModel(swet, limbSwing, limbSwingAmount, partialTicks);
-            this.outer.setupAnim(swet, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            this.outer.renderToBuffer(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(swet, 0.0F));
+    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, SwetRenderState renderState, float v, float v1) {
+        if (!renderState.isInvisible) {
+            this.outer.setupAnim(renderState);
+            collector.order(0).submitModel(this.outer, renderState, poseStack, this.outer.renderType(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 }

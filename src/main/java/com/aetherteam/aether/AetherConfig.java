@@ -1,9 +1,9 @@
 package com.aetherteam.aether;
 
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
+import com.aetherteam.aether.config.ModConfigSpec;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import com.aetherteam.aether.config.ModConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -172,11 +172,11 @@ public class AetherConfig {
             portal_destination_dimension_ID = builder
                     .comment("Sets the ID of the dimension that the Aether Portal will send the player to")
                     .translation("config.aether.server.modpack.portal_destination_dimension_ID")
-                    .define("Sets portal destination dimension", AetherDimensions.AETHER_LEVEL.location().toString());
+                    .define("Sets portal destination dimension", AetherDimensions.AETHER_LEVEL.identifier().toString());
             portal_return_dimension_ID = builder
                     .comment("Sets the ID of the dimension that the Aether Portal will return the player to")
                     .translation("config.aether.server.modpack.portal_return_dimension_ID")
-                    .define("Sets portal return dimension", Level.OVERWORLD.location().toString());
+                    .define("Sets portal return dimension", Level.OVERWORLD.identifier().toString());
             builder.pop();
         }
     }

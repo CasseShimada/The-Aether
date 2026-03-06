@@ -6,6 +6,7 @@ import com.aetherteam.aether.data.resources.registries.AetherPlacedFeatures;
 import com.aetherteam.aether.mixin.mixins.common.accessor.SpreadingSnowyDirtBlockAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
@@ -36,7 +37,6 @@ public class AetherGrassBlock extends GrassBlock {
         builder.add(AetherBlockStateProperties.DOUBLE_DROPS);
     }
 
-    @Override
     public boolean onTreeGrow(BlockState state, LevelReader level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeConfiguration config) {
         placeFunction.accept(pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)));
         return true;
@@ -49,12 +49,8 @@ public class AetherGrassBlock extends GrassBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!SpreadingSnowyDirtBlockAccessor.callCanBeGrass(state, level, pos)) {
-            if (!level.isAreaLoaded(pos, 3))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
             level.setBlockAndUpdate(pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState());
         } else {
-            if (!level.isAreaLoaded(pos, 3))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
             if (level.getMaxLocalRawBrightness(pos.above()) >= 9) {
                 BlockState blockstate = this.defaultBlockState();
                 for (int i = 0; i < 4; ++i) {
@@ -71,7 +67,7 @@ public class AetherGrassBlock extends GrassBlock {
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos abovePos = pos.above();
         Block grass = AetherBlocks.AETHER_GRASS_BLOCK.get();
-        Optional<Holder.Reference<PlacedFeature>> grassFeatureOptional = level.holder(AetherPlacedFeatures.AETHER_GRASS_BONEMEAL);
+        Optional<Holder.Reference<PlacedFeature>> grassFeatureOptional = level.registryAccess().lookupOrThrow(Registries.PLACED_FEATURE).get(AetherPlacedFeatures.AETHER_GRASS_BONEMEAL);
 
         start:
         for (int i = 0; i < 128; ++i) {

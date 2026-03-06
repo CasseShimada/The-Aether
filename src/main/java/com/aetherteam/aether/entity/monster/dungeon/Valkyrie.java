@@ -11,7 +11,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,16 +24,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Valkyrie extends AbstractValkyrie implements NeutralMob {
     /**
      * General neutral mob necessities. Valkyries will only attack when provoked.
      */
-    private static final int PERSISTENT_ANGER_TIME = Integer.MAX_VALUE;
-    private int remainingPersistentAngerTime;
+    private static final long PERSISTENT_ANGER_TIME = Integer.MAX_VALUE;
+    private long persistentAngerEndTime;
     @Nullable
-    private UUID persistentAngerTarget;
+    private EntityReference<LivingEntity> persistentAngerTarget;
     /**
      * Timer for how long until the player can interact to talk with a Valkyrie again.
      * This Prevents the player from quickly talking to the Valkyrie in succession.
@@ -46,7 +47,7 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
     public void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(3, new LungeGoal(this, 0.65, 30));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, this::isAngryAt));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, false, false, (entity, level) -> this.isAngryAt(entity, level)));
         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
@@ -79,8 +80,8 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
      * Increments the chat timer.
      */
     @Override
-    public void customServerAiStep() {
-        super.customServerAiStep();
+    public void customServerAiStep(ServerLevel level) {
+        super.customServerAiStep(level);
         if (this.chatTimer > 0) {
             this.chatTimer--;
         }
@@ -130,9 +131,9 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
      * @return Whether the entity was hurt, as a {@link Boolean}.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean result = super.hurt(source, amount);
-        if (!this.level().isClientSide() && source.getEntity() instanceof Player player) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean result = super.hurtServer(level, source, amount);
+        if (source.getEntity() instanceof Player player) {
             if (this.getTarget() == null && this.level().getDifficulty() != Difficulty.PEACEFUL && this.getHealth() > 0) {
                 this.chat(player, Component.translatable("gui.aether.valkyrie.dialog.attack." + (char) (this.getRandom().nextInt(3) + '1')), false);
             }
@@ -146,8 +147,8 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
      * @param entity The hurt {@link Entity}.
      */
     @Override
-    public boolean doHurtTarget(Entity entity) {
-        boolean result = super.doHurtTarget(entity);
+    public boolean doHurtTarget(ServerLevel level, Entity entity) {
+        boolean result = super.doHurtTarget(level, entity);
         if (entity instanceof ServerPlayer player && player.getHealth() <= 0) {
             this.chat(player, Component.translatable("gui.aether.valkyrie.dialog.playerdeath." + (char) (this.getRandom().nextInt(3) + '1'), player.getDisplayName()), false);
         }
@@ -173,43 +174,43 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
      */
     @Override
     public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME);
+        this.setTimeToRemainAngry(PERSISTENT_ANGER_TIME);
     }
 
     /**
-     * @return How long this entity should be angry, as an {@link Integer}.
+     * @return Game time when this entity should stop being angry.
      */
     @Override
-    public int getRemainingPersistentAngerTime() {
-        return this.remainingPersistentAngerTime;
+    public long getPersistentAngerEndTime() {
+        return this.persistentAngerEndTime;
     }
 
     /**
-     * Sets how long this entity should be angry.
+     * Sets the game time when this entity should stop being angry.
      *
-     * @param time The {@link Integer} value.
+     * @param endTime The anger end game time value.
      */
     @Override
-    public void setRemainingPersistentAngerTime(int time) {
-        this.remainingPersistentAngerTime = time;
+    public void setPersistentAngerEndTime(long endTime) {
+        this.persistentAngerEndTime = endTime;
     }
 
     /**
-     * @return The {@link UUID} of the target to be angry at.
+     * @return The reference to the target to be angry at.
      */
     @Nullable
     @Override
-    public UUID getPersistentAngerTarget() {
+    public EntityReference<LivingEntity> getPersistentAngerTarget() {
         return this.persistentAngerTarget;
     }
 
     /**
      * Sets the target to be angry at.
      *
-     * @param target The target's {@link UUID}.
+     * @param target The target reference.
      */
     @Override
-    public void setPersistentAngerTarget(@Nullable UUID target) {
+    public void setPersistentAngerTarget(@Nullable EntityReference<LivingEntity> target) {
         this.persistentAngerTarget = target;
     }
 

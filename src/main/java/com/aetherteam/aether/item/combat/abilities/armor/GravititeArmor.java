@@ -7,7 +7,6 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 public interface GravititeArmor {
     /**
@@ -21,7 +20,7 @@ public interface GravititeArmor {
     static void boostedJump(LivingEntity entity) {
         if (EquipmentUtil.hasFullGravititeSet(entity)) {
             if (entity instanceof Player player) {
-                if (player.onGround() && player.getData(AetherDataAttachments.AETHER_PLAYER).isGravititeJumpActive()) {
+                if (player.onGround() && player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isGravititeJumpActive()) {
                     player.push(0.0, 1.0, 0.0);
                     if (player instanceof ServerPlayer serverPlayer) {
                         serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(serverPlayer));

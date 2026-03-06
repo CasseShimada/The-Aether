@@ -7,9 +7,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -89,11 +89,11 @@ public class GlowstoneRuinedPortalStructure extends Structure {
             pieceProperties.overgrown = setup3.overgrown();
             pieceProperties.vines = setup3.vines();
             pieceProperties.replaceWithHolystone = setup3.replaceWithHolystone();
-            ResourceLocation location;
+            Identifier location;
             if (worldGenRandom.nextFloat() < 0.05F) {
-                location = ResourceLocation.fromNamespaceAndPath(Aether.MODID, STRUCTURE_LOCATION_GIANT_PORTALS[worldGenRandom.nextInt(STRUCTURE_LOCATION_GIANT_PORTALS.length)]);
+                location = Identifier.fromNamespaceAndPath(Aether.MODID, STRUCTURE_LOCATION_GIANT_PORTALS[worldGenRandom.nextInt(STRUCTURE_LOCATION_GIANT_PORTALS.length)]);
             } else {
-                location = ResourceLocation.fromNamespaceAndPath(Aether.MODID, STRUCTURE_LOCATION_PORTALS[worldGenRandom.nextInt(STRUCTURE_LOCATION_PORTALS.length)]);
+                location = Identifier.fromNamespaceAndPath(Aether.MODID, STRUCTURE_LOCATION_PORTALS[worldGenRandom.nextInt(STRUCTURE_LOCATION_PORTALS.length)]);
             }
 
             StructureTemplate template = context.structureTemplateManager().getOrCreate(location);
@@ -131,7 +131,7 @@ public class GlowstoneRuinedPortalStructure extends Structure {
      * [CODE COPY] - {@link net.minecraft.world.level.levelgen.structure.structures.RuinedPortalStructure#findSuitableY(RandomSource, ChunkGenerator, RuinedPortalPiece.VerticalPlacement, boolean, int, int, BoundingBox, LevelHeightAccessor, RandomState)}.
      */
     private static int findSuitableY(RandomSource random, ChunkGenerator chunkGenerator, GlowstoneRuinedPortalPiece.VerticalPlacement verticalPlacement, int height, int blockCountY, BoundingBox box, LevelHeightAccessor heightAccessor, RandomState randomState) {
-        int j = heightAccessor.getMinBuildHeight() + 15;
+        int j = heightAccessor.getMinY() + 15;
         int i;
         if (verticalPlacement == GlowstoneRuinedPortalPiece.VerticalPlacement.PARTLY_BURIED) {
             i = height - blockCountY + Mth.randomBetweenInclusive(random, 2, 8);

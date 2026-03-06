@@ -3,8 +3,8 @@ package com.aetherteam.aether.effect;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Aether.MODID);

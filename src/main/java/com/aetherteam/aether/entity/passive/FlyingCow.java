@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -36,7 +37,7 @@ public class FlyingCow extends WingedAnimal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, Ingredient.of(AetherTags.Items.FLYING_COW_TEMPTATION_ITEMS), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, Ingredient.of(this.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(AetherTags.Items.FLYING_COW_TEMPTATION_ITEMS)), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
         this.goalSelector.addGoal(5, new FallingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -64,7 +65,7 @@ public class FlyingCow extends WingedAnimal {
             playerEntity.playSound(AetherSoundEvents.ENTITY_FLYING_COW_MILK.get(), 1.0F, 1.0F);
             ItemStack itemStack1 = ItemUtils.createFilledResult(itemStack, playerEntity, Items.MILK_BUCKET.getDefaultInstance());
             playerEntity.setItemInHand(hand, itemStack1);
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         } else {
             return super.mobInteract(playerEntity, hand);
         }
@@ -112,7 +113,7 @@ public class FlyingCow extends WingedAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
-        return AetherEntityTypes.FLYING_COW.get().create(level);
+        return AetherEntityTypes.FLYING_COW.get().create(level, EntitySpawnReason.BREEDING);
     }
 
     @Override

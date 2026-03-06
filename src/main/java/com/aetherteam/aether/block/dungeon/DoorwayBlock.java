@@ -156,7 +156,6 @@ public class DoorwayBlock extends Block {
      * @return The {@link PathType} corresponding to this block.
      */
     @Nullable
-    @Override
     public PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
         return PathType.BLOCKED;
     }

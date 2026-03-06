@@ -1,7 +1,6 @@
 package com.aetherteam.aether.entity.projectile.crystal;
 
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -10,9 +9,11 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
+import com.aetherteam.aether.event.hooks.EventHooks;
 
 import javax.annotation.Nullable;
 
@@ -50,7 +51,6 @@ public abstract class AbstractCrystal extends Projectile {
         if (result.getType() != HitResult.Type.MISS && !flag && !EventHooks.onProjectileImpact(this, result)) {
             this.onHit(result);
         }
-        this.checkInsideBlocks();
         this.tickMovement();
     }
 
@@ -122,16 +122,14 @@ public abstract class AbstractCrystal extends Projectile {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("TicksInAir", this.ticksInAir);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("TicksInAir", this.ticksInAir);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("TicksInAir")) {
-            this.ticksInAir = tag.getInt("TicksInAir");
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.ticksInAir = input.getIntOr("TicksInAir", this.ticksInAir);
     }
 }

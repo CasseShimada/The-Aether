@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "minecraft:note_block",
   "key": {
-    "P": {
-      "tag": "aether:planks_crafting"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "P": "#aether:planks_crafting",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "PPP",

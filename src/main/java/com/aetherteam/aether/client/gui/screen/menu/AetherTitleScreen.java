@@ -5,10 +5,9 @@ import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.client.gui.component.menu.AetherMenuButton;
 import com.aetherteam.aether.client.gui.screen.menu.logo.AetherLogoRenderer;
 import com.aetherteam.aether.client.gui.screen.menu.splash.AetherSplashRenderer;
+import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.TitleScreenAccessor;
-import com.aetherteam.cumulus.CumulusConfig;
-import com.aetherteam.cumulus.client.gui.screen.DynamicMenuButton;
-import com.aetherteam.cumulus.mixin.mixins.client.accessor.SplashRendererAccessor;
+import net.minecraft.core.Holder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -22,7 +21,6 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.Music;
-import net.neoforged.neoforge.internal.BrandingControl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +29,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavior, CustomBranding {
-    public static final Music MENU = new Music(AetherSoundEvents.MUSIC_MENU, 20, 600, true);
+    public static final Music MENU = new Music(Holder.direct(AetherSoundEvents.MUSIC_MENU.get()), 20, 600, true);
     private final boolean alignedLeft;
     private Map<Component, AbstractWidget> widgetsByName = new HashMap<>();
 
@@ -57,7 +55,7 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
         this.lastY = 0;
         super.init();
         if (this.minecraft != null) {
-            accessor.aether$setSplash(new AetherSplashRenderer(this.alignedLeft, ((SplashRendererAccessor) ((TitleScreenAccessor) this).aether$getSplash()).cumulus$getSplash()));
+            accessor.aether$setSplash(new AetherSplashRenderer(this.alignedLeft, ((SplashRendererAccessor) accessor.aether$getSplash()).aether$getSplash()));
         }
         this.setupButtons();
         this.widgetsByName = this.children().stream().filter(e -> e instanceof AbstractWidget).map(e -> (AbstractWidget) e)
@@ -75,11 +73,13 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
             }).bounds(this.width / 2 - 100, (this.height / 4 + 48) + 24 * 3, 200, 20).tooltip(tooltip).build());
             serverButton.active = flag;
             Predicate<AbstractWidget> predicate = (abstractWidget) -> (abstractWidget.getMessage().equals(Component.translatable("menu.multiplayer")) || abstractWidget.getMessage().equals(Component.translatable("menu.online")));
-            this.children().removeIf(button -> button instanceof AbstractWidget abstractWidget && predicate.test(abstractWidget));
-            this.renderables.removeIf(button -> button instanceof AbstractWidget abstractWidget && predicate.test(abstractWidget));
+            this.children().stream()
+                .filter(button -> button instanceof AbstractWidget abstractWidget && predicate.test(abstractWidget))
+                .toList()
+                .forEach(this::removeWidget);
         }
-        for (Renderable renderable : this.renderables) {
-            if (renderable instanceof AbstractWidget abstractWidget) {
+        for (GuiEventListener child : this.children()) {
+            if (child instanceof AbstractWidget abstractWidget) {
                 Component buttonText = abstractWidget.getMessage();
                 if (TitleScreenBehavior.isImageButton(buttonText)) {
                     abstractWidget.visible = false; // The visibility handling is necessary here to avoid a bug where the buttons will render in the center of the screen before they have a specified offset.
@@ -91,7 +91,7 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        int xOffset = CumulusConfig.CLIENT.enable_menu_api.get() && CumulusConfig.CLIENT.enable_menu_list_button.get() ? -62 : 0;
+        int xOffset = 0;
         for (GuiEventListener child : this.children()) {
             if (child instanceof AetherMenuButton aetherButton) { // Smoothly shifts the Aether-styled buttons to the right slightly when hovered over.
                 if (aetherButton.isMouseOver(mouseX, mouseY)) {
@@ -104,11 +104,6 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
                     }
                 }
             }
-            if (child instanceof DynamicMenuButton dynamicMenuButton) {  // Increases the x-offset to the left for image buttons if there are menu buttons on the screen.
-                if (dynamicMenuButton.enabled) {
-                    xOffset -= 24;
-                }
-            }
         }
         TitleScreenBehavior.super.handleImageButtons(this, xOffset);
         if (this.alignedLeft) {
@@ -118,26 +113,12 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
 
     @Override
     public boolean forEachLineBranding(boolean includeMC, boolean reverse, BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
-        if (this.alignedLeft) {
-            BrandingControl.forEachLine(true, true, (brandingLine, branding) ->
-                guiGraphics.drawString(font, branding, this.width - font.width(branding) - 1, this.height - (10 + (brandingLine + 1) * (font.lineHeight + 1)), 16777215 | i)
-            );
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean forEachAboveCopyrightLineBranding(BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
-        if (this.alignedLeft) {
-            BrandingControl.forEachAboveCopyrightLine((brandingLine, branding) ->
-                guiGraphics.drawString(font, branding, 1, this.height - (brandingLine + 1) * (font.lineHeight + 1), 16777215 | i)
-            );
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     /**

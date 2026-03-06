@@ -1,13 +1,12 @@
 package com.aetherteam.aether.client.renderer.accessory.model;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class PendantModel extends HumanoidModel<LivingEntity> {
+public class PendantModel extends HumanoidModel<HumanoidRenderState> {
     public PendantModel(ModelPart root) {
         super(root);
     }
@@ -21,12 +20,8 @@ public class PendantModel extends HumanoidModel<LivingEntity> {
     }
 
     @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(this.body);
+    public void setupAnim(HumanoidRenderState renderState) {
+        this.root().visible = false;
+        this.body.visible = true;
     }
 }

@@ -3,7 +3,6 @@ package com.aetherteam.aether.command;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.network.packet.clientbound.HealthResetPacket;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -13,23 +12,25 @@ import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import java.util.Collection;
 
 public class PlayerCapabilityCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("aether")
-                .then(Commands.literal("player").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                .then(Commands.literal("player").requires((commandSourceStack) -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
                         .then(Commands.literal("life_shards")
                                 .then(Commands.literal("set")
                                         .then(Commands.argument("targets", GameProfileArgument.gameProfile())
                                                 .suggests((context, builder) -> {
                                                     PlayerList playerlist = context.getSource().getServer().getPlayerList();
-                                                    return SharedSuggestionProvider.suggest(playerlist.getPlayers().stream().map((player) -> player.getGameProfile().getName()), builder);
+                                                    return SharedSuggestionProvider.suggest(playerlist.getPlayers().stream().map((player) -> player.getGameProfile().name()), builder);
                                                 }).then(Commands.argument("value", IntegerArgumentType.integer(0, 10)).executes((context) -> setLifeShards(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), IntegerArgumentType.getInteger(context, "value"))))
                                         )
                                 )
@@ -42,17 +43,17 @@ public class PlayerCapabilityCommand {
      * Sets the Life Shard (half) heart count of a list of players to a specific value.
      *
      * @param source       The {@link CommandSourceStack}.
-     * @param gameProfiles A {@link Collection} of {@link GameProfile}s to execute the command on.
+     * @param gameProfiles A {@link Collection} of {@link NameAndId} entries to execute the command on.
      * @param value        The {@link Integer} value for the amount of Life Shard hearts.
      * @return An {@link Integer}.
      */
-    private static int setLifeShards(CommandSourceStack source, Collection<GameProfile> gameProfiles, int value) {
+    private static int setLifeShards(CommandSourceStack source, Collection<NameAndId> gameProfiles, int value) {
         ServerLevel level = source.getLevel();
         PlayerList playerList = source.getServer().getPlayerList();
-        for (GameProfile gameProfile : gameProfiles) {
-            ServerPlayer player = playerList.getPlayer(gameProfile.getId());
+        for (NameAndId gameProfile : gameProfiles) {
+            ServerPlayer player = playerList.getPlayer(gameProfile.id());
             if (player != null) {
-                var data = player.getData(AetherDataAttachments.AETHER_PLAYER);
+                var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                 data.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setLifeShardCount", value);
                 AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
                 if (attribute != null) {

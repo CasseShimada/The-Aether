@@ -11,12 +11,8 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 
 import java.util.Optional;
 
@@ -31,8 +27,8 @@ public class AudioHooks {
             Holder<SoundEvent> soundEvent = getSoundEvent(sound);
             if (sound.getSource() == SoundSource.MUSIC && soundEvent != null && !soundEvent.is(AetherTags.SoundEvents.ACHIEVEMENT_SOUNDS)) {
                 // Check whether there is Aether music and the sound that attempts to play does not match it.
-                return AetherMusicManager.getSituationalMusic() != null && !sound.getLocation().equals(SimpleSoundInstance.forMusic(AetherMusicManager.getSituationalMusic().getEvent().value()).getLocation())
-                        || (AetherMusicManager.getCurrentMusic() != null && !sound.getLocation().equals(AetherMusicManager.getCurrentMusic().getLocation()));
+                return AetherMusicManager.getSituationalMusic() != null && !sound.getIdentifier().equals(SimpleSoundInstance.forMusic(AetherMusicManager.getSituationalMusic().sound().value()).getIdentifier())
+                        || (AetherMusicManager.getCurrentMusic() != null && !sound.getIdentifier().equals(AetherMusicManager.getCurrentMusic().getIdentifier()));
             }
         }
         return false;
@@ -78,14 +74,8 @@ public class AudioHooks {
     }
 
     private static Holder<SoundEvent> getSoundEvent(SoundInstance sound) {
-        SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.get(sound.getLocation());
-        if (soundEvent != null) {
-            Optional<ResourceKey<SoundEvent>> optionalResourceKey = BuiltInRegistries.SOUND_EVENT.getResourceKey(soundEvent);
-            if (optionalResourceKey.isPresent()) {
-                return BuiltInRegistries.SOUND_EVENT.getHolderOrThrow(optionalResourceKey.get());
-            }
-        }
-        return null;
+        Optional<Holder.Reference<SoundEvent>> soundEvent = BuiltInRegistries.SOUND_EVENT.get(sound.getIdentifier());
+        return soundEvent.map(reference -> (Holder<SoundEvent>) reference).orElse(null);
     }
 
     /**

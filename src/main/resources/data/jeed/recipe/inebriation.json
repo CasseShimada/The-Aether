@@ -10,14 +10,8 @@
   "type": "jeed:effect_provider",
   "effect": "aether:inebriation",
   "providers": [
-    {
-      "item": "aether:poison_dart"
-    },
-    {
-      "item": "aether:poison_dart_shooter"
-    },
-    {
-      "item": "aether:skyroot_poison_bucket"
-    }
+    "aether:poison_dart",
+    "aether:poison_dart_shooter",
+    "aether:skyroot_poison_bucket"
   ]
 }

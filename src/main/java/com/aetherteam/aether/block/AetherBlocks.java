@@ -19,7 +19,6 @@ import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.mixin.mixins.common.accessor.FireBlockAccessor;
 import com.aetherteam.aether.world.treegrower.AetherTreeGrowers;
-import com.aetherteam.nitrogen.item.block.EntityBlockItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -300,15 +299,15 @@ public class AetherBlocks {
             } else if (block == SKYROOT_HANGING_SIGN) {
                 return new HangingSignItem(SKYROOT_HANGING_SIGN.get(), SKYROOT_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16));
             } else if (block == CHEST_MIMIC) {
-                return new EntityBlockItem(block.get(), ChestMimicBlockEntity::new, new Item.Properties());
+                return new BlockItem(block.get(), new Item.Properties());
             } else if (block == TREASURE_CHEST) {
-                return new EntityBlockItem(block.get(), TreasureChestBlockEntity::new, new Item.Properties());
+                return new BlockItem(block.get(), new Item.Properties());
             } else if (block == SKYROOT_DOOR) {
                 return new DoubleHighBlockItem(block.get(), new Item.Properties());
             } else if (block == SUN_ALTAR) {
                 return new BlockItem(block.get(), new Item.Properties().fireResistant());
             } else if (block == SKYROOT_BED) {
-                return new EntityBlockItem(block.get(), SkyrootBedBlockEntity::new, new Item.Properties().stacksTo(1));
+                return new BlockItem(block.get(), new Item.Properties().stacksTo(1));
             } else {
                 return new BlockItem(block.get(), new Item.Properties());
             }

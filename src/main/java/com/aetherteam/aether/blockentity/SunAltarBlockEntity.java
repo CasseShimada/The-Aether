@@ -3,17 +3,23 @@ package com.aetherteam.aether.blockentity;
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 
@@ -42,7 +48,7 @@ public class SunAltarBlockEntity extends BlockEntity implements Nameable {
     }
 
     @Override
-    protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
+    protected void applyImplicitComponents(DataComponentGetter componentInput) {
         super.applyImplicitComponents(componentInput);
         this.name = componentInput.get(DataComponents.CUSTOM_NAME);
     }
@@ -56,10 +62,10 @@ public class SunAltarBlockEntity extends BlockEntity implements Nameable {
     /**
      * Warning for "deprecation" is suppressed because the method is fine to override.
      */
-    @SuppressWarnings("deprecation")
     @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        tag.remove("CustomName");
+    public void removeComponentsFromTag(ValueOutput output) {
+        super.removeComponentsFromTag(output);
+        output.discard("CustomName");
     }
 
     @Override
@@ -67,25 +73,22 @@ public class SunAltarBlockEntity extends BlockEntity implements Nameable {
         return this.saveWithoutMetadata(lookupProvider);
     }
 
-    @Override
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        this.loadAdditional(tag, lookupProvider);
+        this.loadAdditional(TagValueInput.create(ProblemReporter.DISCARDING, lookupProvider, tag));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        super.saveAdditional(tag, lookupProvider);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         if (this.hasCustomName()) {
-            tag.putString("CustomName", Component.Serializer.toJson(this.name, lookupProvider));
+            output.store("CustomName", ComponentSerialization.CODEC, this.name);
         }
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        super.loadAdditional(tag, lookupProvider);
-        if (tag.contains("CustomName", 8)) {
-            this.name = Component.Serializer.fromJson(tag.getString("CustomName"), lookupProvider);
-        }
+    public void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.name = input.read("CustomName", ComponentSerialization.CODEC).orElse(null);
     }
 
     @Override
@@ -93,9 +96,10 @@ public class SunAltarBlockEntity extends BlockEntity implements Nameable {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
     public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
         CompoundTag compound = packet.getTag();
-        this.handleUpdateTag(compound, lookupProvider);
+        if (compound != null) {
+            this.handleUpdateTag(compound, lookupProvider);
+        }
     }
 }

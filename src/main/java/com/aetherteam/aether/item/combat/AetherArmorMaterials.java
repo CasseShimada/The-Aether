@@ -1,63 +1,106 @@
 package com.aetherteam.aether.item.combat;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.client.AetherSoundEvents;
-import net.minecraft.Util;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 
 import java.util.EnumMap;
-import java.util.List;
+import java.util.Map;
 
 public class AetherArmorMaterials {
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = net.neoforged.neoforge.registries.DeferredRegister.create(Registries.ARMOR_MATERIAL, Aether.MODID);
+    public static final Holder<ArmorMaterial> ZANITE = Holder.direct(create(
+            15,
+            defense(2, 6, 5, 2),
+            9,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_ZANITE.get()),
+            0.0F,
+            0.0F,
+            AetherTags.Items.ZANITE_REPAIRING,
+            EquipmentAssets.createId("zanite")
+    ));
 
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> ZANITE = ARMOR_MATERIALS.register("zanite", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 2);
-        map.put(ArmorItem.Type.LEGGINGS, 5);
-        map.put(ArmorItem.Type.CHESTPLATE, 6);
-        map.put(ArmorItem.Type.HELMET, 2);
-    }), 9, AetherSoundEvents.ITEM_ARMOR_EQUIP_ZANITE, () -> Ingredient.of(AetherTags.Items.ZANITE_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "zanite"))), 0.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> GRAVITITE = ARMOR_MATERIALS.register("gravitite", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 3);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 8);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 10, AetherSoundEvents.ITEM_ARMOR_EQUIP_GRAVITITE, () -> Ingredient.of(AetherTags.Items.GRAVITITE_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gravitite"))), 2.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> NEPTUNE = ARMOR_MATERIALS.register("neptune", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 2);
-        map.put(ArmorItem.Type.LEGGINGS, 5);
-        map.put(ArmorItem.Type.CHESTPLATE, 6);
-        map.put(ArmorItem.Type.HELMET, 2);
-    }), 10, AetherSoundEvents.ITEM_ARMOR_EQUIP_NEPTUNE, () -> Ingredient.of(AetherTags.Items.NEPTUNE_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "neptune"))), 1.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> VALKYRIE = ARMOR_MATERIALS.register("valkyrie", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 3);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 8);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 10, AetherSoundEvents.ITEM_ARMOR_EQUIP_VALKYRIE, () -> Ingredient.of(AetherTags.Items.VALKYRIE_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "valkyrie"))), 2.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> PHOENIX = ARMOR_MATERIALS.register("phoenix", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 3);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 8);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 10, AetherSoundEvents.ITEM_ARMOR_EQUIP_PHOENIX, () -> Ingredient.of(AetherTags.Items.PHOENIX_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "phoenix"))), 2.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> OBSIDIAN = ARMOR_MATERIALS.register("obsidian", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 3);
-        map.put(ArmorItem.Type.LEGGINGS, 6);
-        map.put(ArmorItem.Type.CHESTPLATE, 8);
-        map.put(ArmorItem.Type.HELMET, 3);
-    }), 15, AetherSoundEvents.ITEM_ARMOR_EQUIP_OBSIDIAN, () -> Ingredient.of(AetherTags.Items.OBSIDIAN_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "obsidian"))), 3.0F, 0.0F));
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SENTRY = ARMOR_MATERIALS.register("sentry", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(ArmorItem.Type.BOOTS, 2);
-        map.put(ArmorItem.Type.LEGGINGS, 5);
-        map.put(ArmorItem.Type.CHESTPLATE, 6);
-        map.put(ArmorItem.Type.HELMET, 2);
-    }), 9, AetherSoundEvents.ITEM_ARMOR_EQUIP_SENTRY, () -> Ingredient.of(AetherTags.Items.SENTRY_REPAIRING), List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "sentry"))), 0.0F, 0.0F));
+    public static final Holder<ArmorMaterial> GRAVITITE = Holder.direct(create(
+            33,
+            defense(3, 8, 6, 3),
+            10,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_GRAVITITE.get()),
+            2.0F,
+            0.0F,
+            AetherTags.Items.GRAVITITE_REPAIRING,
+            EquipmentAssets.createId("gravitite")
+    ));
+
+    public static final Holder<ArmorMaterial> NEPTUNE = Holder.direct(create(
+            15,
+            defense(2, 6, 5, 2),
+            10,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_NEPTUNE.get()),
+            1.0F,
+            0.0F,
+            AetherTags.Items.NEPTUNE_REPAIRING,
+            EquipmentAssets.createId("neptune")
+    ));
+
+    public static final Holder<ArmorMaterial> VALKYRIE = Holder.direct(create(
+            33,
+            defense(3, 8, 6, 3),
+            10,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_VALKYRIE.get()),
+            2.0F,
+            0.0F,
+            AetherTags.Items.VALKYRIE_REPAIRING,
+            EquipmentAssets.createId("valkyrie")
+    ));
+
+    public static final Holder<ArmorMaterial> PHOENIX = Holder.direct(create(
+            33,
+            defense(3, 8, 6, 3),
+            10,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_PHOENIX.get()),
+            2.0F,
+            0.0F,
+            AetherTags.Items.PHOENIX_REPAIRING,
+            EquipmentAssets.createId("phoenix")
+    ));
+
+    public static final Holder<ArmorMaterial> OBSIDIAN = Holder.direct(create(
+            37,
+            defense(3, 8, 6, 3),
+            15,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_OBSIDIAN.get()),
+            3.0F,
+            0.0F,
+            AetherTags.Items.OBSIDIAN_REPAIRING,
+            EquipmentAssets.createId("obsidian")
+    ));
+
+    public static final Holder<ArmorMaterial> SENTRY = Holder.direct(create(
+            15,
+            defense(2, 6, 5, 2),
+            9,
+            Holder.direct(AetherSoundEvents.ITEM_ARMOR_EQUIP_SENTRY.get()),
+            0.0F,
+            0.0F,
+            AetherTags.Items.SENTRY_REPAIRING,
+            EquipmentAssets.createId("sentry")
+    ));
+
+    private static ArmorMaterial create(int durability, Map<ArmorType, Integer> defense, int enchantability, Holder<net.minecraft.sounds.SoundEvent> equipSound, float toughness, float knockbackResistance, net.minecraft.tags.TagKey<Item> repairTag, ResourceKey<EquipmentAsset> assetId) {
+        return new ArmorMaterial(durability, defense, enchantability, equipSound, toughness, knockbackResistance, repairTag, assetId);
+    }
+
+    private static Map<ArmorType, Integer> defense(int boots, int chestplate, int leggings, int helmet) {
+        EnumMap<ArmorType, Integer> map = new EnumMap<>(ArmorType.class);
+        map.put(ArmorType.BOOTS, boots);
+        map.put(ArmorType.LEGGINGS, leggings);
+        map.put(ArmorType.CHESTPLATE, chestplate);
+        map.put(ArmorType.HELMET, helmet);
+        return map;
+    }
 }

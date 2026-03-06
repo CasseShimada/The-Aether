@@ -4,6 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -11,21 +12,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 public class FlamingSwordItem extends SwordItem {
     public FlamingSwordItem() {
-        super(AetherItemTiers.FLAMING, new Item.Properties().rarity(AetherItems.AETHER_LOOT).attributes(SwordItem.createAttributes(AetherItemTiers.FLAMING, 3.0F, -2.4F)));
+        super(AetherItemTiers.FLAMING, SwordItem.createAttributes(AetherItemTiers.FLAMING, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
     }
 
-    /**
-     * @see Aether#eventSetup(IEventBus) 
-     * @see FlamingSwordItem#handleFlamingSwordAbility(LivingEntity, DamageSource)
-     */
-    public static void onLivingDamage(LivingDamageEvent.Post event) {
-        LivingEntity target = event.getEntity();
-        DamageSource damageSource = event.getSource();
+    public static void onLivingDamage(LivingEntity target, DamageSource damageSource) {
         handleFlamingSwordAbility(target, damageSource);
     }
 
@@ -41,7 +34,7 @@ public class FlamingSwordItem extends SwordItem {
                 ItemStack heldStack = attacker.getMainHandItem();
                 if (heldStack.is(AetherItems.FLAMING_SWORD.get())) {
                     int defaultTime = 30;
-                    int fireAspectModifier = EnchantmentHelper.getEnchantmentLevel(attacker.level().holderOrThrow(Enchantments.FIRE_ASPECT), attacker);
+                    int fireAspectModifier = EnchantmentHelper.getEnchantmentLevel(attacker.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FIRE_ASPECT), attacker);
                     if (fireAspectModifier > 0) {
                         defaultTime += (fireAspectModifier * 4);
                     }

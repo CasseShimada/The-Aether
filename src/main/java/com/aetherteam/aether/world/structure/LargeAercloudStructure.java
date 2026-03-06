@@ -46,7 +46,7 @@ public class LargeAercloudStructure extends Structure {
 
         WorldgenRandom random = context.random();
         boolean direction = random.nextBoolean();
-        int initialY = context.heightAccessor().getMinBuildHeight() + context.random().nextInt(rangeY);
+        int initialY = context.heightAccessor().getMinY() + context.random().nextInt(rangeY);
         int x = context.chunkPos().getMinBlockX();
         int y = initialY;
         int z = context.chunkPos().getMinBlockZ();

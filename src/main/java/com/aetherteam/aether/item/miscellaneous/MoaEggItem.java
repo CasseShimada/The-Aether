@@ -12,9 +12,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
@@ -74,7 +73,7 @@ public class MoaEggItem extends Item {
                         BaseSpawnerAccessor baseSpawnerAccessor = (BaseSpawnerAccessor) spawnerBlockEntity.getSpawner();
                         EntityType<Moa> entityType = AetherEntityTypes.MOA.get();
                         spawnerBlockEntity.setEntityId(entityType, level.getRandom());
-                        baseSpawnerAccessor.aether$getNextSpawnData().getEntityToSpawn().putString("MoaType", this.getMoaType().location().toString());
+                        baseSpawnerAccessor.aether$getNextSpawnData().getEntityToSpawn().putString("MoaType", this.getMoaType().identifier().toString());
                         baseSpawnerAccessor.aether$getNextSpawnData().getEntityToSpawn().putBoolean("PlayerGrown", true); // Moas spawned from a Mob Spawner as set by a Moa Egg will always be tamed.
                         blockEntity.setChanged();
                         level.sendBlockUpdated(blockPos, blockState, blockState, 3);
@@ -90,7 +89,7 @@ public class MoaEggItem extends Item {
                     relativePos = blockPos.relative(direction);
                 }
 
-                if (AetherEntityTypes.MOA.get().spawn(serverLevel, this.getStackWithTags(serverLevel, itemStack, player, false, this.getMoaType(), false, true), relativePos, MobSpawnType.SPAWN_EGG, true, !Objects.equals(blockPos, relativePos) && direction == Direction.UP) != null) {
+                if (AetherEntityTypes.MOA.get().spawn(serverLevel, this.getStackWithTags(serverLevel, itemStack, player, false, this.getMoaType(), false, true), relativePos, EntitySpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, relativePos) && direction == Direction.UP) != null) {
                     level.gameEvent(player, GameEvent.ENTITY_PLACE, blockPos);
                 }
                 return InteractionResult.CONSUME;
@@ -109,32 +108,32 @@ public class MoaEggItem extends Item {
      * @param hand   The {@link InteractionHand} in which the item is being used.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         if (player.isCreative()) {
             BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
             if (hitResult.getType() != HitResult.Type.BLOCK) {
-                return InteractionResultHolder.pass(heldStack);
+                return InteractionResult.PASS;
             } else if (!(level instanceof ServerLevel serverLevel)) {
-                return InteractionResultHolder.fail(heldStack);
+                return InteractionResult.FAIL;
             } else {
                 BlockPos blockpos = hitResult.getBlockPos();
                 if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
-                    return InteractionResultHolder.pass(heldStack);
+                    return InteractionResult.PASS;
                 } else if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos, hitResult.getDirection(), heldStack)) {
-                    if (AetherEntityTypes.MOA.get().spawn(serverLevel, this.getStackWithTags(serverLevel, heldStack, player, false, this.getMoaType(), false, true), blockpos, MobSpawnType.SPAWN_EGG, false, false) == null) {
-                        return InteractionResultHolder.pass(heldStack);
+                    if (AetherEntityTypes.MOA.get().spawn(serverLevel, this.getStackWithTags(serverLevel, heldStack, player, false, this.getMoaType(), false, true), blockpos, EntitySpawnReason.SPAWN_ITEM_USE, false, false) == null) {
+                        return InteractionResult.PASS;
                     } else {
                         player.awardStat(Stats.ITEM_USED.get(this));
                         level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
-                        return InteractionResultHolder.consume(heldStack);
+                        return InteractionResult.CONSUME;
                     }
                 } else {
-                    return InteractionResultHolder.fail(heldStack);
+                    return InteractionResult.FAIL;
                 }
             }
         } else {
-            return InteractionResultHolder.fail(heldStack);
+            return InteractionResult.FAIL;
         }
     }
 
@@ -158,7 +157,7 @@ public class MoaEggItem extends Item {
         }, serverLevel, itemStack, player);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public int getColor() {
         return this.color;
     }

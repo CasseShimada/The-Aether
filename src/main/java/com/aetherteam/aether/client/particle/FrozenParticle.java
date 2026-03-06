@@ -1,13 +1,15 @@
 package com.aetherteam.aether.client.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-public class FrozenParticle extends TextureSheetParticle {
+public class FrozenParticle extends SingleQuadParticle {
     private final SpriteSet animatedSprite;
     private final float snowDigParticleScale;
 
@@ -16,7 +18,7 @@ public class FrozenParticle extends TextureSheetParticle {
     }
 
     public FrozenParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprite) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, sprite.get(level.random));
         this.xd *= 0.1;
         this.yd *= 0.1;
         this.zd *= 0.1;
@@ -36,11 +38,10 @@ public class FrozenParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        float f = ((float) this.age + partialTicks) / (float) this.age * 32.0F;
+    public float getQuadSize(float partialTicks) {
+        float f = ((float) this.age + partialTicks) / (float) this.lifetime * 32.0F;
         f = Mth.clamp(f, 0.0F, 1.0F);
-        this.quadSize = this.snowDigParticleScale * f;
-        super.render(buffer, renderInfo, partialTicks);
+        return this.snowDigParticleScale * f;
     }
 
     @Override
@@ -68,16 +69,14 @@ public class FrozenParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     public record Factory(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            FrozenParticle particle = new FrozenParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet());
-            particle.pickSprite(this.spriteSet());
-            return particle;
+        public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
+            return new FrozenParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet());
         }
     }
 }

@@ -3,7 +3,7 @@ package com.aetherteam.aether.world.processor;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -40,7 +40,7 @@ public class HolystoneReplaceProcessor extends StructureProcessor {
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos otherPos, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos otherPos, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
         Block block = this.replacements.get(relativeBlockInfo.state().getBlock());
         if (block == null) {
             return relativeBlockInfo;

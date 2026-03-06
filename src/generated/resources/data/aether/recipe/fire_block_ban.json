@@ -1,9 +1,7 @@
 {
   "type": "aether:block_placement_ban",
   "biome": "#aether:ultracold",
-  "bypass": {
-    "tag": "aether:allowed_flammables"
-  },
+  "bypass": "#aether:allowed_flammables",
   "ingredient": {
     "block": "minecraft:fire"
   }

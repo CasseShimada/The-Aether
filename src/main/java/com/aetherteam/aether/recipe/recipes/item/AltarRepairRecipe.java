@@ -10,6 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,8 +21,12 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
     public final Ingredient ingredient;
 
     public AltarRepairRecipe(String group, Ingredient ingredient, int repairTime) {
-        super(AetherRecipeTypes.ENCHANTING.get(), group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, ingredient.getItems()[0], 0.0F, repairTime);
+        super(AetherRecipeTypes.ENCHANTING.get(), group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, firstIngredientItem(ingredient), 0.0F, repairTime);
         this.ingredient = ingredient;
+    }
+
+    private static ItemStack firstIngredientItem(Ingredient ingredient) {
+        return ingredient.items().findFirst().map((holder) -> new ItemStack(holder.value())).orElse(ItemStack.EMPTY);
     }
 
     /**
@@ -30,32 +35,31 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
      */
     @Override
     public ItemStack assemble(SingleRecipeInput inventory, HolderLookup.Provider provider) {
-        return this.ingredient.getItems()[0];
+        return firstIngredientItem(this.ingredient);
     }
 
     /**
      * @return The original {@link ItemStack} ingredient for Recipe Book display, because repairing always outputs the same item as the input.
      */
-    @Override
     public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return this.ingredient.getItems()[0];
+        return firstIngredientItem(this.ingredient);
     }
 
     @Override
-    public ItemStack getToastSymbol() {
-        return new ItemStack(AetherBlocks.ALTAR.get());
+    protected Item furnaceIcon() {
+        return AetherBlocks.ALTAR.get().asItem();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<AltarRepairRecipe> getSerializer() {
         return AetherRecipeSerializers.REPAIRING.get();
     }
 
     public static class Serializer implements RecipeSerializer<AltarRepairRecipe> {
         private static final MapCodec<AltarRepairRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-                Codec.STRING.optionalFieldOf("group", "").forGetter(AbstractCookingRecipe::getGroup),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((recipe) -> recipe.ingredient),
-                Codec.INT.fieldOf("repairTime").orElse(500).forGetter((recipe) -> recipe.cookingTime)
+                Codec.STRING.optionalFieldOf("group", "").forGetter(AbstractCookingRecipe::group),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter((recipe) -> recipe.ingredient),
+                Codec.INT.fieldOf("repairTime").orElse(500).forGetter(AbstractCookingRecipe::cookingTime)
         ).apply(instance, AltarRepairRecipe::new));
 
         @Override
@@ -76,9 +80,9 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
         }
 
         public void toNetwork(RegistryFriendlyByteBuf buffer, AltarRepairRecipe recipe) {
-            buffer.writeUtf(recipe.group);
+            buffer.writeUtf(recipe.group());
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-            buffer.writeVarInt(recipe.cookingTime);
+            buffer.writeVarInt(recipe.cookingTime());
         }
     }
 }

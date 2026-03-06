@@ -33,7 +33,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-public class Aerwhale extends FlyingMob {
+public class Aerwhale extends PathfinderMob {
     private static final EntityDataAccessor<Float> DATA_X_ROT_O_ID = SynchedEntityData.defineId(Aerwhale.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_X_ROT_ID = SynchedEntityData.defineId(Aerwhale.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_Y_ROT_ID = SynchedEntityData.defineId(Aerwhale.class, EntityDataSerializers.FLOAT);
@@ -50,7 +50,7 @@ public class Aerwhale extends FlyingMob {
     }
 
     public static AttributeSupplier.Builder createMobAttributes() {
-        return FlyingMob.createMobAttributes()
+        return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.FLYING_SPEED, 0.2)
                 .add(Attributes.STEP_HEIGHT, 0.4);
@@ -65,22 +65,22 @@ public class Aerwhale extends FlyingMob {
     }
 
     /**
-     * Aerwhales can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, MobSpawnType, BlockPos, RandomSource)} is true, if they aren't spawning in fluid,
+     * Aerwhales can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, EntitySpawnReason, BlockPos, RandomSource)} is true, if they aren't spawning in fluid,
      * if they are spawning at a light level above 8, if they are spawning in view of the sky, and they spawn with a random chance of 1/40.
      *
      * @param aerwhale The {@link Aerwhale} {@link EntityType}.
      * @param level    The {@link LevelAccessor}.
-     * @param reason   The {@link MobSpawnType} reason.
+     * @param reason   The {@link EntitySpawnReason} reason.
      * @param pos      The spawn {@link BlockPos}.
      * @param random   The {@link RandomSource}.
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
-    public static boolean checkAerwhaleSpawnRules(EntityType<? extends Aerwhale> aerwhale, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean checkAerwhaleSpawnRules(EntityType<? extends Aerwhale> aerwhale, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(aerwhale, level, reason, pos, random)
                 && level.getFluidState(pos).is(Fluids.EMPTY)
                 && level.getRawBrightness(pos, 0) > 8
                 && EntityUtil.wholeHitboxCanSeeSky(level, pos, 1)
-                && (reason != MobSpawnType.NATURAL || random.nextInt(40) == 0);
+                && (reason != EntitySpawnReason.NATURAL || random.nextInt(40) == 0);
     }
 
     /**
@@ -102,7 +102,7 @@ public class Aerwhale extends FlyingMob {
      */
     @Override
     public void travel(Vec3 vector) {
-        if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
+        if (this.isEffectiveAi() || this.isLocalInstanceAuthoritative()) {
             List<Entity> passengers = this.getPassengers();
             if (!passengers.isEmpty()) {
                 Entity entity = passengers.getFirst();
@@ -115,7 +115,7 @@ public class Aerwhale extends FlyingMob {
 
                     vector = new Vec3(player.xxa, 0.0, (player.zza <= 0.0F) ? player.zza * 0.25F : player.zza);
 
-                    if (player.getData(AetherDataAttachments.AETHER_PLAYER).isJumping()) {
+                    if (player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isJumping()) {
                         this.setDeltaMovement(new Vec3(0.0, 0.0, 0.0));
                     } else {
                         double d0 = Math.toRadians(this.getYRot());
@@ -139,7 +139,7 @@ public class Aerwhale extends FlyingMob {
                     if (f4 > 1.0F) {
                         f4 = 1.0F;
                     }
-                    this.walkAnimation.update(f4, 0.4F);
+                    this.walkAnimation.update(f4, 0.4F, 1.0F);
                 }
             } else {
                 super.travel(vector);
@@ -159,9 +159,9 @@ public class Aerwhale extends FlyingMob {
             player.startRiding(this);
             if (!this.level().isClientSide()) {
                 MutableComponent msg = Component.literal("Serenity is the queen of W(h)ales!!");
-                player.level().players().forEach(p -> p.sendSystemMessage(msg));
+                player.level().players().forEach(p -> p.displayClientMessage(msg, false));
             }
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         }
         return super.mobInteract(player, hand);
     }
@@ -245,7 +245,6 @@ public class Aerwhale extends FlyingMob {
     /**
      * [CODE COPY] - {@link Animal#getBaseExperienceReward()}.
      */
-    @Override
     public int getBaseExperienceReward() {
         return 1 + this.level().getRandom().nextInt(3);
     }
@@ -254,7 +253,6 @@ public class Aerwhale extends FlyingMob {
      * @return An expanded {@link AABB} for render culling, so that Aerwhales don't de-render
      * when their model is still in camera view while their bounding box isn't.
      */
-    @Override
     public AABB getBoundingBoxForCulling() {
         return this.getBoundingBox().inflate(3.0);
     }
@@ -329,7 +327,7 @@ public class Aerwhale extends FlyingMob {
             z += this.mob.getZ();
 
             // Make sure the mob doesn't fly out of the world.
-            y = Mth.clamp(y, this.mob.level().getMinBuildHeight(), this.mob.level().getMaxBuildHeight());
+            y = Mth.clamp(y, this.mob.level().getMinY(), this.mob.level().getMaxY());
 
             this.mob.getMoveControl().setWantedPosition(x, y, z, 1.0);
         }
@@ -383,17 +381,15 @@ public class Aerwhale extends FlyingMob {
             // [CODE COPY] - PathfinderMob#tickLeash()
             Entity entity = this.mob.getLeashHolder();
             if (entity != null && entity.level() == this.mob.level()) {
-                this.mob.restrictTo(entity.blockPosition(), 5);
                 float f = this.mob.distanceTo(entity);
                 if (f > 10.0F) {
-                    this.mob.dropLeash(true, true);
+                    this.mob.dropLeash();
                     this.mob.goalSelector.disableControlFlag(Goal.Flag.MOVE);
                 } else if (f > 6.0F) {
                     double d0 = (entity.getX() - this.mob.getX()) / (double) f;
                     double d1 = (entity.getY() - this.mob.getY()) / (double) f;
                     double d2 = (entity.getZ() - this.mob.getZ()) / (double) f;
                     this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(Math.copySign(d0 * d0 * 0.4, d0), Math.copySign(d1 * d1 * 0.4, d1), Math.copySign(d2 * d2 * 0.4, d2)));
-                    this.mob.checkSlowFallDistance();
                 } else if (this.mob.shouldStayCloseToLeashHolder()) {
                     this.mob.goalSelector.enableControlFlag(Goal.Flag.MOVE);
                     Vec3 vec3 = (new Vec3(entity.getX() - this.mob.getX(), entity.getY() - this.mob.getY(), entity.getZ() - this.mob.getZ())).normalize().scale(Math.max(f - 2.0F, 0.0F));

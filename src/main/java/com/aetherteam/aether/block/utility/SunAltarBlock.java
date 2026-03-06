@@ -12,6 +12,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,7 +22,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 public class SunAltarBlock extends BaseEntityBlock {
 
@@ -53,12 +55,13 @@ public class SunAltarBlock extends BaseEntityBlock {
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide()) {
-            if (AetherConfig.SERVER.sun_altar_whitelist.get() && !player.hasPermissions(4) && !SunAltarWhitelist.INSTANCE.isWhiteListed(player.getGameProfile())) { // Prevents non-operator or non-whitelisted players from using the Sun Altar on servers
+            boolean isOperator = player.permissions().hasPermission(Permissions.COMMANDS_OWNER);
+            if (AetherConfig.SERVER.sun_altar_whitelist.get() && !isOperator && !SunAltarWhitelist.INSTANCE.isWhiteListed(new NameAndId(player.getGameProfile()))) { // Prevents non-operator or non-whitelisted players from using the Sun Altar on servers
                 player.displayClientMessage(Component.translatable(Aether.MODID + ".sun_altar.no_permission"), true); // Player doesn't have permission to use the Sun Altar.
             } else {
                 if (this.canControlDimension(level)) {
-                    if (level.hasData(AetherDataAttachments.AETHER_TIME)) { // Checks if the level has the capability used for Aether time, which determines if the Sun Altar has control over the time of a dimension.
-                        if (!level.getData(AetherDataAttachments.AETHER_TIME).isEternalDay()) { // Checks if the time is locked into eternal day or not.
+                    if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) { // Checks if the level has the capability used for Aether time, which determines if the Sun Altar has control over the time of a dimension.
+                        if (!level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay()) { // Checks if the time is locked into eternal day or not.
                             this.openScreen(level, pos, player, AetherTimeAttachment.getTicksPerDay());
                         } else {
                             player.displayClientMessage(Component.translatable(Aether.MODID + ".sun_altar.in_control"), true); // Sun Spirit is still in control of the realm.
@@ -75,7 +78,7 @@ public class SunAltarBlock extends BaseEntityBlock {
     }
 
     private boolean canControlDimension(Level level) {
-        boolean defaultCheck = AetherConfig.SERVER.sun_altar_dimensions.get().contains(level.dimension().location().toString());
+        boolean defaultCheck = AetherConfig.SERVER.sun_altar_dimensions.get().contains(level.dimension().identifier().toString());
         if (AetherConfig.SERVER.sync_aether_time.get()) {
             return level.dimension() == Level.OVERWORLD || level.dimension() == AetherDimensions.AETHER_LEVEL || defaultCheck;
         } else {

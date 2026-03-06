@@ -19,7 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.tags.BlockTags;
@@ -45,7 +45,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
     private final VerticalPlacement verticalPlacement;
     private final Properties properties;
 
-    public GlowstoneRuinedPortalPiece(StructureTemplateManager structureTemplateManager, BlockPos templatePosition, VerticalPlacement verticalPlacement, Properties properties, ResourceLocation location, Rotation rotation, Mirror mirror, BlockPos pivotPos) {
+    public GlowstoneRuinedPortalPiece(StructureTemplateManager structureTemplateManager, BlockPos templatePosition, VerticalPlacement verticalPlacement, Properties properties, Identifier location, Rotation rotation, Mirror mirror, BlockPos pivotPos) {
         super(AetherStructurePieceTypes.RUINED_PORTAL.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(mirror, rotation, pivotPos, properties), templatePosition);
         this.verticalPlacement = verticalPlacement;
         this.properties = properties;
@@ -53,7 +53,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
 
     public GlowstoneRuinedPortalPiece(StructureTemplateManager structureTemplateManager, CompoundTag tag) {
         super(AetherStructurePieceTypes.RUINED_PORTAL.get(), tag, structureTemplateManager, (location) -> makeSettings(structureTemplateManager, tag, location));
-        this.verticalPlacement = VerticalPlacement.byName(tag.getString("VerticalPlacement"));
+        this.verticalPlacement = VerticalPlacement.byName(tag.getString("VerticalPlacement").orElse(VerticalPlacement.ON_LAND_SURFACE.getName()));
         this.properties = Properties.CODEC.codec().parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("Properties"))).getPartialOrThrow();
     }
 
@@ -74,12 +74,12 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
     }
 
     /**
-     * [CODE COPY] - {@link net.minecraft.world.level.levelgen.structure.structures.RuinedPortalPiece#makeSettings(StructureTemplateManager, CompoundTag, ResourceLocation)}.
+     * [CODE COPY] - {@link net.minecraft.world.level.levelgen.structure.structures.RuinedPortalPiece#makeSettings(StructureTemplateManager, CompoundTag, Identifier)}.
      */
-    private static StructurePlaceSettings makeSettings(StructureTemplateManager structureTemplateManager, CompoundTag tag, ResourceLocation location) {
+    private static StructurePlaceSettings makeSettings(StructureTemplateManager structureTemplateManager, CompoundTag tag, Identifier location) {
         StructureTemplate structuretemplate = structureTemplateManager.getOrCreate(location);
         BlockPos blockpos = new BlockPos(structuretemplate.getSize().getX() / 2, 0, structuretemplate.getSize().getZ() / 2);
-        return makeSettings(Mirror.valueOf(tag.getString("Mirror")), Rotation.valueOf(tag.getString("Rotation")), blockpos, Properties.CODEC.codec().parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("Properties"))).getPartialOrThrow());
+        return makeSettings(Mirror.valueOf(tag.getString("Mirror").orElse("NONE")), Rotation.valueOf(tag.getString("Rotation").orElse("NONE")), blockpos, Properties.CODEC.codec().parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("Properties"))).getPartialOrThrow());
     }
 
     /**

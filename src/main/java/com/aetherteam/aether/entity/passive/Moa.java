@@ -27,12 +27,12 @@ import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -58,26 +58,28 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class Moa extends MountableAnimal implements WingedBird {
-    private static final EntityDataAccessor<Optional<UUID>> DATA_MOA_UUID_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<String> DATA_MOA_UUID_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_MOA_TYPE_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Optional<UUID>> DATA_RIDER_UUID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Optional<UUID>> DATA_LAST_RIDER_UUID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<String> DATA_RIDER_UUID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> DATA_LAST_RIDER_UUID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_REMAINING_JUMPS_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_HUNGRY_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_AMOUNT_FED_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_PLAYER_GROWN_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_SITTING_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<UUID>> DATA_FOLLOWING_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final HashMap<ResourceLocation, ResourceLocation> ID_TEXTURE_MAP = new HashMap<>();
+    private static final EntityDataAccessor<String> DATA_FOLLOWING_ID = SynchedEntityData.defineId(Moa.class, EntityDataSerializers.STRING);
+    private static final HashMap<Identifier, Identifier> ID_TEXTURE_MAP = new HashMap<>();
 
     private float wingRotation;
     private float prevWingRotation;
@@ -110,8 +112,8 @@ public class Moa extends MountableAnimal implements WingedBird {
         this.goalSelector.addGoal(4, new FallingRandomStrollGoal(this, 0.35));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Swet.class, false, (livingEntity) -> this.getFollowing() == null && this.isPlayerGrown() && !this.isBaby() && livingEntity instanceof Swet swet && !swet.isFriendly()));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AechorPlant.class, false, (livingEntity) -> this.getFollowing() == null && this.isPlayerGrown() && !this.isBaby()));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Swet.class, false, (livingEntity, level) -> this.getFollowing() == null && this.isPlayerGrown() && !this.isBaby() && livingEntity instanceof Swet swet && !swet.isFriendly()));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AechorPlant.class, false, (livingEntity, level) -> this.getFollowing() == null && this.isPlayerGrown() && !this.isBaby()));
     }
 
     @Override
@@ -125,22 +127,22 @@ public class Moa extends MountableAnimal implements WingedBird {
                 .add(Attributes.MOVEMENT_SPEED, 1.0)
                 .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
-                .add(AetherAttributes.MOA_MAX_JUMPS, -1.0); //placeholder until the real value is initialized
+                .add(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AetherAttributes.MOA_MAX_JUMPS.get()), -1.0); //placeholder until the real value is initialized
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_MOA_UUID_ID, Optional.empty());
+        builder.define(DATA_MOA_UUID_ID, "");
         builder.define(DATA_MOA_TYPE_ID, "");
-        builder.define(DATA_RIDER_UUID, Optional.empty());
-        builder.define(DATA_LAST_RIDER_UUID, Optional.empty());
+        builder.define(DATA_RIDER_UUID, "");
+        builder.define(DATA_LAST_RIDER_UUID, "");
         builder.define(DATA_REMAINING_JUMPS_ID, 0);
         builder.define(DATA_HUNGRY_ID, false);
         builder.define(DATA_AMOUNT_FED_ID, 0);
         builder.define(DATA_PLAYER_GROWN_ID, false);
         builder.define(DATA_SITTING_ID, false);
-        builder.define(DATA_FOLLOWING_ID, Optional.empty());
+        builder.define(DATA_FOLLOWING_ID, "");
     }
 
     /**
@@ -148,12 +150,12 @@ public class Moa extends MountableAnimal implements WingedBird {
      *
      * @param level      The {@link ServerLevelAccessor} where the entity is spawned.
      * @param difficulty The {@link DifficultyInstance} of the game.
-     * @param reason     The {@link MobSpawnType} reason.
+     * @param reason     The {@link EntitySpawnReason} reason.
      * @param spawnData  The {@link SpawnGroupData}.
      * @return The {@link SpawnGroupData} to return.
      */
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         this.generateMoaUUID();
         if (spawnData == null) { // Disallow baby Moas from spawning in spawn groups.
             spawnData = new AgeableMob.AgeableMobGroupData(false);
@@ -205,7 +207,6 @@ public class Moa extends MountableAnimal implements WingedBird {
             double fallSpeed = Math.max(gravity.getValue() * -1.25, max); // Entity isn't allowed to fall too slowly from gravity.
             if (this.getDeltaMovement().y() < fallSpeed && !this.playerTriedToCrouch()) {
                 this.setDeltaMovement(this.getDeltaMovement().x(), fallSpeed, this.getDeltaMovement().z());
-                this.hasImpulse = true;
                 this.setEntityOnGround(false);
             }
         }
@@ -232,8 +233,8 @@ public class Moa extends MountableAnimal implements WingedBird {
                         if (eggLayEvent.getSound() != null) {
                             this.playSound(eggLayEvent.getSound(), eggLayEvent.getVolume(), eggLayEvent.getPitch());
                         }
-                        if (eggLayEvent.getItem() != null) {
-                            this.spawnAtLocation(eggLayEvent.getItem());
+                        if (eggLayEvent.getItem() != null && this.level() instanceof ServerLevel serverLevel) {
+                            this.spawnAtLocation(serverLevel, eggLayEvent.getItem());
                         }
                     }
                 }
@@ -279,7 +280,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setFlapCooldown(15);
             }
         }
-        this.checkSlowFallDistance(); // Resets the Moa's fall distance.
+        this.resetFallDistance(); // Resets the Moa's fall distance.
     }
 
     /**
@@ -295,10 +296,12 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setLastRider(player.getUUID());
             }
             if (!player.level().isClientSide()) {
-                player.getData(AetherDataAttachments.AETHER_PLAYER).setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setLastRiddenMoa", this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
-                Map<UUID, MoaData> userSkinsData = ServerPerkData.MOA_SKIN_INSTANCE.getServerPerkData(player.getServer());
-                if (userSkinsData.containsKey(this.getLastRider())) { // Tracks a Moa Skin as being tied to this Moa and this passenger.
-                    ServerPerkData.MOA_SKIN_INSTANCE.applyPerkWithVerification(player.getServer(), this.getLastRider(), new MoaData(this.getMoaUUID(), userSkinsData.get(this.getLastRider()).moaSkin()));
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setLastRiddenMoa", this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
+                if (player.level().getServer() != null) {
+                    Map<UUID, MoaData> userSkinsData = ServerPerkData.MOA_SKIN_INSTANCE.getServerPerkData(player.level().getServer());
+                    if (userSkinsData.containsKey(this.getLastRider())) { // Tracks a Moa Skin as being tied to this Moa and this passenger.
+                        ServerPerkData.MOA_SKIN_INSTANCE.applyPerkWithVerification(player.level().getServer(), this.getLastRider(), new MoaData(this.getMoaUUID(), userSkinsData.get(this.getLastRider()).moaSkin()));
+                    }
                 }
             }
         }
@@ -319,9 +322,9 @@ public class Moa extends MountableAnimal implements WingedBird {
                 LivingEntity entity = this.getControllingPassenger();
                 if (this.isVehicle() && this.isSaddled() && entity != null) {
                     EntityUtil.copyRotations(this, entity);
-                    if (this.isControlledByLocalInstance()) {
+                    if (this.isLocalInstanceAuthoritative()) {
                         this.travelWithInput(new Vec3(0, vector.y(), 0));
-                        this.lerpSteps = 0;
+                        this.getInterpolation().cancel();
                     } else {
                         this.calculateEntityAnimation(false);
                         this.setDeltaMovement(Vec3.ZERO);
@@ -368,11 +371,11 @@ public class Moa extends MountableAnimal implements WingedBird {
                     this.setFollowing(null);
                 }
             } else { // Sits a tamed Moa down when right-clicked with a Nature Staff.
-                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                itemStack.hurtAndBreak(1, player, hand);
                 this.setSitting(!this.isSitting());
                 this.spawnExplosionParticle();
             }
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         } else if (!this.level().isClientSide() && this.isPlayerGrown() && this.isBaby() && this.isHungry() && this.getAmountFed() < 3 && itemStack.is(AetherTags.Items.MOA_FOOD_ITEMS)) { // Feeds a hungry baby Moa.
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
@@ -395,7 +398,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 itemStack.shrink(1);
             }
             this.heal(5.0F);
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         } else {
             return super.mobInteract(player, hand);
         }
@@ -421,7 +424,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      */
     @Nullable
     public UUID getMoaUUID() {
-        return this.getEntityData().get(DATA_MOA_UUID_ID).orElse(null);
+        return parseUuid(this.getEntityData().get(DATA_MOA_UUID_ID));
     }
 
     /**
@@ -430,7 +433,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      * @param uuid THe {@link UUID}.
      */
     private void setMoaUUID(@Nullable UUID uuid) {
-        this.getEntityData().set(DATA_MOA_UUID_ID, Optional.ofNullable(uuid));
+        this.getEntityData().set(DATA_MOA_UUID_ID, uuid == null ? "" : uuid.toString());
     }
 
     /**
@@ -455,7 +458,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      * @param moaType The {@link MoaType} {@link ResourceKey}.
      */
     public void setMoaTypeByKey(ResourceKey<MoaType> moaType) {
-        this.getEntityData().set(DATA_MOA_TYPE_ID, moaType.location().toString());
+        this.getEntityData().set(DATA_MOA_TYPE_ID, moaType.identifier().toString());
     }
 
     /**
@@ -463,7 +466,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      */
     @Nullable
     public UUID getRider() {
-        return this.getEntityData().get(DATA_RIDER_UUID).orElse(null);
+        return parseUuid(this.getEntityData().get(DATA_RIDER_UUID));
     }
 
     /**
@@ -472,7 +475,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      * @param uuid The {@link UUID}.
      */
     public void setRider(@Nullable UUID uuid) {
-        this.getEntityData().set(DATA_RIDER_UUID, Optional.ofNullable(uuid));
+        this.getEntityData().set(DATA_RIDER_UUID, uuid == null ? "" : uuid.toString());
     }
 
     /**
@@ -480,7 +483,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      */
     @Nullable
     public UUID getLastRider() {
-        return this.getEntityData().get(DATA_LAST_RIDER_UUID).orElse(null);
+        return parseUuid(this.getEntityData().get(DATA_LAST_RIDER_UUID));
     }
 
     /**
@@ -489,7 +492,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      * @param uuid The {@link UUID}.
      */
     public void setLastRider(@Nullable UUID uuid) {
-        this.getEntityData().set(DATA_LAST_RIDER_UUID, Optional.ofNullable(uuid));
+        this.getEntityData().set(DATA_LAST_RIDER_UUID, uuid == null ? "" : uuid.toString());
     }
 
     /**
@@ -577,7 +580,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      */
     @Nullable
     public UUID getFollowing() {
-        return this.getEntityData().get(DATA_FOLLOWING_ID).orElse(null);
+        return parseUuid(this.getEntityData().get(DATA_FOLLOWING_ID));
     }
 
     /**
@@ -586,7 +589,19 @@ public class Moa extends MountableAnimal implements WingedBird {
      * @param uuid The {@link Boolean} value.
      */
     public void setFollowing(@Nullable UUID uuid) {
-        this.getEntityData().set(DATA_FOLLOWING_ID, Optional.ofNullable(uuid));
+        this.getEntityData().set(DATA_FOLLOWING_ID, uuid == null ? "" : uuid.toString());
+    }
+
+    @Nullable
+    private static UUID parseUuid(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            return UUID.fromString(value);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 
     /**
@@ -695,24 +710,24 @@ public class Moa extends MountableAnimal implements WingedBird {
 
     /**
      * @param attributeId The id of the {@link AttributeModifier}
-     * @param location The {@link ResourceLocation} of the jump texture overlay
+     * @param location The {@link Identifier} of the jump texture overlay
      * Used to override the feather texture on top of the screen while ridding a moa, when a specific attribute modifier's extra feathers are being rendered.
      */
-    public static void registerJumpOverlayTextureOverride(ResourceLocation attributeId, ResourceLocation location) {
+    public static void registerJumpOverlayTextureOverride(Identifier attributeId, Identifier location) {
         ID_TEXTURE_MAP.put(attributeId, location);
     }
 
-    public static void registerJumpOverlayTextureOverride(AttributeModifier attribute, ResourceLocation location) {
+    public static void registerJumpOverlayTextureOverride(AttributeModifier attribute, Identifier location) {
         registerJumpOverlayTextureOverride(attribute.id(), location);
     }
 
     /**
      * @param attributeId The id of the {@link AttributeModifier}
-     * @return The {@link ResourceLocation} of the jump texture overlay. Returns the default texture if no texture overlay textures has been registered.
+     * @return The {@link Identifier} of the jump texture overlay. Returns the default texture if no texture overlay textures has been registered.
      */
 
-    public ResourceLocation getOverlayTexture(ResourceLocation attributeId) {
-        ResourceLocation location = ID_TEXTURE_MAP.get(attributeId);
+    public Identifier getOverlayTexture(Identifier attributeId) {
+        Identifier location = ID_TEXTURE_MAP.get(attributeId);
         return location == null ? AetherOverlays.getDefaultJumpsTexture(this.getMoaType()) : location;
     }
 
@@ -746,7 +761,7 @@ public class Moa extends MountableAnimal implements WingedBird {
      * Changes the value of {@link AetherAttributes#MOA_MAX_JUMPS} with the default value of {@link MoaType#maxJumps()} if the attribute value isn't matching.
      */
     public int getMaxJumps() {
-        AttributeInstance attribute = this.getAttribute(AetherAttributes.MOA_MAX_JUMPS);
+        AttributeInstance attribute = this.getAttribute(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AetherAttributes.MOA_MAX_JUMPS.get()));
         int defaultValue = this.getMoaType() != null ? this.getMoaType().maxJumps() : 3;
 
         if(attribute != null) {
@@ -853,14 +868,6 @@ public class Moa extends MountableAnimal implements WingedBird {
     }
 
     /**
-     * @return The float for the Moa's hitbox scaling. Set to a flat value, as Moa hitbox scaling is handled by {@link Moa#getDimensions(Pose)}.
-     */
-    @Override
-    public float getScale() {
-        return 1.0F;
-    }
-
-    /**
      * Handles the hitbox size for Moas. The height is scaled down whether the Moa is sitting or is a baby.
      *
      * @param pose The {@link Pose} to get dimensions for.
@@ -912,69 +919,49 @@ public class Moa extends MountableAnimal implements WingedBird {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("MoaUUID")) {
-            this.setMoaUUID(tag.getUUID("MoaUUID"));
-        }
-        if (tag.contains("IsBaby")) {
-            this.setBaby(tag.getBoolean("IsBaby"));
-        }
-        ResourceKey<MoaType> moaTypeKey = AetherMoaTypes.getResourceKey(this.level().registryAccess(), tag.getString("MoaType"));
-        if (tag.contains("MoaType") && moaTypeKey != null) {
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setMoaUUID(parseUuid(input.getStringOr("MoaUUID", "")));
+        this.setBaby(input.getBooleanOr("IsBaby", this.isBaby()));
+        ResourceKey<MoaType> moaTypeKey = AetherMoaTypes.getResourceKey(this.level().registryAccess(), input.getStringOr("MoaType", ""));
+        if (moaTypeKey != null) {
             this.setMoaTypeByKey(moaTypeKey);
         } else {
             MoaType moaType = AetherMoaTypes.getWeightedChance(this.level().registryAccess(), this.getRandom());
             ResourceKey<MoaType> randomMoaTypeKey = AetherMoaTypes.getResourceKey(this.level().registryAccess(), moaType);
             this.setMoaTypeByKey(Objects.requireNonNullElse(randomMoaTypeKey, AetherMoaTypes.BLUE));
         }
-        if (tag.hasUUID("Rider")) {
-            this.setRider(tag.getUUID("Rider"));
-        }
-        if (tag.hasUUID("LastRider")) {
-            this.setLastRider(tag.getUUID("LastRider"));
-        }
-        if (tag.contains("RemainingJumps")) {
-            this.setRemainingJumps(tag.getInt("RemainingJumps"));
-        }
-        if (tag.contains("Hungry")) {
-            this.setHungry(tag.getBoolean("Hungry"));
-        }
-        if (tag.contains("AmountFed")) {
-            this.setAmountFed(tag.getInt("AmountFed"));
-        }
-        if (tag.contains("PlayerGrown")) {
-            this.setPlayerGrown(tag.getBoolean("PlayerGrown"));
-        }
-        if (tag.contains("Sitting")) {
-            this.setSitting(tag.getBoolean("Sitting"));
-        }
-        if (tag.contains("Following")) {
-            this.setFollowing(tag.getUUID("Following"));
-        }
+        this.setRider(parseUuid(input.getStringOr("Rider", "")));
+        this.setLastRider(parseUuid(input.getStringOr("LastRider", "")));
+        this.setRemainingJumps(input.getIntOr("RemainingJumps", this.getRemainingJumps()));
+        this.setHungry(input.getBooleanOr("Hungry", this.isHungry()));
+        this.setAmountFed(input.getIntOr("AmountFed", this.getAmountFed()));
+        this.setPlayerGrown(input.getBooleanOr("PlayerGrown", this.isPlayerGrown()));
+        this.setSitting(input.getBooleanOr("Sitting", this.isSitting()));
+        this.setFollowing(parseUuid(input.getStringOr("Following", "")));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
         if (this.getMoaUUID() != null) {
-            tag.putUUID("MoaUUID", this.getMoaUUID());
+            output.putString("MoaUUID", this.getMoaUUID().toString());
         }
-        tag.putBoolean("IsBaby", this.isBaby());
-        tag.putString("MoaType", Objects.requireNonNullElse(this.getMoaTypeKey(), AetherMoaTypes.BLUE).location().toString());
+        output.putBoolean("IsBaby", this.isBaby());
+        output.putString("MoaType", Objects.requireNonNullElse(this.getMoaTypeKey(), AetherMoaTypes.BLUE).identifier().toString());
         if (this.getRider() != null) {
-            tag.putUUID("Rider", this.getRider());
+            output.putString("Rider", this.getRider().toString());
         }
         if (this.getLastRider() != null) {
-            tag.putUUID("LastRider", this.getLastRider());
+            output.putString("LastRider", this.getLastRider().toString());
         }
-        tag.putInt("RemainingJumps", this.getRemainingJumps());
-        tag.putBoolean("Hungry", this.isHungry());
-        tag.putInt("AmountFed", this.getAmountFed());
-        tag.putBoolean("PlayerGrown", this.isPlayerGrown());
-        tag.putBoolean("Sitting", this.isSitting());
+        output.putInt("RemainingJumps", this.getRemainingJumps());
+        output.putBoolean("Hungry", this.isHungry());
+        output.putInt("AmountFed", this.getAmountFed());
+        output.putBoolean("PlayerGrown", this.isPlayerGrown());
+        output.putBoolean("Sitting", this.isSitting());
         if (this.getFollowing() != null) {
-            tag.putUUID("Following", this.getFollowing());
+            output.putString("Following", this.getFollowing().toString());
         }
     }
 }

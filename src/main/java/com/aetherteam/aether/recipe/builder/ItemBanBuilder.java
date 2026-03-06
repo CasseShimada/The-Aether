@@ -5,9 +5,10 @@ import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class ItemBanBuilder extends PlacementBanBuilder {
     }
 
     @Override
-    public void save(RecipeOutput output, ResourceLocation id) {
-        output.accept(id, new ItemBanRecipe(this.getBiome(), this.getBypassBlock(), this.ingredient), null);
+    public void save(RecipeOutput output, ResourceKey<Recipe<?>> recipeKey) {
+        output.accept(recipeKey, new ItemBanRecipe(this.getBiome(), this.getBypassBlock(), this.ingredient), null);
     }
 }

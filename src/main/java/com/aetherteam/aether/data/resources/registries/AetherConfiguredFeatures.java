@@ -21,10 +21,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.random.SimpleWeightedRandomList.Builder;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.random.WeightedList.Builder;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -73,7 +73,7 @@ public class AetherConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_DUNGEON_ISLAND_FOLIAGE_CONFIGURATION = createKey("gold_dungeon_island_foliage");
 
     private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Aether.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(Aether.MODID, name));
     }
 
     /**
@@ -106,26 +106,26 @@ public class AetherConfiguredFeatures {
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(AetherFeatureStates.SKYROOT_LOG),
                         new CrystalTreeTrunkPlacer(7, 0, 0),
-                        new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(AetherFeatureStates.CRYSTAL_LEAVES, 4).add(AetherFeatureStates.CRYSTAL_FRUIT_LEAVES, 1).build()),
+                        new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.CRYSTAL_LEAVES, 4).add(AetherFeatureStates.CRYSTAL_FRUIT_LEAVES, 1).build()),
                         new CrystalFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), ConstantInt.of(6)),
                         new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build());
         register(context, HOLIDAY_TREE_CONFIGURATION, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(AetherFeatureStates.SKYROOT_LOG),
                         new StraightTrunkPlacer(9, 0, 0),
-                        new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(AetherFeatureStates.HOLIDAY_LEAVES, 4).add(AetherFeatureStates.DECORATED_HOLIDAY_LEAVES, 1).build()),
+                        new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.HOLIDAY_LEAVES, 4).add(AetherFeatureStates.DECORATED_HOLIDAY_LEAVES, 1).build()),
                         new HolidayFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), ConstantInt.of(8)),
                         new TwoLayersFeatureSize(1, 0, 1)).ignoreVines()
-                        .decorators(ImmutableList.of(new HolidayTreeDecorator(new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
+                        .decorators(ImmutableList.of(new HolidayTreeDecorator(new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
                         .build());
         register(context, GRASS_PATCH_CONFIGURATION, Feature.RANDOM_PATCH, NitrogenConfiguredFeatureBuilders.grassPatch(BlockStateProvider.simple(Blocks.SHORT_GRASS), 32));
         register(context, TALL_GRASS_PATCH_CONFIGURATION, Feature.RANDOM_PATCH, NitrogenConfiguredFeatureBuilders.tallGrassPatch(BlockStateProvider.simple(Blocks.TALL_GRASS)));
         register(context, WHITE_FLOWER_PATCH_CONFIGURATION, Feature.FLOWER,
-                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(AetherFeatureStates.WHITE_FLOWER, 1)), 64));
+                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.WHITE_FLOWER, 1)), 64));
         register(context, PURPLE_FLOWER_PATCH_CONFIGURATION, Feature.FLOWER,
-                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(AetherFeatureStates.PURPLE_FLOWER, 1)), 64));
+                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.PURPLE_FLOWER, 1)), 64));
         register(context, BERRY_BUSH_PATCH_CONFIGURATION, Feature.RANDOM_PATCH,
-                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(AetherFeatureStates.BERRY_BUSH, 1)), 32));
+                NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.BERRY_BUSH, 1)), 32));
         register(context, QUICKSOIL_SHELF_CONFIGURATION, AetherFeatures.SHELF.get(),
                 new ShelfConfiguration(
                         BlockStateProvider.simple(AetherFeatureStates.QUICKSOIL),

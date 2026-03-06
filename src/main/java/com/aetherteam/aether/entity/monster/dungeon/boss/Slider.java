@@ -15,6 +15,7 @@ import com.aetherteam.nitrogen.entity.BossRoomTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -22,7 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,6 +31,7 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -48,11 +50,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -62,13 +64,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enemy, IEntityWithComplexSpawn {
+public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enemy {
     private static final EntityDataAccessor<Boolean> DATA_AWAKE_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Component> DATA_BOSS_NAME_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.COMPONENT);
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_X_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_Z_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
-    private static final Music SLIDER_MUSIC = new Music(AetherSoundEvents.MUSIC_BOSS_SLIDER, 0, 0, true);
+    private static final Music SLIDER_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SLIDER.get()), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
         Map.entry(AetherBlocks.LOCKED_CARVED_STONE.get(), (blockState) -> AetherBlocks.CARVED_STONE.get().defaultBlockState()),
         Map.entry(AetherBlocks.LOCKED_SENTRY_STONE.get(), (blockState) -> AetherBlocks.SENTRY_STONE.get().defaultBlockState()),
@@ -111,15 +113,15 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      *
      * @param level      The {@link ServerLevelAccessor} where the entity is spawned.
      * @param difficulty The {@link DifficultyInstance} of the game.
-     * @param reason     The {@link MobSpawnType} reason.
+     * @param reason     The {@link EntitySpawnReason} reason.
      * @param spawnData  The {@link SpawnGroupData}.
      * @return The {@link SpawnGroupData} to return.
      */
     @Override
     @SuppressWarnings("deprecation")
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         this.setBossName(BossNameGenerator.generateSliderName(this.getRandom()));
-        this.moveTo(Mth.floor(this.getX()), this.getY(), Mth.floor(this.getZ())); // Aligns the Slider with the blocks below it.
+        this.setPos(Mth.floor(this.getX()), this.getY(), Mth.floor(this.getZ())); // Aligns the Slider with the blocks below it.
         return spawnData;
     }
 
@@ -183,8 +185,8 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * Warning for "unchecked" is suppressed because the brain is always a Slider brain.
      */
     @Override
-    public void customServerAiStep() {
-        super.customServerAiStep();
+    public void customServerAiStep(ServerLevel level) {
+        super.customServerAiStep(level);
         this.bossFight.setProgress(this.getHealth() / this.getMaxHealth());
         this.trackDungeon();
         if (this.moveDelay > 0) {
@@ -203,16 +205,17 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * @return Whether the entity was hurt, as a {@link Boolean}.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         Optional<LivingEntity> damageResult = this.canDamageSlider(source);
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            super.hurt(source, amount);
-            if (!this.level().isClientSide() && source.getEntity() instanceof LivingEntity living) {
+            boolean hurt = super.hurtServer(level, source, amount);
+            if (hurt && source.getEntity() instanceof LivingEntity living) {
                 this.mostDamageTargetGoal.addAggro(living, amount); // AI goal for being hurt.
             }
+            return hurt;
         } else if (damageResult.isPresent()) {
             LivingEntity attacker = damageResult.get();
-            if (super.hurt(source, amount) && this.getHealth() > 0) {
+            if (super.hurtServer(level, source, amount) && this.getHealth() > 0) {
                 if (!this.isBossFight()) {
                     this.start();
                 }
@@ -236,7 +239,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                 }
                 this.setHurtAngle(0.7F - (this.getHealth() / 875.0F));
 
-                if (!this.level().isClientSide() && source.getEntity() instanceof LivingEntity living) {
+                if (source.getEntity() instanceof LivingEntity living) {
                     this.mostDamageTargetGoal.addAggro(living, amount); // AI goal for being hurt.
                 }
                 return true;
@@ -255,7 +258,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
         if (this.level().getDifficulty() != Difficulty.PEACEFUL) {
             if (source.getDirectEntity() instanceof LivingEntity attacker) {
                 if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
-                    if (attacker.getMainHandItem().canPerformAction(ItemAbilities.PICKAXE_DIG)
+                    if (attacker.getMainHandItem().is(ItemTags.PICKAXES)
                         || attacker.getMainHandItem().is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
                         || attacker.getMainHandItem().isCorrectToolForDrops(AetherBlocks.CARVED_STONE.get().defaultBlockState())) { // Check for correct tool.
                         return Optional.of(attacker);
@@ -295,7 +298,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                 if (AetherConfig.COMMON.reposition_slider_message.get()) {
                     player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), true); // Invalid tool.
                 } else {
-                    player.sendSystemMessage(Component.translatable("gui.aether.slider.message.attack.invalid")); // Invalid tool.
+                    player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), false); // Invalid tool.
                 }
                 this.setChatCooldown(15);
             }
@@ -603,21 +606,21 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     }
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar.
+     * @return The {@link Identifier} for this boss's health bar.
      */
     @Nullable
     @Override
-    public ResourceLocation getBossBarTexture() {
-        return ResourceLocation.fromNamespaceAndPath(Aether.MODID, "boss_bar/slider");
+    public Identifier getBossBarTexture() {
+        return Identifier.fromNamespaceAndPath(Aether.MODID, "boss_bar/slider");
     }
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar background.
+     * @return The {@link Identifier} for this boss's health bar background.
      */
     @Nullable
     @Override
-    public ResourceLocation getBossBarBackgroundTexture() {
-        return ResourceLocation.fromNamespaceAndPath(Aether.MODID, "boss_bar/slider_background");
+    public Identifier getBossBarBackgroundTexture() {
+        return Identifier.fromNamespaceAndPath(Aether.MODID, "boss_bar/slider_background");
     }
 
     /**
@@ -645,12 +648,14 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
         this.chatCooldown = cooldown;
     }
 
-    /**
-     * @return The death score {@link Integer} for the awarded kill score from this entity.
-     */
     @Override
     public int getDeathScore() {
-        return this.deathScore;
+        return this.xpReward;
+    }
+
+    @Override
+    protected int getBaseExperienceReward(ServerLevel level) {
+        return this.xpReward;
     }
 
     @Nullable
@@ -847,7 +852,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * It can only be collided with when it is asleep.
      */
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean canBeCollidedWith(Entity entity) {
         return !this.isAwake();
     }
 
@@ -879,7 +884,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * @return A false {@link Boolean}, preventing the Slider from being affected by liquids.
      */
     @Override
-    protected boolean isAffectedByFluids() {
+    public boolean isAffectedByFluids() {
         return false;
     }
 
@@ -913,28 +918,27 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        this.addBossSaveData(tag, this.registryAccess());
-        tag.putBoolean("Awake", this.isAwake());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        CompoundTag bossTag = new CompoundTag();
+        this.addBossSaveData(bossTag, this.registryAccess());
+        output.store("BossData", CompoundTag.CODEC, bossTag);
+        output.putBoolean("Awake", this.isAwake());
     }
 
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.readBossSaveData(tag, this.registryAccess());
-        if (tag.contains("Awake")) {
-            this.setAwake(tag.getBoolean("Awake"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
+        this.setAwake(input.getBooleanOr("Awake", this.isAwake()));
     }
 
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag)
      */
-    @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         CompoundTag tag = new CompoundTag();
         this.addBossSaveData(tag, this.registryAccess());
@@ -944,7 +948,6 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag)
      */
-    @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         CompoundTag tag = additionalData.readNbt();
         if (tag != null) {

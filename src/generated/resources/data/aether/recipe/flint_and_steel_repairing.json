@@ -1,7 +1,5 @@
 {
   "type": "aether:repairing",
-  "ingredient": {
-    "item": "minecraft:flint_and_steel"
-  },
+  "ingredient": "minecraft:flint_and_steel",
   "repairTime": 300
 }

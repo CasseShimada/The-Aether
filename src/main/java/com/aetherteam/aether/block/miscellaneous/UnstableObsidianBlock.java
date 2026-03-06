@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.material.PushReaction;
 
 /**
@@ -42,17 +43,17 @@ public class UnstableObsidianBlock extends Block implements MeltingBehavior {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
         if (block.defaultBlockState().is(this) && MeltingBehavior.super.fewerNeigboursThan(block, level, pos, 2)) {
             this.melt(state, level, pos, AGE);
         }
-        super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+        super.neighborChanged(state, level, pos, block, orientation, isMoving);
     }
 
     @Override
     public void melt(BlockState state, Level level, BlockPos pos, IntegerProperty age) {
         level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
-        level.neighborChanged(pos, Blocks.LAVA, pos);
+        level.neighborChanged(pos, Blocks.LAVA, null);
     }
 
     /**
@@ -60,11 +61,10 @@ public class UnstableObsidianBlock extends Block implements MeltingBehavior {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         return ItemStack.EMPTY;
     }
 
-    @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.NORMAL;
     }

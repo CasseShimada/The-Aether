@@ -9,7 +9,6 @@ import com.aetherteam.aether.item.EquipmentUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -42,6 +41,8 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -74,7 +75,7 @@ public class Swet extends Slime implements MountableMob {
         this.goalSelector.addGoal(1, new HuntGoal(this));
         this.goalSelector.addGoal(2, new SwetRandomDirectionGoal(this));
         this.goalSelector.addGoal(4, new SwetKeepOnJumpingGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, (target) -> !this.isFriendlyTowardEntity(target) && !(target.getRootVehicle() instanceof Swet)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, (target, level) -> !this.isFriendlyTowardEntity(target) && !(target.getRootVehicle() instanceof Swet)));
     }
 
     public static AttributeSupplier.Builder createMobAttributes() {
@@ -113,16 +114,16 @@ public class Swet extends Slime implements MountableMob {
      *
      * @param swet   The {@link Swet} {@link EntityType}.
      * @param level  The {@link LevelAccessor}.
-     * @param reason The {@link MobSpawnType} reason.
+     * @param reason The {@link EntitySpawnReason} reason.
      * @param pos    The spawn {@link BlockPos}.
      * @param random The {@link RandomSource}.
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
-    public static boolean checkSwetSpawnRules(EntityType<? extends Swet> swet, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean checkSwetSpawnRules(EntityType<? extends Swet> swet, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return level.getBlockState(pos.below()).is(AetherTags.Blocks.SWET_SPAWNABLE_ON)
                 && level.getRawBrightness(pos, 0) > 8
                 && level.getDifficulty() != Difficulty.PEACEFUL
-                && (reason != MobSpawnType.NATURAL || (!inRadiusOfBanner(level, pos, 40) && !inRadiusOfSwetCape(level, pos, 40)));
+                && (reason != EntitySpawnReason.NATURAL || (!inRadiusOfBanner(level, pos, 40) && !inRadiusOfSwetCape(level, pos, 40)));
     }
 
     /**
@@ -170,7 +171,7 @@ public class Swet extends Slime implements MountableMob {
     @Override
     public void tick() {
         // Handle dissolving in water.
-        if (this.isInWaterRainOrBubble()) {
+        if (this.isInLiquid()) {
             this.spawnDissolveParticles();
             if (this.getWaterDamageScale() < 0.9F) {
                 this.setWaterDamageScale(this.getWaterDamageScale() + 0.02F);
@@ -287,7 +288,7 @@ public class Swet extends Slime implements MountableMob {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide()) {
             if (!this.hasPrey() && this.isFriendlyTowardEntity(player)) {
-                if (this.getScale() >= super.getScale()) {
+                if (this.getSwetScale() >= super.getScale()) {
                     this.consumePassenger(player);
                 }
             }
@@ -304,7 +305,7 @@ public class Swet extends Slime implements MountableMob {
         this.playSound(AetherSoundEvents.ENTITY_SWET_ATTACK.get(), 0.5F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
         EntityUtil.copyRotations(livingEntity, this);
         this.setDeltaMovement(livingEntity.getDeltaMovement());
-        livingEntity.startRiding(this, true);
+        livingEntity.startRiding(this, true, false);
     }
 
     /**
@@ -516,7 +517,6 @@ public class Swet extends Slime implements MountableMob {
     /**
      * The player can attack the swet to try to kill it before they finish the attack.
      */
-    @Override
     public boolean canRiderInteract() {
         return true;
     }
@@ -569,8 +569,7 @@ public class Swet extends Slime implements MountableMob {
     /**
      * @return The float for the Swet's hitbox scaling. Calculated from the scale subtracted from itself multiplied by the water damage scale.
      */
-    @Override
-    public float getScale() {
+    public float getSwetScale() {
         return super.getScale() - super.getScale() * this.getWaterDamageScale();
     }
 
@@ -582,7 +581,7 @@ public class Swet extends Slime implements MountableMob {
      */
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
-        return super.getDefaultDimensions(pose).scale(this.getScale());
+        return super.getDefaultDimensions(pose).scale(this.getSwetScale());
     }
 
     @Override
@@ -590,12 +589,10 @@ public class Swet extends Slime implements MountableMob {
         return false;
     }
 
-    @Override
     protected boolean shouldDespawnInPeaceful() {
         return true;
     }
 
-    @Override
     protected boolean spawnCustomParticles() {
         return true;
     }
@@ -612,24 +609,22 @@ public class Swet extends Slime implements MountableMob {
                 this.level().addParticle(ParticleTypes.SPLASH, this.getX() + f3, this.getY() + f2, this.getZ() + f4, f3 * 1.5 + this.getDeltaMovement().x(), 4.0, f4 * 1.5 + this.getDeltaMovement().z());
             }
         } else if (id == 71) {
-            this.absMoveTo(this.getX(), this.getY(), this.getZ());
+            this.setPos(this.getX(), this.getY(), this.getZ());
         } else {
             super.handleEntityEvent(id);
         }
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putFloat("WaterDamageScale", this.getWaterDamageScale());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putFloat("WaterDamageScale", this.getWaterDamageScale());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("WaterDamageScale")) {
-            this.setWaterDamageScale(tag.getFloat("WaterDamageScale"));
-        }
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setWaterDamageScale(input.getFloatOr("WaterDamageScale", this.getWaterDamageScale()));
     }
 
     /**
@@ -859,7 +854,7 @@ public class Swet extends Slime implements MountableMob {
         }
 
         public boolean canUse() {
-            return this.swet.getTarget() == null && (this.swet.onGround() || this.swet.isInFluidType() || this.swet.hasEffect(MobEffects.LEVITATION)) && this.swet.getMoveControl() instanceof SwetMoveControl;
+            return this.swet.getTarget() == null && (this.swet.onGround() || this.swet.isInLiquid() || this.swet.hasEffect(MobEffects.LEVITATION)) && this.swet.getMoveControl() instanceof SwetMoveControl;
         }
 
         public void tick() {

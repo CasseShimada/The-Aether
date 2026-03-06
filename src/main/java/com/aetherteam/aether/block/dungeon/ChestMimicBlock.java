@@ -9,20 +9,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -35,7 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<ChestMimicBlock> CODEC = simpleCodec(ChestMimicBlock::new);
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 14.0, 15.0);
 
@@ -76,8 +79,8 @@ public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterlogge
      */
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!ChestBlock.isChestBlockedAt(level, pos) && !level.isClientSide()) {
-            this.spawnMimic(state, level, pos);
+        if (!ChestBlock.isChestBlockedAt(level, pos) && level instanceof ServerLevel serverLevel) {
+            this.spawnMimic(state, serverLevel, pos);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;
@@ -105,12 +108,12 @@ public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterlogge
      * @param level The {@link Level} the Mimic will be in.
      * @param pos   The {@link BlockPos} used for the Mimic.
      */
-    private void spawnMimic(BlockState state, Level level, BlockPos pos) {
-        Mimic mimic = AetherEntityTypes.MIMIC.get().create(level);
+    private void spawnMimic(BlockState state, ServerLevel level, BlockPos pos) {
+        Mimic mimic = AetherEntityTypes.MIMIC.get().create(level, EntitySpawnReason.TRIGGERED);
         if (mimic != null) {
             Direction direction = state.getValue(FACING);
             float angle = direction.toYRot();
-            mimic.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, angle, 0.0F);
+            mimic.absSnapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, angle, 0.0F);
             mimic.setYHeadRot(angle);
             level.addFreshEntity(mimic);
             level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -152,14 +155,14 @@ public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterlogge
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.MODEL;
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource randomSource) {
         if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, direction, facingState, level, currentPos, facingPos);
+        return super.updateShape(state, level, scheduledTickAccess, currentPos, direction, facingPos, facingState, randomSource);
     }
 }

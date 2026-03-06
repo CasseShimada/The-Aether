@@ -4,10 +4,10 @@ import com.aetherteam.aether.entity.MountableMob;
 import com.aetherteam.aether.entity.NotGrounded;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,16 +20,18 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
 /**
- * [CODE COPY] - {@link net.minecraft.world.entity.animal.Pig}.<br><br>
+ * [CODE COPY] - {@link net.minecraft.world.entity.animal.pig.Pig}.<br><br>
  * Method copies with changes to make methods more abstracted through {@link MountableMob}.
  */
-public abstract class MountableAnimal extends AetherAnimal implements MountableMob, Saddleable, NotGrounded {
+public abstract class MountableAnimal extends AetherAnimal implements MountableMob, NotGrounded {
     private static final EntityDataAccessor<Boolean> DATA_SADDLE_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_PLAYER_JUMPED_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_MOUNT_JUMPING_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
@@ -106,7 +108,7 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
             if (!this.level().isClientSide()) {
                 playerEntity.startRiding(this);
             }
-            return InteractionResult.sidedSuccess(this.level().isClientSide());
+            return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         } else {
             InteractionResult interactionResult = super.mobInteract(playerEntity, hand);
             if (!interactionResult.consumesAction()) {
@@ -144,10 +146,10 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
     }
 
     @Override
-    protected void dropEquipment() {
-        super.dropEquipment();
+    protected void dropEquipment(ServerLevel level) {
+        super.dropEquipment(level);
         if (this.isSaddled()) {
-            this.spawnAtLocation(Items.SADDLE);
+            this.spawnAtLocation(level, Items.SADDLE);
         }
     }
 
@@ -165,7 +167,6 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
         return true;
     }
 
-    @Override
     public void equipSaddle(ItemStack stack, @Nullable SoundSource soundCategory) {
         this.setSaddled(true);
         if (soundCategory != null && this.getSaddledSound() != null) {
@@ -173,7 +174,6 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
         }
     }
 
-    @Override
     public boolean isSaddleable() {
         return this.isAlive() && !this.isBaby();
     }
@@ -181,7 +181,6 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
     /**
      * @return Whether this entity is saddled, as a {@link Boolean}.
      */
-    @Override
     public boolean isSaddled() {
         return this.getEntityData().get(DATA_SADDLE_ID);
     }
@@ -320,16 +319,14 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("Saddled", this.isSaddled());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("Saddled", this.isSaddled());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Saddled")) {
-            this.setSaddled(tag.getBoolean("Saddled"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setSaddled(input.getBooleanOr("Saddled", this.isSaddled()));
     }
 }

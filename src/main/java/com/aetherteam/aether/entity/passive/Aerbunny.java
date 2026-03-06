@@ -11,7 +11,7 @@ import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListen
 import com.aetherteam.aether.network.packet.serverbound.AerbunnyPuffPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,11 +36,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -65,7 +67,7 @@ public class Aerbunny extends AetherAnimal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RunWhenAfraid(this, 1.3));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.2, Ingredient.of(AetherTags.Items.AERBUNNY_TEMPTATION_ITEMS), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.2, Ingredient.of(this.registryAccess().lookupOrThrow(Registries.ITEM).getOrThrow(AetherTags.Items.AERBUNNY_TEMPTATION_ITEMS)), false));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(5, new FallingRandomStrollGoal(this, 1.0, 80));
     }
@@ -126,7 +128,7 @@ public class Aerbunny extends AetherAnimal {
             }
         }
 
-        if (this.getVehicle() != null && (this.getVehicle().onGround() || this.getVehicle().isInFluidType() || blockIntersection)) { // Reset the last tracked fall position if the Aerbunny touches a surface.
+        if (this.getVehicle() != null && (this.getVehicle().onGround() || this.getVehicle().isInLiquid() || blockIntersection)) { // Reset the last tracked fall position if the Aerbunny touches a surface.
             this.lastPos = null;
         }
     }
@@ -170,13 +172,13 @@ public class Aerbunny extends AetherAnimal {
             if (!player.onGround() && !player.isFallFlying()) {
                 AttributeInstance playerGravity = player.getAttribute(Attributes.GRAVITY);
                 if (playerGravity != null) {
-                    if (!player.getAbilities().flying && !player.isInFluidType() && playerGravity.getValue() > 0.02) {  // Entity isn't allowed to fall too slowly from gravity.
+                    if (!player.getAbilities().flying && !player.isInLiquid() && playerGravity.getValue() > 0.02) {  // Entity isn't allowed to fall too slowly from gravity.
                         player.setDeltaMovement(player.getDeltaMovement().add(0.0, 0.05, 0.0));
                     }
                 }
 
                 if (this.level().isClientSide()) {
-                    var data = player.getData(AetherDataAttachments.AETHER_PLAYER);
+                    var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                     if (player.getDeltaMovement().y() <= 0.0) {
                         if (this.lastPos == null) { // Tracks the last position when the player starts falling.
                             this.lastPos = this.position();
@@ -206,7 +208,7 @@ public class Aerbunny extends AetherAnimal {
     @Override
     public void baseTick() {
         super.baseTick();
-        if (this.isAlive() && this.isPassenger() && this.getVehicle() != null && this.getVehicle().isEyeInFluidType(NeoForgeMod.WATER_TYPE.value())
+        if (this.isAlive() && this.isPassenger() && this.getVehicle() != null && this.getVehicle().isEyeInFluid(FluidTags.WATER)
                 && !this.level().getBlockState(BlockPos.containing(this.getVehicle().getX(), this.getVehicle().getEyeY(), this.getVehicle().getZ())).is(Blocks.BUBBLE_COLUMN)) {
             this.stopRiding();
         }
@@ -245,7 +247,7 @@ public class Aerbunny extends AetherAnimal {
                 Vec3 playerMovement = player.getDeltaMovement();
                 this.setDeltaMovement(playerMovement.x() * 5, playerMovement.y() * 0.5 + 0.5, playerMovement.z() * 5);
             } else if (this.startRiding(player)) { // Mount segment.
-                player.getData(AetherDataAttachments.AETHER_PLAYER).setMountedAerbunny(this);
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setMountedAerbunny(this);
                 this.level().playSound(player, this, AetherSoundEvents.ENTITY_AERBUNNY_LIFT.get(), SoundSource.NEUTRAL, 1.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
             }
             return InteractionResult.SUCCESS;
@@ -259,7 +261,7 @@ public class Aerbunny extends AetherAnimal {
     @Override
     public void stopRiding() {
         if (this.getVehicle() instanceof Player player) {
-            player.getData(AetherDataAttachments.AETHER_PLAYER).setMountedAerbunny(null);
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setMountedAerbunny(null);
         }
         super.stopRiding();
     }
@@ -272,8 +274,8 @@ public class Aerbunny extends AetherAnimal {
      * @return Whether the entity was hurt, as a {@link Boolean}.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean flag = super.hurt(source, amount);
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean flag = super.hurtServer(level, source, amount);
         if (flag && source.getEntity() instanceof Player) {
             this.setAfraidTime(100 + this.getRandom().nextInt(50));
         }
@@ -385,7 +387,6 @@ public class Aerbunny extends AetherAnimal {
         return stack.is(AetherTags.Items.AERBUNNY_TEMPTATION_ITEMS);
     }
 
-    @Override
     public boolean canRiderInteract() {
         return true;
     }
@@ -424,8 +425,8 @@ public class Aerbunny extends AetherAnimal {
      * @return Whether the Aerbunny is invulnerable to the damage, as a {@link Boolean}.
      */
     @Override
-    public boolean isInvulnerableTo(DamageSource damageSource) {
-        return (this.getVehicle() != null && this.getVehicle() == damageSource.getEntity()) || super.isInvulnerableTo(damageSource);
+    public boolean isInvulnerableTo(ServerLevel level, DamageSource damageSource) {
+        return (this.getVehicle() != null && this.getVehicle() == damageSource.getEntity()) || super.isInvulnerableTo(level, damageSource);
     }
 
     /**
@@ -446,7 +447,7 @@ public class Aerbunny extends AetherAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
-        return AetherEntityTypes.AERBUNNY.get().create(level);
+        return AetherEntityTypes.AERBUNNY.get().create(level, EntitySpawnReason.BREEDING);
     }
 
     @Override
@@ -459,17 +460,15 @@ public class Aerbunny extends AetherAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("AfraidTime", this.getAfraidTime());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("AfraidTime", this.getAfraidTime());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("AfraidTime")) {
-            this.setAfraidTime(tag.getInt("AfraidTime"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setAfraidTime(input.getIntOr("AfraidTime", 0));
     }
 
     /**

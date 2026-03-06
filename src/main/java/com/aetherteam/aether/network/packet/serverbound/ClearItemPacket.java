@@ -5,17 +5,17 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Clears the item currently held by the player's mouse in a container GUI.
  */
 public record ClearItemPacket(int playerID) implements CustomPacketPayload {
-    public static final Type<ClearItemPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "clear_held_item"));
+    public static final Type<ClearItemPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "clear_held_item"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClearItemPacket> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT,
@@ -27,9 +27,9 @@ public record ClearItemPacket(int playerID) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(ClearItemPacket payload, IPayloadContext context) {
+    public static void execute(ClearItemPacket payload, AetherPayloadContext context) {
         Player playerEntity = context.player();
-        if (playerEntity.getServer() != null && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer) {
+        if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer) {
             serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);
         }
     }

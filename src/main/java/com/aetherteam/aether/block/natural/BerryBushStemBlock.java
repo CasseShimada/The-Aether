@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.CommonHooks;
 
 public class BerryBushStemBlock extends AetherBushBlock implements BonemealableBlock {
     protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
@@ -56,9 +55,8 @@ public class BerryBushStemBlock extends AetherBushBlock implements BonemealableB
      */
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (level.getRawBrightness(pos.above(), 0) >= 9 && CommonHooks.canCropGrow(level, pos, state, random.nextInt(60) == 0)) {
+        if (level.getRawBrightness(pos.above(), 0) >= 9 && random.nextInt(60) == 0) {
             level.setBlockAndUpdate(pos, AetherBlocks.BERRY_BUSH.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)));
-            CommonHooks.fireCropGrowPost(level, pos, state);
         }
     }
 

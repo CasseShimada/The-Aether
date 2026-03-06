@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:loom",
   "key": {
-    "P": {
-      "tag": "aether:planks_crafting"
-    },
-    "T": {
-      "tag": "c:strings"
-    }
+    "P": "#aether:planks_crafting",
+    "T": "#c:strings"
   },
   "pattern": [
     "TT",

@@ -1,21 +1,22 @@
 package com.aetherteam.aether.client.renderer.entity.layers;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.client.renderer.entity.state.SentryRenderState;
 import com.aetherteam.aether.entity.monster.dungeon.Sentry;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.SlimeModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.monster.slime.SlimeModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.EyesLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.resources.Identifier;
 
-public class SentryGlowLayer extends EyesLayer<Sentry, SlimeModel<Sentry>> {
-    private static final RenderType SENTRY_EYE = RenderType.eyes(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/sentry/eye.png"));
+public class SentryGlowLayer<T extends SentryRenderState, M extends EntityModel<EntityRenderState>> extends RenderLayer<T, M> {
+    private static final Identifier SENTRY_EYE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/sentry/eye.png");
 
-    public SentryGlowLayer(RenderLayerParent<Sentry, SlimeModel<Sentry>> entityRenderer) {
+    public SentryGlowLayer(RenderLayerParent<T, M> entityRenderer) {
         super(entityRenderer);
     }
 
@@ -23,26 +24,16 @@ public class SentryGlowLayer extends EyesLayer<Sentry, SlimeModel<Sentry>> {
      * Renders the glowing eye layer for the Sentry when it is awake.
      *
      * @param poseStack       The rendering {@link PoseStack}.
-     * @param buffer          The rendering {@link MultiBufferSource}.
+     * @param collector       The rendering {@link SubmitNodeCollector}.
      * @param packedLight     The {@link Integer} for the packed lighting for rendering.
-     * @param sentry          The {@link Sentry} entity.
-     * @param limbSwing       The {@link Float} for the limb swing rotation.
-     * @param limbSwingAmount The {@link Float} for the limb swing amount.
-     * @param partialTicks    The {@link Float} for the game's partial ticks.
-     * @param ageInTicks      The {@link Float} for the entity's age in ticks.
+     * @param renderState     The {@link T} for the entity.
      * @param netHeadYaw      The {@link Float} for the head yaw rotation.
      * @param headPitch       The {@link Float} for the head pitch rotation.
      */
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Sentry sentry, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        VertexConsumer consumer = buffer.getBuffer(this.renderType());
-        if (sentry.isAwake()) {
-            this.getParentModel().renderToBuffer(poseStack, consumer, 15728640, OverlayTexture.NO_OVERLAY);
+    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, T renderState, float netHeadYaw, float headPitch) {
+        if (renderState.awake) {
+            collector.order(0).submitModel(this.getParentModel(), renderState, poseStack, this.getParentModel().renderType(SENTRY_EYE), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
-    }
-
-    @Override
-    public RenderType renderType() {
-        return SENTRY_EYE;
     }
 }

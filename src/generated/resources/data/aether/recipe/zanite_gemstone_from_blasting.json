@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.7,
-  "ingredient": {
-    "item": "aether:zanite_ore"
-  },
+  "ingredient": "aether:zanite_ore",
   "result": {
     "count": 1,
     "id": "aether:zanite_gemstone"

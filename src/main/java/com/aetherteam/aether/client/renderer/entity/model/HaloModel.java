@@ -1,17 +1,16 @@
 package com.aetherteam.aether.client.renderer.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
-public class HaloModel<T extends Entity> extends EntityModel<T> {
+public class HaloModel<T extends EntityRenderState> extends EntityModel<T> {
     public final ModelPart halo;
 
     public HaloModel(ModelPart root) {
+        super(root);
         this.halo = root.getChild("halo");
     }
 
@@ -25,15 +24,5 @@ public class HaloModel<T extends Entity> extends EntityModel<T> {
                         .addBox("4", 2.0F, -10.0F + originY, -2.0F + originZ, 1, 1, 4, CubeDeformation.NONE, 0, 0),
                 PartPose.offset(0.0F, 0.0F + offsetY, 0.0F + offsetZ));
         return LayerDefinition.create(meshDefinition, 16, 16);
-    }
-
-    @Override
-    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        this.halo.render(poseStack, consumer, packedLight, packedOverlay, color);
     }
 }

@@ -4,17 +4,18 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
 import com.aetherteam.aether.client.renderer.entity.model.AerwhaleModel;
 import com.aetherteam.aether.client.renderer.entity.model.ClassicAerwhaleModel;
+import com.aetherteam.aether.client.renderer.entity.state.AerwhaleRenderState;
 import com.aetherteam.aether.entity.passive.Aerwhale;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-public class AerwhaleRenderer extends MultiModelRenderer<Aerwhale, EntityModel<Aerwhale>, AerwhaleModel, ClassicAerwhaleModel> {
-    private static final ResourceLocation AERWHALE_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/aerwhale/aerwhale.png");
-    private static final ResourceLocation AERWHALE_CLASSIC_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/aerwhale/aerwhale_classic.png");
+public class AerwhaleRenderer extends MultiModelRenderer<Aerwhale, AerwhaleRenderState, EntityModel<AerwhaleRenderState>, AerwhaleModel, ClassicAerwhaleModel> {
+    private static final Identifier AERWHALE_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/aerwhale/aerwhale.png");
+    private static final Identifier AERWHALE_CLASSIC_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/aerwhale/aerwhale_classic.png");
     private final AerwhaleModel defaultModel;
     private final ClassicAerwhaleModel oldModel;
 
@@ -25,7 +26,18 @@ public class AerwhaleRenderer extends MultiModelRenderer<Aerwhale, EntityModel<A
     }
 
     @Override
-    protected void scale(Aerwhale aerwhale, PoseStack poseStack, float partialTickTime) {
+    public AerwhaleRenderState createRenderState() {
+        return new AerwhaleRenderState();
+    }
+
+    @Override
+    public void extractRenderState(Aerwhale entity, AerwhaleRenderState reusedState, float partialTick) {
+        super.extractRenderState(entity, reusedState, partialTick);
+        reusedState.xRotData = Mth.lerp(partialTick, entity.getXRotOData(), entity.getXRotData());
+    }
+
+    @Override
+    protected void scale(AerwhaleRenderState renderState, PoseStack poseStack) {
         poseStack.translate(0.0, -0.5, 0.0);
         poseStack.scale(2.0F, 2.0F, 2.0F);
     }
@@ -33,17 +45,14 @@ public class AerwhaleRenderer extends MultiModelRenderer<Aerwhale, EntityModel<A
     /**
      * Rotates the Aerwhale from data values stored in the entity.
      *
-     * @param aerwhale     The {@link Aerwhale} entity.
+     * @param renderState  The {@link AerwhaleRenderState} for the entity.
      * @param poseStack    The rendering {@link PoseStack}.
      * @param bob          The {@link Float} for the entity's animation bob.
-     * @param yBodyRot     The {@link Float} for the rotation yaw.
-     * @param partialTick  The {@link Float} for the game's partial ticks.
-     * @param scale        The {@link Float} for the render scale.
      */
     @Override
-    protected void setupRotations(Aerwhale aerwhale, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale) {
-        super.setupRotations(aerwhale, poseStack, bob, yBodyRot, partialTick, scale);
-        poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTick, aerwhale.getXRotOData(), aerwhale.getXRotData())));
+    protected void setupRotations(AerwhaleRenderState renderState, PoseStack poseStack, float bob, float yBodyRotation) {
+        super.setupRotations(renderState, poseStack, bob, yBodyRotation);
+        poseStack.mulPose(Axis.XP.rotationDegrees(renderState.xRotData));
     }
 
     @Override
@@ -57,12 +66,12 @@ public class AerwhaleRenderer extends MultiModelRenderer<Aerwhale, EntityModel<A
     }
 
     @Override
-    public ResourceLocation getDefaultTexture() {
+    public Identifier getDefaultTexture() {
         return AERWHALE_TEXTURE;
     }
 
     @Override
-    public ResourceLocation getOldTexture() {
+    public Identifier getOldTexture() {
         return AERWHALE_CLASSIC_TEXTURE;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -42,11 +42,11 @@ public class BronzeBossRoom extends BronzeDungeonPiece {
         this(type, manager, makeLocation(name), settings, pos, processors);
     }
 
-    public BronzeBossRoom(StructurePieceType type, StructureTemplateManager manager, ResourceLocation name, StructurePlaceSettings settings, BlockPos pos, Holder<StructureProcessorList> processors) {
+    public BronzeBossRoom(StructurePieceType type, StructureTemplateManager manager, Identifier name, StructurePlaceSettings settings, BlockPos pos, Holder<StructureProcessorList> processors) {
         super(type, manager, name, settings, pos, processors);
     }
 
-    public BronzeBossRoom(StructurePieceType type, RegistryAccess access, CompoundTag tag, StructureTemplateManager manager, Function<ResourceLocation, StructurePlaceSettings> settingsFactory) {
+    public BronzeBossRoom(StructurePieceType type, RegistryAccess access, CompoundTag tag, StructureTemplateManager manager, Function<Identifier, StructurePlaceSettings> settingsFactory) {
         super(type, access, tag, manager, settingsFactory);
     }
 
@@ -63,7 +63,7 @@ public class BronzeBossRoom extends BronzeDungeonPiece {
             if (entity instanceof RandomizableContainerBlockEntity container) {
                 container.setLootTable(AetherLoot.BRONZE_DUNGEON_REWARD, random.nextLong());
             }
-            TreasureChestBlockEntity.setDungeonType(level, chest, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "bronze"));
+            TreasureChestBlockEntity.setDungeonType(level, chest, Identifier.fromNamespaceAndPath(Aether.MODID, "bronze"));
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }
     }

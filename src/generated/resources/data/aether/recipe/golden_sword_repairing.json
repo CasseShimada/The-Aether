@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_sword_repair",
-  "ingredient": {
-    "item": "minecraft:golden_sword"
-  },
+  "ingredient": "minecraft:golden_sword",
   "repairTime": 300
 }

@@ -10,12 +10,15 @@ import java.util.function.Predicate;
 
 public class SliderNearestAttackableTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
     public SliderNearestAttackableTargetGoal(Mob mob, Class<T> targetType, boolean mustSee) {
-        this(mob, targetType, 10, mustSee, false, null);
+        this(mob, targetType, 10, mustSee, false, (livingEntity) -> true);
     }
 
     public SliderNearestAttackableTargetGoal(Mob mob, Class<T> targetType, int randomInterval, boolean mustSee, boolean mustReach, @Nullable Predicate<LivingEntity> targetPredicate) {
-        super(mob, targetType, randomInterval, mustSee, mustReach, targetPredicate);
-        this.targetConditions = TargetingConditions.forCombat().range(this.getFollowDistance()).ignoreLineOfSight().selector(targetPredicate);
+        super(mob, targetType, randomInterval, mustSee, mustReach, (livingEntity, level) -> targetPredicate == null || targetPredicate.test(livingEntity));
+        this.targetConditions = TargetingConditions.forCombat()
+                .range(this.getFollowDistance())
+                .ignoreLineOfSight()
+                .selector((livingEntity, level) -> targetPredicate == null || targetPredicate.test(livingEntity));
     }
 
 }

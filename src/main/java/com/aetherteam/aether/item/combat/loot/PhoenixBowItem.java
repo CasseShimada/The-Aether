@@ -3,8 +3,9 @@ package com.aetherteam.aether.item.combat.loot;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.PhoenixArrowAttachment;
 import com.aetherteam.aether.item.AetherItems;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,16 +24,14 @@ public class PhoenixBowItem extends BowItem {
      * @param arrow The {@link AbstractArrow} created by the Bow.
      * @return The original {@link AbstractArrow} (the Phoenix Bow doesn't modify it).
      */
-    @Override
     public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
-        var data = arrow.getData(AetherDataAttachments.PHOENIX_ARROW);
+        var data = arrow.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW);
         data.setPhoenixArrow(true);
         int defaultTime = 20;
-        if (arrow.getOwner() instanceof LivingEntity livingEntity && EnchantmentHelper.getEnchantmentLevel(livingEntity.level().holderOrThrow(Enchantments.FLAME), livingEntity) > 0) {
+        if (arrow.getOwner() instanceof LivingEntity livingEntity && EnchantmentHelper.getEnchantmentLevel(livingEntity.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FLAME), livingEntity) > 0) {
             defaultTime = 40;
         }
         data.setFireTime(defaultTime);
-
-        return super.customArrow(arrow, projectileStack, weaponStack);
+        return arrow;
     }
 }

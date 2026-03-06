@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -16,13 +16,11 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
-public class SliderSpawnEggItem extends DeferredSpawnEggItem {
-    public SliderSpawnEggItem(Supplier<? extends EntityType<? extends Mob>> type, int backgroundColor, int highlightColor, Properties props) {
+public class SliderSpawnEggItem extends AetherSpawnEggItem {
+    public SliderSpawnEggItem(EntityType<? extends Mob> type, int backgroundColor, int highlightColor, Properties props) {
         super(type, backgroundColor, highlightColor, props);
     }
 
@@ -66,7 +64,7 @@ public class SliderSpawnEggItem extends DeferredSpawnEggItem {
             BlockPos roundedPos = new BlockPos((int) Math.round(clickLoc.x()), relativePos.getY(), (int) Math.round(clickLoc.z()));
 
             EntityType<?> entityType = this.getType(itemStack);
-            if (entityType.spawn((ServerLevel) level, itemStack, context.getPlayer(), roundedPos, MobSpawnType.SPAWN_EGG, false, !Objects.equals(blockPos, relativePos) && direction == Direction.UP) != null) {
+            if (entityType.spawn((ServerLevel) level, itemStack, context.getPlayer(), roundedPos, EntitySpawnReason.SPAWN_ITEM_USE, false, !Objects.equals(blockPos, relativePos) && direction == Direction.UP) != null) {
                 itemStack.shrink(1);
                 level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
             }

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "aether:hellfire_stone"
-    }
+    "#": "aether:hellfire_stone"
   },
   "pattern": [
     "#  ",

@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_leggings_repair",
-  "ingredient": {
-    "item": "aether:gravitite_leggings"
-  },
+  "ingredient": "aether:gravitite_leggings",
   "repairTime": 1500
 }

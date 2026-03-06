@@ -2,13 +2,15 @@ package com.aetherteam.aether.data.resources.registries;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.data.resources.builders.AetherBiomeBuilders;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -17,10 +19,8 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
-import java.util.OptionalLong;
-
 public class AetherDimensions {
-    private final static ResourceLocation AETHER_LEVEL_ID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "the_aether");
+    private final static Identifier AETHER_LEVEL_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "the_aether");
 
     // DimensionType - Specifies the logic and settings for a dimension.
     public static final ResourceKey<DimensionType> AETHER_DIMENSION_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, AETHER_LEVEL_ID);
@@ -31,21 +31,20 @@ public class AetherDimensions {
 
     public static void bootstrapDimensionType(BootstrapContext<DimensionType> context) {
         context.register(AETHER_DIMENSION_TYPE, new DimensionType(
-                OptionalLong.empty(),
-                true,
-                false,
                 false,
                 true,
+                false,
                 1.0,
-                true,
-                false,
                 0,
                 256,
                 256,
                 BlockTags.INFINIBURN_OVERWORLD,
-                ResourceLocation.fromNamespaceAndPath(Aether.MODID, "the_aether"),
                 0.0F,
-                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)));
+                new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
+                DimensionType.Skybox.OVERWORLD,
+                DimensionType.CardinalLightType.DEFAULT,
+                EnvironmentAttributeMap.EMPTY,
+                HolderSet.empty()));
     }
 
     public static void bootstrapLevelStem(BootstrapContext<LevelStem> context) {

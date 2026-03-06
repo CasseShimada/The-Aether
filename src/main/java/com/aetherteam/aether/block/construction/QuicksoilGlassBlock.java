@@ -16,7 +16,6 @@ public class QuicksoilGlassBlock extends TransparentBlock implements FrictionCap
     /**
      * @see FrictionCapped#getCappedFriction(Entity, float)
      */
-    @Override
     public float getFriction(BlockState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
         return this.getCappedFriction(entity, super.getFriction());
     }

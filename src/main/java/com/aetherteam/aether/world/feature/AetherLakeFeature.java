@@ -30,7 +30,7 @@ public class AetherLakeFeature extends Feature<AetherLakeConfiguration> {
         WorldGenLevel level = context.level();
         RandomSource random = context.random();
         AetherLakeConfiguration aetherLakeConfiguration = context.config();
-        if (blockPos.getY() <= level.getMinBuildHeight() + 4) {
+        if (blockPos.getY() <= level.getMinY() + 4) {
             return false;
         } else {
             blockPos = blockPos.below(4);

@@ -4,7 +4,7 @@ import com.aetherteam.aether.block.dungeon.DoorwayBlock;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.nitrogen.entity.BossMob;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Mob;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.event.EventHooks;
+import com.aetherteam.aether.event.hooks.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -98,16 +98,16 @@ public interface AetherBossMob<T extends Mob & AetherBossMob<T>> extends BossMob
     }
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar.
+     * @return The {@link Identifier} for this boss's health bar.
      */
     @Nullable
-    ResourceLocation getBossBarTexture();
+    Identifier getBossBarTexture();
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar background.
+     * @return The {@link Identifier} for this boss's health bar background.
      */
     @Nullable
-    ResourceLocation getBossBarBackgroundTexture();
+    Identifier getBossBarBackgroundTexture();
 
     /**
      * @return The {@link Music} for this boss's fight.

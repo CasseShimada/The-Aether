@@ -3,8 +3,8 @@ package com.aetherteam.aether.advancement;
 import com.aetherteam.aether.Aether;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherAdvancementTriggers {
     public static final DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, Aether.MODID);

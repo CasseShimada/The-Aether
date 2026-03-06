@@ -1,7 +1,7 @@
 {
-  "carvers": {},
+  "carvers": [],
   "creature_spawn_probability": 0.25,
-  "downfall": 0.0,
+  "downfall": 0,
   "effects": {
     "fog_color": 9671612,
     "foliage_color": 11665355,
@@ -91,62 +91,6 @@
     }
   },
   "spawners": {
-    "aether:aether_aerwhale": [
-      {
-        "type": "aether:aerwhale",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "aether:aether_darkness_monster": [
-      {
-        "type": "aether:cockatrice",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 8
-      }
-    ],
-    "aether:aether_sky_monster": [
-      {
-        "type": "aether:zephyr",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 20
-      }
-    ],
-    "aether:aether_surface_monster": [
-      {
-        "type": "aether:aechor_plant",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 7
-      },
-      {
-        "type": "aether:blue_swet",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 6
-      },
-      {
-        "type": "aether:golden_swet",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 6
-      },
-      {
-        "type": "aether:whirlwind",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 3
-      },
-      {
-        "type": "aether:evil_whirlwind",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      }
-    ],
     "ambient": [],
     "axolotls": [],
     "creature": [
@@ -179,10 +123,59 @@
         "maxCount": 3,
         "minCount": 1,
         "weight": 8
+      },
+      {
+        "type": "aether:aerwhale",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
       }
     ],
     "misc": [],
-    "monster": [],
+    "monster": [
+      {
+        "type": "aether:cockatrice",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 8
+      },
+      {
+        "type": "aether:zephyr",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 20
+      },
+      {
+        "type": "aether:aechor_plant",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 7
+      },
+      {
+        "type": "aether:blue_swet",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
+        "type": "aether:golden_swet",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
+        "type": "aether:whirlwind",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 3
+      },
+      {
+        "type": "aether:evil_whirlwind",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      }
+    ],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "minecraft:shield",
   "key": {
-    "P": {
-      "tag": "aether:planks_crafting"
-    },
-    "Z": {
-      "tag": "aether:gems/zanite"
-    }
+    "P": "#aether:planks_crafting",
+    "Z": "#aether:gems/zanite"
   },
   "pattern": [
     "PZP",

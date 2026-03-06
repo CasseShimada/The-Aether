@@ -4,7 +4,7 @@ import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,14 +22,13 @@ public class LoreBookItem extends Item {
      * @param level  The {@link Level} of the user.
      * @param player The {@link Player} using this item.
      * @param hand   The {@link InteractionHand} in which the item is being used.
-     * @return The super {@link InteractionResultHolder}.
+     * @return The interaction result from opening the menu.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack heldStack = player.getItemInHand(hand);
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, playerEntity) -> new LoreBookMenu(id, inventory), Component.translatable("menu.aether.book_of_lore")));
         }
-        return InteractionResultHolder.sidedSuccess(heldStack, level.isClientSide());
+        return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 }

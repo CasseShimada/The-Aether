@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:fletching_table",
   "key": {
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "F": "minecraft:flint",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "FF",

@@ -4,17 +4,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.Event;
-import net.neoforged.bus.api.ICancellableEvent;
-import net.neoforged.fml.LogicalSide;
 
 /**
  * FreezeEvent is fired when an event for a freezing recipe occurs.<br>
- * If a method utilizes this {@link Event} as its parameter, the method will receive every child event of this class.<br>
+ * If a method utilizes this event as its parameter, the method will receive every child event of this class.<br>
  * <br>
- * All children of this event are fired on the {@link net.neoforged.neoforge.common.NeoForge#EVENT_BUS}.
+ * All children of this event are dispatched from Aether's local event dispatch points.
  */
-public abstract class FreezeEvent extends Event implements ICancellableEvent {
+public abstract class FreezeEvent {
+    private boolean canceled;
     private final LevelAccessor level;
     private final BlockPos pos;
     private final BlockState priorBlock;
@@ -70,17 +68,25 @@ public abstract class FreezeEvent extends Event implements ICancellableEvent {
         this.frozenBlock = frozenBlock;
     }
 
+    public boolean isCanceled() {
+        return this.canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
     /**
      * FreezeEvent.FreezeFromBlock is fired for freezing recipes triggered by blocks.
      * <br>
-     * This event is {@link ICancellableEvent}.<br>
+     * This event is cancellable.<br>
      * If the event is not canceled, the block will be frozen.
      * <br>
-     * This event is only fired on the {@link LogicalSide#SERVER} side.<br>
+     * This event is only fired on the server side.<br>
      * <br>
      * If this event is canceled, the block will not be frozen.
      */
-    public static class FreezeFromBlock extends FreezeEvent implements ICancellableEvent {
+    public static class FreezeFromBlock extends FreezeEvent {
         private final BlockPos sourcePos;
         private final BlockState sourceBlock;
 
@@ -116,14 +122,14 @@ public abstract class FreezeEvent extends Event implements ICancellableEvent {
     /**
      * FreezeEvent.FreezeFromItem is fired for freezing recipes triggered by items.
      * <br>
-     * This event is {@link ICancellableEvent}.<br>
+     * This event is cancellable.<br>
      * If the event is not canceled, the block will be frozen.
      * <br>
-     * This event is only fired on the {@link LogicalSide#SERVER} side.<br>
+     * This event is only fired on the server side.<br>
      * <br>
      * If this event is canceled, the block will not be frozen.
      */
-    public static class FreezeFromItem extends FreezeEvent implements ICancellableEvent {
+    public static class FreezeFromItem extends FreezeEvent {
         private final ItemStack sourceStack;
 
         /**

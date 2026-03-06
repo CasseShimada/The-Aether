@@ -17,11 +17,11 @@ public interface SlowFallAccessory {
     default void handleSlowFall(LivingEntity livingEntity) {
         AttributeInstance gravity = livingEntity.getAttribute(Attributes.GRAVITY);
         if (gravity != null) {
-            if (livingEntity.getDeltaMovement().y() <= -0.06 && !livingEntity.onGround() && !livingEntity.isFallFlying() && !livingEntity.isInFluidType() && !livingEntity.isShiftKeyDown() && gravity.getValue() > 0.0075) {
+            if (livingEntity.getDeltaMovement().y() <= -0.06 && !livingEntity.onGround() && !livingEntity.isFallFlying() && !livingEntity.isInLiquid() && !livingEntity.isShiftKeyDown() && gravity.getValue() > 0.0075) {
                 livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().multiply(1.0, 0.6, 1.0));
             }
         }
-        livingEntity.checkSlowFallDistance();
+        livingEntity.resetFallDistance();
         if (livingEntity instanceof ServerPlayer serverPlayer) { // Prevents the player from being kicked for flying.
             ServerGamePacketListenerImplAccessor serverGamePacketListenerImplAccessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;
             serverGamePacketListenerImplAccessor.aether$setAboveGroundTickCount(0);

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "G": {
-      "item": "aether:golden_amber"
-    },
-    "P": {
-      "item": "aether:skyroot_planks"
-    }
+    "G": "aether:golden_amber",
+    "P": "aether:skyroot_planks"
   },
   "pattern": [
     "P",

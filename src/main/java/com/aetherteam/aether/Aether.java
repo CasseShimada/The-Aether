@@ -27,6 +27,7 @@ import com.aetherteam.aether.loot.conditions.AetherLootConditions;
 import com.aetherteam.aether.loot.functions.AetherLootFunctions;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
+import com.aetherteam.aether.recipe.book.AetherRecipeBookCategories;
 import com.aetherteam.aether.registry.DeferredRegister;
 import com.aetherteam.aether.world.AetherPoi;
 import com.aetherteam.aether.world.feature.AetherFeatures;
@@ -89,14 +90,16 @@ public final class Aether {
 
     private static void registerContent() {
         DeferredRegister<?>[] registers = {
+                AetherEffects.EFFECTS,
                 AetherBlocks.BLOCKS,
                 AetherEntityTypes.ENTITY_TYPES,
                 AetherSoundEvents.SOUNDS,
+                AetherDataComponents.DATA_COMPONENT_TYPES,
                 AetherItems.ITEMS,
                 AetherAttributes.ATTRIBUTES,
                 AetherBlockEntityTypes.BLOCK_ENTITY_TYPES,
                 AetherMenuTypes.MENU_TYPES,
-                AetherEffects.EFFECTS,
+                AetherRecipeBookCategories.RECIPE_BOOK_CATEGORIES,
                 AetherParticleTypes.PARTICLES,
                 AetherFeatures.FEATURES,
                 AetherFoliagePlacerTypes.FOLIAGE_PLACERS,
@@ -114,8 +117,7 @@ public final class Aether {
                 AetherGameEvents.GAME_EVENTS,
                 AetherCreativeTabs.CREATIVE_MODE_TABS,
                 AetherAdvancementSoundOverrides.ADVANCEMENT_SOUND_OVERRIDES,
-                AetherAdvancementTriggers.TRIGGERS,
-                AetherDataComponents.DATA_COMPONENT_TYPES
+                AetherAdvancementTriggers.TRIGGERS
         };
 
         for (DeferredRegister<?> register : registers) {

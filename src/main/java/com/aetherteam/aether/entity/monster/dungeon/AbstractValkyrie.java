@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -110,14 +111,15 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
     /**
      * The Valkyrie will be provoked to attack the player if attacked.
      *
+     * @param level  The server level.
      * @param source The {@link DamageSource}.
      * @param amount The {@link Float} amount of damage.
      * @return Whether the entity was hurt, as a {@link Boolean}.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean result = super.hurt(source, amount);
-        if (!this.level().isClientSide() && result && source.getEntity() instanceof LivingEntity living) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean result = super.hurtServer(level, source, amount);
+        if (result && source.getEntity() instanceof LivingEntity living) {
             this.mostDamageTargetGoal.addAggro(living, amount);
         }
         return result;
@@ -137,7 +139,7 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
         double z = target.getZ() + targetVec.y * 3;
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos(x, y, z);
         int i = 0;
-        while (mutableBlockPos.getY() > this.level().getMinBuildHeight() && !this.level().getBlockState(mutableBlockPos).blocksMotion() && i <= 4) {
+        while (mutableBlockPos.getY() > this.level().getMinY() && !this.level().getBlockState(mutableBlockPos).blocksMotion() && i <= 4) {
             mutableBlockPos.move(Direction.DOWN);
             i++;
         }
@@ -180,7 +182,7 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
      * @param message The message {@link Component}.
      */
     protected void chat(Player player, Component message, boolean sound) {
-        player.sendSystemMessage(message);
+        player.displayClientMessage(message, false);
     }
 
     /**
@@ -211,11 +213,6 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
 
     @Override
     protected boolean canRide(Entity vehicle) {
-        return false;
-    }
-
-    @Override
-    protected boolean shouldDespawnInPeaceful() {
         return false;
     }
 

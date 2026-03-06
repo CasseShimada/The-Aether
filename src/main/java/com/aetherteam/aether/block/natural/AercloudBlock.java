@@ -3,6 +3,7 @@ package com.aetherteam.aether.block.natural;
 import com.aetherteam.aether.block.AetherBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -38,9 +39,9 @@ public class AercloudBlock extends HalfTransparentBlock {
      * @param level  The {@link Level} the block is in.
      * @param pos    The {@link BlockPos} of the block.
      * @param entity The {@link Entity} in the block.
-     */
+    */
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl) {
         entity.resetFallDistance();
         if (entity.getDeltaMovement().y < 0.0 && !(entity instanceof Projectile)) {
             entity.setDeltaMovement(entity.getDeltaMovement().multiply(1.0, 0.005, 1.0));
@@ -58,11 +59,11 @@ public class AercloudBlock extends HalfTransparentBlock {
      * @param fallDistance The fall distance of the entity as a {@link Float}.
      */
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    protected boolean propagatesSkylightDown(BlockState state) {
         return false;
     }
 

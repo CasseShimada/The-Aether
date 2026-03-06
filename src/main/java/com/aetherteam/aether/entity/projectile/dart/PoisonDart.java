@@ -3,6 +3,7 @@ package com.aetherteam.aether.entity.projectile.dart;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.item.AetherItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,7 +36,7 @@ public class PoisonDart extends AbstractDart {
     @Override
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        living.addEffect(new MobEffectInstance(AetherEffects.INEBRIATION, 200, 0));
+        living.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION.get()), 200, 0));
     }
 
     @Override

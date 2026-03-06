@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_helmet_repair",
-  "ingredient": {
-    "item": "minecraft:diamond_helmet"
-  },
+  "ingredient": "minecraft:diamond_helmet",
   "repairTime": 1500
 }

@@ -6,7 +6,6 @@ import com.aetherteam.aether.data.resources.registries.AetherDamageTypes;
 import com.aetherteam.aether.entity.EntityUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Difficulty;
@@ -15,6 +14,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -47,8 +48,8 @@ public class ThunderCrystal extends AbstractCrystal {
      */
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity livingTarget && livingTarget != this.getOwner()) {
-            livingTarget.hurt(AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.THUNDER_CRYSTAL, this, this.getOwner()), 5.0F);
+        if (this.level() instanceof ServerLevel serverLevel && result.getEntity() instanceof LivingEntity livingTarget && livingTarget != this.getOwner()) {
+            livingTarget.hurtServer(serverLevel, AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.THUNDER_CRYSTAL, this, this.getOwner()), 5.0F);
             this.knockback(0.1, this.position().subtract(livingTarget.position())); // Apply knockback to the projectile from the distance difference between the projectile and hit entity.
             livingTarget.knockback(0.25, this.getX() - livingTarget.getX(), this.getZ() - livingTarget.getZ());
         }
@@ -80,7 +81,6 @@ public class ThunderCrystal extends AbstractCrystal {
                 }
             }
         }
-        this.checkInsideBlocks();
         Vec3 motion = this.getDeltaMovement();
         this.setPos(this.getX() + motion.x(), this.getY() + motion.y(), this.getZ() + motion.z());
     }
@@ -89,9 +89,9 @@ public class ThunderCrystal extends AbstractCrystal {
      * When this projectile is hurt, this method particles, knocks the projectile back, and increases the time it is considered in the air.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (!this.level().isClientSide() && source.getSourcePosition() != null && this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2, 0.2, 0.2, 0.0);
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (source.getSourcePosition() != null) {
+            level.sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2, 0.2, 0.2, 0.0);
             this.knockback(0.15 + amount / 8, this.position().subtract(source.getSourcePosition())); // Sets knockback movement in the direction of the damage.
         }
         this.ticksInAir += (int) (amount * 10);
@@ -105,7 +105,6 @@ public class ThunderCrystal extends AbstractCrystal {
      * @param target   The {@link Vec3} motion for the knockback.
      */
     public void knockback(double strength, Vec3 target) {
-        this.hasImpulse = true;
         Vec3 vec3 = this.getDeltaMovement();
         Vec3 vec31 = target.normalize().scale(strength);
         this.setDeltaMovement(vec3.x() / 2.0 + vec31.x(), vec3.y() / 2 + vec31.y(), vec3.z() / 2.0 + vec31.z());
@@ -133,18 +132,17 @@ public class ThunderCrystal extends AbstractCrystal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
         if (this.target != null) {
-            tag.putInt("Target", this.target.getId());
+            output.putInt("Target", this.target.getId());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Target")) {
-            this.target = this.level().getEntity(tag.getInt("Target"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        int targetId = input.getIntOr("Target", Integer.MIN_VALUE);
+        this.target = targetId == Integer.MIN_VALUE ? null : this.level().getEntity(targetId);
     }
 }

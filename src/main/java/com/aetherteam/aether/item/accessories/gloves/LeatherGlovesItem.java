@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.accessories.gloves;
 
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.equipment.ArmorMaterials;
 
 public class LeatherGlovesItem extends GlovesItem {
     public LeatherGlovesItem(double punchDamage, Properties properties) {

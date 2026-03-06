@@ -3,9 +3,10 @@ package com.aetherteam.aether.item.miscellaneous;
 import com.aetherteam.aether.entity.miscellaneous.Parachute;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -31,13 +32,13 @@ public class ParachuteItem extends Item {
      * @param level  The {@link Level} of the user.
      * @param player The {@link Player} using this item.
      * @param hand   The {@link InteractionHand} in which the item is being used.
-     * @return a {@link InteractionResultHolder#sidedSuccess(Object, boolean)} (success on client, consume on server) if the Parachute is successfully spawned. Otherwise, return a pass.
+     * @return A success on client and consume on server if the Parachute is successfully spawned. Otherwise, return a pass.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (!player.onGround() && !player.isInFluidType() && !player.isShiftKeyDown()) { // Player has to be on ground and can't be in liquid, and also can't be holding shift.
-            Entity entity = this.getParachuteEntity().get().create(level);
+        if (!player.onGround() && !player.isInLiquid() && !player.isShiftKeyDown()) { // Player has to be on ground and can't be in liquid, and also can't be holding shift.
+            Entity entity = this.getParachuteEntity().get().create(level, EntitySpawnReason.TRIGGERED);
             if (entity instanceof Parachute parachute) {
                 parachute.setPos(player.getX(), player.getY() - 1.0, player.getZ()); // Spawn Parachute below player.
                 parachute.setDeltaMovement(player.getDeltaMovement());
@@ -45,20 +46,20 @@ public class ParachuteItem extends Item {
                     if (player.getVehicle() instanceof Parachute) { // Using a Parachute while already having one will switch to the new one.
                         player.getVehicle().ejectPassengers();
                     } else {
-                        return InteractionResultHolder.pass(heldStack);
+                        return InteractionResult.PASS;
                     }
                 }
                 if (!level.isClientSide()) { // Spawn Parachute and damage item (or automatically break for Cold Parachutes since they have 1 durability).
                     level.addFreshEntity(parachute);
                     player.startRiding(parachute);
-                    heldStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                    heldStack.hurtAndBreak(1, player, hand);
                 }
                 parachute.spawnExplosionParticle();
                 player.awardStat(Stats.ITEM_USED.get(this));
-                return InteractionResultHolder.sidedSuccess(heldStack, level.isClientSide());
+                return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
             }
         }
-        return InteractionResultHolder.pass(heldStack);
+        return InteractionResult.PASS;
     }
 
     public Supplier<? extends EntityType<? extends Parachute>> getParachuteEntity() {

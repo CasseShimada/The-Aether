@@ -5,13 +5,16 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 
 import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
@@ -50,20 +53,21 @@ public class AltarRepairBuilder implements RecipeBuilder {
 
     @Override
     public Item getResult() {
-        return this.ingredient.getItems()[0].getItem();
+        return this.ingredient.items().findFirst().map(holder -> holder.value()).orElse(Items.AIR);
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> recipeKey) {
+        Identifier id = recipeKey.identifier();
         this.ensureValid(id);
-        Advancement.Builder advancement$builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(AdvancementRequirements.Strategy.OR);
+        Advancement.Builder advancement$builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey)).rewards(AdvancementRewards.Builder.recipe(recipeKey)).requirements(AdvancementRequirements.Strategy.OR);
         Objects.requireNonNull(advancement$builder);
         this.criteria.forEach(advancement$builder::addCriterion);
         AltarRepairRecipe recipe = new AltarRepairRecipe(this.group == null ? "" : this.group, this.ingredient, this.repairTime);
-        recipeOutput.accept(id, recipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
+        recipeOutput.accept(recipeKey, recipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 
-    private void ensureValid(ResourceLocation id) {
+    private void ensureValid(Identifier id) {
         if (this.criteria.isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + id);
         }

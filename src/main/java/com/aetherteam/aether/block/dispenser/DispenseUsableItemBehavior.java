@@ -1,6 +1,8 @@
 package com.aetherteam.aether.block.dispenser;
 
+import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.materials.behavior.ItemUseConversion;
+import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.MatchEventRecipe;
 import com.aetherteam.nitrogen.recipe.recipes.BlockStateRecipe;
 import net.minecraft.core.BlockPos;
@@ -30,5 +32,10 @@ public class DispenseUsableItemBehavior<R extends MatchEventRecipe & BlockStateR
             this.setSuccess(false);
         }
         return stack;
+    }
+
+    public static void registerDispenserBehaviors() {
+        DispenserBlock.registerBehavior(AetherItems.AMBROSIUM_SHARD.get(), new DispenseUsableItemBehavior<>(AetherRecipeTypes.AMBROSIUM_ENCHANTING.get()));
+        DispenserBlock.registerBehavior(AetherItems.SWET_BALL.get(), new DispenseUsableItemBehavior<>(AetherRecipeTypes.SWET_BALL_CONVERSION.get()));
     }
 }

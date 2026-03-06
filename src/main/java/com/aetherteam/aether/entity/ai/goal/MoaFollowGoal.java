@@ -2,9 +2,7 @@ package com.aetherteam.aether.entity.ai.goal;
 
 import com.aetherteam.aether.entity.passive.Moa;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
 
@@ -13,8 +11,6 @@ import javax.annotation.Nullable;
  * Modified to handle following a player by checking {@link Moa#getFollowing()} instead of checking for a temptation item.
  */
 public class MoaFollowGoal extends TemptGoal {
-    private static final TargetingConditions TEMP_TARGETING = TargetingConditions.forNonCombat().range(10.0).ignoreLineOfSight();
-    private final TargetingConditions targetingConditions;
     private final Moa moa;
     private final double speedModifier;
     @Nullable
@@ -23,10 +19,9 @@ public class MoaFollowGoal extends TemptGoal {
     private boolean isRunning;
 
     public MoaFollowGoal(Moa moa, double speedModifier) {
-        super(moa, speedModifier, Ingredient.EMPTY, false);
+        super(moa, speedModifier, (livingEntity) -> false, false);
         this.moa = moa;
         this.speedModifier = speedModifier;
-        this.targetingConditions = TEMP_TARGETING.copy().selector((livingEntity) -> livingEntity.getUUID().equals(this.moa.getFollowing()));
     }
 
     @Override
@@ -35,7 +30,10 @@ public class MoaFollowGoal extends TemptGoal {
             --this.calmDown;
             return false;
         } else {
-            this.player = this.moa.level().getNearestPlayer(this.targetingConditions, this.moa);
+            this.player = this.moa.getFollowing() == null ? null : this.moa.level().getPlayerInAnyDimension(this.moa.getFollowing());
+            if (this.player != null && this.player.level() != this.moa.level()) {
+                this.player = null;
+            }
             if (this.player != null) {
                 if (this.moa.distanceToSqr(this.player) >= 6.25) {
                     this.mob.getMoveControl().setWantedPosition(this.player.getX(), this.player.getY(), this.player.getZ(), this.speedModifier);

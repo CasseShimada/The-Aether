@@ -3,9 +3,10 @@ package com.aetherteam.aether.entity.miscellaneous;
 import com.aetherteam.aether.entity.EntityUtil;
 import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListenerImplAccessor;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +15,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -41,11 +44,11 @@ public class Parachute extends Entity {
         super.tick();
         LivingEntity passenger = this.getControllingPassenger();
         if (passenger != null) {
-            this.checkSlowFallDistance(); // Resets the Parachute's fall distance.
+            this.resetFallDistance(); // Resets the Parachute's fall distance.
             this.moveParachute(passenger);
             this.spawnExplosionParticle();
-            if (this.onGround() || this.isInFluidType() || this.verticalCollisionBelow) { // The parachute breaks when it collides with something.
-                passenger.checkSlowFallDistance(); // Fall distance reset safeguard.
+            if (this.onGround() || this.isInLiquid() || this.verticalCollisionBelow) { // The parachute breaks when it collides with something.
+                passenger.resetFallDistance(); // Fall distance reset safeguard.
                 this.ejectPassengers();
                 this.die();
             }
@@ -110,8 +113,8 @@ public class Parachute extends Entity {
      */
     public void die() {
         this.spawnExplosionParticle();
-        if (!this.level().isClientSide()) {
-            this.kill();
+        if (this.level() instanceof ServerLevel serverLevel) {
+            this.kill(serverLevel);
         }
     }
 
@@ -129,12 +132,10 @@ public class Parachute extends Entity {
         return true;
     }
 
-    @Override
     public boolean canRiderInteract() {
         return false;
     }
 
-    @Override
     public boolean shouldRiderSit() {
         return false;
     }
@@ -200,10 +201,15 @@ public class Parachute extends Entity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
+    protected void addAdditionalSaveData(ValueOutput output) {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
+    protected void readAdditionalSaveData(ValueInput input) {
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        return false;
     }
 }

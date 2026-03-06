@@ -9,6 +9,7 @@ import com.aetherteam.aether.world.BlockLogicUtil;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.WorldGenRegion;
@@ -44,7 +45,7 @@ public class CrystalIslandFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
-        PlacedFeature feature = PlacementUtils.inlinePlaced(level.holderOrThrow(AetherConfiguredFeatures.CRYSTAL_TREE_CONFIGURATION)).value();
+        PlacedFeature feature = PlacementUtils.inlinePlaced(level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getOrThrow(AetherConfiguredFeatures.CRYSTAL_TREE_CONFIGURATION)).value();
         if (feature.place(level, context.chunkGenerator(), context.random(), context.origin().above())) {
             for (int i = 0; i < 3; i++) {
                 BlockState state;

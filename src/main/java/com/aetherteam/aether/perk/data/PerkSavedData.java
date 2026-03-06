@@ -5,9 +5,9 @@ import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
 import java.util.HashMap;
@@ -16,6 +16,13 @@ import java.util.UUID;
 
 public class PerkSavedData extends SavedData {
     public static final String FILE_NAME = "perks";
+    private static final SavedDataType<PerkSavedData> TYPE = new SavedDataType<>(
+            FILE_NAME,
+            PerkSavedData::new,
+            CompoundTag.CODEC.xmap(PerkSavedData::load, PerkSavedData::saveTag),
+            null
+    );
+
     private final Map<UUID, MoaData> storedSkinData = new HashMap<>();
     private final Map<UUID, Halo> storedHaloData = new HashMap<>();
     private final Map<UUID, DeveloperGlow> storedDeveloperGlowData = new HashMap<>();
@@ -23,16 +30,15 @@ public class PerkSavedData extends SavedData {
     /**
      * Saves perk data to the world in a file named "perks.dat".
      *
-     * @param tag The {@link CompoundTag} to save the data to.
      * @return A {@link CompoundTag} with the data.
      */
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+    private CompoundTag saveTag() {
+        CompoundTag tag = new CompoundTag();
         CompoundTag storedSkinDataTag = new CompoundTag();
         for (Map.Entry<UUID, MoaData> moaDataEntry : this.storedSkinData.entrySet()) {
             CompoundTag moaDataEntryTag = new CompoundTag();
             if (moaDataEntry.getValue().moaUUID() != null) {
-                moaDataEntryTag.putUUID("MoaUUID", moaDataEntry.getValue().moaUUID());
+                moaDataEntryTag.putString("MoaUUID", moaDataEntry.getValue().moaUUID().toString());
             }
             if (moaDataEntry.getValue().moaSkin() != null) {
                 moaDataEntryTag.putString("MoaSkin", moaDataEntry.getValue().moaSkin().getId());
@@ -70,49 +76,36 @@ public class PerkSavedData extends SavedData {
      * @param tag The {@link CompoundTag}.
      * @return The {@link PerkSavedData} created from the world data.
      */
-    public static PerkSavedData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+    public static PerkSavedData load(CompoundTag tag) {
         PerkSavedData data = PerkSavedData.create();
-        for (String key : tag.getAllKeys()) {
-            if (key.equals("StoredSkinData")) {
-                CompoundTag storedSkinDataTag = tag.getCompound(key);
-                for (String storedSkinDataKey : storedSkinDataTag.getAllKeys()) {
-                    CompoundTag moaDataEntryTag = storedSkinDataTag.getCompound(storedSkinDataKey);
-                    UUID playerUUID = UUID.fromString(storedSkinDataKey);
-                    UUID moaUUID = null;
-                    String moaSkinId = null;
-                    if (moaDataEntryTag.contains("MoaUUID")) {
-                        moaUUID = moaDataEntryTag.getUUID("MoaUUID");
-                    }
-                    if (moaDataEntryTag.contains("MoaSkin")) {
-                        moaSkinId = moaDataEntryTag.getString("MoaSkin");
-                    }
-                    MoaSkins.MoaSkin moaSkin = MoaSkins.getMoaSkins().get(moaSkinId);
-                    data.storedSkinData.put(playerUUID, new MoaData(moaUUID, moaSkin));
-                }
+        CompoundTag storedSkinDataTag = tag.getCompoundOrEmpty("StoredSkinData");
+        for (String storedSkinDataKey : storedSkinDataTag.keySet()) {
+            CompoundTag moaDataEntryTag = storedSkinDataTag.getCompoundOrEmpty(storedSkinDataKey);
+            UUID playerUUID = parseUuid(storedSkinDataKey);
+            if (playerUUID == null) {
+                continue;
             }
-            if (key.equals("StoredHaloData")) {
-                CompoundTag storedHaloDataTag = tag.getCompound(key);
-                for (String storedHaloDataKey : storedHaloDataTag.getAllKeys()) {
-                    CompoundTag haloEntryTag = storedHaloDataTag.getCompound(storedHaloDataKey);
-                    UUID playerUUID = UUID.fromString(storedHaloDataKey);
-                    String hexColor = null;
-                    if (haloEntryTag.contains("HexColor")) {
-                        hexColor = haloEntryTag.getString("HexColor");
-                    }
-                    data.storedHaloData.put(playerUUID, new Halo(hexColor));
-                }
+            UUID moaUUID = parseUuid(moaDataEntryTag.getStringOr("MoaUUID", ""));
+            String moaSkinId = moaDataEntryTag.getStringOr("MoaSkin", "");
+            MoaSkins.MoaSkin moaSkin = MoaSkins.getMoaSkins().get(moaSkinId);
+            data.storedSkinData.put(playerUUID, new MoaData(moaUUID, moaSkin));
+        }
+
+        CompoundTag storedHaloDataTag = tag.getCompoundOrEmpty("StoredHaloData");
+        for (String storedHaloDataKey : storedHaloDataTag.keySet()) {
+            CompoundTag haloEntryTag = storedHaloDataTag.getCompoundOrEmpty(storedHaloDataKey);
+            UUID playerUUID = parseUuid(storedHaloDataKey);
+            if (playerUUID != null) {
+                data.storedHaloData.put(playerUUID, new Halo(haloEntryTag.getStringOr("HexColor", "")));
             }
-            if (key.equals("StoredDeveloperGlowData")) {
-                CompoundTag storedDeveloperGlowDataTag = tag.getCompound(key);
-                for (String storedDeveloperGlowDataKey : storedDeveloperGlowDataTag.getAllKeys()) {
-                    CompoundTag developerGlowEntryTag = storedDeveloperGlowDataTag.getCompound(storedDeveloperGlowDataKey);
-                    UUID playerUUID = UUID.fromString(storedDeveloperGlowDataKey);
-                    String hexColor = null;
-                    if (developerGlowEntryTag.contains("HexColor")) {
-                        hexColor = developerGlowEntryTag.getString("HexColor");
-                    }
-                    data.storedDeveloperGlowData.put(playerUUID, new DeveloperGlow(hexColor));
-                }
+        }
+
+        CompoundTag storedDeveloperGlowDataTag = tag.getCompoundOrEmpty("StoredDeveloperGlowData");
+        for (String storedDeveloperGlowDataKey : storedDeveloperGlowDataTag.keySet()) {
+            CompoundTag developerGlowEntryTag = storedDeveloperGlowDataTag.getCompoundOrEmpty(storedDeveloperGlowDataKey);
+            UUID playerUUID = parseUuid(storedDeveloperGlowDataKey);
+            if (playerUUID != null) {
+                data.storedDeveloperGlowData.put(playerUUID, new DeveloperGlow(developerGlowEntryTag.getStringOr("HexColor", "")));
             }
         }
         return data;
@@ -129,7 +122,15 @@ public class PerkSavedData extends SavedData {
      * @return The {@link PerkSavedData} corresponding to the data file.
      */
     public static PerkSavedData compute(DimensionDataStorage dataStorage) {
-        return dataStorage.computeIfAbsent(new SavedData.Factory<>(PerkSavedData::create, PerkSavedData::load, null), FILE_NAME);
+        return dataStorage.computeIfAbsent(TYPE);
+    }
+
+    private static UUID parseUuid(String value) {
+        try {
+            return value.isEmpty() ? null : UUID.fromString(value);
+        } catch (IllegalArgumentException exception) {
+            return null;
+        }
     }
 
     /**

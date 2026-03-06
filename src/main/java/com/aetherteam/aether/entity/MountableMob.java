@@ -4,7 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListenerImplAccessor;
 import com.aetherteam.aether.network.packet.serverbound.StepHeightPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,15 +17,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 /**
  * This interface has several methods for handling the movement for mounted mobs.
  */
 public interface MountableMob {
-    ResourceLocation MOUNT_HEIGHT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "mounted_step_height_increase");
-    ResourceLocation DEFAULT_HEIGHT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "default_step_height_increase");
+    Identifier MOUNT_HEIGHT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "mounted_step_height_increase");
+    Identifier DEFAULT_HEIGHT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "default_step_height_increase");
     AttributeModifier STEP_HEIGHT_MODIFIER = new AttributeModifier(MOUNT_HEIGHT_LOCATION, 0.4, AttributeModifier.Operation.ADD_VALUE);
     AttributeModifier DEFAULT_STEP_HEIGHT_MODIFIER = new AttributeModifier(DEFAULT_HEIGHT_LOCATION, -0.1, AttributeModifier.Operation.ADD_VALUE);
 
@@ -36,7 +35,7 @@ public interface MountableMob {
      */
     default void riderTick(Mob vehicle) {
         if (vehicle.getControllingPassenger() instanceof Player player) {
-            this.setPlayerJumped(player.getData(AetherDataAttachments.AETHER_PLAYER).isJumping());
+            this.setPlayerJumped(player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isJumping());
         }
     }
 
@@ -91,17 +90,15 @@ public interface MountableMob {
             if (vehicle.getPlayerJumped() && !vehicle.isMountJumping() && vehicle.canJump()) {
                 double jumpStrength = vehicle.getMountJumpStrength() * this.jumpFactor();
                 vehicle.setDeltaMovement(vehicle.getDeltaMovement().x(), jumpStrength, vehicle.getDeltaMovement().z());
-                if (vehicle.hasEffect(MobEffects.JUMP)) {
-                    MobEffectInstance jumpBoost = vehicle.getEffect(MobEffects.JUMP);
+                if (vehicle.hasEffect(MobEffects.JUMP_BOOST)) {
+                    MobEffectInstance jumpBoost = vehicle.getEffect(MobEffects.JUMP_BOOST);
                     if (jumpBoost != null) {
                         vehicle.push(0.0, 0.1 * (jumpBoost.getAmplifier() + 1), 0.0);
                     }
                 }
-                vehicle.hasImpulse = true;
                 vehicle.onJump(vehicle);
             } else if (vehicle.getPlayerJumped() && vehicle.isMountJumping() && vehicle.canJump() && Swim.shouldSwim(vehicle)) {
-                vehicle.jumpInFluid(vehicle.level().getFluidState(vehicle.getOnPos()).getFluidType());
-                vehicle.hasImpulse = true;
+                vehicle.jumpFromGround();
                 vehicle.onJump(vehicle);
             }
             // Handles step height.
@@ -118,7 +115,7 @@ public interface MountableMob {
                 }
             }
             // Handles movement.
-            if (vehicle.isControlledByLocalInstance()) {
+            if (vehicle.isLocalInstanceAuthoritative()) {
                 vehicle.setSpeed(vehicle.getSteeringSpeed());
                 this.travelWithInput(new Vec3(f, motion.y, f1));
             } else if (passenger instanceof Player) {
@@ -197,7 +194,7 @@ public interface MountableMob {
      * @param vehicle The vehicle {@link Mob}.
      */
     default void onJump(Mob vehicle) {
-        CommonHooks.onLivingJump(vehicle);
+        // No loader hook required; jump handling is done in travel logic above.
     }
 
     default AttributeModifier getMountStepHeightModifier() {

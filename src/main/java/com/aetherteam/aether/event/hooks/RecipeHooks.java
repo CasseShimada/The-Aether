@@ -16,6 +16,7 @@ import com.aetherteam.aether.recipe.recipes.block.PlacementConversionRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BedBlock;
@@ -35,8 +37,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.Map;
 
@@ -91,9 +91,11 @@ public class RecipeHooks {
      * @return Whether the interaction is banned, as a {@link Boolean}.
      */
     public static boolean isItemPlacementBanned(Level level, BlockPos pos, Direction face, ItemStack stack, boolean spawnParticles) {
-        for (RecipeHolder<ItemBanRecipe> recipe : level.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.ITEM_PLACEMENT_BAN.get())) {
-            if (recipe.value().banItem(level, pos, face, stack, spawnParticles)) {
-                return true;
+        if (level.recipeAccess() instanceof RecipeManager recipeManager) {
+            for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
+                if (recipe.value().getType() == AetherRecipeTypes.ITEM_PLACEMENT_BAN.get() && ((ItemBanRecipe) recipe.value()).banItem(level, pos, face, stack, spawnParticles)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -129,9 +131,9 @@ public class RecipeHooks {
      * @return Whether the placement is banned, as a {@link Boolean}.
      */
     private static boolean isBlockPlacementBanned(Level level, BlockPos pos, BlockState state) {
-        if (!level.isClientSide()) {
-            for (RecipeHolder<BlockBanRecipe> recipe : level.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.BLOCK_PLACEMENT_BAN.get())) {
-                if (recipe.value().banBlock(level, pos, state)) {
+        if (!level.isClientSide() && level.recipeAccess() instanceof RecipeManager recipeManager) {
+            for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
+                if (recipe.value().getType() == AetherRecipeTypes.BLOCK_PLACEMENT_BAN.get() && ((BlockBanRecipe) recipe.value()).banBlock(level, pos, state)) {
                     return true;
                 }
             }
@@ -147,9 +149,9 @@ public class RecipeHooks {
      * @param state The placed {@link BlockState}.
      */
     private static void isBlockPlacementConvertable(Level level, BlockPos pos, BlockState state) {
-        if (!level.isClientSide()) {
-            for (RecipeHolder<PlacementConversionRecipe> recipe : level.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.PLACEMENT_CONVERSION.get())) {
-                if (recipe.value().convert(level, pos, state)) {
+        if (!level.isClientSide() && level.recipeAccess() instanceof RecipeManager recipeManager) {
+            for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
+                if (recipe.value().getType() == AetherRecipeTypes.PLACEMENT_CONVERSION.get() && ((PlacementConversionRecipe) recipe.value()).convert(level, pos, state)) {
                     return;
                 }
             }
@@ -189,7 +191,7 @@ public class RecipeHooks {
             BlockState oldBlockState = level.getBlockState(pos);
             FreezingBlock.cacheRecipes(level);
             if (FreezingBlock.matchesCache(oldBlockState.getBlock(), oldBlockState) != null) {
-                level.gameEvent(AetherGameEvents.ICESTONE_FREEZABLE_UPDATE, pos, GameEvent.Context.of(oldBlockState));
+                level.gameEvent(BuiltInRegistries.GAME_EVENT.wrapAsHolder(AetherGameEvents.ICESTONE_FREEZABLE_UPDATE.get()), pos, GameEvent.Context.of(oldBlockState));
             }
         }
     }

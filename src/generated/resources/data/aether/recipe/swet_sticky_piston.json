@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "minecraft:sticky_piston",
   "key": {
-    "B": {
-      "tag": "aether:swet_balls"
-    },
-    "P": {
-      "item": "minecraft:piston"
-    }
+    "B": "#aether:swet_balls",
+    "P": "minecraft:piston"
   },
   "pattern": [
     "B",

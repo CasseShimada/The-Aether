@@ -13,7 +13,7 @@ import net.minecraft.world.item.SwordItem;
 
 public class VampireBladeItem extends SwordItem {
     public VampireBladeItem() {
-        super(AetherItemTiers.VAMPIRE, new Item.Properties().rarity(AetherItems.AETHER_LOOT).attributes(SwordItem.createAttributes(AetherItemTiers.VAMPIRE, 3.0F, -2.4F)));
+        super(AetherItemTiers.VAMPIRE, SwordItem.createAttributes(AetherItemTiers.VAMPIRE, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
     }
 
     /**
@@ -26,16 +26,16 @@ public class VampireBladeItem extends SwordItem {
      * @return Whether the enemy was hurt or not, as a {@link Boolean}.
      */
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker)) {
             if (attacker.getHealth() < attacker.getMaxHealth()) {
                 if (attacker instanceof Player player) {
-                    player.getData(AetherDataAttachments.AETHER_PLAYER).setVampireHealing(true);
+                    player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setVampireHealing(true);
                 } else {
                     attacker.heal(1.0F);
                 }
             }
         }
-        return super.hurtEnemy(stack, target, attacker);
+        super.hurtEnemy(stack, target, attacker);
     }
 }

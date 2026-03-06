@@ -299,7 +299,6 @@
   "config.aether.client.gui.menu_type_toggles_alignment": "Xác định rằng các yếu tố menu sẽ căn trái nếu menu xem trước thế giới hoạt động, nếu đúng, điều này sẽ ghi đè 'Căn chỉnh các yếu tố menu trái'",
   "config.aether.client.gui.portal_text_y": "Tọa độ y của văn bản Lên Aether và Xuống từ Aether trong màn hình tải",
   "config.aether.client.miscellaneous.enable_server_button": "Bật nút tham gia trực tiếp cho máy chủ chính thức",
-  "config.aether.client.miscellaneous.should_disable_cumulus_button": "Tắt nút chọn màn hình Cumulus khi khởi động",
   "config.aether.client.rendering.colder_lightmap": "Loại bỏ sự ấm áp của ánh sáng trong Aether, tạo cho ánh sáng cảm giác lạnh hơn",
   "config.aether.client.rendering.disable_aether_skybox": "Tắt skybox tùy chỉnh của Aether trong trường hợp bạn có shader không tương thích với skybox tùy chỉnh",
   "config.aether.client.rendering.green_sunset": "Bật bình minh và hoàng hôn màu xanh lục trong Aether, tương tự như mod gốc",

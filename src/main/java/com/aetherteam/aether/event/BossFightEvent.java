@@ -3,16 +3,15 @@ package com.aetherteam.aether.event;
 import com.aetherteam.nitrogen.entity.BossRoomTracker;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.fml.LogicalSide;
-import net.neoforged.neoforge.event.entity.EntityEvent;
 
 /**
  * BossFightEvent is fired when an event for a boss fight occurs.<br>
- * * If a method utilizes this {@link EntityEvent} as its parameter, the method will receive every child event of this class.<br>
+ * * If a method utilizes this event as its parameter, the method will receive every child event of this class.<br>
  * * <br>
- * * All children of this event are fired on the {@link net.neoforged.neoforge.common.NeoForge#EVENT_BUS}.
+ * * All children of this event are dispatched from Aether's local event dispatch points.
  */
-public abstract class BossFightEvent extends EntityEvent {
+public abstract class BossFightEvent {
+    private final Entity entity;
     private final BossRoomTracker<?> dungeon;
 
     /**
@@ -20,8 +19,12 @@ public abstract class BossFightEvent extends EntityEvent {
      * @param dungeon The {@link BossRoomTracker} representing the boss's dungeon.
      */
     public BossFightEvent(Entity entity, BossRoomTracker<?> dungeon) {
-        super(entity);
+        this.entity = entity;
         this.dungeon = dungeon;
+    }
+
+    public Entity getEntity() {
+        return this.entity;
     }
 
     /**
@@ -34,9 +37,9 @@ public abstract class BossFightEvent extends EntityEvent {
     /**
      * BossFightEvent.Start is fired when a boss starts a fight.
      * <br>
-     * This event is not {@link net.neoforged.bus.api.ICancellableEvent}. <br>
+     * This event is not cancellable. <br>
      * <br>
-     * This event is fired on both {@link LogicalSide sides}.
+     * This event is fired on both sides.
      */
     public static class Start extends BossFightEvent {
         public Start(Entity entity, BossRoomTracker<?> dungeon) {
@@ -47,9 +50,9 @@ public abstract class BossFightEvent extends EntityEvent {
     /**
      * BossFightEvent.Start is fired when a boss stops a fight.
      * <br>
-     * This event is not {@link net.neoforged.bus.api.ICancellableEvent}. <br>
+     * This event is not cancellable. <br>
      * <br>
-     * This event is fired on both {@link LogicalSide sides}.
+     * This event is fired on both sides.
      */
     public static class Stop extends BossFightEvent {
         public Stop(Entity entity, BossRoomTracker<?> dungeon) {
@@ -60,9 +63,9 @@ public abstract class BossFightEvent extends EntityEvent {
     /**
      * BossFightEvent.AddPlayer is fired when a player is added to a boss fight.
      * <br>
-     * This event is not {@link net.neoforged.bus.api.ICancellableEvent}. <br>
+     * This event is not cancellable. <br>
      * <br>
-     * This event is only fired on the {@link LogicalSide#SERVER} side.<br>
+     * This event is only fired on the server side.<br>
      */
     public static class AddPlayer extends BossFightEvent {
         private final ServerPlayer player;
@@ -83,9 +86,9 @@ public abstract class BossFightEvent extends EntityEvent {
     /**
      * BossFightEvent.RemovePlayer is fired when a player is removed from a boss fight.
      * <br>
-     * This event is not {@link net.neoforged.bus.api.ICancellableEvent}. <br>
+     * This event is not cancellable. <br>
      * <br>
-     * This event is only fired on the {@link LogicalSide#SERVER} side.<br>
+     * This event is only fired on the server side.<br>
      */
     public static class RemovePlayer extends BossFightEvent {
         private final ServerPlayer player;

@@ -15,9 +15,10 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -83,19 +84,19 @@ public class AetherMusicManager {
         if (music != null) {
             if (currentMusic != null) {
                 if (fade == null) {
-                    if (!music.getEvent().value().getLocation().equals(currentMusic.getLocation()) && music.replaceCurrentMusic()) {
+                    if (!music.sound().value().location().equals(currentMusic.getIdentifier()) && music.replaceCurrentMusic()) {
                         minecraft.getSoundManager().stop(currentMusic); // Non-copy, cancels vanilla music if Aether music starts
-                        nextSongDelay = Mth.nextInt(random, 0, music.getMinDelay() / 2);
+                        nextSongDelay = Mth.nextInt(random, 0, music.minDelay() / 2);
                     }
 
                     if (!minecraft.getSoundManager().isActive(currentMusic)) {
                         currentMusic = null;
-                        nextSongDelay = Math.min(nextSongDelay, Mth.nextInt(random, music.getMinDelay(), music.getMaxDelay()));
+                        nextSongDelay = Math.min(nextSongDelay, Mth.nextInt(random, music.minDelay(), music.maxDelay()));
                     }
                 }
             }
 
-            nextSongDelay = Math.min(nextSongDelay, music.getMaxDelay());
+            nextSongDelay = Math.min(nextSongDelay, music.maxDelay());
             if (currentMusic == null && nextSongDelay-- <= 0) {
                 startPlaying(music);
             }
@@ -115,9 +116,9 @@ public class AetherMusicManager {
     public static void startPlaying(Music music) {
         musicManager.stopPlaying(); // Non-copy, cancels vanilla music if Aether music starts
         if (isAetherBossMusic(music)) {
-            currentMusic = MusicSoundInstance.forBossMusic(music.getEvent().value());
+            currentMusic = MusicSoundInstance.forBossMusic(music.sound().value());
         } else {
-            currentMusic = MusicSoundInstance.forMusic(music.getEvent().value());
+            currentMusic = MusicSoundInstance.forMusic(music.sound().value());
         }
         if (currentMusic.getSound() != SoundManager.EMPTY_SOUND) {
             minecraft.getSoundManager().play(currentMusic);
@@ -161,7 +162,11 @@ public class AetherMusicManager {
                 } else {
                     Holder<Biome> holder = minecraft.player.level().getBiome(minecraft.player.blockPosition());
                     if (isCreative(holder, minecraft.player)) {
-                        return (holder.value().getBackgroundMusic().orElse(Musics.GAME));
+                        var musicEntry = holder.value().getAttributes().get(EnvironmentAttributes.BACKGROUND_MUSIC);
+                        if (musicEntry != null && musicEntry.argument() instanceof BackgroundMusic backgroundMusic) {
+                            return backgroundMusic.select(minecraft.player.getAbilities().instabuild, minecraft.player.getAbilities().mayfly).orElse(Musics.GAME);
+                        }
+                        return Musics.GAME;
                     }
                 }
             }
@@ -170,7 +175,7 @@ public class AetherMusicManager {
     }
 
     public static boolean isAetherBossMusic(Music music) {
-        return music.getEvent().is(AetherTags.SoundEvents.BOSS_MUSIC);
+        return music.sound().is(AetherTags.SoundEvents.BOSS_MUSIC);
     }
 
     public static boolean isAetherBossMusicActive() {
@@ -199,7 +204,7 @@ public class AetherMusicManager {
      */
     public static boolean isCreative(Holder<Biome> holder, Player player) {
         return player.level().dimension() != Level.END && player.level().dimension() != Level.NETHER && holder.is(AetherTags.Biomes.AETHER_MUSIC)
-                && !musicManager.isPlayingMusic(Musics.UNDER_WATER) && (!player.isUnderWater() || !holder.is(BiomeTags.PLAYS_UNDERWATER_MUSIC))
-                && player.getAbilities().instabuild && player.mayFly();
+                && !musicManager.isPlayingMusic(Musics.UNDER_WATER)
+                && player.getAbilities().instabuild && player.getAbilities().mayfly;
     }
 }

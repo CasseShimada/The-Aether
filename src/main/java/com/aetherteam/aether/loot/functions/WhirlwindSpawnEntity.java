@@ -2,11 +2,12 @@ package com.aetherteam.aether.loot.functions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.HolderSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -43,18 +44,18 @@ public class WhirlwindSpawnEntity extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         ServerLevel serverLevel = context.getLevel();
-        Vec3 originVec = context.getParamOrNull(LootContextParams.ORIGIN);
+        Vec3 originVec = context.getOptionalParameter(LootContextParams.ORIGIN);
         if (originVec != null) {
             for (int i = 0; i < this.count.sample(serverLevel.getRandom()); i++) {
-                HolderSet<EntityType<?>> holderSet = this.entityType.types();
-                if (holderSet.size() > 0) {
-                    Entity entity = this.entityType.types().get(serverLevel.getRandom().nextInt(holderSet.size())).value().create(serverLevel);
-                    if (entity != null) {
-                        entity.moveTo(originVec.x(), originVec.y() + 0.5, originVec.z(), ((float) Math.random()) * 360.0F, 0.0F);
-                        entity.setDeltaMovement((Math.random() - Math.random()) * 0.125, entity.getDeltaMovement().y(), (Math.random() - Math.random()) * 0.125);
-                        serverLevel.addFreshEntity(entity);
+                    HolderSet<EntityType<?>> holderSet = this.entityType.types();
+                    if (holderSet.size() > 0) {
+                        Entity entity = this.entityType.types().get(serverLevel.getRandom().nextInt(holderSet.size())).value().create(serverLevel, EntitySpawnReason.TRIGGERED);
+                        if (entity != null) {
+                            entity.absSnapTo(originVec.x(), originVec.y() + 0.5, originVec.z(), ((float) Math.random()) * 360.0F, 0.0F);
+                            entity.setDeltaMovement((Math.random() - Math.random()) * 0.125, entity.getDeltaMovement().y(), (Math.random() - Math.random()) * 0.125);
+                            serverLevel.addFreshEntity(entity);
+                        }
                     }
-                }
             }
         }
         return stack;

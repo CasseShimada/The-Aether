@@ -4,15 +4,14 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.miscellaneous.ConsumableItem;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class GummySwetItem extends Item implements ConsumableItem {
     public GummySwetItem() {
@@ -26,25 +25,23 @@ public class GummySwetItem extends Item implements ConsumableItem {
      * @param player The {@link Player} using this item.
      * @param hand   The {@link InteractionHand} in which the item is being used.
      * @return Consume (cause the item to bob down then up in hand) if the item is successfully used whether it be for eating or healing, or fail (do nothing) if those conditions aren't met.
-     * This is an {@link InteractionResultHolder InteractionResultHolder&lt;ItemStack&gt;}.
      */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack heldStack = player.getItemInHand(hand);
-        if (this.getFoodProperties(heldStack, player) != null) { // If AetherConfig.SERVER.healing_gummy_swets.get() is false.
-            FoodProperties foodProperties = this.getFoodProperties(heldStack, player);
-            if (foodProperties != null && player.canEat(foodProperties.canAlwaysEat())) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (!(AetherConfig.SERVER_SPEC.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
+            FoodProperties foodProperties = AetherFoods.GUMMY_SWET;
+            if (player.canEat(foodProperties.canAlwaysEat())) {
                 player.startUsingItem(hand);
-                return InteractionResultHolder.consume(heldStack);
+                return InteractionResult.CONSUME;
             } else {
-                return InteractionResultHolder.fail(heldStack);
+                return InteractionResult.FAIL;
             }
-        } else { // If AetherConfig.SERVER.healing_gummy_swets.get() is true.
+        } else { // Behaves as direct healing.
             if (player.getHealth() < player.getMaxHealth() && !player.isCreative()) {
                 player.startUsingItem(hand);
-                return InteractionResultHolder.consume(heldStack);
+                return InteractionResult.CONSUME;
             } else {
-                return InteractionResultHolder.fail(heldStack);
+                return InteractionResult.FAIL;
             }
         }
     }
@@ -60,9 +57,9 @@ public class GummySwetItem extends Item implements ConsumableItem {
      */
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
-        if (this.getFoodProperties(stack, user) != null) { // If AetherConfig.SERVER.healing_gummy_swets.get() is false.
-            return user.eat(level, stack); // Automatically handles the criteria trigger and stat awarding code.
-        } else { // If AetherConfig.SERVER.healing_gummy_swets.get() is true.
+        if (!(AetherConfig.SERVER_SPEC.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
+            return super.finishUsingItem(stack, level, user);
+        } else { // Behaves as direct healing.
             user.heal(user.getMaxHealth());
             this.consume(this, stack, user);
             return stack;
@@ -70,24 +67,12 @@ public class GummySwetItem extends Item implements ConsumableItem {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.EAT;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.EAT;
     }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 16;
-    }
-
-    /**
-     * @return A {@link Boolean} based on if the Gummy Swet heals or fills hunger. When the {@link AetherConfig.Server#healing_gummy_swets} config is false, this is true.
-     * This is based on the difference of Gummy Swets being used to heal in b1.7.3 and being used for hunger in 1.2.5.
-     */
-    @Override
-    public @Nullable FoodProperties getFoodProperties(ItemStack stack, @Nullable LivingEntity entity) {
-        if (AetherConfig.SERVER_SPEC.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get()) {
-            return null;
-        }
-        return super.getFoodProperties(stack, entity);
     }
 }

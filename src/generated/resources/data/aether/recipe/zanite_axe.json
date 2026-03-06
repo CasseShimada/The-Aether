@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "aether:gems/zanite"
-    },
-    "/": {
-      "tag": "aether:skyroot_stick"
-    }
+    "#": "#aether:gems/zanite",
+    "/": "#aether:skyroot_stick"
   },
   "pattern": [
     "##",

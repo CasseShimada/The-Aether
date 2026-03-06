@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:barrel",
   "key": {
-    "H": {
-      "tag": "minecraft:wooden_slabs"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "H": "#minecraft:wooden_slabs",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "PHP",

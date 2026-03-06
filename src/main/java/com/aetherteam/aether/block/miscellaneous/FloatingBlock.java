@@ -8,7 +8,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,15 +32,15 @@ public class FloatingBlock extends Block implements Floatable {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
-        level.scheduleTick(pos, this, this.getDelayAfterPlace());
-        return super.updateShape(state, direction, facingState, level, pos, facingPos);
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource randomSource) {
+        scheduledTickAccess.scheduleTick(pos, this, this.getDelayAfterPlace());
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, facingPos, facingState, randomSource);
     }
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
-        if (((this.powered && level.hasNeighborSignal(pos)) || (!this.powered && pos.getY() <= level.getMaxBuildHeight())) && isFree(level.getBlockState(pos.above()))) {
+        if (((this.powered && level.hasNeighborSignal(pos)) || (!this.powered && pos.getY() <= level.getMaxY())) && isFree(level.getBlockState(pos.above()))) {
             FloatingBlockEntity floatingBlockEntity = new FloatingBlockEntity(level, (double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5, level.getBlockState(pos));
             if (this.powered) {
                 floatingBlockEntity.setNatural(false);

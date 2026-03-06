@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "minecraft:shield",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "I": "#c:ingots/iron",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "PIP",

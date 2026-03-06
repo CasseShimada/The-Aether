@@ -1,19 +1,16 @@
 package com.aetherteam.aether.client.renderer.accessory.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 /**
- * [CODE COPY] - {@link net.minecraft.client.model.PlayerModel}.<br><br>
+ * [CODE COPY] - {@link net.minecraft.client.model.player.PlayerModel}.<br><br>
  * Only copied parts related to capes.
  */
-public class CapeModel extends HumanoidModel<LivingEntity> {
+public class CapeModel extends HumanoidModel<HumanoidRenderState> {
     private final ModelPart cloak;
 
     public CapeModel(ModelPart root) {
@@ -29,22 +26,17 @@ public class CapeModel extends HumanoidModel<LivingEntity> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        this.cloak.render(poseStack, buffer, packedLight, packedOverlay, color);
-    }
-
-    @Override
-    public void setupAnim(LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        super.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
-            if (livingEntity.isCrouching()) {
+    public void setupAnim(HumanoidRenderState renderState) {
+        super.setupAnim(renderState);
+        if (renderState.chestEquipment.isEmpty()) {
+            if (renderState.isCrouching) {
                 this.cloak.z = 1.4F;
                 this.cloak.y = 1.85F;
             } else {
                 this.cloak.z = 0.0F;
                 this.cloak.y = 0.0F;
             }
-        } else if (livingEntity.isCrouching()) {
+        } else if (renderState.isCrouching) {
             this.cloak.z = 0.3F;
             this.cloak.y = 0.8F;
         } else {

@@ -4,7 +4,7 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.network.packet.clientbound.PortalTravelSoundPacket;
 import com.aetherteam.aether.world.AetherPoi;
-import net.minecraft.BlockUtil;
+import net.minecraft.util.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -19,14 +19,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.portal.DimensionTransition;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.world.level.portal.TeleportTransition;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import java.util.Comparator;
 import java.util.Optional;
 
 public class AetherPortalForcer {
-    public static final DimensionTransition.PostDimensionTransition PLAY_PORTAL_SOUND = AetherPortalForcer::playPortalSound;
+    public static final TeleportTransition.PostTeleportTransition PLAY_PORTAL_SOUND = AetherPortalForcer::playPortalSound;
 
     private final ServerLevel level;
 
@@ -44,7 +44,7 @@ public class AetherPortalForcer {
         PoiManager poimanager = this.level.getPoiManager();
         int i = 128;
         poimanager.ensureLoadedAndValid(this.level, pExitPos, i);
-        return poimanager.getInSquare(p_230634_ -> p_230634_.is(AetherPoi.AETHER_PORTAL), pExitPos, i, PoiManager.Occupancy.ANY)
+        return poimanager.getInSquare(p_230634_ -> p_230634_.is(AetherPoi.AETHER_PORTAL.getId()), pExitPos, i, PoiManager.Occupancy.ANY)
             .map(PoiRecord::getPos)
             .filter(pWorldBorder::isWithinBounds)
             .filter(p_352047_ -> this.level.getBlockState(p_352047_).hasProperty(BlockStateProperties.HORIZONTAL_AXIS))
@@ -61,7 +61,7 @@ public class AetherPortalForcer {
         double d1 = -1.0;
         BlockPos blockPos1 = null;
         WorldBorder worldBorder = this.level.getWorldBorder();
-        int i = Math.min(this.level.getMaxBuildHeight(), this.level.getMinBuildHeight() + this.level.getLogicalHeight()) - 1;
+        int i = Math.min(this.level.getMaxY() + 1, this.level.getMinY() + this.level.getLogicalHeight()) - 1;
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         for (BlockPos.MutableBlockPos mutablePos1 : BlockPos.spiralAround(pos, 64, Direction.EAST, Direction.SOUTH)) {
@@ -69,11 +69,11 @@ public class AetherPortalForcer {
             if (worldBorder.isWithinBounds(mutablePos1) && worldBorder.isWithinBounds(mutablePos1.move(direction, 1))) {
                 mutablePos1.move(direction.getOpposite(), 1);
 
-                for (int l = j; l >= this.level.getMinBuildHeight(); --l) {
+                for (int l = j; l >= this.level.getMinY(); --l) {
                     mutablePos1.setY(l);
                     if (this.level.isEmptyBlock(mutablePos1)) {
                         int i1;
-                        for (i1 = l; l > this.level.getMinBuildHeight() && this.level.isEmptyBlock(mutablePos1.move(Direction.DOWN)); --l) {
+                        for (i1 = l; l > this.level.getMinY() && this.level.isEmptyBlock(mutablePos1.move(Direction.DOWN)); --l) {
                         }
 
                         if (l + 4 <= i) {
@@ -104,7 +104,7 @@ public class AetherPortalForcer {
         }
 
         if (d0 == -1.0) {
-            int k1 = Math.max(this.level.getMinBuildHeight() + 1, 70);
+            int k1 = Math.max(this.level.getMinY() + 1, 70);
             int i2 = i - 9;
             if (i2 < k1) {
                 return Optional.empty();

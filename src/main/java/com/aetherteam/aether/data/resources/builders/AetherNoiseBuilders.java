@@ -7,7 +7,7 @@ import com.aetherteam.aether.data.resources.registries.AetherNoises;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.*;
@@ -46,7 +46,7 @@ public class AetherNoiseBuilders {
     }
 
     private static DensityFunction buildFinalDensity(HolderGetter<DensityFunction> densityFunctions) {
-        DensityFunction density = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "base_3d_noise_aether")));
+        DensityFunction density = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, Identifier.fromNamespaceAndPath(Aether.MODID, "base_3d_noise_aether")));
         density = DensityFunctions.add(density, DensityFunctions.constant(-0.13));
         density = slide(density, 0, 128, 72, 0, -0.2, 8, 40, -0.1);
         density = DensityFunctions.add(density, DensityFunctions.constant(-0.05));
@@ -71,8 +71,8 @@ public class AetherNoiseBuilders {
      * Logic that called {@link NoiseRouterData#postProcess(DensityFunction)} has been moved to {@link AetherNoiseBuilders#buildFinalDensity(HolderGetter)}.
      */
     private static NoiseRouter createNoiseRouter(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noise, DensityFunction finalDensity) {
-        DensityFunction shiftX = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace("shift_x")));
-        DensityFunction shiftZ = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, ResourceLocation.withDefaultNamespace("shift_z")));
+        DensityFunction shiftX = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, Identifier.withDefaultNamespace("shift_x")));
+        DensityFunction shiftZ = getFunction(densityFunctions, ResourceKey.create(Registries.DENSITY_FUNCTION, Identifier.withDefaultNamespace("shift_z")));
         DensityFunction temperature = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noise.getOrThrow(AetherNoises.TEMPERATURE));
         DensityFunction vegetation = DensityFunctions.shiftedNoise2d(shiftX, shiftZ, 0.25, noise.getOrThrow(AetherNoises.VEGETATION));
         return new NoiseRouter(

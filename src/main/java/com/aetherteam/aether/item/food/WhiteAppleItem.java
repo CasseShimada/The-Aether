@@ -2,6 +2,7 @@ package com.aetherteam.aether.item.food;
 
 import com.aetherteam.aether.effect.AetherEffects;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -28,7 +29,7 @@ public class WhiteAppleItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
         if (!level.isClientSide()) {
-            user.addEffect(new MobEffectInstance(AetherEffects.REMEDY, 300, 0, false, false, true));
+            user.addEffect(new MobEffectInstance(Holder.direct(AetherEffects.REMEDY.get()), 300, 0, false, false, true));
         }
         if (user instanceof Player player) {
             if (player instanceof ServerPlayer serverPlayer) {

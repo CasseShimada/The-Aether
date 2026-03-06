@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_helmet_repair",
-  "ingredient": {
-    "item": "aether:zanite_helmet"
-  },
+  "ingredient": "aether:zanite_helmet",
   "repairTime": 750
 }

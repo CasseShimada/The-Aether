@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "aether:angelic_stone"
-    }
+    "#": "aether:angelic_stone"
   },
   "pattern": [
     "#  ",

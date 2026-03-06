@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_hoe_repair",
-  "ingredient": {
-    "item": "minecraft:diamond_hoe"
-  },
+  "ingredient": "minecraft:diamond_hoe",
   "repairTime": 1500
 }

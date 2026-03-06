@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_pickaxe_repair",
-  "ingredient": {
-    "item": "minecraft:golden_pickaxe"
-  },
+  "ingredient": "minecraft:golden_pickaxe",
   "repairTime": 300
 }

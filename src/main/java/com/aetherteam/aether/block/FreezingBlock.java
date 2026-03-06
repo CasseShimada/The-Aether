@@ -89,14 +89,15 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
      * @param level The {@link Level} that the recipe occurs in.
      */
     static void cacheRecipes(Level level) {
-        if (FreezingBlock.cachedBlocks.isEmpty()) {
-            for (RecipeHolder<IcestoneFreezableRecipe> recipe : level.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.ICESTONE_FREEZABLE.get())) {
-                IcestoneFreezableRecipe freezableRecipe = recipe.value();
-                BlockPropertyPair[] pairs = freezableRecipe.getIngredient().getPairs();
-                if (pairs != null) {
-                    Arrays.stream(pairs).forEach(pair -> cachedBlocks.put(pair.block(), pair, freezableRecipe));
+        if (FreezingBlock.cachedBlocks.isEmpty() && level.getServer() != null) {
+            for (RecipeHolder<?> recipe : level.getServer().getRecipeManager().getRecipes()) {
+                if (recipe.value().getType() == AetherRecipeTypes.ICESTONE_FREEZABLE.get() && recipe.value() instanceof IcestoneFreezableRecipe freezableRecipe) {
+                    BlockPropertyPair[] pairs = freezableRecipe.getIngredient().getPairs();
+                    if (pairs != null) {
+                        Arrays.stream(pairs).forEach(pair -> cachedBlocks.put(pair.block(), pair, freezableRecipe));
+                    }
+                    cachedResults.add(freezableRecipe.getResult().block());
                 }
-                cachedResults.add(freezableRecipe.getResult().block());
             }
         }
     }

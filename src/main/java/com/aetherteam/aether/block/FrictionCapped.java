@@ -2,7 +2,7 @@ package com.aetherteam.aether.block;
 
 import com.aetherteam.aether.mixin.mixins.common.accessor.BoatAccessor;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 

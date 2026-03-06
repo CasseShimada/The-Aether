@@ -1,35 +1,39 @@
 package com.aetherteam.aether.inventory.menu;
 
 import com.aetherteam.aether.inventory.menu.slot.AetherFurnaceFuelSlot;
+import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 /**
  * [CODE COPY] - {@link AbstractFurnaceMenu}.<br><br>
  * Cleaned up. This has to be its own class and not a subclass because of different slots.
  */
-public abstract class AbstractAetherFurnaceMenu extends RecipeBookMenu<SingleRecipeInput, AbstractCookingRecipe> {
+public abstract class AbstractAetherFurnaceMenu extends RecipeBookMenu {
     private final Container container;
     private final ContainerData data;
     protected final Level level;
     private final RecipeType<? extends AbstractCookingRecipe> recipeType;
+    private final RecipePropertySet acceptedInputs;
     private final RecipeBookType recipeBookType;
 
-    protected AbstractAetherFurnaceMenu(MenuType<?> menuType, RecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookType recipeBookType, int containerId, Inventory playerInventory) {
-        this(menuType, recipeType, recipeBookType, containerId, playerInventory, new SimpleContainer(3), new SimpleContainerData(4));
+    protected AbstractAetherFurnaceMenu(MenuType<?> menuType, RecipeType<? extends AbstractCookingRecipe> recipeType, ResourceKey<RecipePropertySet> acceptedInputs, RecipeBookType recipeBookType, int containerId, Inventory playerInventory) {
+        this(menuType, recipeType, acceptedInputs, recipeBookType, containerId, playerInventory, new SimpleContainer(3), new SimpleContainerData(4));
     }
 
-    protected AbstractAetherFurnaceMenu(MenuType<?> menuType, RecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookType recipeBookType, int containerId, Inventory playerInventory, Container container, ContainerData data) {
+    protected AbstractAetherFurnaceMenu(MenuType<?> menuType, RecipeType<? extends AbstractCookingRecipe> recipeType, ResourceKey<RecipePropertySet> acceptedInputs, RecipeBookType recipeBookType, int containerId, Inventory playerInventory, Container container, ContainerData data) {
         super(menuType, containerId);
         this.recipeType = recipeType;
         this.recipeBookType = recipeBookType;
@@ -38,56 +42,23 @@ public abstract class AbstractAetherFurnaceMenu extends RecipeBookMenu<SingleRec
         this.container = container;
         this.data = data;
         this.level = playerInventory.player.level();
+        this.acceptedInputs = this.level.recipeAccess().propertySet(acceptedInputs);
         this.addSlot(new Slot(container, 0, 56, 17));
         this.addSlot(new AetherFurnaceFuelSlot(this, container, 1, 56, 53)); // Used instead of FurnaceFuelSlot to get around buckets being allowed as fuel.
         this.addSlot(new FurnaceResultSlot(playerInventory.player, container, 2, 116, 35));
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-        for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
-        }
+        this.addStandardInventorySlots(playerInventory, 8, 84);
         this.addDataSlots(data);
     }
 
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents contents) {
+    public void fillCraftSlotsStackedContents(StackedItemContents contents) {
         if (this.container instanceof StackedContentsCompatible stackedContentsCompatible) {
             stackedContentsCompatible.fillStackedContents(contents);
         }
     }
 
-    @Override
-    public void clearCraftingContent() {
-        this.getSlot(0).set(ItemStack.EMPTY);
-        this.getSlot(2).set(ItemStack.EMPTY);
-    }
-
-    @Override
-    public boolean recipeMatches(RecipeHolder<AbstractCookingRecipe> recipe) {
-        return recipe.value().matches(new SingleRecipeInput(this.container.getItem(0)), this.level);
-    }
-
-    @Override
-    public int getResultSlotIndex() {
-        return 2;
-    }
-
-    @Override
-    public int getGridWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getGridHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return 3;
+    public Slot getResultSlot() {
+        return this.slots.get(2);
     }
 
     @Override
@@ -143,12 +114,8 @@ public abstract class AbstractAetherFurnaceMenu extends RecipeBookMenu<SingleRec
         return itemStack;
     }
 
-    /**
-     * Warning for "unchecked" is suppressed because of being based on vanilla code.
-     */
-    @SuppressWarnings("unchecked")
     protected boolean canSmelt(ItemStack stack) {
-        return this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) this.recipeType, new SingleRecipeInput(stack), this.level).isPresent();
+        return this.acceptedInputs.test(stack);
     }
 
     /**
@@ -182,7 +149,23 @@ public abstract class AbstractAetherFurnaceMenu extends RecipeBookMenu<SingleRec
     }
 
     @Override
-    public boolean shouldMoveToInventory(int slot) {
-        return slot != 1;
+    public RecipeBookMenu.PostPlaceAction handlePlacement(boolean useMaxItems, boolean isCreative, RecipeHolder<?> recipe, final ServerLevel level, Inventory playerInventory) {
+        final List<Slot> list = List.of(this.getSlot(0), this.getSlot(2));
+        return ServerPlaceRecipe.placeRecipe(new ServerPlaceRecipe.CraftingMenuAccess<>() {
+            @Override
+            public void fillCraftSlotsStackedContents(StackedItemContents stackedItemContents) {
+                AbstractAetherFurnaceMenu.this.fillCraftSlotsStackedContents(stackedItemContents);
+            }
+
+            @Override
+            public void clearCraftingContent() {
+                list.forEach((slot) -> slot.set(ItemStack.EMPTY));
+            }
+
+            @Override
+            public boolean recipeMatches(RecipeHolder<AbstractCookingRecipe> recipe) {
+                return recipe.value().matches(new SingleRecipeInput(AbstractAetherFurnaceMenu.this.container.getItem(0)), level);
+            }
+        }, 1, 1, List.of(this.getSlot(0)), list, playerInventory, (RecipeHolder<AbstractCookingRecipe>) recipe, useMaxItems, isCreative);
     }
 }

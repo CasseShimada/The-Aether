@@ -12,7 +12,7 @@ import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -28,7 +28,7 @@ public class PlacementBanRecipeDisplay<R extends AbstractPlacementBanRecipe<?, ?
     private final Optional<BlockStateIngredient> bypassBlock;
     private final Optional<BlockStateIngredient> blockStateIngredient;
 
-    protected PlacementBanRecipeDisplay(CategoryIdentifier<? extends PlacementBanRecipeDisplay<R>> categoryIdentifier, List<EntryIngredient> inputs, Either<ResourceKey<Biome>, TagKey<Biome>> biome, Optional<BlockStateIngredient> bypassBlock, Optional<BlockStateIngredient> blockStateIngredient, Optional<ResourceLocation> location) {
+    protected PlacementBanRecipeDisplay(CategoryIdentifier<? extends PlacementBanRecipeDisplay<R>> categoryIdentifier, List<EntryIngredient> inputs, Either<ResourceKey<Biome>, TagKey<Biome>> biome, Optional<BlockStateIngredient> bypassBlock, Optional<BlockStateIngredient> blockStateIngredient, Optional<Identifier> location) {
         super(inputs, List.of(), location);
         this.categoryIdentifier = categoryIdentifier;
         this.biome = biome;

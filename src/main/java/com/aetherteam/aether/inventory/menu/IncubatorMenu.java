@@ -4,24 +4,30 @@ import com.aetherteam.aether.data.resources.registries.AetherDataMaps;
 import com.aetherteam.aether.inventory.AetherRecipeBookTypes;
 import com.aetherteam.aether.inventory.menu.slot.IncubatorFuelSlot;
 import com.aetherteam.aether.inventory.menu.slot.IncubatorItemSlot;
-import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.item.IncubationRecipe;
+import com.aetherteam.aether.recipe.recipes.set.AetherRecipePropertySets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipePropertySet;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
-public class IncubatorMenu extends RecipeBookMenu<SingleRecipeInput, IncubationRecipe> {
+import java.util.List;
+
+public class IncubatorMenu extends RecipeBookMenu {
     public final Container container;
     public final ContainerData data;
     public final Level level;
+    private final RecipePropertySet acceptedInputs;
 
     public IncubatorMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, new SimpleContainer(2), new SimpleContainerData(7));
@@ -34,6 +40,7 @@ public class IncubatorMenu extends RecipeBookMenu<SingleRecipeInput, IncubationR
         this.container = container;
         this.data = data;
         this.level = playerInventory.player.level();
+        this.acceptedInputs = this.level.recipeAccess().propertySet(AetherRecipePropertySets.INCUBATOR_INPUT);
         this.addSlot(new IncubatorItemSlot(this, container, 0, 73, 17, playerInventory.player));
         this.addSlot(new IncubatorFuelSlot(this, container, 1, 73, 53));
         for (int i = 0; i < 3; ++i) {
@@ -48,40 +55,10 @@ public class IncubatorMenu extends RecipeBookMenu<SingleRecipeInput, IncubationR
     }
 
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents contents) {
+    public void fillCraftSlotsStackedContents(StackedItemContents contents) {
         if (this.container instanceof StackedContentsCompatible stackedContentsCompatible) {
             stackedContentsCompatible.fillStackedContents(contents);
         }
-    }
-
-    @Override
-    public void clearCraftingContent() {
-        this.getSlot(0).set(ItemStack.EMPTY);
-    }
-
-    @Override
-    public boolean recipeMatches(RecipeHolder<IncubationRecipe> recipe) {
-        return recipe.value().matches(new SingleRecipeInput(this.container.getItem(0)), this.level);
-    }
-
-    @Override
-    public int getResultSlotIndex() {
-        return -1;
-    }
-
-    @Override
-    public int getGridWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getGridHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return 2;
     }
 
     @Override
@@ -129,11 +106,11 @@ public class IncubatorMenu extends RecipeBookMenu<SingleRecipeInput, IncubationR
     }
 
     protected boolean canIncubate(ItemStack stack) {
-        return this.level.getRecipeManager().getRecipeFor(AetherRecipeTypes.INCUBATION.get(), new SingleRecipeInput(stack), this.level).isPresent();
+        return this.acceptedInputs.test(stack);
     }
 
     public boolean isFuel(ItemStack stack) {
-        return stack.getItemHolder().getData(AetherDataMaps.INCUBATOR_FUEL) != null;
+        return AetherDataMaps.isIncubatorFuel(stack);
     }
 
     public int getIncubationProgressScaled() {
@@ -165,7 +142,23 @@ public class IncubatorMenu extends RecipeBookMenu<SingleRecipeInput, IncubationR
     }
 
     @Override
-    public boolean shouldMoveToInventory(int slot) {
-        return slot != 1;
+    public RecipeBookMenu.PostPlaceAction handlePlacement(boolean useMaxItems, boolean isCreative, RecipeHolder<?> recipe, final ServerLevel level, Inventory playerInventory) {
+        final List<Slot> list = List.of(this.getSlot(0));
+        return ServerPlaceRecipe.placeRecipe(new ServerPlaceRecipe.CraftingMenuAccess<>() {
+            @Override
+            public void fillCraftSlotsStackedContents(StackedItemContents stackedItemContents) {
+                IncubatorMenu.this.fillCraftSlotsStackedContents(stackedItemContents);
+            }
+
+            @Override
+            public void clearCraftingContent() {
+                list.forEach((slot) -> slot.set(ItemStack.EMPTY));
+            }
+
+            @Override
+            public boolean recipeMatches(RecipeHolder<IncubationRecipe> recipe) {
+                return recipe.value().matches(new SingleRecipeInput(IncubatorMenu.this.container.getItem(0)), level);
+            }
+        }, 1, 1, List.of(this.getSlot(0)), list, playerInventory, (RecipeHolder<IncubationRecipe>) recipe, useMaxItems, isCreative);
     }
 }

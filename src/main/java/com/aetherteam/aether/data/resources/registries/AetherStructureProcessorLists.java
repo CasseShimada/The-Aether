@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.AxisAlignedLinearPosTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -30,7 +30,7 @@ public class AetherStructureProcessorLists {
     public static final ResourceKey<StructureProcessorList> GOLD_BOSS_ROOM = createKey("gold_boss_room");
 
     private static ResourceKey<StructureProcessorList> createKey(String name) {
-        return ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.fromNamespaceAndPath(Aether.MODID, name));
+        return ResourceKey.create(Registries.PROCESSOR_LIST, Identifier.fromNamespaceAndPath(Aether.MODID, name));
     }
 
     private static final AxisAlignedLinearPosTest ON_FLOOR = new AxisAlignedLinearPosTest(1.0F, 0.0F, 0, 1, Direction.Axis.Y);

@@ -2,12 +2,17 @@ package com.aetherteam.aether.recipe.recipes.block;
 
 import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
 import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
+import com.aetherteam.nitrogen.recipe.input.BlockStateRecipeInput;
 import com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -18,7 +23,7 @@ import java.util.Optional;
 public abstract class AbstractBiomeParameterRecipe extends AbstractBlockStateRecipe {
     private final Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome;
 
-    public AbstractBiomeParameterRecipe(RecipeType<?> type, Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<ResourceLocation> function) {
+    public AbstractBiomeParameterRecipe(RecipeType<?> type, Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
         super(type, ingredient, result, function);
         this.biome = biome;
     }
@@ -46,5 +51,21 @@ public abstract class AbstractBiomeParameterRecipe extends AbstractBlockStateRec
 
     public Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> getBiome() {
         return this.biome;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return RecipeBookCategories.CRAFTING_MISC;
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public RecipeType<? extends Recipe<BlockStateRecipeInput>> getType() {
+        return (RecipeType<? extends Recipe<BlockStateRecipeInput>>) super.getType();
     }
 }

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_authors}"
+  ],
+  "contact": {
+    "homepage": "${mod_url}",
+    "issues": "${mod_tracker}",
+    "sources": "https://github.com/The-Aether-Team/The-Aether-fabric"
+  },
+  "license": "${mod_license}",
+  "icon": "aether.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.aetherteam.aether.fabric.AetherFabric"
+    ],
+    "client": [
+      "com.aetherteam.aether.fabric.AetherFabricClient"
+    ]
+  },
+  "mixins": [
+    "aether.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version_range}",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "jei": "*",
+    "roughlyenoughitems": "*"
+  }
+}

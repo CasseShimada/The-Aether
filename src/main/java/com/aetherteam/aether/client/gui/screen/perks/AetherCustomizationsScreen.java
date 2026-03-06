@@ -18,8 +18,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.resources.Identifier;
+import com.aetherteam.aether.network.PacketDistributor;
 
 /**
  * A screen for changing perk-related options in-game.
@@ -27,8 +27,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * @see CustomizationsOptions
  */
 public class AetherCustomizationsScreen extends Screen {
-    public static final WidgetSprites SAVE_BUTTON = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/save_button"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/save_button_disabled"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/save_button_highlighted"));
-    public static final WidgetSprites UNDO_BUTTON = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/undo_button"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/undo_button_disabled"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "customization/undo_button_highlighted"));
+    public static final WidgetSprites SAVE_BUTTON = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "customization/save_button"), Identifier.fromNamespaceAndPath(Aether.MODID, "customization/save_button_disabled"), Identifier.fromNamespaceAndPath(Aether.MODID, "customization/save_button_highlighted"));
+    public static final WidgetSprites UNDO_BUTTON = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "customization/undo_button"), Identifier.fromNamespaceAndPath(Aether.MODID, "customization/undo_button_disabled"), Identifier.fromNamespaceAndPath(Aether.MODID, "customization/undo_button_highlighted"));
 
     private final Screen lastScreen;
     private final CustomizationsOptions customizations = CustomizationsOptions.INSTANCE;
@@ -55,7 +55,7 @@ public class AetherCustomizationsScreen extends Screen {
         this.developerGlowEnabled = this.customizations.isDeveloperGlowEnabled();
         this.developerGlowColor = this.customizations.getDeveloperGlowHex();
 
-        if (this.getMinecraft().player != null) {
+        if (this.minecraft.player != null) {
             User user = UserData.Client.getClientUser();
             boolean hasHalo = user != null && PerkUtil.hasHalo().test(user);
             boolean hasDeveloperGlow = user != null && PerkUtil.hasDeveloperGlow().test(user);
@@ -97,7 +97,7 @@ public class AetherCustomizationsScreen extends Screen {
                     pressed.setMessage(Component.translatable(this.haloEnabled ? "gui.aether.customization.halo.on" : "gui.aether.customization.halo.off"));
                 }).pos(xPos, yPos + (25 * i)).build());
 
-        this.haloColorBox = this.addRenderableWidget(new HaloColorBox(this, this.getMinecraft().font, xPos + 155, yPos + (25 * i), 60, 20, Component.translatable("gui.aether.customization.halo.color")));
+        this.haloColorBox = this.addRenderableWidget(new HaloColorBox(this, this.minecraft.font, xPos + 155, yPos + (25 * i), 60, 20, Component.translatable("gui.aether.customization.halo.color")));
         if (this.haloColor != null && !this.haloColor.isEmpty()) {
             this.haloColorBox.setValue(this.haloColor);
         }
@@ -137,12 +137,12 @@ public class AetherCustomizationsScreen extends Screen {
                         }
                         // Propagate changes to the server for other players to see.
                         if (this.haloEnabled) {
-                            if (this.getMinecraft().player != null) {
-                                PacketDistributor.sendToServer(new ServerHaloPacket.Apply(this.getMinecraft().player.getUUID(), new Halo(this.haloColor)));
+                            if (this.minecraft.player != null) {
+                                PacketDistributor.sendToServer(new ServerHaloPacket.Apply(this.minecraft.player.getUUID(), new Halo(this.haloColor)));
                             }
                         } else {
-                            if (this.getMinecraft().player != null) {
-                                PacketDistributor.sendToServer(new ServerHaloPacket.Remove(this.getMinecraft().player.getUUID()));
+                            if (this.minecraft.player != null) {
+                                PacketDistributor.sendToServer(new ServerHaloPacket.Remove(this.minecraft.player.getUUID()));
                             }
                         }
                         this.customizations.save();
@@ -168,7 +168,7 @@ public class AetherCustomizationsScreen extends Screen {
                     pressed.setMessage(Component.translatable(this.developerGlowEnabled ? "gui.aether.customization.developer_glow.on" : "gui.aether.customization.developer_glow.off"));
                 }).pos(xPos, yPos + (25 * i)).build());
 
-        this.developerGlowColorBox = this.addRenderableWidget(new DeveloperGlowColorBox(this, this.getMinecraft().font, xPos + 155, yPos + (25 * i), 60, 20, Component.translatable("gui.aether.customization.developer_glow.color")));
+        this.developerGlowColorBox = this.addRenderableWidget(new DeveloperGlowColorBox(this, this.minecraft.font, xPos + 155, yPos + (25 * i), 60, 20, Component.translatable("gui.aether.customization.developer_glow.color")));
         if (this.developerGlowColor != null && !this.developerGlowColor.isEmpty()) {
             this.developerGlowColorBox.setValue(this.developerGlowColor);
         }
@@ -208,12 +208,12 @@ public class AetherCustomizationsScreen extends Screen {
                         }
                         // Propagate changes to the server for other players to see.
                         if (this.developerGlowEnabled) {
-                            if (this.getMinecraft().player != null) {
-                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Apply(this.getMinecraft().player.getUUID(), new DeveloperGlow(this.developerGlowColor)));
+                            if (this.minecraft.player != null) {
+                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Apply(this.minecraft.player.getUUID(), new DeveloperGlow(this.developerGlowColor)));
                             }
                         } else {
-                            if (this.getMinecraft().player != null) {
-                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Remove(this.getMinecraft().player.getUUID()));
+                            if (this.minecraft.player != null) {
+                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Remove(this.minecraft.player.getUUID()));
                             }
                         }
                         this.customizations.save();
@@ -230,10 +230,10 @@ public class AetherCustomizationsScreen extends Screen {
         this.renderTransparentBackground(guiGraphics);
         guiGraphics.drawCenteredString(this.font, this.getTitle(), this.width / 2, 15, 16777215);
         guiGraphics.drawCenteredString(this.font, Component.translatable("gui.aether.customization.color"), (this.width / 2 - 65) + 184, (this.height / 2 - 10) - 14, 16777215);
-        if (this.getMinecraft().player != null) {
+        if (this.minecraft.player != null) {
             int x = (this.width / 2) - 175;
             int y = (this.height / 2) + 50;
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x - 42, y - 208, x + 107, y + 12, 60, 0.725F, mouseX, mouseY, this.getMinecraft().player);
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x - 42, y - 208, x + 107, y + 12, 60, 0.725F, mouseX, mouseY, this.minecraft.player);
         }
         // Resets color values if they're invalid.
         if (this.haloColorBox != null && !this.haloColorBox.getValue().equals(this.haloColor)) {
@@ -254,6 +254,6 @@ public class AetherCustomizationsScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.getMinecraft().setScreen(this.lastScreen);
+        this.minecraft.setScreen(this.lastScreen);
     }
 }

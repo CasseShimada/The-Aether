@@ -3,9 +3,7 @@
   "category": "freezable_blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "tag": "c:buckets/water"
-  },
+  "ingredient": "#c:buckets/water",
   "result": {
     "count": 1,
     "id": "minecraft:ice"

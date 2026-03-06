@@ -3,15 +3,9 @@
   "category": "misc",
   "group": "minecraft:pumpkin_pie",
   "ingredients": [
-    {
-      "item": "minecraft:pumpkin"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
-    {
-      "tag": "aether:moa_eggs"
-    }
+    "minecraft:pumpkin",
+    "minecraft:sugar",
+    "#aether:moa_eggs"
   ],
   "result": {
     "count": 1,

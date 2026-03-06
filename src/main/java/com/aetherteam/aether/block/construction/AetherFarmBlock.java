@@ -1,26 +1,20 @@
 package com.aetherteam.aether.block.construction;
 
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.aether.mixin.mixins.common.accessor.BushBlockAccessor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.FarmlandWaterManager;
-import net.neoforged.neoforge.common.util.TriState;
 
 public class AetherFarmBlock extends FarmBlock {
     public AetherFarmBlock(Properties properties) {
@@ -66,8 +60,12 @@ public class AetherFarmBlock extends FarmBlock {
      * [CODE COPY] - {@link FarmBlock#fallOn(Level, BlockState, BlockPos, Entity, float)}.
      */
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-        if (!level.isClientSide() && CommonHooks.onFarmlandTrample(level, pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState(), fallDistance, entity)) { // Forge: Move logic to Entity#canTrample
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
+        if (!level.isClientSide()
+                && level.random.nextFloat() < fallDistance - 0.5F
+                && entity instanceof LivingEntity
+                && (entity instanceof net.minecraft.world.entity.player.Player || level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING))
+                && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) {
             turnToDirt(state, level, pos);
         }
         entity.causeFallDamage(fallDistance, 1.0F, entity.damageSources().fall());
@@ -96,27 +94,6 @@ public class AetherFarmBlock extends FarmBlock {
                 return true;
             }
         }
-        return FarmlandWaterManager.hasBlockWaterTicket(level, pos);
-    }
-
-    /**
-     * Chosen checks based on {@link net.minecraft.world.level.block.Block#canSustainPlant(BlockState, BlockGetter, BlockPos, Direction, BlockState)}.
-     */
-    @Override
-    public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
-        Block plantBlock = plant.getBlock();
-        if ((plantBlock instanceof BushBlock bushBlock && ((BushBlockAccessor) bushBlock).callMayPlaceOn(Blocks.FARMLAND.defaultBlockState(), level, soilPosition))) {
-            return TriState.TRUE;
-        } else {
-            return super.canSustainPlant(state, level, soilPosition, facing, plant);
-        }
-    }
-
-    /**
-     * [CODE COPY] - {@link net.neoforged.neoforge.common.extensions.IBlockExtension#isFertile(BlockState, BlockGetter, BlockPos)}.
-     */
-    @Override
-    public boolean isFertile(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.getValue(FarmBlock.MOISTURE) > 0;
+        return false;
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class SilverDungeonRoom extends SilverDungeonPiece {
     public SilverDungeonRoom(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM.get(), manager, name, SilverDungeonRoom.makeSettings(manager, rotation, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "silver_dungeon/" + name)), pos, processors);
+        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM.get(), manager, name, SilverDungeonRoom.makeSettings(manager, rotation, Identifier.fromNamespaceAndPath(Aether.MODID, "silver_dungeon/" + name)), pos, processors);
         this.setOrientation(rotation.rotate(Direction.SOUTH));
     }
 
@@ -35,11 +35,11 @@ public class SilverDungeonRoom extends SilverDungeonPiece {
         super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), id -> SilverDungeonRoom.makeSettings(context.structureTemplateManager(), id));
     }
 
-    private static StructurePlaceSettings makeSettings(StructureTemplateManager manager, Rotation rotation, ResourceLocation id) {
+    private static StructurePlaceSettings makeSettings(StructureTemplateManager manager, Rotation rotation, Identifier id) {
         return SilverDungeonRoom.makeSettings(manager, id).setRotation(rotation);
     }
 
-    private static StructurePlaceSettings makeSettings(StructureTemplateManager manager, ResourceLocation id) {
+    private static StructurePlaceSettings makeSettings(StructureTemplateManager manager, Identifier id) {
         StructureTemplate template = manager.getOrCreate(id);
         BlockPos pivot = new BlockPos(template.getSize().getX() / 2 - 4, 0, template.getSize().getZ() / 2 - 4);
         return new StructurePlaceSettings()

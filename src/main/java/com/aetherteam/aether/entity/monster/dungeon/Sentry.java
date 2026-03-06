@@ -16,11 +16,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+
+import java.util.EnumSet;
 
 public class Sentry extends Slime {
     private static final EntityDataAccessor<Boolean> DATA_AWAKE_ID = SynchedEntityData.defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -37,7 +40,7 @@ public class Sentry extends Slime {
         this.goalSelector.addGoal(2, new SentryAttackGoal(this));
         this.goalSelector.addGoal(3, new SentryRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new SentryKeepOnJumpingGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity) -> Math.abs(entity.getY() - this.getY()) <= 4.0));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (entity, level) -> Math.abs(entity.getY() - this.getY()) <= 4.0));
     }
 
     public static AttributeSupplier.Builder createMobAttributes() {
@@ -113,16 +116,16 @@ public class Sentry extends Slime {
      */
     protected void explodeAt(LivingEntity entity) {
         DamageSource damageSource = this.damageSources().mobAttack(this);
-        if (this.distanceToSqr(entity) < 1.5 && this.isAwake() && this.hasLineOfSight(entity) && entity.hurt(damageSource, 1.0F) && this.tickCount > 20 && this.isAlive()) {
-            entity.push(0.3, 0.4, 0.3);
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, Level.ExplosionInteraction.MOB);
-            this.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.0F, 0.2F * (this.getRandom().nextFloat() - this.getRandom().nextFloat()) + 1);
-            if (this.level() instanceof ServerLevel level) {
+        if (this.distanceToSqr(entity) < 1.5 && this.isAwake() && this.hasLineOfSight(entity) && this.tickCount > 20 && this.isAlive()) {
+            if (this.level() instanceof ServerLevel level && entity.hurtServer(level, damageSource, 1.0F)) {
+                entity.push(0.3, 0.4, 0.3);
+                this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, Level.ExplosionInteraction.MOB);
+                this.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.0F, 0.2F * (this.getRandom().nextFloat() - this.getRandom().nextFloat()) + 1);
                 level.broadcastEntityEvent(this, (byte) 70);
                 level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY(), this.getZ(), 1, 0.0, 0.0, 0.0, 0.5);
                 EnchantmentHelper.doPostAttackEffects(level, entity, damageSource);
+                this.discard();
             }
-            this.discard();
         }
     }
 
@@ -183,11 +186,6 @@ public class Sentry extends Slime {
     }
 
     @Override
-    protected boolean shouldDespawnInPeaceful() {
-        return true;
-    }
-
-    @Override
     public void handleEntityEvent(byte id) {
         if (id == 70) {
             for (int i = 0; i < 40; i++) {
@@ -202,79 +200,120 @@ public class Sentry extends Slime {
         }
     }
 
-    static class SentryAttackGoal extends SlimeAttackGoal {
+    static class SentryAttackGoal extends Goal {
         private final Sentry sentry;
 
         public SentryAttackGoal(Sentry sentry) {
-            super(sentry);
             this.sentry = sentry;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK, Goal.Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return this.sentry.isAwake() && super.canUse();
+            return this.sentry.isAwake() && this.sentry.getTarget() != null;
         }
 
         @Override
         public boolean canContinueToUse() {
-            return this.sentry.isAwake() && super.canContinueToUse();
+            return this.canUse();
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity target = this.sentry.getTarget();
+            if (target != null) {
+                this.sentry.lookAt(target, 10.0F, 10.0F);
+                this.sentry.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
+                if (this.sentry.onGround() && this.sentry.getRandom().nextInt(2) == 0) {
+                    this.sentry.getJumpControl().jump();
+                }
+            }
         }
     }
 
-    static class SentryFloatGoal extends SlimeFloatGoal {
+    static class SentryFloatGoal extends Goal {
         private final Sentry sentry;
 
         public SentryFloatGoal(Sentry sentry) {
-            super(sentry);
             this.sentry = sentry;
+            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return this.sentry.isAwake() && super.canUse();
+            return this.sentry.isAwake() && (this.sentry.isInWater() || this.sentry.isInLava());
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return this.sentry.isAwake() && super.canContinueToUse();
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            if (this.sentry.getRandom().nextFloat() < 0.8F) {
+                this.sentry.getJumpControl().jump();
+            }
+            this.sentry.getMoveControl().setWantedPosition(this.sentry.getX(), this.sentry.getY(), this.sentry.getZ(), 1.2D);
         }
     }
 
-    static class SentryKeepOnJumpingGoal extends SlimeKeepOnJumpingGoal {
+    static class SentryKeepOnJumpingGoal extends Goal {
         private final Sentry sentry;
 
         public SentryKeepOnJumpingGoal(Sentry sentry) {
-            super(sentry);
             this.sentry = sentry;
+            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return this.sentry.isAwake() && super.canUse();
+            return this.sentry.isAwake();
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return this.sentry.isAwake() && super.canContinueToUse();
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            if (this.sentry.onGround() && this.sentry.getRandom().nextInt(this.sentry.getJumpDelay()) == 0) {
+                this.sentry.getJumpControl().jump();
+            }
+            this.sentry.getMoveControl().setWantedPosition(this.sentry.getX(), this.sentry.getY(), this.sentry.getZ(), 1.0D);
         }
     }
 
-    static class SentryRandomDirectionGoal extends SlimeRandomDirectionGoal {
+    static class SentryRandomDirectionGoal extends Goal {
         private final Sentry sentry;
+        private float chosenDegrees;
+        private int nextRandomizeTime;
 
         public SentryRandomDirectionGoal(Sentry sentry) {
-            super(sentry);
             this.sentry = sentry;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
         }
 
         @Override
         public boolean canUse() {
-            return this.sentry.isAwake() && super.canUse();
+            return this.sentry.isAwake() && this.sentry.getTarget() == null;
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return this.sentry.isAwake() && super.canContinueToUse();
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            if (--this.nextRandomizeTime <= 0) {
+                this.nextRandomizeTime = this.adjustedTickDelay(40 + this.sentry.getRandom().nextInt(60));
+                this.chosenDegrees = this.sentry.getRandom().nextFloat() * 360.0F;
+            }
+            this.sentry.setYRot(this.chosenDegrees);
+            this.sentry.yHeadRot = this.chosenDegrees;
+            this.sentry.yBodyRot = this.chosenDegrees;
         }
     }
 }

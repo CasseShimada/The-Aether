@@ -25,11 +25,11 @@ public class InebriationEffect extends MobEffect {
      * @param amplifier    The {@link Integer} amplifier for the effect.
      */
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity livingEntity, int amplifier) {
         if (this.effectDuration % 50 == 0) {
             livingEntity.hurt(AetherDamageTypes.damageSource(livingEntity.level(), AetherDamageTypes.INEBRIATION), 1.0F);
         }
-        this.distractEntity(livingEntity);
+        this.distractEntity(serverLevel, livingEntity);
         return true;
     }
 
@@ -39,7 +39,7 @@ public class InebriationEffect extends MobEffect {
      *
      * @param livingEntity The affected {@link LivingEntity}.
      */
-    private void distractEntity(LivingEntity livingEntity) {
+    private void distractEntity(ServerLevel serverLevel, LivingEntity livingEntity) {
         if (!(livingEntity instanceof Player player) || (!player.isCreative() && !player.isSpectator()) || !player.getAbilities().flying) { // Disallow motion effects during creative/spectator flight.
             double gaussian = livingEntity.level().getRandom().nextGaussian();
             double newMotionDirection = 0.1 * gaussian;
@@ -52,11 +52,9 @@ public class InebriationEffect extends MobEffect {
             livingEntity.setYRot((float) (livingEntity.getYRot() + this.rotationDirection));
             livingEntity.setXRot((float) (livingEntity.getXRot() + this.rotationDirection));
         }
-        if (livingEntity.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.PURPLE_DYE.getDefaultInstance()),
-                    livingEntity.getX(), livingEntity.getY() + livingEntity.getBbHeight() * 0.8, livingEntity.getZ(),
-                    1, 0.0, 0.0, 0.0, 0.0);
-        }
+        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.PURPLE_DYE.getDefaultInstance()),
+                livingEntity.getX(), livingEntity.getY() + livingEntity.getBbHeight() * 0.8, livingEntity.getZ(),
+                1, 0.0, 0.0, 0.0, 0.0);
     }
 
     @Override

@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_shovel_repair",
-  "ingredient": {
-    "item": "minecraft:golden_shovel"
-  },
+  "ingredient": "minecraft:golden_shovel",
   "repairTime": 300
 }

@@ -29,9 +29,14 @@
           "functions": [
             {
               "function": "aether:spawn_tnt"
+            },
+            {
+              "add": false,
+              "count": 0,
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:air",
+          "name": "minecraft:stone",
           "weight": 18
         },
         {
@@ -39,9 +44,14 @@
           "functions": [
             {
               "function": "aether:spawn_xp"
+            },
+            {
+              "add": false,
+              "count": 0,
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:air",
+          "name": "minecraft:stone",
           "weight": 9
         },
         {

@@ -26,8 +26,8 @@ public class DungeonBlacklistFilter extends PlacementFilter {
             return false;
         }
         StructureManager structureManager = context.getLevel().getLevel().structureManager();
-        Registry<Structure> configuredStructureFeatureRegistry = context.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);
-        for (Holder<Structure> structure : configuredStructureFeatureRegistry.getOrCreateTag(AetherTags.Structures.DUNGEONS)) {
+        Registry<Structure> configuredStructureFeatureRegistry = context.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        for (Holder<Structure> structure : configuredStructureFeatureRegistry.getTagOrEmpty(AetherTags.Structures.DUNGEONS)) {
             if (structureManager.getStructureAt(pos, structure.value()).isValid()) {
                 return false;
             }

@@ -22,6 +22,7 @@ import com.aetherteam.nitrogen.entity.BossRoomTracker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -29,7 +30,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,12 +55,13 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -69,7 +71,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>, Enemy, IEntityWithComplexSpawn {
+public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>, Enemy {
     private static final double DEFAULT_SPEED_MODIFIER = 1.0;
     private static final double FROZEN_SPEED_MODIFIER = 0.3;
     private static final float INCINERATION_DAMAGE = 10.0F;
@@ -83,7 +85,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     private static final EntityDataAccessor<Integer> DATA_FROZEN_DURATION = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Component> DATA_BOSS_NAME = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.COMPONENT);
     private static final EntityDataAccessor<Boolean> DATA_DISPLAY_WEAK_MESSAGE = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.BOOLEAN);
-    private static final Music SUN_SPIRIT_MUSIC = new Music(AetherSoundEvents.MUSIC_BOSS_SUN_SPIRIT, 0, 0, true);
+    private static final Music SUN_SPIRIT_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SUN_SPIRIT.get()), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
         Map.entry(AetherBlocks.LOCKED_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.HELLFIRE_STONE.get().defaultBlockState()),
         Map.entry(AetherBlocks.LOCKED_LIGHT_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.LIGHT_HELLFIRE_STONE.get().defaultBlockState()),
@@ -124,13 +126,13 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      *
      * @param level      The {@link ServerLevelAccessor} where the entity is spawned.
      * @param difficulty The {@link DifficultyInstance} of the game.
-     * @param reason     The {@link MobSpawnType} reason.
+     * @param reason     The {@link EntitySpawnReason} reason.
      * @param spawnData  The {@link SpawnGroupData}.
      * @return The {@link SpawnGroupData} to return.
      */
     @Override
     @SuppressWarnings("deprecation")
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnData) {
         this.setBossName(BossNameGenerator.generateSunSpiritName(this.getRandom()));
         this.origin = this.position();
         return spawnData;
@@ -238,8 +240,8 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * Handles boss fight and health tracking, dungeon tracking, checking for Ice Crystal collision, and checking to set the Sun Spirit as frozen.
      */
     @Override
-    public void customServerAiStep() {
-        super.customServerAiStep();
+    public void customServerAiStep(ServerLevel level) {
+        super.customServerAiStep(level);
         this.bossFight.setProgress(this.getHealth() / this.getMaxHealth());
         this.trackDungeon();
         this.checkIceCrystals();
@@ -274,7 +276,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                 if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(player)) {
                     if (this.level().getDifficulty() != Difficulty.PEACEFUL) {
                         if (!AetherConfig.COMMON.repeat_sun_spirit_dialogue.get()) {
-                            if (player.getData(AetherDataAttachments.AETHER_PLAYER).hasSeenSunSpiritDialogue() && this.chatLine == 0) {
+                            if (player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).hasSeenSunSpiritDialogue() && this.chatLine == 0) {
                                 this.chatLine = 10;
                             }
                         }
@@ -315,7 +317,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                                 }
                                 this.playSound(this.getActivateSound(), 1.0F, this.getVoicePitch());
                                 AetherEventDispatch.onBossFightStart(this, this.getDungeon());
-                                player.getData(AetherDataAttachments.AETHER_PLAYER).setSeenSunSpiritDialogue(true);
+                                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSeenSunSpiritDialogue(true);
                             }
                             default -> {
                                 this.chatWithNearby(Component.translatable("gui.aether.sun_spirit.line10").withStyle(ChatFormatting.RED));
@@ -339,8 +341,11 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * @param message The message {@link Component}.
      */
     protected void chatWithNearby(Component message) {
-        AABB room = this.getDungeon() == null ? this.getBoundingBox().inflate(16) : this.getDungeon().roomBounds();
-        this.level().getNearbyPlayers(NON_COMBAT, this, room).forEach(player -> player.sendSystemMessage(message));
+        if (this.level() instanceof ServerLevel level) {
+            AABB room = this.getDungeon() == null ? this.getBoundingBox().inflate(16) : this.getDungeon().roomBounds();
+            level.getPlayers(player -> room.contains(player.position()) && NON_COMBAT.test(level, this, player))
+                    .forEach(player -> player.displayClientMessage(message, false));
+        }
     }
 
     /**
@@ -351,9 +356,9 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * @return Whether the entity was hurt, as a {@link Boolean}.
      */
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean flag = super.hurt(source, amount);
-        if (!this.level().isClientSide() && flag && this.getHealth() > 0 && source.getEntity() instanceof LivingEntity entity && source.getDirectEntity() instanceof IceCrystal) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean flag = super.hurtServer(level, source, amount);
+        if (flag && this.getHealth() > 0 && source.getEntity() instanceof LivingEntity entity && source.getDirectEntity() instanceof IceCrystal) {
             if (this.getDisplayWeakMessage()) {
                 this.chatWithNearby(Component.translatable("gui.aether.sun_spirit.message.attack.weakened"));
                 this.setDisplayWeakMessage(false);
@@ -396,8 +401,8 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                 this.getDungeon().grantAdvancements(source);
                 this.tearDownRoom();
             }
-            if (this.level().hasData(AetherDataAttachments.AETHER_TIME)) {
-                var data = this.level().getData(AetherDataAttachments.AETHER_TIME);
+            if (this.level().hasAttached(AetherDataAttachments.AETHER_TIME)) {
+                var data = this.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
                 data.setEternalDay(false);
                 data.updateEternalDay(this.level());
                 if (AetherConfig.SERVER.sync_aether_time.get()) {
@@ -635,21 +640,21 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar.
+     * @return The {@link Identifier} for this boss's health bar.
      */
     @Nullable
     @Override
-    public ResourceLocation getBossBarTexture() {
-        return ResourceLocation.fromNamespaceAndPath(Aether.MODID, "boss_bar/sun_spirit");
+    public Identifier getBossBarTexture() {
+        return Identifier.fromNamespaceAndPath(Aether.MODID, "boss_bar/sun_spirit");
     }
 
     /**
-     * @return The {@link ResourceLocation} for this boss's health bar background.
+     * @return The {@link Identifier} for this boss's health bar background.
      */
     @Nullable
     @Override
-    public ResourceLocation getBossBarBackgroundTexture() {
-        return ResourceLocation.fromNamespaceAndPath(Aether.MODID, "boss_bar/sun_spirit_background");
+    public Identifier getBossBarBackgroundTexture() {
+        return Identifier.fromNamespaceAndPath(Aether.MODID, "boss_bar/sun_spirit_background");
     }
 
     /**
@@ -677,12 +682,14 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
         this.chatCooldown = cooldown;
     }
 
-    /**
-     * @return The death score {@link Integer} for the awarded kill score from this entity.
-     */
     @Override
     public int getDeathScore() {
-        return this.deathScore;
+        return this.xpReward;
+    }
+
+    @Override
+    protected int getBaseExperienceReward(ServerLevel level) {
+        return this.xpReward;
     }
 
     /**
@@ -692,7 +699,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * @return Whether the Sun Spirit is invulnerable to the damage, as a {@link Boolean}.
      */
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
+    public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
         if (this.isRemoved()) {
             return true;
         } else {
@@ -757,29 +764,30 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        this.addBossSaveData(tag, this.registryAccess());
-        tag.putInt("ChatLine", this.chatLine);
-        tag.putDouble("OffsetX", this.origin.x() - this.getX());
-        tag.putDouble("OffsetY", this.origin.y() - this.getY());
-        tag.putDouble("OffsetZ", this.origin.z() - this.getZ());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        CompoundTag bossTag = new CompoundTag();
+        this.addBossSaveData(bossTag, this.registryAccess());
+        output.store("BossData", CompoundTag.CODEC, bossTag);
+        output.putInt("ChatLine", this.chatLine);
+        output.putDouble("OffsetX", this.origin.x() - this.getX());
+        output.putDouble("OffsetY", this.origin.y() - this.getY());
+        output.putDouble("OffsetZ", this.origin.z() - this.getZ());
     }
 
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.readBossSaveData(tag, this.registryAccess());
-        if (tag.contains("ChatLine")) {
-            this.chatLine = tag.getInt("ChatLine");
-        }
-        if (tag.contains("OffsetX")) {
-            double offsetX = this.getX() + tag.getDouble("OffsetX");
-            double offsetY = this.getY() + tag.getDouble("OffsetY");
-            double offsetZ = this.getZ() + tag.getDouble("OffsetZ");
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
+        this.chatLine = input.getIntOr("ChatLine", this.chatLine);
+        double offsetXRaw = input.getDoubleOr("OffsetX", Double.NaN);
+        if (!Double.isNaN(offsetXRaw)) {
+            double offsetX = this.getX() + offsetXRaw;
+            double offsetY = this.getY() + input.getDoubleOr("OffsetY", 0.0);
+            double offsetZ = this.getZ() + input.getDoubleOr("OffsetZ", 0.0);
             this.origin = new Vec3(offsetX, offsetY, offsetZ);
         } else {
             this.origin = this.position();
@@ -789,7 +797,6 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag)
      */
-    @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         CompoundTag tag = new CompoundTag();
         this.addBossSaveData(tag, this.registryAccess());
@@ -799,7 +806,6 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     /**
      * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag)
      */
-    @Override
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         CompoundTag tag = additionalData.readNbt();
         if (tag != null) {
@@ -819,7 +825,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
             super(mob, lookAtType, lookDistance, probability, onlyHorizontal);
             TargetingConditions conditions;
             if (lookAtType == Player.class) {
-                conditions = TargetingConditions.forNonCombat().ignoreInvisibilityTesting().range(lookDistance).selector((entity) -> EntitySelector.notRiding(mob).test(entity));
+                conditions = TargetingConditions.forNonCombat().ignoreInvisibilityTesting().range(lookDistance).selector((entity, level) -> EntitySelector.notRiding(mob).test(entity));
             } else {
                 conditions = TargetingConditions.forNonCombat().ignoreInvisibilityTesting().range(lookDistance);
             }

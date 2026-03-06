@@ -8,7 +8,7 @@ import com.aetherteam.aether.perk.types.MoaSkins;
 import com.aetherteam.nitrogen.api.users.User;
 import com.aetherteam.nitrogen.api.users.UserData;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class ClientMoaSkinPerkData extends ClientPerkData<MoaData> {
         if (this.canSync(player)) {
             User user = UserData.Client.getClientUser(); // The client's User.
             UUID uuid = player.getUUID(); // The player's UUID.
-            UUID lastRiddenMoa = player.getData(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(); // The UUID of the last Moa ridden by the player.
+            UUID lastRiddenMoa = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(); // The UUID of the last Moa ridden by the player.
             CustomizationsOptions.INSTANCE.load(); // Loads data from the client's "customizations.txt" file.
             String moaSkinName = CustomizationsOptions.INSTANCE.getMoaSkin(); // Retrieves the chosen Moa Skin from the file.
             Map<String, MoaSkins.MoaSkin> moaSkins = MoaSkins.getMoaSkins(); // A map of registered Moa Skins.

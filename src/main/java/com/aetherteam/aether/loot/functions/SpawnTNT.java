@@ -34,7 +34,7 @@ public class SpawnTNT extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         ServerLevel serverLevel = context.getLevel();
-        Vec3 originVec = context.getParamOrNull(LootContextParams.ORIGIN);
+        Vec3 originVec = context.getOptionalParameter(LootContextParams.ORIGIN);
         if (originVec != null) {
             TntPresent tnt = new TntPresent(serverLevel, originVec.x(), originVec.y(), originVec.z(), null);
             serverLevel.addFreshEntity(tnt);

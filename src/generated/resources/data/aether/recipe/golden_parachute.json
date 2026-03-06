@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "aether:golden_aercloud"
-    }
+    "#": "aether:golden_aercloud"
   },
   "pattern": [
     "##",

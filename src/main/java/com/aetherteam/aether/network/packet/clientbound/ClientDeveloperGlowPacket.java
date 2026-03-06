@@ -4,14 +4,13 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.perk.data.ClientDeveloperGlowPerkData;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.google.common.collect.Maps;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.minecraft.resources.Identifier;
+import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +20,7 @@ public class ClientDeveloperGlowPacket {
      * Applies the Developer Glow perk to a player on the client.
      */
     public record Apply(UUID playerUUID, DeveloperGlow developerGlow) implements CustomPacketPayload {
-        public static final Type<ClientDeveloperGlowPacket.Apply> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "apply_developer_glow"));
+        public static final Type<ClientDeveloperGlowPacket.Apply> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "apply_developer_glow"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientDeveloperGlowPacket.Apply> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -35,8 +34,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Apply payload, IPayloadContext context) {
-            if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null && payload.playerUUID() != null && payload.developerGlow() != null) {
+        public static void execute(ClientDeveloperGlowPacket.Apply payload, AetherPayloadContext context) {
+            if (context.player() != null && payload.playerUUID() != null && payload.developerGlow() != null) {
                 ClientDeveloperGlowPerkData.INSTANCE.applyPerk(payload.playerUUID(), payload.developerGlow());
             }
         }
@@ -46,7 +45,7 @@ public class ClientDeveloperGlowPacket {
      * Removes the Developer Glow perk from a player on the client.
      */
     public record Remove(UUID playerUUID) implements CustomPacketPayload {
-        public static final Type<ClientDeveloperGlowPacket.Remove> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "remove_developer_glow"));
+        public static final Type<ClientDeveloperGlowPacket.Remove> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "remove_developer_glow"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientDeveloperGlowPacket.Remove> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -58,8 +57,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Remove payload, IPayloadContext context) {
-            if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null && payload.playerUUID() != null) {
+        public static void execute(ClientDeveloperGlowPacket.Remove payload, AetherPayloadContext context) {
+            if (context.player() != null && payload.playerUUID() != null) {
                 ClientDeveloperGlowPerkData.INSTANCE.removePerk(payload.playerUUID());
             }
         }
@@ -69,7 +68,7 @@ public class ClientDeveloperGlowPacket {
      * Syncs Developer Glow perk data for all players to the client.
      */
     public record Sync(Map<UUID, DeveloperGlow> developerGlows) implements CustomPacketPayload {
-        public static final Type<ClientDeveloperGlowPacket.Sync> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "sync_developer_glow"));
+        public static final Type<ClientDeveloperGlowPacket.Sync> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "sync_developer_glow"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientDeveloperGlowPacket.Sync> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.map(Maps::newHashMapWithExpectedSize, UUIDUtil.STREAM_CODEC, DeveloperGlow.STREAM_CODEC),
@@ -81,8 +80,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Sync payload, IPayloadContext context) {
-            if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null && payload.developerGlows() != null && !payload.developerGlows().isEmpty()) {
+        public static void execute(ClientDeveloperGlowPacket.Sync payload, AetherPayloadContext context) {
+            if (context.player() != null && payload.developerGlows() != null && !payload.developerGlows().isEmpty()) {
                 for (Map.Entry<UUID, DeveloperGlow> developerGlowEntry : payload.developerGlows().entrySet()) {
                     ClientDeveloperGlowPerkData.INSTANCE.applyPerk(developerGlowEntry.getKey(), developerGlowEntry.getValue());
                 }

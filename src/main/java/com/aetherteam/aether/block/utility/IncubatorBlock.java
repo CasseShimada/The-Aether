@@ -5,6 +5,7 @@ import com.aetherteam.aether.blockentity.IncubatorBlockEntity;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -71,17 +72,9 @@ public class IncubatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            BlockEntity blockentity = level.getBlockEntity(pos);
-            if (blockentity instanceof IncubatorBlockEntity incubatorBlockEntity) {
-                if (level instanceof ServerLevel) {
-                    Containers.dropContents(level, pos, incubatorBlockEntity);
-                }
-                level.updateNeighbourForOutputSignal(pos, this);
-            }
-            super.onRemove(state, level, pos, newState, isMoving);
-        }
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+        Containers.updateNeighboursAfterDestroy(state, level, pos);
+        super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
     }
 
     protected void openContainer(Level level, BlockPos pos, Player player) {
@@ -94,12 +87,12 @@ public class IncubatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
-    public boolean hasAnalogOutputSignal(BlockState state) {
+    protected boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 

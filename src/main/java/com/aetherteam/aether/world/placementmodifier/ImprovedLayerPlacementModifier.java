@@ -73,7 +73,7 @@ public class ImprovedLayerPlacementModifier extends PlacementModifier {
         int x = pos.getX();
         int z = pos.getZ();
         int y = pos.getY();
-        for (int j = y; j >= context.getMinBuildHeight() + 1; --j) {
+        for (int j = y; j >= context.getMinY() + 1; --j) {
             BlockPos blockPos = new BlockPos(x, j, z);
             BlockState blockState = context.getBlockState(blockPos);
             BlockState belowState = context.getBlockState(blockPos.below());

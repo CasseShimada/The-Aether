@@ -9,8 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,18 +105,18 @@ public class LoreBookMenu extends AbstractContainerMenu {
         this.loreEntryExists = loreEntryExists;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static void addLoreEntryOverride(Function<RegistryAccess, Predicate<ItemStack>> predicate, String entry) {
         LORE_ENTRY_OVERRIDES.putIfAbsent(predicate, entry);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public String getLoreEntryKey(ItemStack stack) {
         Optional<String> key = LORE_ENTRY_OVERRIDES.entrySet().stream().filter(e -> e.getKey().apply(this.loreInventory.player.registryAccess()).test(stack)).findAny().map(Map.Entry::getValue);
-        return key.orElseGet(() -> "lore." + stack.getDescriptionId());
+        return key.orElseGet(() -> "lore." + stack.getItem().getDescriptionId());
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public boolean loreEntryKeyExists(ItemStack stack) {
         return I18n.exists(this.getLoreEntryKey(stack));
     }

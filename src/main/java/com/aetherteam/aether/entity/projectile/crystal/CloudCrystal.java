@@ -6,6 +6,7 @@ import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.data.resources.registries.AetherDamageTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -36,9 +37,9 @@ public class CloudCrystal extends AbstractCrystal implements WeaknessDamage {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity instanceof LivingEntity livingEntity) {
+        if (entity instanceof LivingEntity livingEntity && this.level() instanceof ServerLevel serverLevel) {
             float bonus = entity.getType().is(AetherTags.Entities.FIRE_MOB) ? 3.0F : 0.0F;
-            if (livingEntity.hurt(AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.CLOUD_CRYSTAL, this, this.getOwner()), 5.0F + bonus)) {
+            if (livingEntity.hurtServer(serverLevel, AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.CLOUD_CRYSTAL, this, this.getOwner()), 5.0F + bonus)) {
                 WeaknessDamage.super.damageWithWeakness(this, livingEntity, this.random);
             }
         }

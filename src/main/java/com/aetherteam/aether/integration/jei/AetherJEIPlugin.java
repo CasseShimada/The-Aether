@@ -13,16 +13,25 @@ import com.aetherteam.aether.integration.jei.categories.item.FreezingRecipeCateg
 import com.aetherteam.aether.integration.jei.categories.item.IncubationRecipeCategory;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
+import com.aetherteam.aether.recipe.recipes.ban.BlockBanRecipe;
+import com.aetherteam.aether.recipe.recipes.ban.ItemBanRecipe;
+import com.aetherteam.aether.recipe.recipes.block.AccessoryFreezableRecipe;
+import com.aetherteam.aether.recipe.recipes.block.AmbrosiumRecipe;
+import com.aetherteam.aether.recipe.recipes.block.IcestoneFreezableRecipe;
+import com.aetherteam.aether.recipe.recipes.block.PlacementConversionRecipe;
+import com.aetherteam.aether.recipe.recipes.block.SwetBallRecipe;
 import com.aetherteam.aether.recipe.recipes.item.AbstractAetherCookingRecipe;
 import com.aetherteam.aether.recipe.recipes.item.AltarRepairRecipe;
 import com.aetherteam.aether.recipe.recipes.item.EnchantingRecipe;
+import com.aetherteam.aether.recipe.recipes.item.FreezingRecipe;
+import com.aetherteam.aether.recipe.recipes.item.IncubationRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -36,8 +45,8 @@ import java.util.Objects;
 @JeiPlugin
 public class AetherJEIPlugin implements IModPlugin {
     @Override
-    public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(Aether.MODID, "jei");
+    public Identifier getPluginUid() {
+        return Identifier.fromNamespaceAndPath(Aether.MODID, "jei");
     }
 
     @Override
@@ -63,30 +72,33 @@ public class AetherJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+        if (Minecraft.getInstance().level == null || !(Minecraft.getInstance().level.recipeAccess() instanceof RecipeManager rm)) {
+            return;
+        }
 
         // Item
-        List<? extends RecipeHolder<? extends AbstractAetherCookingRecipe>> unfilteredRecipes = rm.getAllRecipesFor(AetherRecipeTypes.ENCHANTING.get());
+        List<? extends RecipeHolder<?>> allRecipes = rm.getRecipes().stream().toList();
+        List<? extends RecipeHolder<? extends AbstractAetherCookingRecipe>> unfilteredRecipes = allRecipes.stream().filter(holder -> holder.value().getType() == AetherRecipeTypes.ENCHANTING.get()).map((holder) -> (RecipeHolder<? extends AbstractAetherCookingRecipe>) holder).toList();
         List<EnchantingRecipe> enchantingRecipes = new ArrayList<>();
         List<AltarRepairRecipe> repairRecipes = new ArrayList<>();
         unfilteredRecipes.stream().filter(recipe -> recipe.value() instanceof EnchantingRecipe).forEach(recipe -> enchantingRecipes.add((EnchantingRecipe) recipe.value()));
         unfilteredRecipes.stream().filter(recipe -> recipe.value() instanceof AltarRepairRecipe).forEach(recipe -> repairRecipes.add((AltarRepairRecipe) recipe.value()));
         registration.addRecipes(EnchantingRecipeCategory.RECIPE_TYPE, enchantingRecipes);
         registration.addRecipes(AltarRepairRecipeCategory.RECIPE_TYPE, repairRecipes);
-        registration.addRecipes(FreezingRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.FREEZING.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(IncubationRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.INCUBATION.get()).stream().map(RecipeHolder::value).toList());
+        registration.addRecipes(FreezingRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, FreezingRecipe.class));
+        registration.addRecipes(IncubationRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, IncubationRecipe.class));
 
         // Fuel
         registration.addRecipes(AetherFuelCategory.RECIPE_TYPE, AetherFuelRecipeMaker.getFuelRecipes());
 
         // Block
-        registration.addRecipes(AmbrosiumRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.AMBROSIUM_ENCHANTING.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(SwetBallRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.SWET_BALL_CONVERSION.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(IcestoneFreezableRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.ICESTONE_FREEZABLE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(AccessoryFreezableRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.ACCESSORY_FREEZABLE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(PlacementConversionRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.PLACEMENT_CONVERSION.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(ItemBanRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.ITEM_PLACEMENT_BAN.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(BlockBanRecipeCategory.RECIPE_TYPE, rm.getAllRecipesFor(AetherRecipeTypes.BLOCK_PLACEMENT_BAN.get()).stream().map(RecipeHolder::value).toList());
+        registration.addRecipes(AmbrosiumRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, AmbrosiumRecipe.class));
+        registration.addRecipes(SwetBallRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, SwetBallRecipe.class));
+        registration.addRecipes(IcestoneFreezableRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, IcestoneFreezableRecipe.class));
+        registration.addRecipes(AccessoryFreezableRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, AccessoryFreezableRecipe.class));
+        registration.addRecipes(PlacementConversionRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, PlacementConversionRecipe.class));
+        registration.addRecipes(ItemBanRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, ItemBanRecipe.class));
+        registration.addRecipes(BlockBanRecipeCategory.RECIPE_TYPE, this.getRecipes(allRecipes, BlockBanRecipe.class));
     }
 
     @Override
@@ -108,5 +120,9 @@ public class AetherJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()), PlacementConversionRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL), ItemBanRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Blocks.TORCH), BlockBanRecipeCategory.RECIPE_TYPE);
+    }
+
+    private <T> List<T> getRecipes(List<? extends RecipeHolder<?>> allRecipes, Class<T> recipeClass) {
+        return allRecipes.stream().map(RecipeHolder::value).filter(recipeClass::isInstance).map(recipeClass::cast).toList();
     }
 }

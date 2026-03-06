@@ -8,6 +8,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.TimeArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.Permissions;
 
 /**
  * [CODE COPY] - {@link net.minecraft.server.commands.TimeCommand}.
@@ -15,7 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 public class AetherTimeCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("aether")
-                .then(Commands.literal("time").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                .then(Commands.literal("time").requires((commandSourceStack) -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
                         .then(Commands.literal("set")
                                 .then(Commands.literal("day").executes((context) -> setTime(context.getSource(), 1000 * AetherTimeAttachment.getTicksPerDayMultiplier())))
                                 .then(Commands.literal("noon").executes((context) -> setTime(context.getSource(), 6000 * AetherTimeAttachment.getTicksPerDayMultiplier())))

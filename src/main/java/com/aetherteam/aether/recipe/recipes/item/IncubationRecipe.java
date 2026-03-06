@@ -3,6 +3,7 @@ package com.aetherteam.aether.recipe.recipes.item;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
+import com.aetherteam.aether.recipe.book.AetherRecipeBookCategories;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -22,20 +23,20 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class IncubationRecipe implements Recipe<SingleRecipeInput> {
-    protected final RecipeType<?> type;
     protected final String group;
     protected final Ingredient ingredient;
     protected final EntityType<?> entity;
     protected final Optional<CompoundTag> tag;
     protected final int incubationTime;
+    protected final PlacementInfo placementInfo;
 
     public IncubationRecipe(String group, Ingredient ingredient, EntityType<?> entity, Optional<CompoundTag> tag, int incubationTime) {
-        this.type = AetherRecipeTypes.INCUBATION.get();
         this.group = group;
         this.ingredient = ingredient;
         this.entity = entity;
         this.tag = tag;
         this.incubationTime = incubationTime;
+        this.placementInfo = PlacementInfo.create(ingredient);
     }
 
     @Override
@@ -54,12 +55,10 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
     /**
      * @return The original {@link ItemStack} ingredient for Recipe Book display.
      */
-    @Override
     public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return this.ingredient.getItems()[0];
+        return this.ingredient.items().findFirst().map(ItemStack::new).orElse(ItemStack.EMPTY);
     }
 
-    @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
@@ -76,7 +75,6 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
         return this.tag;
     }
 
-    @Override
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> nonNullList = NonNullList.create();
         nonNullList.add(this.ingredient);
@@ -84,34 +82,43 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
     }
 
     @Override
-    public String getGroup() {
+    public String group() {
         return this.group;
     }
 
-    @Override
     public ItemStack getToastSymbol() {
         return new ItemStack(AetherBlocks.INCUBATOR.get());
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<IncubationRecipe> getSerializer() {
         return AetherRecipeSerializers.INCUBATION.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
-        return this.type;
+    public RecipeType<IncubationRecipe> getType() {
+        return AetherRecipeTypes.INCUBATION.get();
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return AetherRecipeBookCategories.INCUBATION_MISC.get();
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return this.placementInfo;
     }
 
     public static class Serializer implements RecipeSerializer<IncubationRecipe> {
         @Override
         public MapCodec<IncubationRecipe> codec() {
             return RecordCodecBuilder.mapCodec((instance) -> instance.group(
-                Codec.STRING.optionalFieldOf("group", "").forGetter(p_300832_ -> p_300832_.group),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter((recipe) -> recipe.ingredient),
-                BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter((recipe) -> recipe.entity),
-                CompoundTag.CODEC.optionalFieldOf("tag").forGetter((recipe) -> recipe.tag),
-                Codec.INT.fieldOf("incubationtime").orElse(500).forGetter((recipe) -> recipe.incubationTime)
+                Codec.STRING.optionalFieldOf("group", "").forGetter((IncubationRecipe recipe) -> recipe.group),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter((IncubationRecipe recipe) -> recipe.ingredient),
+                BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter((IncubationRecipe recipe) -> recipe.entity),
+                CompoundTag.CODEC.optionalFieldOf("tag").forGetter((IncubationRecipe recipe) -> recipe.tag),
+                Codec.INT.fieldOf("incubationtime").orElse(500).forGetter((IncubationRecipe recipe) -> recipe.incubationTime)
             ).apply(instance, IncubationRecipe::new));
         }
 

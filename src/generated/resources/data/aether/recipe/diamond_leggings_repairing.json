@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_leggings_repair",
-  "ingredient": {
-    "item": "minecraft:diamond_leggings"
-  },
+  "ingredient": "minecraft:diamond_leggings",
   "repairTime": 1500
 }

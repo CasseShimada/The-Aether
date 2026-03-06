@@ -7,12 +7,13 @@ import com.aetherteam.aether.entity.projectile.crystal.CloudCrystal;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class CloudMinion extends FlyingMob {
+public class CloudMinion extends PathfinderMob {
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID = SynchedEntityData.defineId(CloudMinion.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_IS_RIGHT_ID = SynchedEntityData.defineId(CloudMinion.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_LIFESPAN_ID = SynchedEntityData.defineId(CloudMinion.class, EntityDataSerializers.INT);
@@ -29,7 +30,7 @@ public class CloudMinion extends FlyingMob {
     private boolean shouldShoot;
     private double targetX, targetY, targetZ;
 
-    public CloudMinion(EntityType<? extends FlyingMob> type, Level level) {
+    public CloudMinion(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
     }
 
@@ -46,7 +47,7 @@ public class CloudMinion extends FlyingMob {
     }
 
     public static AttributeSupplier.Builder createMobAttributes() {
-        return FlyingMob.createMobAttributes()
+        return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 1.0)
                 .add(Attributes.MOVEMENT_SPEED, 10.0);
     }
@@ -188,7 +189,7 @@ public class CloudMinion extends FlyingMob {
      * Cloud Minions cannot be damaged.
      */
     @Override
-    public boolean hurt(DamageSource source, float damage) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         return false;
     }
 

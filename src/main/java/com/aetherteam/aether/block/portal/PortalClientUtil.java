@@ -6,7 +6,7 @@ import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.client.sound.PortalTriggerSoundInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.WinScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 public class PortalClientUtil {
     public static void handleAetherPortal(Player player, AetherPlayerAttachment attachment) {
         if (player instanceof LocalPlayer localPlayer) {
-            if (!(Minecraft.getInstance().screen instanceof ReceivingLevelScreen)) {
+            if (!(Minecraft.getInstance().screen instanceof LevelLoadingScreen)) {
                 attachment.oPortalIntensity = attachment.portalIntensity;
                 float f = 0.0F;
                 if (localPlayer.portalProcess != null && localPlayer.portalProcess.isInsidePortalThisTick() && localPlayer.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL.get())) {

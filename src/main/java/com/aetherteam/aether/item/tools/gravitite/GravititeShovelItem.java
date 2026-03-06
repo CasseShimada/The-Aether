@@ -9,7 +9,7 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class GravititeShovelItem extends ShovelItem implements GravititeTool {
     public GravititeShovelItem() {
-        super(AetherItemTiers.GRAVITITE, new Item.Properties().attributes(ShovelItem.createAttributes(AetherItemTiers.GRAVITITE, 1.5F, -3.0F)));
+        super(AetherItemTiers.GRAVITITE, 1.5F, -3.0F, new Item.Properties());
     }
 
     /**
@@ -23,7 +23,7 @@ public class GravititeShovelItem extends ShovelItem implements GravititeTool {
         if (!this.floatBlock(context)) {
             return super.useOn(context);
         } else {
-            return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
+            return context.getLevel().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         }
     }
 }

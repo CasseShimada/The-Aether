@@ -1,8 +1,6 @@
 package com.aetherteam.aether.client.renderer.entity.model;
 
-import com.aetherteam.aether.entity.monster.Zephyr;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.aetherteam.aether.client.renderer.entity.state.ZephyrRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +10,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
-public class ZephyrModel extends EntityModel<Zephyr> {
+public class ZephyrModel extends EntityModel<ZephyrRenderState> {
     public final ModelPart rightFace;
     public final ModelPart leftFace;
     public final ModelPart mouth;
@@ -26,17 +24,18 @@ public class ZephyrModel extends EntityModel<Zephyr> {
     public final ModelPart tailMiddle;
     public final ModelPart tailEnd;
 
-    public ZephyrModel(ModelPart model) {
-        this.rightFace = model.getChild("right_face");
-        this.leftFace = model.getChild("left_face");
-        this.mouth = model.getChild("mouth");
-        this.body = model.getChild("body");
-        this.bodyRightSideFront = model.getChild("body_right_side_front");
-        this.bodyRightSideBack = model.getChild("body_right_side_back");
-        this.bodyLeftSideFront = model.getChild("body_left_side_front");
-        this.bodyLeftSideBack = model.getChild("body_left_side_back");
-        this.cloudButt = model.getChild("cloud_butt");
-        this.tailBase = model.getChild("tail_base");
+    public ZephyrModel(ModelPart root) {
+        super(root);
+        this.rightFace = root.getChild("right_face");
+        this.leftFace = root.getChild("left_face");
+        this.mouth = root.getChild("mouth");
+        this.body = root.getChild("body");
+        this.bodyRightSideFront = root.getChild("body_right_side_front");
+        this.bodyRightSideBack = root.getChild("body_right_side_back");
+        this.bodyLeftSideFront = root.getChild("body_left_side_front");
+        this.bodyLeftSideBack = root.getChild("body_left_side_back");
+        this.cloudButt = root.getChild("cloud_butt");
+        this.tailBase = root.getChild("tail_base");
         this.tailMiddle = this.tailBase.getChild("tail_middle");
         this.tailEnd = this.tailMiddle.getChild("tail_end");
     }
@@ -60,8 +59,8 @@ public class ZephyrModel extends EntityModel<Zephyr> {
     }
 
     @Override
-    public void setupAnim(Zephyr zephyr, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float motion = Mth.sin((limbSwing * 20.0F) / Mth.RAD_TO_DEG) * limbSwingAmount * 0.5F;
+    public void setupAnim(ZephyrRenderState renderState) {
+        float motion = Mth.sin((renderState.walkAnimationSpeed * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.5F;
 
         this.rightFace.y = 8 - motion;
         this.rightFace.x = -motion * 0.5F;
@@ -75,30 +74,16 @@ public class ZephyrModel extends EntityModel<Zephyr> {
         this.bodyLeftSideFront.y = this.bodyRightSideFront.y;
         this.bodyLeftSideBack.y = this.bodyRightSideBack.y;
 
-        this.tailBase.x = Mth.sin((limbSwing * 20.0F) / Mth.RAD_TO_DEG) * limbSwingAmount * 0.75F;
+        this.tailBase.x = Mth.sin((renderState.walkAnimationSpeed * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.75F;
         this.tailBase.y = 8 - motion;
-        this.tailBase.yRot = Mth.sin(ageInTicks * 0.5F) * limbSwingAmount * 0.75F;
+        this.tailBase.yRot = Mth.sin(renderState.ageInTicks * 0.5F) * renderState.walkAnimationPos * 0.75F;
 
-        this.tailMiddle.x = Mth.sin((limbSwing * 15.0F) / Mth.RAD_TO_DEG) * limbSwingAmount * 0.85F;
+        this.tailMiddle.x = Mth.sin((renderState.walkAnimationSpeed * 15.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.85F;
         this.tailMiddle.y = motion * 1.25F;
         this.tailMiddle.yRot = this.tailBase.yRot + 0.25F;
 
-        this.tailEnd.x = Mth.sin((limbSwing * 10.0F) / Mth.RAD_TO_DEG) * limbSwingAmount * 0.95F;
+        this.tailEnd.x = Mth.sin((renderState.walkAnimationSpeed * 10.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.95F;
         this.tailEnd.y = -motion;
         this.tailEnd.yRot = this.tailMiddle.yRot + 0.35F;
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        this.rightFace.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.leftFace.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.mouth.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.body.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.bodyRightSideFront.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.bodyRightSideBack.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.bodyLeftSideFront.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.bodyLeftSideBack.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.cloudButt.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.tailBase.render(poseStack, consumer, packedLight, packedOverlay, color);
     }
 }

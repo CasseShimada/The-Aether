@@ -1,5 +1,6 @@
 package com.aetherteam.aether.client.renderer.entity.model;
 
+import com.aetherteam.aether.client.renderer.entity.state.ValkyrieRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -9,13 +10,16 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.Entity;
 
-public class ValkyrieWingsModel<T extends Entity> extends EntityModel<T> {
+public class ValkyrieWingsModel<T extends HumanoidRenderState> extends EntityModel<T> {
     public final ModelPart rightWing;
     public final ModelPart leftWing;
 
     public ValkyrieWingsModel(ModelPart root) {
+        super(root);
         this.rightWing = root.getChild("right_wing");
         this.leftWing = root.getChild("left_wing");
     }
@@ -28,13 +32,14 @@ public class ValkyrieWingsModel<T extends Entity> extends EntityModel<T> {
         return LayerDefinition.create(meshDefinition, 64, 32);
     }
 
-    @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
+//    @Override //todo ??
+//    public void setupAnim(T renderState) {
+//
+//    }
 
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        this.rightWing.render(poseStack, consumer, packedLight, packedOverlay, color);
-        this.leftWing.render(poseStack, consumer, packedLight, packedOverlay, color);
-    }
+//    @Override
+//    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
+//        this.rightWing.render(poseStack, consumer, packedLight, packedOverlay, color);
+//        this.leftWing.render(poseStack, consumer, packedLight, packedOverlay, color);
+//    }
 }

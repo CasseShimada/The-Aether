@@ -2,7 +2,9 @@ package com.aetherteam.aether.item.tools.abilities;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlockStateProperties;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +22,7 @@ public interface SkyrootTool {
      * @see com.aetherteam.aether.loot.functions.DoubleDrops
      */
     default ItemStack doubleDrops(Level level, ItemStack drop, @Nullable ItemStack tool, @Nullable BlockState state) {
-        if (tool != null && tool.getEnchantmentLevel(level.holderOrThrow(Enchantments.SILK_TOUCH)) == 0) {
+        if (tool != null && EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), tool) == 0) {
             if (state != null && (state.getValue(AetherBlockStateProperties.DOUBLE_DROPS) || state.is(AetherTags.Blocks.DOUBLE_DROPS_OVERRIDE))) {
                 if (tool.isCorrectToolForDrops(state)) {
                     drop.setCount(2 * drop.getCount());

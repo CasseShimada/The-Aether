@@ -2,9 +2,10 @@ package com.aetherteam.aether.client.gui.screen.menu.splash;
 
 import com.aetherteam.aether.client.gui.screen.menu.CustomPosition;
 import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.network.chat.Component;
 
 public class LeftSplashRenderer extends SplashRenderer implements CustomPosition {
-    public LeftSplashRenderer(String splash) {
+    public LeftSplashRenderer(Component splash) {
         super(splash);
     }
 

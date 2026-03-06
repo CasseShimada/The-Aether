@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "minecraft:lectern",
   "key": {
-    "B": {
-      "item": "aether:skyroot_bookshelf"
-    },
-    "S": {
-      "tag": "minecraft:wooden_slabs"
-    }
+    "B": "aether:skyroot_bookshelf",
+    "S": "#minecraft:wooden_slabs"
   },
   "pattern": [
     "SSS",

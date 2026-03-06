@@ -10,7 +10,7 @@ import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -20,11 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Optional;
 
 public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
-    public PlacementConversionRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<ResourceLocation> function) {
+    public PlacementConversionRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
         super(AetherRecipeTypes.PLACEMENT_CONVERSION.get(), biome, ingredient, result, function);
     }
 
-    public PlacementConversionRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<ResourceLocation> function) {
+    public PlacementConversionRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
         this(Optional.empty(), ingredient, result, function);
     }
 
@@ -49,7 +49,7 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<PlacementConversionRecipe> getSerializer() {
         return AetherRecipeSerializers.PLACEMENT_CONVERSION.get();
     }
 

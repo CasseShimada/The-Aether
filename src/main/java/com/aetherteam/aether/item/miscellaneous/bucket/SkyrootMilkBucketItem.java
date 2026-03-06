@@ -7,7 +7,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MilkBucketItem;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.EffectCures;
 
 public class SkyrootMilkBucketItem extends MilkBucketItem implements ConsumableItem {
     public SkyrootMilkBucketItem(Properties properties) {
@@ -24,7 +23,7 @@ public class SkyrootMilkBucketItem extends MilkBucketItem implements ConsumableI
      */
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
         if (!level.isClientSide()) {
-            user.removeEffectsCuredBy(EffectCures.MILK);
+            user.removeAllEffects();
         }
         this.consume(this, stack, user);
         return stack.isEmpty() ? new ItemStack(AetherItems.SKYROOT_BUCKET.get()) : stack;

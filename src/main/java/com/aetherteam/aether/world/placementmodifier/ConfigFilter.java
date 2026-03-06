@@ -1,6 +1,7 @@
 package com.aetherteam.aether.world.placementmodifier;
 
 import com.aetherteam.aether.data.ConfigSerializationUtil;
+import com.aetherteam.aether.config.ModConfigSpec;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -9,7 +10,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementFilter;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 /**
  * A {@link PlacementFilter} to prevent the feature from generating when the specified config condition is set to false.

@@ -5,18 +5,10 @@
   "experience": 0.1,
   "group": "iron_nugget_from_blasting",
   "ingredient": [
-    {
-      "item": "aether:iron_gloves"
-    },
-    {
-      "item": "aether:iron_pendant"
-    },
-    {
-      "item": "aether:iron_ring"
-    },
-    {
-      "item": "aether:chainmail_gloves"
-    }
+    "aether:iron_gloves",
+    "aether:iron_pendant",
+    "aether:iron_ring",
+    "aether:chainmail_gloves"
   ],
   "result": {
     "count": 1,

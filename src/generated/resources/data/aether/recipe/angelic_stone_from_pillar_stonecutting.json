@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "aether:pillar"
-  },
+  "ingredient": "aether:pillar",
   "result": {
     "count": 1,
     "id": "aether:angelic_stone"

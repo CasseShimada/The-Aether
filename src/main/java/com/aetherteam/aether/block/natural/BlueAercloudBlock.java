@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
@@ -34,7 +35,7 @@ public class BlueAercloudBlock extends AercloudBlock {
      * @param entity The {@link Entity} in the block.
      */
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl) {
         if (!entity.isShiftKeyDown() && (!entity.isVehicle() || !(entity.getControllingPassenger() instanceof Player))) {
             Vec3 prevMotion = entity.getDeltaMovement();
             entity.resetFallDistance();
@@ -60,7 +61,7 @@ public class BlueAercloudBlock extends AercloudBlock {
                 entity.setOnGround(false);
             }
         } else {
-            super.entityInside(state, level, pos, entity);
+            super.entityInside(state, level, pos, entity, insideBlockEffectApplier, bl);
         }
     }
 

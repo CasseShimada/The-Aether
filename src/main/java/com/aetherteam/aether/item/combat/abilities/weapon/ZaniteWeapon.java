@@ -3,7 +3,7 @@ package com.aetherteam.aether.item.combat.abilities.weapon;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.item.EquipmentUtil;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,7 +17,7 @@ public interface ZaniteWeapon {
     /**
      * The unique identifier for the item's damage bonus attribute.
      */
-    ResourceLocation DAMAGE_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "zanite_weapon_attack_damage");
+    Identifier DAMAGE_MODIFIER_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "zanite_weapon_attack_damage");
 
     /**
      * Sets up the attribute for the damage bonus value for the item if it is in the entity's main hand.
@@ -37,12 +37,12 @@ public interface ZaniteWeapon {
      * The minimum possible damage bonus is 1 and the maximum possible damage bonus is 7.<br><br>
      * <a href="https://www.desmos.com/calculator/rnnveeodba">See math visually.</a>
      * @param base The base damage modifier {@link Attribute} {@link Holder}.
-     * @param bonusModifier The base damage modifier {@link ResourceLocation} ID.
+     * @param bonusModifier The base damage modifier {@link Identifier} ID.
      * @param modifiers The item's default {@link ItemAttributeModifiers}.
      * @param stack The {@link ItemStack} correlating to the item.
      * @return The damage bonus value for the zanite weapon, as an {@link Integer}.
      */
-    default int calculateDamageIncrease(Holder<Attribute> base, ResourceLocation bonusModifier, ItemAttributeModifiers modifiers, ItemStack stack) {
+    default int calculateDamageIncrease(Holder<Attribute> base, Identifier bonusModifier, ItemAttributeModifiers modifiers, ItemStack stack) {
         AtomicReference<Double> baseStat = new AtomicReference<>(0.0);
         modifiers.forEach(EquipmentSlotGroup.MAINHAND, (attribute, modifier) -> {
             if (attribute.value() == base.value() && !modifier.id().equals(bonusModifier)) {

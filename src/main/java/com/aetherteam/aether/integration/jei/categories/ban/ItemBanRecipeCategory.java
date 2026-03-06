@@ -9,14 +9,14 @@ import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 public class ItemBanRecipeCategory extends AbstractPlacementBanRecipeCategory<ItemStack, Ingredient, SingleRecipeInput, ItemBanRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "item_placement_ban");
+    public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "item_placement_ban");
     public static final RecipeType<ItemBanRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "item_placement_ban", ItemBanRecipe.class);
 
     public ItemBanRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
@@ -30,9 +30,9 @@ public class ItemBanRecipeCategory extends AbstractPlacementBanRecipeCategory<It
     public void setRecipe(IRecipeLayoutBuilder builder, ItemBanRecipe recipe, IFocusGroup focusGroup) {
         Ingredient ingredient = recipe.getIngredient();
         if (recipe.getBypassBlock().isEmpty() || recipe.getBypassBlock().get().isEmpty()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 50, 1).addIngredients(ingredient).addTooltipCallback((recipeSlotView, tooltip) -> this.populateAdditionalInformation(recipe, tooltip));
+            builder.addSlot(RecipeIngredientRole.INPUT, 50, 1).add(ingredient).addRichTooltipCallback((recipeSlotView, tooltip) -> this.populateAdditionalInformation(recipe, tooltip));
         } else {
-            builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(ingredient).addTooltipCallback((recipeSlotView, tooltip) -> this.populateAdditionalInformation(recipe, tooltip));
+            builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(ingredient).addRichTooltipCallback((recipeSlotView, tooltip) -> this.populateAdditionalInformation(recipe, tooltip));
         }
         super.setRecipe(builder, recipe, focusGroup);
     }

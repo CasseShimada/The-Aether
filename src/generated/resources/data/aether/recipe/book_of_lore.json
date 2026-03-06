@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "book_of_lore",
   "ingredients": [
-    {
-      "item": "minecraft:book"
-    },
-    {
-      "tag": "aether:book_of_lore_materials"
-    }
+    "minecraft:book",
+    "#aether:book_of_lore_materials"
   ],
   "result": {
     "count": 1,

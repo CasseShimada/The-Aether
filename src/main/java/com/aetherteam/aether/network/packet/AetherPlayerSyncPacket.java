@@ -5,12 +5,12 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncEntityPacket;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.minecraft.resources.Identifier;
+import com.aetherteam.aether.network.AetherPayloadContext;
 import oshi.util.tuples.Quartet;
 
 import java.util.function.Supplier;
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * Sync packet for values in the {@link AetherPlayerAttachment} class.
  */
 public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachment> {
-    public static final Type<AetherPlayerSyncPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "sync_aether_player_attachment"));
+    public static final Type<AetherPlayerSyncPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "sync_aether_player_attachment"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AetherPlayerSyncPacket> STREAM_CODEC = CustomPacketPayload.codec(
         AetherPlayerSyncPacket::write,
@@ -44,10 +44,10 @@ public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachm
 
     @Override
     public Supplier<AttachmentType<AetherPlayerAttachment>> getAttachment() {
-        return AetherDataAttachments.AETHER_PLAYER;
+        return () -> AetherDataAttachments.AETHER_PLAYER;
     }
 
-    public static void execute(AetherPlayerSyncPacket payload, IPayloadContext context) {
+    public static void execute(AetherPlayerSyncPacket payload, AetherPayloadContext context) {
         SyncEntityPacket.execute(payload, context.player());
     }
 }

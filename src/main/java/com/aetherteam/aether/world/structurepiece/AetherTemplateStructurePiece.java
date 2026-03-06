@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
@@ -24,13 +24,13 @@ import java.util.function.Function;
  */
 public abstract class AetherTemplateStructurePiece extends TemplateStructurePiece {
     protected final Holder<StructureProcessorList> processors;
-    public AetherTemplateStructurePiece(StructurePieceType type, StructureTemplateManager templateManager, ResourceLocation name, StructurePlaceSettings placeSettings, BlockPos templatePosition, Holder<StructureProcessorList> processors) {
+    public AetherTemplateStructurePiece(StructurePieceType type, StructureTemplateManager templateManager, Identifier name, StructurePlaceSettings placeSettings, BlockPos templatePosition, Holder<StructureProcessorList> processors) {
         super(type, 0, templateManager, name, name.toString(), addProcessors(placeSettings, processors), templatePosition);
         this.setOrientation(this.getRotation().rotate(Direction.SOUTH));
         this.processors = processors;
     }
 
-    public AetherTemplateStructurePiece(StructurePieceType type, RegistryAccess access, CompoundTag tag, StructureTemplateManager templateManager, Function<ResourceLocation, StructurePlaceSettings> settingsFactory) {
+    public AetherTemplateStructurePiece(StructurePieceType type, RegistryAccess access, CompoundTag tag, StructureTemplateManager templateManager, Function<Identifier, StructurePlaceSettings> settingsFactory) {
         super(type, tag, templateManager, settingsFactory.andThen(settings -> readSettings(tag, settings, access)));
         this.setOrientation(this.getRotation().rotate(Direction.SOUTH));
         this.processors = readProcessors(tag, access);
@@ -47,9 +47,9 @@ public abstract class AetherTemplateStructurePiece extends TemplateStructurePiec
     }
 
     private static StructurePlaceSettings readSettings(CompoundTag tag, StructurePlaceSettings settings, RegistryAccess access) {
-        settings.setRotation(Rotation.valueOf(tag.getString("Rotation")));
+        settings.setRotation(Rotation.valueOf(tag.getString("Rotation").orElseThrow()));
         if (tag.contains("RotationPivot")) {
-            settings.setRotationPivot(BlockPos.of(tag.getLong("RotationPivot")));
+            tag.getLong("RotationPivot").ifPresent(value -> settings.setRotationPivot(BlockPos.of(value)));
         }
         Holder<StructureProcessorList> processors = readProcessors(tag, access);
         addProcessors(settings, processors);
@@ -77,7 +77,7 @@ public abstract class AetherTemplateStructurePiece extends TemplateStructurePiec
         return settings;
     }
 
-    public static StructurePlaceSettings makeSettingsWithPivot(StructurePlaceSettings settings, StructureTemplateManager templateManager, ResourceLocation name, Rotation rotation) {
+    public static StructurePlaceSettings makeSettingsWithPivot(StructurePlaceSettings settings, StructureTemplateManager templateManager, Identifier name, Rotation rotation) {
         StructureTemplate template = templateManager.getOrCreate(name);
         Vec3i size = template.getSize();
         int xOffset = ((size.getX()) >> 1);

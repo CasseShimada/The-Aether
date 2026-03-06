@@ -7,7 +7,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
@@ -23,7 +23,7 @@ public class AetherStructureSets {
     public static final ResourceKey<StructureSet> SILVER_AND_GOLD_DUNGEONS = createKey("silver_and_gold_dungeons");
 
     private static ResourceKey<StructureSet> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, ResourceLocation.fromNamespaceAndPath(Aether.MODID, name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, Identifier.fromNamespaceAndPath(Aether.MODID, name));
     }
 
     /**

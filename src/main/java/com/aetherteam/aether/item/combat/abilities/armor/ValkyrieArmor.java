@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 public interface ValkyrieArmor {
     /**
@@ -19,7 +18,7 @@ public interface ValkyrieArmor {
     static void handleFlight(LivingEntity entity) {
         if (EquipmentUtil.hasFullValkyrieSet(entity)) {
             if (entity instanceof Player player && !player.getAbilities().flying) { // The player can't have creative flight enabled, otherwise it causes issues.
-                var data = player.getData(AetherDataAttachments.AETHER_PLAYER);
+                var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                 Vec3 deltaMovement = player.getDeltaMovement();
                 // Updates the flight modifier and timer values.
                 if (data.isJumping() && !onGround(player)) { // Checks if the player is off the ground and holding the jump key (space bar by default).
@@ -55,6 +54,6 @@ public interface ValkyrieArmor {
     }
 
     private static boolean onGround(Player player) {
-        return player.onGround() || player.isInFluidType();
+        return player.onGround() || player.isInLiquid();
     }
 }

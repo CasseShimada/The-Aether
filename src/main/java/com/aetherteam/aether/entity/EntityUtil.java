@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -85,11 +86,13 @@ public final class EntityUtil {
      * @param projectile The {@link Projectile} that is summoning lightning.
      */
     public static void summonLightningFromProjectile(Projectile projectile) {
-        LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(projectile.level());
-        if (lightningBolt != null) {
-            lightningBolt.getData(AetherDataAttachments.LIGHTNING_TRACKER).setOwner(projectile.getOwner());
-            lightningBolt.setPos(projectile.getX(), projectile.getY(), projectile.getZ());
-            projectile.level().addFreshEntity(lightningBolt);
+        if (projectile.level() instanceof ServerLevel serverLevel) {
+            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.TRIGGERED);
+            if (lightningBolt != null) {
+                lightningBolt.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).setOwner(projectile.getOwner());
+                lightningBolt.setPos(projectile.getX(), projectile.getY(), projectile.getZ());
+                serverLevel.addFreshEntity(lightningBolt);
+            }
         }
     }
 

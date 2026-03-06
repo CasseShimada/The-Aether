@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "minecraft:jukebox",
   "key": {
-    "D": {
-      "tag": "c:gems/diamond"
-    },
-    "P": {
-      "tag": "aether:planks_crafting"
-    }
+    "D": "#c:gems/diamond",
+    "P": "#aether:planks_crafting"
   },
   "pattern": [
     "PPP",

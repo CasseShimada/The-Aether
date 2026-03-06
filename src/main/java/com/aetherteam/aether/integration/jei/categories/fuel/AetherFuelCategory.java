@@ -7,13 +7,13 @@ import com.aetherteam.nitrogen.integration.jei.categories.fuel.FuelRecipe;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public class AetherFuelCategory extends AbstractFuelCategory {
-    public static final ResourceLocation ICON_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/gui/sprites/menu/lit_progress_transparent.png");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/altar.png");
+    public static final Identifier ICON_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/sprites/menu/lit_progress_transparent.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/altar.png");
     public static final RecipeType<FuelRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "fuel", FuelRecipe.class);
 
     public AetherFuelCategory(IGuiHelper helper) {
@@ -31,12 +31,22 @@ public class AetherFuelCategory extends AbstractFuelCategory {
     }
 
     @Override
-    public ResourceLocation getBackgroundTexture() {
+    public Identifier getBackgroundTexture() {
         return TEXTURE;
     }
 
     @Override
-    public ResourceLocation getIconTexture() {
+    public Identifier getIconTexture() {
         return ICON_TEXTURE;
+    }
+
+    @Override
+    public int getWidth() {
+        return 82;
+    }
+
+    @Override
+    public int getHeight() {
+        return 54;
     }
 }

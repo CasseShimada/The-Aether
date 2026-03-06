@@ -26,12 +26,17 @@ public interface ItemUseConversion<R extends MatchEventRecipe & BlockStateRecipe
     default <T extends R> InteractionResult convertBlock(RecipeType<T> recipeType, UseOnContext context) {
         Player player = context.getPlayer();
         Level level = context.getLevel();
+        if (level.getServer() == null) {
+            return InteractionResult.PASS;
+        }
         BlockPos pos = context.getClickedPos();
         ItemStack heldItem = context.getItemInHand();
         BlockState oldBlockState = level.getBlockState(pos);
 
-        for (RecipeHolder<T> recipe : level.getRecipeManager().getAllRecipesFor(recipeType)) { // Gets the list of recipes existing for a RecipeType.
-            if (recipe != null) {
+        for (RecipeHolder<?> rawRecipe : level.getServer().getRecipeManager().getRecipes()) { // Gets the list of recipes existing for a RecipeType.
+            if (rawRecipe != null && rawRecipe.value().getType() == recipeType) {
+                @SuppressWarnings("unchecked")
+                RecipeHolder<T> recipe = (RecipeHolder<T>) rawRecipe;
                 BlockState newState = recipe.value().getResultState(oldBlockState); // Gets the result BlockState and gives it the properties of the old BlockState
                 if (recipe.value().matches(player, level, pos, heldItem, oldBlockState, newState, recipeType)) { // Checks if the recipe is actually for the oldState and if it hasn't been cancelled with an event.
                     if (!level.isClientSide() && recipe.value().convert(level, pos, newState, recipe.value().getFunction())) { // Converts the block according to the recipe on the server side.
@@ -60,10 +65,12 @@ public interface ItemUseConversion<R extends MatchEventRecipe & BlockStateRecipe
      * @return A {@link Boolean} which returns true if the conversion was successful and false if not.
      */
     default <T extends R> boolean convertBlockWithoutContext(RecipeType<T> recipeType, Level level, BlockPos pos, ItemStack stack) {
-        if (!level.isClientSide()) {
+        if (!level.isClientSide() && level.getServer() != null) {
             BlockState oldBlockState = level.getBlockState(pos);
-            for (RecipeHolder<T> recipe : level.getRecipeManager().getAllRecipesFor(recipeType)) {
-                if (recipe != null) {
+            for (RecipeHolder<?> rawRecipe : level.getServer().getRecipeManager().getRecipes()) {
+                if (rawRecipe != null && rawRecipe.value().getType() == recipeType) {
+                    @SuppressWarnings("unchecked")
+                    RecipeHolder<T> recipe = (RecipeHolder<T>) rawRecipe;
                     BlockState newState = recipe.value().getResultState(oldBlockState);
                     if (recipe.value().matches(null, level, pos, null, oldBlockState, newState, recipeType)) {
                         if (recipe.value().convert(level, pos, newState, recipe.value().getFunction())) {

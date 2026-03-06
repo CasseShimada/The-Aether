@@ -2,10 +2,10 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.aetherteam.aether.registry.DeferredHolder;
+import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Aether.MODID);
@@ -177,10 +177,10 @@ public class AetherSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_BOSS_SUN_SPIRIT = registerHolder("music.boss.sun_spirit");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String location) {
-        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Aether.MODID, location)));
+        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(Aether.MODID, location)));
     }
 
     private static DeferredHolder<SoundEvent, SoundEvent> registerHolder(String location) {
-        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Aether.MODID, location)));
+        return SOUNDS.register(location, () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(Aether.MODID, location)));
     }
 }

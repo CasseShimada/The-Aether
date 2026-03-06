@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "B": {
-      "item": "aether:skyroot_poison_bucket"
-    },
-    "D": {
-      "item": "aether:golden_dart"
-    }
+    "B": "aether:skyroot_poison_bucket",
+    "D": "aether:golden_dart"
   },
   "pattern": [
     "DDD",

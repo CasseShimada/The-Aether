@@ -1,11 +1,9 @@
 package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.block.AetherWoodTypes;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.resources.Identifier;
 
 public class AetherAtlases {
     public static Material TREASURE_CHEST_MATERIAL;
@@ -13,7 +11,7 @@ public class AetherAtlases {
     public static Material TREASURE_CHEST_RIGHT_MATERIAL;
 
     /**
-     * Need to register these static values here from {@link AetherClient#clientSetup(FMLClientSetupEvent)},
+     * Need to register these static values during client setup,
      * otherwise they'll be loaded too early from static initialization in the field.
      */
     public static void registerTreasureChestAtlases() {
@@ -23,10 +21,10 @@ public class AetherAtlases {
     }
 
     public static void registerWoodTypeAtlases() {
-        Sheets.addWoodType(AetherWoodTypes.SKYROOT);
+        // WoodType atlas entries are initialized from the global wood type registry in 1.21.11.
     }
 
     public static Material getChestMaterial(String chestName) {
-        return new Material(Sheets.CHEST_SHEET, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "entity/tiles/chest/" + chestName));
+        return new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath(Aether.MODID, "entity/tiles/chest/" + chestName));
     }
 }

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "aether:processed/gravitite"
-    },
-    "/": {
-      "tag": "aether:skyroot_stick"
-    }
+    "#": "#aether:processed/gravitite",
+    "/": "#aether:skyroot_stick"
   },
   "pattern": [
     "##",

@@ -13,7 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -34,17 +34,17 @@ public class SilverBossRoom extends SilverDungeonPiece {
     }
 
     public SilverBossRoom(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.SILVER_BOSS_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> SilverBossRoom.makeSettings(context.structureTemplateManager(), ResourceLocation.parse(tag.getString("Template"))));
+        super(AetherStructurePieceTypes.SILVER_BOSS_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> SilverBossRoom.makeSettings(context.structureTemplateManager(), Identifier.parse(tag.getString("Template").orElseThrow())));
     }
 
-    private static StructurePlaceSettings makeSettings(StructureTemplateManager templateManager, ResourceLocation name) {
+    private static StructurePlaceSettings makeSettings(StructureTemplateManager templateManager, Identifier name) {
         return new StructurePlaceSettings()
                 // TODO: convert to datagen somehow, maybe with a new StructureProcessor type
                 .addProcessor(makeBoxProcessor(templateManager, name))
                 .setFinalizeEntities(true);
     }
 
-    private static StructureProcessor makeBoxProcessor(StructureTemplateManager templateManager, ResourceLocation id) {
+    private static StructureProcessor makeBoxProcessor(StructureTemplateManager templateManager, Identifier id) {
         Vec3i template = templateManager.getOrCreate(id).getSize();
         BorderBoxPosTest borderTest = new BorderBoxPosTest(0, 1, 0, template.getX() - 1, template.getY() - 1, template.getZ() - 1);
         return new RuleProcessor(ImmutableList.of(
@@ -60,7 +60,7 @@ public class SilverBossRoom extends SilverDungeonPiece {
             if (entity instanceof RandomizableContainerBlockEntity container) {
                 container.setLootTable(AetherLoot.SILVER_DUNGEON_REWARD, random.nextLong());
             }
-            TreasureChestBlockEntity.setDungeonType(level, chest, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "silver"));
+            TreasureChestBlockEntity.setDungeonType(level, chest, Identifier.fromNamespaceAndPath(Aether.MODID, "silver"));
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }
     }

@@ -1,8 +1,6 @@
 {
   "type": "aether:repairing",
   "group": "altar_helmet_repair",
-  "ingredient": {
-    "item": "minecraft:leather_helmet"
-  },
+  "ingredient": "minecraft:leather_helmet",
   "repairTime": 250
 }

@@ -8,6 +8,7 @@ import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.passive.Moa;
+import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.aether.perk.data.ClientMoaSkinPerkData;
@@ -17,7 +18,7 @@ import com.aetherteam.nitrogen.api.users.User;
 import com.aetherteam.nitrogen.api.users.UserData;
 import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacket;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -26,18 +27,17 @@ import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -46,14 +46,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MoaSkinsScreen extends Screen {
-    public static final ResourceLocation MOA_SKINS_GUI = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/gui/perks/skins/skins.png");
-    public static final ResourceLocation LOCK_SPRITE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/lock");
-    public static final ResourceLocation SLOT_SELECTED_SPRITE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/slot_selected");
+    public static final Identifier MOA_SKINS_GUI = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/perks/skins/skins.png");
+    public static final Identifier LOCK_SPRITE = Identifier.fromNamespaceAndPath(Aether.MODID, "skins/lock");
+    public static final Identifier SLOT_SELECTED_SPRITE = Identifier.fromNamespaceAndPath(Aether.MODID, "skins/slot_selected");
 
-    public static final WidgetSprites SLOT_WIDGET = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/slot"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/slot_disabled"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/slot_highlighted"));
-    public static final WidgetSprites SCROLL_WIDGET = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/scroll"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/scroll_disabled"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/scroll"));
-    public static final WidgetSprites PERMANENT_WIDGET = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/permanent"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/permanent_highlighted"));
-    public static final WidgetSprites TEMPORARY_WIDGET = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/temporary"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "skins/temporary_highlighted"));
+    public static final WidgetSprites SLOT_WIDGET = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "skins/slot"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/slot_disabled"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/slot_highlighted"));
+    public static final WidgetSprites SCROLL_WIDGET = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "skins/scroll"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/scroll_disabled"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/scroll"));
+    public static final WidgetSprites PERMANENT_WIDGET = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "skins/permanent"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/permanent_highlighted"));
+    public static final WidgetSprites TEMPORARY_WIDGET = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "skins/temporary"), Identifier.fromNamespaceAndPath(Aether.MODID, "skins/temporary_highlighted"));
 
     private static final String PATREON_LINK = "https://www.patreon.com/TheAetherTeam";
     private static final String HELP_LINK = "https://github.com/The-Aether-Team/.github/wiki/Patreon-Guide";
@@ -106,9 +106,9 @@ public class MoaSkinsScreen extends Screen {
             this.snapPoints.add((this.scrollbarGutterWidth() / remainingSlots) * i);
         }
 
-        if (this.getMinecraft().player != null) {
+        if (this.minecraft.player != null) {
             // Retrieve Moa Skin data for this user.
-            UUID uuid = this.getMinecraft().player.getUUID();
+            UUID uuid = this.minecraft.player.getUUID();
             Map<UUID, MoaData> userSkinsData = ClientMoaSkinPerkData.INSTANCE.getClientPerkData();
 
             // If the user has no selected skin in this screen, set it to whatever their saved skin is according to the server data.
@@ -119,7 +119,7 @@ public class MoaSkinsScreen extends Screen {
             // Button for saving a selected skin as the one that will be applied to the player's Moa.
             this.applyButton = this.addRenderableWidget(new ChangeSkinButton(ChangeSkinButton.ButtonType.APPLY, Button.builder(Component.translatable("gui.aether.moa_skins.button.apply"),
                     (pressed) -> {
-                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.getMinecraft().player.getUUID(), new MoaData(this.getMinecraft().player.getData(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), this.getSelectedSkin())));
+                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), this.getSelectedSkin())));
                         this.customizations.setMoaSkin(this.getSelectedSkin().getId());
                         this.customizations.save();
                         this.customizations.load();
@@ -129,7 +129,7 @@ public class MoaSkinsScreen extends Screen {
             // Button for removing the player's currently applied Moa Skin.
             this.removeButton = this.addRenderableWidget(new ChangeSkinButton(ChangeSkinButton.ButtonType.REMOVE, Button.builder(Component.translatable("gui.aether.moa_skins.button.remove"),
                     (pressed) -> {
-                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.getMinecraft().player.getUUID()));
+                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
                         this.customizations.setMoaSkin("");
                         this.customizations.save();
                         this.customizations.load();
@@ -140,7 +140,7 @@ public class MoaSkinsScreen extends Screen {
             this.addRenderableWidget(new RefreshButton(Button.builder(Component.literal(""),
                     (pressed) -> {
                         if (RefreshButton.reboundTimer == 0) {
-                            PacketDistributor.sendToServer(new TriggerUpdateInfoPacket(this.getMinecraft().player.getId()));
+                            PacketDistributor.sendToServer(new TriggerUpdateInfoPacket(this.minecraft.player.getId()));
                             RefreshButton.reboundTimer = RefreshButton.reboundMax;
                         }
                     }
@@ -148,21 +148,21 @@ public class MoaSkinsScreen extends Screen {
 
             // Button that opens a screen with a redirect to Patreon.
             this.addRenderableWidget(new PatreonButton(Button.builder(Component.translatable("gui.aether.moa_skins.button.donate"),
-                    (pressed) -> this.getMinecraft().setScreen(new ConfirmLinkScreen((callback) -> {
+                    (pressed) -> this.minecraft.setScreen(new ConfirmLinkScreen((callback) -> {
                         if (callback) {
                             Util.getPlatform().openUri(PATREON_LINK);
                         }
-                        this.getMinecraft().setScreen(this);
+                        this.minecraft.setScreen(this);
                     }, PATREON_LINK, true))
             ).bounds(this.leftPos + (this.imageWidth / 2) - (54 / 2), this.topPos + this.imageHeight - 25, 54, 18)));
 
             // Button that opens a screen with a redirect to a guide for how to connect a UUID.
             this.addRenderableWidget(new PatreonButton(Button.builder(Component.literal("?"),
-                    (pressed) -> this.getMinecraft().setScreen(new ConfirmLinkScreen((callback) -> {
+                    (pressed) -> this.minecraft.setScreen(new ConfirmLinkScreen((callback) -> {
                         if (callback) {
                             Util.getPlatform().openUri(HELP_LINK);
                         }
-                        this.getMinecraft().setScreen(this);
+                        this.minecraft.setScreen(this);
                     }, HELP_LINK, true))
             ).bounds(this.leftPos + (this.imageWidth / 2) + 63, this.topPos + this.imageHeight - 25, 18, 18).tooltip(Tooltip.create(Component.translatable("gui.aether.moa_skins.button.help"))), true));
         }
@@ -191,8 +191,8 @@ public class MoaSkinsScreen extends Screen {
      */
     private void renderWindow(GuiGraphics guiGraphics) {
         User user = UserData.Client.getClientUser();
-        Font font = this.getMinecraft().font;
-        guiGraphics.blit(MOA_SKINS_GUI, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        Font font = this.minecraft.font;
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, MOA_SKINS_GUI, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         Component component = user == null ? Component.translatable("gui.aether.moa_skins.text.donate") : Component.translatable("gui.aether.moa_skins.text.reward");
         int y = (this.topPos + this.imageHeight - 69) + font.wordWrapHeight(component, this.imageWidth - 20);
@@ -210,8 +210,8 @@ public class MoaSkinsScreen extends Screen {
      * @param mouseY      The {@link Integer} for the mouse's y-position.
      */
     private void renderSlots(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        if (this.getMinecraft().player != null) {
-            UUID uuid = this.getMinecraft().player.getUUID();
+        if (this.minecraft.player != null) {
+            UUID uuid = this.minecraft.player.getUUID();
             Map<UUID, MoaData> userSkinsData = ClientMoaSkinPerkData.INSTANCE.getClientPerkData();
             User user = UserData.Client.getClientUser();
 
@@ -229,16 +229,16 @@ public class MoaSkinsScreen extends Screen {
                 // If a skin slot is not selected, then it will display as darkened only if the user does not have access to that skin.
                 if (user == null || !skin.getUserPredicate().test(user) || skin == this.getSelectedSkin() || this.getSlotIndex(mouseX, mouseY) == slotIndex) {
                     // Highlighted slot vs. Darkened slot.
-                    ResourceLocation location = SLOT_WIDGET.get(user != null && skin.getUserPredicate().test(user), skin == this.getSelectedSkin() || this.getSlotIndex(mouseX, mouseY) == slotIndex);
-                    guiGraphics.blitSprite(location, x, y, 18, 18); // Render slot.
+                    Identifier location = SLOT_WIDGET.get(user != null && skin.getUserPredicate().test(user), skin == this.getSelectedSkin() || this.getSlotIndex(mouseX, mouseY) == slotIndex);
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, x, y, 18, 18); // Render slot.
                 }
 
                 // Renders an outline for the player's currently active Moa Skin.
                 if (userSkinsData.containsKey(uuid) && userSkinsData.get(uuid).moaSkin() == skin) {
-                    guiGraphics.blitSprite(SLOT_SELECTED_SPRITE, x, y, 18, 18); // Render golden slot outline.
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_SELECTED_SPRITE, x, y, 18, 18); // Render golden slot outline.
                 }
 
-                guiGraphics.blitSprite(skin.getIconLocation(), x + 1, y + 1, 16, 16); // Render Moa skin icon.
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, skin.getIconLocation(), x + 1, y + 1, 16, 16); // Render Moa skin icon.
 
                 slotIndex++;
             }
@@ -256,8 +256,8 @@ public class MoaSkinsScreen extends Screen {
         int scrollbarTop = (this.topPos + (this.imageHeight / 2)) + 29;
         int scrollbarLeft = this.leftPos + 8;
 
-        ResourceLocation location = SCROLL_WIDGET.get(this.moaSkins.size() > this.maxSlots(), true);
-        guiGraphics.blitSprite(location, (int) (scrollbarLeft + this.scrollX), scrollbarTop, 13, 6); // Render scrollbar.
+        Identifier location = SCROLL_WIDGET.get(this.moaSkins.size() > this.maxSlots(), true);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, (int) (scrollbarLeft + this.scrollX), scrollbarTop, 13, 6); // Render scrollbar.
     }
 
     /**
@@ -272,7 +272,7 @@ public class MoaSkinsScreen extends Screen {
         MoaSkins.MoaSkin skin = this.getSkinFromSlot(mouseX, mouseY);
         if (skin != null) {
             Component name = skin.getDisplayName();
-            guiGraphics.renderTooltip(this.getMinecraft().font, name, (int) mouseX, (int) mouseY);
+            guiGraphics.setTooltipForNextFrame(this.minecraft.font, name, (int) mouseX, (int) mouseY);
         }
     }
 
@@ -309,7 +309,7 @@ public class MoaSkinsScreen extends Screen {
             this.applyButton.active = false;
             this.removeButton.active = false;
 
-            guiGraphics.blitSprite(LOCK_SPRITE, this.leftPos + 13, this.topPos + 13, 10, 14); // Lock Icon
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, LOCK_SPRITE, this.leftPos + 13, this.topPos + 13, 10, 14); // Lock Icon
 
             if (this.getSelectedSkin().getInfo().lifetime()) {
                 boolean mouseOver = this.isMouseOverIcon(mouseX, mouseY, 8);
@@ -328,8 +328,8 @@ public class MoaSkinsScreen extends Screen {
             }
         }
         this.renderMoa(guiGraphics, partialTicks); // Renders the spinning Moa with the selected skin.
-        guiGraphics.drawCenteredString(this.getMinecraft().font, this.getSelectedSkin().getDisplayName(), this.leftPos + (this.imageWidth / 2), this.topPos + 12, 16777215); // Skin Name
-        guiGraphics.drawCenteredString(this.getMinecraft().font, this.getTitle(), this.leftPos + (this.imageWidth / 2), this.topPos - 15, 16777215); // Title
+        guiGraphics.drawCenteredString(this.minecraft.font, this.getSelectedSkin().getDisplayName(), this.leftPos + (this.imageWidth / 2), this.topPos + 12, 16777215); // Skin Name
+        guiGraphics.drawCenteredString(this.minecraft.font, this.getTitle(), this.leftPos + (this.imageWidth / 2), this.topPos - 15, 16777215); // Title
     }
 
     /**
@@ -339,8 +339,8 @@ public class MoaSkinsScreen extends Screen {
      * @param mouseOver   Whether the mouse is hovering over this icon, as a {@link Boolean}.
      */
     private void renderLifetimeIcon(GuiGraphics guiGraphics, boolean mouseOver) {
-        ResourceLocation location = PERMANENT_WIDGET.get(true, mouseOver);
-        guiGraphics.blitSprite(location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 8, 7); // Lifetime Icon
+        Identifier location = PERMANENT_WIDGET.get(true, mouseOver);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 8, 7); // Lifetime Icon
     }
 
     /**
@@ -350,8 +350,8 @@ public class MoaSkinsScreen extends Screen {
      * @param mouseOver   Whether the mouse is hovering over this icon, as a {@link Boolean}.
      */
     private void renderPledgingIcon(GuiGraphics guiGraphics, boolean mouseOver) {
-        ResourceLocation location = TEMPORARY_WIDGET.get(true, mouseOver);
-        guiGraphics.blitSprite(location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 7, 7);
+        Identifier location = TEMPORARY_WIDGET.get(true, mouseOver);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 7, 7);
     }
 
     private boolean isMouseOverIcon(int mouseX, int mouseY, int width) {
@@ -372,10 +372,10 @@ public class MoaSkinsScreen extends Screen {
      * @param mouseY      The {@link Integer} for the mouse's y-position.
      */
     private void renderTooltip(MutableComponent title, Component description, GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        List<FormattedText> formattedTextList = new ArrayList<>();
-        formattedTextList.add(title.withStyle(ChatFormatting.GOLD));
-        formattedTextList.addAll(this.getMinecraft().font.getSplitter().splitLines(description, this.width / 3, Style.EMPTY));
-        guiGraphics.renderComponentTooltip(this.getMinecraft().font, formattedTextList, mouseX, mouseY, ItemStack.EMPTY);
+        List<FormattedCharSequence> tooltipLines = new ArrayList<>();
+        tooltipLines.add(title.withStyle(ChatFormatting.GOLD).getVisualOrderText());
+        tooltipLines.addAll(this.minecraft.font.split(description, this.width / 3));
+        guiGraphics.setTooltipForNextFrame(this.minecraft.font, tooltipLines, mouseX, mouseY);
     }
 
     /**
@@ -384,9 +384,9 @@ public class MoaSkinsScreen extends Screen {
      * @param partialTicks The {@link Float} for the game's partial ticks.
      */
     private void renderMoa(GuiGraphics guiGraphics, float partialTicks) {
-        if (this.getMinecraft().level != null) {
+        if (this.minecraft.level != null) {
             if (this.getPreviewMoa() == null) { // Set up preview Moa if it doesn't exist.
-                Moa moa = AetherEntityTypes.MOA.get().create(this.getMinecraft().level);
+                Moa moa = AetherEntityTypes.MOA.get().create(this.minecraft.level, EntitySpawnReason.EVENT);
                 if (moa != null) {
                     moa.generateMoaUUID();
                     moa.setMoaTypeByKey(AetherMoaTypes.BLUE);
@@ -407,27 +407,7 @@ public class MoaSkinsScreen extends Screen {
      * Code Modified so that the head rotation follows the body rotation and doesn't rotate separately.<br><br>
      */
     public static void renderRotatingEntity(GuiGraphics guiGraphics, int startX, int startY, int endX, int endY, int scale, float yOffset, float angleXComponent, float angleYComponent, LivingEntity livingEntity) {
-        float posX = (float) (startX + endX) / 2.0F;
-        float posY = (float) (startY + endY) / 2.0F;
-        guiGraphics.enableScissor(startX, startY, endX, endY);
-        Quaternionf xQuaternion = new Quaternionf().rotateZ(Mth.PI);
-        Quaternionf zQuaternion = new Quaternionf().rotateX(angleYComponent * Mth.DEG_TO_RAD);
-        xQuaternion.mul(zQuaternion);
-        float yBodyRot = livingEntity.yBodyRot;
-        float yRot = livingEntity.getYRot();
-        float xRot = livingEntity.getXRot();
-        livingEntity.setYBodyRot(180.0F + angleXComponent);
-        livingEntity.setYRot(180.0F + angleXComponent);
-        livingEntity.setXRot(-angleYComponent);
-        livingEntity.setYHeadRot(livingEntity.getYRot());
-        livingEntity.yHeadRotO = livingEntity.getYRot();
-        Vector3f vector3f = new Vector3f(0.0F, livingEntity.getBbHeight() / 2.0F + yOffset, 0.0F);
-
-        InventoryScreen.renderEntityInInventory(guiGraphics, posX, posY, scale, vector3f, xQuaternion, zQuaternion, livingEntity);
-        livingEntity.setYBodyRot(yBodyRot);
-        livingEntity.setYRot(yRot);
-        livingEntity.setXRot(xRot);
-        guiGraphics.disableScissor();
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, startX, startY, endX, endY, scale, yOffset, angleXComponent, angleYComponent, livingEntity);
     }
 
     /**
@@ -435,12 +415,12 @@ public class MoaSkinsScreen extends Screen {
      */
     private void checkUserConnectionStatus() {
         User user = UserData.Client.getClientUser();
-        if (this.getMinecraft().player != null) {
+        if (this.minecraft.player != null) {
             if (user == null && this.userConnectionExists) { // Remove skin data if the user no longer exists.
-                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.getMinecraft().player.getUUID()));
+                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
                 this.userConnectionExists = false;
             } else if (user != null && !this.userConnectionExists && MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()) != null) { // Add skin data if the user has started existing.
-                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.getMinecraft().player.getUUID(), new MoaData(this.getMinecraft().player.getData(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()))));
+                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()))));
                 this.userConnectionExists = true;
             }
         }
@@ -457,7 +437,10 @@ public class MoaSkinsScreen extends Screen {
      * @return Whether the mouse can drag, as a {@link Boolean}.
      */
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         if (button == 0) {
             float scrollbarGutterLeft = this.leftPos + 7.0F;
             float scrollbarGutterTop = (this.topPos + (this.imageHeight / 2.0F)) + 29.0F;
@@ -469,7 +452,7 @@ public class MoaSkinsScreen extends Screen {
                 return true;
             }
         }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(event, dragX, dragY);
     }
 
     /**
@@ -508,13 +491,15 @@ public class MoaSkinsScreen extends Screen {
      * @return Whether the mouse can click, as a {@link Boolean}.
      */
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double mouseX = event.x();
+        double mouseY = event.y();
         MoaSkins.MoaSkin skin = this.getSkinFromSlot(mouseX, mouseY);
         if (skin != null) {
             this.selectedSkin = skin;
             return true;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     /**
@@ -588,9 +573,9 @@ public class MoaSkinsScreen extends Screen {
      * @return Whether the mouse can be released, as a {@link Boolean}.
      */
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(MouseButtonEvent event) {
         this.scrolling = false;
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(event);
     }
 
     /**
@@ -617,7 +602,7 @@ public class MoaSkinsScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.getMinecraft().setScreen(this.lastScreen);
+        this.minecraft.setScreen(this.lastScreen);
     }
 
     @Override

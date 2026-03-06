@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_fence",
   "key": {
-    "/": {
-      "tag": "aether:skyroot_stick"
-    },
-    "M": {
-      "item": "aether:skyroot_planks"
-    }
+    "/": "#aether:skyroot_stick",
+    "M": "aether:skyroot_planks"
   },
   "pattern": [
     "M/M",

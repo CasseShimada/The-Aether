@@ -3,12 +3,8 @@
   "category": "building",
   "group": "mossy_holystone",
   "ingredients": [
-    {
-      "item": "aether:holystone"
-    },
-    {
-      "item": "minecraft:moss_block"
-    }
+    "aether:holystone",
+    "minecraft:moss_block"
   ],
   "result": {
     "count": 1,

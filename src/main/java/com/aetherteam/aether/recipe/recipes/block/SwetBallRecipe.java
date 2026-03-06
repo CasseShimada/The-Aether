@@ -8,7 +8,7 @@ import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,11 +22,11 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class SwetBallRecipe extends AbstractBiomeParameterRecipe implements MatchEventRecipe {
-    public SwetBallRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<ResourceLocation> function) {
+    public SwetBallRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
         super(AetherRecipeTypes.SWET_BALL_CONVERSION.get(), biome, ingredient, result, function);
     }
 
-    public SwetBallRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<ResourceLocation> function) {
+    public SwetBallRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
         this(Optional.empty(), ingredient, result, function);
     }
 
@@ -36,7 +36,7 @@ public class SwetBallRecipe extends AbstractBiomeParameterRecipe implements Matc
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<SwetBallRecipe> getSerializer() {
         return AetherRecipeSerializers.SWET_BALL_CONVERSION.get();
     }
 

@@ -10,11 +10,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.Permissions;
 
 public class EternalDayCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("aether")
-                .then(Commands.literal("eternal_day").requires((commandSourceStack) -> commandSourceStack.hasPermission(2))
+                .then(Commands.literal("eternal_day").requires((commandSourceStack) -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
                         .then(Commands.literal("set")
                                 .then(Commands.argument("option", BoolArgumentType.bool())
                                         .suggests((context, builder) -> SharedSuggestionProvider.suggest(BoolArgumentType.bool().getExamples(), builder))
@@ -26,8 +27,8 @@ public class EternalDayCommand {
 
     private static int setEternalDay(CommandSourceStack source, boolean value) {
         ServerLevel level = source.getLevel();
-        if (level.hasData(AetherDataAttachments.AETHER_TIME)) {
-            var data = level.getData(AetherDataAttachments.AETHER_TIME);
+        if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
+            var data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
             data.setEternalDay(value);
             data.updateEternalDay(level); // Syncs to client.
             if (AetherConfig.SERVER.sync_aether_time.get()) {
@@ -40,8 +41,8 @@ public class EternalDayCommand {
 
     private static int queryEternalDay(CommandSourceStack source) {
         ServerLevel level = source.getLevel();
-        if (level.hasData(AetherDataAttachments.AETHER_TIME)) {
-            source.sendSuccess(() -> Component.translatable("commands.aether.capability.time.eternal_day.query", level.getData(AetherDataAttachments.AETHER_TIME).isEternalDay()), true);
+        if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
+            source.sendSuccess(() -> Component.translatable("commands.aether.capability.time.eternal_day.query", level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay()), true);
         }
         return 1;
     }

@@ -32,7 +32,7 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
     }
 
     public ItemBanRecipe(Either<ResourceKey<Biome>, TagKey<Biome>> biome, Optional<BlockStateIngredient> bypassBlock) {
-        this(biome, bypassBlock, Ingredient.EMPTY);
+        this(biome, bypassBlock, Ingredient.of());
     }
 
     /**
@@ -60,7 +60,7 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<ItemBanRecipe> getSerializer() {
         return AetherRecipeSerializers.ITEM_PLACEMENT_BAN.get();
     }
 

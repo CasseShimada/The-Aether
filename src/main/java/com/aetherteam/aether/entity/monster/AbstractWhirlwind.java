@@ -3,7 +3,6 @@ package com.aetherteam.aether.entity.monster;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,7 +16,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,10 +28,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -76,17 +77,17 @@ public abstract class AbstractWhirlwind extends Mob {
     }
 
     /**
-     * Whirlwinds can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, MobSpawnType, BlockPos, RandomSource)} is true,
+     * Whirlwinds can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, EntitySpawnReason, BlockPos, RandomSource)} is true,
      * if they are spawning at a light level above 12, and if the difficulty isn't peaceful.
      *
      * @param whirlwind The {@link AbstractWhirlwind} {@link EntityType}.
      * @param level     The {@link LevelAccessor}.
-     * @param reason    The {@link MobSpawnType} reason.
+     * @param reason    The {@link EntitySpawnReason} reason.
      * @param pos       The spawn {@link BlockPos}.
      * @param random    The {@link RandomSource}.
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
-    public static boolean checkWhirlwindSpawnRules(EntityType<? extends AbstractWhirlwind> whirlwind, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean checkWhirlwindSpawnRules(EntityType<? extends AbstractWhirlwind> whirlwind, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(whirlwind, level, reason, pos, random)
                 && level.getRawBrightness(pos, 0) > 12
                 && level.getDifficulty() != Difficulty.PEACEFUL;
@@ -100,7 +101,7 @@ public abstract class AbstractWhirlwind extends Mob {
         super.tick();
         this.lifeLeft--;
         if (!this.level().isClientSide()) {
-            if (this.lifeLeft <= 0 || this.isInFluidType()) {
+            if (this.lifeLeft <= 0 || this.isInLiquid()) {
                 this.discard();
             }
         }
@@ -180,22 +181,22 @@ public abstract class AbstractWhirlwind extends Mob {
                 List<ItemStack> list = lootTable.getRandomItems(parameters);
                 for (ItemStack itemstack : list) {
                     serverLevel.playSound(null, this.blockPosition(), AetherSoundEvents.ENTITY_WHIRLWIND_DROP.get(), SoundSource.HOSTILE, 0.5F, 1.0F);
-                    this.spawnAtLocation(itemstack, 1);
+                    this.spawnAtLocation(serverLevel, itemstack, 1.0F);
                 }
             }
         }
     }
 
     @Override
-    public boolean hurt(DamageSource source, float damage) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         return false;
     }
 
     /**
-     * [CODE COPY] - {@link Entity#kill()}.
+     * [CODE COPY] - {@link Entity#kill(ServerLevel)}.
      */
     @Override
-    public void kill() {
+    public void kill(ServerLevel level) {
         this.remove(Entity.RemovalReason.KILLED);
         this.gameEvent(GameEvent.ENTITY_DIE);
     }
@@ -268,39 +269,26 @@ public abstract class AbstractWhirlwind extends Mob {
     }
 
     @Override
-    protected boolean shouldDespawnInPeaceful() {
-        return true;
-    }
-
-    @Override
     protected boolean canRide(Entity vehicle) {
         return false;
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putFloat("Movement Angle", this.movementAngle);
-        tag.putFloat("Movement Curve", this.movementCurve);
-        tag.putInt("Life Left", this.lifeLeft);
-        tag.putInt("Color", this.getColorData());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putFloat("Movement Angle", this.movementAngle);
+        output.putFloat("Movement Curve", this.movementCurve);
+        output.putInt("Life Left", this.lifeLeft);
+        output.putInt("Color", this.getColorData());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Movement Angle")) {
-            this.movementAngle = tag.getFloat("Movement Angle");
-        }
-        if (tag.contains("Movement Curve")) {
-            this.movementCurve = tag.getFloat("Movement Curve");
-        }
-        if (tag.contains("Life Left")) {
-            this.lifeLeft = tag.getInt("Life Left");
-        }
-        if (tag.contains("Color")) {
-            this.setColorData(tag.getInt("Color"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.movementAngle = input.getFloatOr("Movement Angle", this.movementAngle);
+        this.movementCurve = input.getFloatOr("Movement Curve", this.movementCurve);
+        this.lifeLeft = input.getIntOr("Life Left", this.lifeLeft);
+        this.setColorData(input.getIntOr("Color", this.getColorData()));
     }
 
     /**

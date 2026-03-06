@@ -3,9 +3,7 @@
   "category": "freezable_blocks",
   "cookingtime": 400,
   "experience": 0.1,
-  "ingredient": {
-    "item": "aether:cold_aercloud"
-  },
+  "ingredient": "aether:cold_aercloud",
   "result": {
     "count": 1,
     "id": "aether:blue_aercloud"

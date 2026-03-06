@@ -9,7 +9,7 @@ import com.aetherteam.aether.world.structurepiece.AetherTemplateStructurePiece;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -47,7 +47,7 @@ public class GoldBossRoom extends GoldDungeonPiece {
             if (entity instanceof RandomizableContainerBlockEntity container) {
                 container.setLootTable(AetherLoot.GOLD_DUNGEON_REWARD, random.nextLong());
             }
-            TreasureChestBlockEntity.setDungeonType(level, chest, ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gold"));
+            TreasureChestBlockEntity.setDungeonType(level, chest, Identifier.fromNamespaceAndPath(Aether.MODID, "gold"));
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }
     }

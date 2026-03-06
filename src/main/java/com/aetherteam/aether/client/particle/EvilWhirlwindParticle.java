@@ -1,14 +1,13 @@
 package com.aetherteam.aether.client.particle;
 
 import com.aetherteam.aether.entity.monster.EvilWhirlwind;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class EvilWhirlwindParticle extends AbstractWhirlwindParticle<EvilWhirlwind> {
     private final float smokeParticleScale;
@@ -28,17 +27,16 @@ public class EvilWhirlwindParticle extends AbstractWhirlwindParticle<EvilWhirlwi
         this.smokeParticleScale = this.quadSize;
         this.lifetime = (int) (8.0 / (Math.random() * 0.8 + 0.2));
         this.lifetime = (int) ((float) this.lifetime * scale);
-        if (this.whirlwind != null) {
-            this.setPos(this.whirlwind.getX(), this.whirlwind.getY(), this.whirlwind.getZ());
-        }
+//        if (this.whirlwind != null) {
+//            this.setPos(this.whirlwind.getX(), this.whirlwind.getY(), this.whirlwind.getZ());
+//        }
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+    public float getQuadSize(float partialTicks) {
         float f = ((float) this.age + partialTicks) / (float) this.lifetime * 32.0F;
         f = Mth.clamp(f, 0.0F, 1.0F);
-        this.quadSize = this.smokeParticleScale * f;
-        super.render(consumer, camera, partialTicks);
+        return this.smokeParticleScale * f;
     }
 
     @Override
@@ -69,10 +67,8 @@ public class EvilWhirlwindParticle extends AbstractWhirlwindParticle<EvilWhirlwi
 
     public record Factory(SpriteSet spriteSet) implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            EvilWhirlwindParticle particle = new EvilWhirlwindParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet());
-            particle.pickSprite(this.spriteSet());
-            return particle;
+        public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
+            return new EvilWhirlwindParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet());
         }
     }
 }

@@ -44,7 +44,6 @@ public abstract class WingedAnimal extends MountableAnimal {
             double fallSpeed = Math.max(gravity.getValue() * -1.25, -0.1); // Entity isn't allowed to fall too slowly from gravity.
             if (this.getDeltaMovement().y() < fallSpeed && !this.playerTriedToCrouch()) {
                 this.setDeltaMovement(this.getDeltaMovement().x(), fallSpeed, this.getDeltaMovement().z());
-                this.hasImpulse = true;
                 this.setEntityOnGround(false);
             }
         }
@@ -57,7 +56,7 @@ public abstract class WingedAnimal extends MountableAnimal {
     public void riderTick() {
         super.riderTick();
         if (this.getControllingPassenger() instanceof Player) {
-            this.checkSlowFallDistance();
+            this.resetFallDistance();
         }
     }
 

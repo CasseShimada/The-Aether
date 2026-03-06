@@ -1,9 +1,9 @@
 package com.aetherteam.aether.entity.projectile.weapon;
 
 import com.aetherteam.aether.entity.AetherEntityTypes;
+import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.network.packet.serverbound.HammerProjectileLaunchPacket;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,16 +11,20 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import java.util.List;
 
-public class HammerProjectile extends ThrowableProjectile {
+public class HammerProjectile extends ThrowableProjectile implements ItemSupplier {
     private static final EntityDataAccessor<Boolean> DATA_JEB_ID = SynchedEntityData.defineId(HammerProjectile.class, EntityDataSerializers.BOOLEAN);
 
     private int ticksInAir = 0;
@@ -30,7 +34,9 @@ public class HammerProjectile extends ThrowableProjectile {
     }
 
     public HammerProjectile(LivingEntity owner, Level level) {
-        super(AetherEntityTypes.HAMMER_PROJECTILE.get(), owner, level);
+        super(AetherEntityTypes.HAMMER_PROJECTILE.get(), level);
+        this.setOwner(owner);
+        this.setPos(owner.getX(), owner.getEyeY(), owner.getZ());
     }
 
     public HammerProjectile(Level level) {
@@ -179,16 +185,19 @@ public class HammerProjectile extends ThrowableProjectile {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("TicksInAir", this.ticksInAir);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("TicksInAir", this.ticksInAir);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("TicksInAir")) {
-            this.ticksInAir = tag.getInt("TicksInAir");
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.ticksInAir = input.getIntOr("TicksInAir", this.ticksInAir);
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return AetherItems.HAMMER_OF_KINGBDOGZ.get().getDefaultInstance();
     }
 }

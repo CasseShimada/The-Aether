@@ -2,27 +2,26 @@ package com.aetherteam.aether.client.renderer.entity.layers;
 
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.client.renderer.entity.model.MoaModel;
+import com.aetherteam.aether.client.renderer.entity.state.MoaRenderState;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.aether.perk.data.ClientMoaSkinPerkData;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
 
-public class MoaSaddleEmissiveLayer extends RenderLayer<Moa, MoaModel> {
+public class MoaSaddleEmissiveLayer extends RenderLayer<MoaRenderState, MoaModel> {
     private final MoaModel saddle;
 
-    public MoaSaddleEmissiveLayer(RenderLayerParent<Moa, MoaModel> entityRenderer, MoaModel saddleModel) {
+    public MoaSaddleEmissiveLayer(RenderLayerParent<MoaRenderState, MoaModel> entityRenderer, MoaModel saddleModel) {
         super(entityRenderer);
         this.saddle = saddleModel;
     }
@@ -31,27 +30,19 @@ public class MoaSaddleEmissiveLayer extends RenderLayer<Moa, MoaModel> {
      * Renders an emissive saddle layer on a Moa if the texture from a {@link com.aetherteam.aether.perk.types.MoaSkins.MoaSkin} is present.
      *
      * @param poseStack       The rendering {@link PoseStack}.
-     * @param buffer          The rendering {@link MultiBufferSource}.
+     * @param collector       The rendering {@link SubmitNodeCollector}.
      * @param packedLight     The {@link Integer} for the packed lighting for rendering.
-     * @param moa             The {@link Moa} entity.
-     * @param limbSwing       The {@link Float} for the limb swing rotation.
-     * @param limbSwingAmount The {@link Float} for the limb swing amount.
-     * @param partialTicks    The {@link Float} for the game's partial ticks.
-     * @param ageInTicks      The {@link Float} for the entity's age in ticks.
+     * @param renderState     The {@link MoaRenderState} for the entity.
      * @param netHeadYaw      The {@link Float} for the head yaw rotation.
      * @param headPitch       The {@link Float} for the head pitch rotation.
      */
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Moa moa, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (moa.isSaddled() && !moa.isInvisible()) {
-            ResourceLocation moaSkin = this.getMoaSkinLocation(moa);
+    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, MoaRenderState renderState, float netHeadYaw, float headPitch) {
+        if (renderState.saddle && !renderState.isInvisible) {
+            Identifier moaSkin = this.getMoaSkinLocation(renderState);
             if (moaSkin != null) {
-                RenderType renderType = RenderType.eyes(moaSkin);
-                this.getParentModel().copyPropertiesTo(this.saddle);
-                this.saddle.prepareMobModel(moa, limbSwing, limbSwingAmount, partialTicks);
-                this.saddle.setupAnim(moa, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                VertexConsumer consumer = buffer.getBuffer(renderType);
-                this.saddle.renderToBuffer(poseStack, consumer, 15728640, OverlayTexture.NO_OVERLAY);
+                this.saddle.setupAnim(renderState);
+                collector.order(0).submitModel(this.saddle, renderState, poseStack, this.saddle.renderType(moaSkin), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
             }
         }
     }
@@ -59,13 +50,13 @@ public class MoaSaddleEmissiveLayer extends RenderLayer<Moa, MoaModel> {
     /**
      * Retrieves the saddle emissive texture for the player's {@link com.aetherteam.aether.perk.types.MoaSkins.MoaSkin}, if there is one and the player has a Moa Skin.
      *
-     * @param moa The {@link Moa} to retrieve the skin from.
-     * @return The {@link ResourceLocation} for the emissive texture.
+     * @param renderState The {@link MoaRenderState} to retrieve the skin from.
+     * @return The {@link Identifier} for the emissive texture.
      */
     @Nullable
-    private ResourceLocation getMoaSkinLocation(Moa moa) {
-        UUID lastRiderUUID = moa.getLastRider();
-        UUID moaUUID = moa.getMoaUUID();
+    private Identifier getMoaSkinLocation(MoaRenderState renderState) {
+        UUID lastRiderUUID = renderState.lastRider;
+        UUID moaUUID = renderState.moaUUID;
         Map<UUID, MoaData> userSkinsData = ClientMoaSkinPerkData.INSTANCE.getClientPerkData();
         if (Minecraft.getInstance().screen instanceof MoaSkinsScreen moaSkinsScreen && moaSkinsScreen.getSelectedSkin() != null && moaSkinsScreen.getPreviewMoa() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID().equals(moaUUID)) {
             return moaSkinsScreen.getSelectedSkin().getSaddleEmissiveLocation();

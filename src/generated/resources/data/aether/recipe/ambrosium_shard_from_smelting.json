@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "aether:ambrosium_ore"
-  },
+  "ingredient": "aether:ambrosium_ore",
   "result": {
     "count": 1,
     "id": "aether:ambrosium_shard"

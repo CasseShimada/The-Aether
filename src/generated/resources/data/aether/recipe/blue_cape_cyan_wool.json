@@ -3,9 +3,7 @@
   "category": "equipment",
   "group": "blue_cape",
   "key": {
-    "#": {
-      "item": "minecraft:cyan_wool"
-    }
+    "#": "minecraft:cyan_wool"
   },
   "pattern": [
     "##",

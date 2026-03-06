@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "minecraft:lead",
   "key": {
-    "B": {
-      "tag": "aether:swet_balls"
-    },
-    "S": {
-      "tag": "c:strings"
-    }
+    "B": "#aether:swet_balls",
+    "S": "#c:strings"
   },
   "pattern": [
     "SS ",

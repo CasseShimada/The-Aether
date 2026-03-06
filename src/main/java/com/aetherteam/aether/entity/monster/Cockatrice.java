@@ -23,7 +23,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -85,22 +85,22 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
     }
 
     /**
-     * Cockatrices can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, MobSpawnType, BlockPos, RandomSource)} and {@link Cockatrice#isDarkEnoughToSpawn(ServerLevelAccessor, BlockPos, RandomSource)} are true,
+     * Cockatrices can spawn if {@link Mob#checkMobSpawnRules(EntityType, LevelAccessor, EntitySpawnReason, BlockPos, RandomSource)} and {@link Cockatrice#isDarkEnoughToSpawn(ServerLevelAccessor, BlockPos, RandomSource)} are true,
      * if the block at the spawn location isn't in the {@link AetherTags.Blocks#COCKATRICE_SPAWNABLE_BLACKLIST} tag, if the difficulty isn't peaceful, and they spawn with a random chance of 1/3.
      *
      * @param cockatrice The {@link Cockatrice} {@link EntityType}.
      * @param level      The {@link LevelAccessor}.
-     * @param reason     The {@link MobSpawnType} reason.
+     * @param reason     The {@link EntitySpawnReason} reason.
      * @param pos        The spawn {@link BlockPos}.
      * @param random     The {@link RandomSource}.
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
-    public static boolean checkCockatriceSpawnRules(EntityType<? extends Cockatrice> cockatrice, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean checkCockatriceSpawnRules(EntityType<? extends Cockatrice> cockatrice, ServerLevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(cockatrice, level, reason, pos, random)
                 && isDarkEnoughToSpawn(level, pos, random)
                 && !level.getBlockState(pos.below()).is(AetherTags.Blocks.COCKATRICE_SPAWNABLE_BLACKLIST)
                 && level.getDifficulty() != Difficulty.PEACEFUL
-                && (reason != MobSpawnType.NATURAL || random.nextInt(3) == 0);
+                && (reason != EntitySpawnReason.NATURAL || random.nextInt(3) == 0);
     }
 
     /**
@@ -142,7 +142,6 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
             double fallSpeed = Math.max(gravity.getValue() * -1.25, -0.1); // Entity isn't allowed to fall too slowly from gravity.
             if (this.getDeltaMovement().y() < fallSpeed) {
                 this.setDeltaMovement(this.getDeltaMovement().x(), fallSpeed, this.getDeltaMovement().z());
-                this.hasImpulse = true;
                 this.setEntityOnGround(false);
             }
         }

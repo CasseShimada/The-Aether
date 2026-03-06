@@ -4,17 +4,18 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
-import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 
 public class LightningSwordItem extends SwordItem {
     public LightningSwordItem() {
-        super(AetherItemTiers.LIGHTNING, new Item.Properties().rarity(AetherItems.AETHER_LOOT).attributes(SwordItem.createAttributes(AetherItemTiers.LIGHTNING, 3.0F, -2.4F)));
+        super(AetherItemTiers.LIGHTNING, SwordItem.createAttributes(AetherItemTiers.LIGHTNING, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
     }
 
     /**
@@ -27,15 +28,15 @@ public class LightningSwordItem extends SwordItem {
      * @return Whether the enemy was hurt or not, as a {@link Boolean}.
      */
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker)) {
-            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(attacker.level());
+            LightningBolt lightningBolt = attacker.level() instanceof ServerLevel serverLevel ? EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.TRIGGERED) : null;
             if (lightningBolt != null) {
-                lightningBolt.getData(AetherDataAttachments.LIGHTNING_TRACKER).setOwner(attacker);
+                lightningBolt.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).setOwner(attacker);
                 lightningBolt.setPos(target.getX(), target.getY(), target.getZ());
                 attacker.level().addFreshEntity(lightningBolt);
             }
         }
-        return super.hurtEnemy(stack, target, attacker);
+        super.hurtEnemy(stack, target, attacker);
     }
 }

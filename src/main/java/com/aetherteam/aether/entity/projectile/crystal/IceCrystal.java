@@ -5,7 +5,7 @@ import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.data.resources.registries.AetherDamageTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -14,6 +14,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -73,24 +75,22 @@ public class IceCrystal extends AbstractCrystal implements WeaknessDamage {
     }
 
     /**
-     * [CODE COPY] - {@link net.minecraft.world.entity.projectile.AbstractHurtingProjectile#hurt(DamageSource, float)}<br><br>
+     * [CODE COPY] - {@link net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile#hurt(DamageSource, float)}<br><br>
      * The Ice Crystal needs to move only horizontally when attacked, so yPower isn't copied over.
      */
-    public boolean hurt(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (this.isInvulnerableToBase(source)) {
             return false;
         } else {
             this.markHurt();
             Entity entity = source.getEntity();
             if (entity != null) {
-                if (!this.level().isClientSide()) {
-                    Vec3 vec3 = entity.getLookAngle();
-                    this.xPower = vec3.x() * 2.5;
-                    this.zPower = vec3.z() * 2.5;
-                    this.setDeltaMovement(this.xPower, 0, this.zPower);
-                    this.setOwner(entity);
-                    this.attacked = true;
-                }
+                Vec3 vec3 = entity.getLookAngle();
+                this.xPower = vec3.x() * 2.5;
+                this.zPower = vec3.z() * 2.5;
+                this.setDeltaMovement(this.xPower, 0, this.zPower);
+                this.setOwner(entity);
+                this.attacked = true;
                 return true;
             } else {
                 return false;
@@ -104,9 +104,9 @@ public class IceCrystal extends AbstractCrystal implements WeaknessDamage {
      * @param entity The hit {@link Entity}
      */
     public void doDamage(Entity entity) {
-        if (this.getOwner() != entity) {
+        if (this.getOwner() != entity && this.level() instanceof ServerLevel serverLevel) {
             if (entity instanceof LivingEntity livingEntity) {
-                if (livingEntity.hurt(AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.ICE_CRYSTAL, this, this.getOwner()), 7.0F)) {
+                if (livingEntity.hurtServer(serverLevel, AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.ICE_CRYSTAL, this, this.getOwner()), 7.0F)) {
                     WeaknessDamage.super.damageWithWeakness(this, livingEntity, this.random);
                 }
             }
@@ -130,18 +130,18 @@ public class IceCrystal extends AbstractCrystal implements WeaknessDamage {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putDouble("XSpeed", this.xPower);
-        tag.putDouble("ZSpeed", this.zPower);
-        tag.putBoolean("Attacked", this.attacked);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putDouble("XSpeed", this.xPower);
+        output.putDouble("ZSpeed", this.zPower);
+        output.putBoolean("Attacked", this.attacked);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.xPower = tag.getDouble("XSpeed");
-        this.zPower = tag.getDouble("ZSpeed");
-        this.attacked = tag.getBoolean("Attacked");
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.xPower = input.getDoubleOr("XSpeed", this.xPower);
+        this.zPower = input.getDoubleOr("ZSpeed", this.zPower);
+        this.attacked = input.getBooleanOr("Attacked", this.attacked);
     }
 }

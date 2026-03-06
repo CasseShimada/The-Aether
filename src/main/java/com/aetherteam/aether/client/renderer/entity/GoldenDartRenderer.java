@@ -4,17 +4,23 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.entity.projectile.dart.GoldenDart;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.state.ArrowRenderState;
+import net.minecraft.resources.Identifier;
 
-public class GoldenDartRenderer extends ArrowRenderer<GoldenDart> {
-    private static final ResourceLocation GOLDEN_DART_TEXTURE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "textures/entity/projectile/dart/golden_dart.png");
+public class GoldenDartRenderer extends ArrowRenderer<GoldenDart, ArrowRenderState> {
+    public static final Identifier GOLDEN_DART_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/projectile/dart/golden_dart.png");
 
     public GoldenDartRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GoldenDart dart) {
+    public ArrowRenderState createRenderState() {
+        return new ArrowRenderState();
+    }
+
+    @Override
+    public Identifier getTextureLocation(ArrowRenderState renderState) {
         return GOLDEN_DART_TEXTURE;
     }
 }
