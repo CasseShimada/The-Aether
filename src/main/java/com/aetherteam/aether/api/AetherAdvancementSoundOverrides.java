@@ -9,32 +9,28 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import com.aetherteam.aether.registry.DeferredHolder;
-import com.aetherteam.aether.registry.DeferredRegister;
 
 import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class AetherAdvancementSoundOverrides {
-    private static final net.minecraft.resources.ResourceKey<net.minecraft.core.Registry<AdvancementSoundOverride>> ADVANCEMENT_SOUND_OVERRIDE_REGISTRY_KEY =
-            net.minecraft.resources.ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(Aether.MODID, "advancement_sound_override"));
-    public static final DeferredRegister<AdvancementSoundOverride> ADVANCEMENT_SOUND_OVERRIDES =
-            DeferredRegister.create(ADVANCEMENT_SOUND_OVERRIDE_REGISTRY_KEY, Aether.MODID);
+    private static final Map<Identifier, AdvancementSoundOverride> ADVANCEMENT_SOUND_OVERRIDES = new LinkedHashMap<>();
 
-    public static final DeferredHolder<AdvancementSoundOverride, AdvancementSoundOverride> GENERAL = ADVANCEMENT_SOUND_OVERRIDES.register("general", () -> new AdvancementSoundOverride(0, advancement -> checkRoot(advancement, Identifier.fromNamespaceAndPath(Aether.MODID, "enter_aether")), AetherSoundEvents.UI_TOAST_AETHER_GENERAL));
-    public static final DeferredHolder<AdvancementSoundOverride, AdvancementSoundOverride> BRONZE_DUNGEON = ADVANCEMENT_SOUND_OVERRIDES.register("bronze_dungeon", () -> new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("bronze_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_BRONZE));
-    public static final DeferredHolder<AdvancementSoundOverride, AdvancementSoundOverride> SILVER_DUNGEON = ADVANCEMENT_SOUND_OVERRIDES.register("silver_dungeon", () -> new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("silver_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_SILVER));
-    public static final DeferredHolder<AdvancementSoundOverride, AdvancementSoundOverride> GOLD_DUNGEON = ADVANCEMENT_SOUND_OVERRIDES.register("gold_dungeon", () -> new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("gold_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_GOLD));
-    public static final DeferredHolder<AdvancementSoundOverride, AdvancementSoundOverride> EMPTY = ADVANCEMENT_SOUND_OVERRIDES.register("empty", () -> new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("enter_aether"), () -> SoundEvents.EMPTY));
+    public static final AdvancementSoundOverride GENERAL = register("general", new AdvancementSoundOverride(0, advancement -> checkRoot(advancement, Identifier.fromNamespaceAndPath(Aether.MODID, "enter_aether")), AetherSoundEvents.UI_TOAST_AETHER_GENERAL));
+    public static final AdvancementSoundOverride BRONZE_DUNGEON = register("bronze_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("bronze_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_BRONZE));
+    public static final AdvancementSoundOverride SILVER_DUNGEON = register("silver_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("silver_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_SILVER));
+    public static final AdvancementSoundOverride GOLD_DUNGEON = register("gold_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("gold_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_GOLD));
+    public static final AdvancementSoundOverride EMPTY = register("empty", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("enter_aether"), () -> SoundEvents.EMPTY));
+
+    private static AdvancementSoundOverride register(String id, AdvancementSoundOverride override) {
+        ADVANCEMENT_SOUND_OVERRIDES.put(Identifier.fromNamespaceAndPath(Aether.MODID, id), override);
+        return override;
+    }
 
     @Nullable
     public static AdvancementSoundOverride get(String id) {
-        Identifier target = Identifier.parse(id);
-        for (DeferredHolder<AdvancementSoundOverride, ? extends AdvancementSoundOverride> holder : ADVANCEMENT_SOUND_OVERRIDES.getEntries()) {
-            if (holder.getId().equals(target)) {
-                return holder.value();
-            }
-        }
-        return null;
+        return ADVANCEMENT_SOUND_OVERRIDES.get(Identifier.parse(id));
     }
 
     /**
@@ -46,7 +42,7 @@ public class AetherAdvancementSoundOverrides {
     @Nullable
     public static SoundEvent retrieveOverride(AdvancementHolder advancement) {
         @Nullable AdvancementSoundOverride usedOverride = null;
-        for (AdvancementSoundOverride override : ADVANCEMENT_SOUND_OVERRIDES.getEntries().stream().map(DeferredHolder::value).toList()) {
+        for (AdvancementSoundOverride override : ADVANCEMENT_SOUND_OVERRIDES.values()) {
             if (override.matches(advancement) && (usedOverride == null || override.priority() > usedOverride.priority())) {
                 usedOverride = override;
             }

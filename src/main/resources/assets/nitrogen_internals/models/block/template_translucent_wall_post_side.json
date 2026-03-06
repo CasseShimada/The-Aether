@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/template_wall_side",
+  "render_type": "translucent"
+}

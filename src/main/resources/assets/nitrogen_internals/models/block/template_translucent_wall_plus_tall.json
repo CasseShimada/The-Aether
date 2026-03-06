@@ -1,0 +1,4 @@
+{
+  "parent": "nitrogen_internals:block/template_translucent_wall_post",
+  "render_type": "translucent"
+}

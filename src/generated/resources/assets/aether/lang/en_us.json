@@ -1179,6 +1179,7 @@
   "subtitles.aether.entity.phyg.saddle": "Saddle equips",
   "subtitles.aether.entity.phyg.step": "Footsteps",
   "subtitles.aether.entity.sentry.death": "Sentry dies",
+  "subtitles.aether.entity.sentry.ambient": "Sentry idles",
   "subtitles.aether.entity.sentry.hurt": "Sentry hurts",
   "subtitles.aether.entity.sentry.jump": "Sentry squishes",
   "subtitles.aether.entity.sentry.squish": "Sentry squishes",

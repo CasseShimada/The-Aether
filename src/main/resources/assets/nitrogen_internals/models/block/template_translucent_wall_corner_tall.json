@@ -1,0 +1,4 @@
+{
+  "parent": "nitrogen_internals:block/template_translucent_wall_side_tall",
+  "render_type": "translucent"
+}

@@ -90,6 +90,11 @@ public abstract class AbstractPlacementBanRecipe<T, S extends Predicate<T>, R ex
     }
 
     @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public PlacementInfo placementInfo() {
         return PlacementInfo.NOT_PLACEABLE;
     }

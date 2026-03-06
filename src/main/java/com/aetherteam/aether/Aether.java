@@ -116,7 +116,6 @@ public final class Aether {
                 AetherLootConditions.LOOT_CONDITION_TYPES,
                 AetherGameEvents.GAME_EVENTS,
                 AetherCreativeTabs.CREATIVE_MODE_TABS,
-                AetherAdvancementSoundOverrides.ADVANCEMENT_SOUND_OVERRIDES,
                 AetherAdvancementTriggers.TRIGGERS
         };
 
