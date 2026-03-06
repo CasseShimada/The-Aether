@@ -4,6 +4,7 @@ import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
+import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -11,9 +12,12 @@ import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -53,6 +57,34 @@ public final class AetherFabricEvents {
 
         ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
                 !EntityHooks.preventInebriation(entity, effectInstance));
+
+        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (player == null || hitResult == null) {
+                return InteractionResult.PASS;
+            }
+
+            ItemStack inHand = player.getItemInHand(hand);
+            ItemStack interactionStack = inHand;
+            if (interactionStack.isEmpty()) {
+                interactionStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND
+                        ? InteractionHand.OFF_HAND
+                        : InteractionHand.MAIN_HAND);
+            }
+
+            if (RecipeHooks.checkInteractionBanned(
+                    player,
+                    level,
+                    hitResult.getBlockPos(),
+                    hitResult.getDirection(),
+                    interactionStack,
+                    level.getBlockState(hitResult.getBlockPos()),
+                    !inHand.isEmpty()
+            )) {
+                return InteractionResult.FAIL;
+            }
+
+            return InteractionResult.PASS;
+        });
 
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             if (level.isClientSide()) {

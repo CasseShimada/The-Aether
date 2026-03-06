@@ -35,7 +35,7 @@ Status legend:
 | `EntityListener#onLoadPlayerFile` | none | MISSING | Needs player data migration hook in Fabric flow. |
 | `ItemListener#onTooltipAdd` | Nitrogen tooltip listener bridge in `AetherClient` | PARTIAL | Tooltip predicate chain exists; full parity needs audit. |
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |
-| `RecipeListener` event chain | none | MISSING | Recipe placement/ban/freeze callbacks still need Fabric event bridges. |
+| `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + `AetherEventDispatch` recipe freeze/convert/ban bridges | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |
 
 ## Capability Listeners
 | NeoForge listener point | Fabric equivalent / bridge | Status | Notes |

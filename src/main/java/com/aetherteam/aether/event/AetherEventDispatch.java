@@ -1,5 +1,6 @@
 package com.aetherteam.aether.event;
 
+import com.aetherteam.aether.event.hooks.RecipeHooks;
 import com.aetherteam.nitrogen.entity.BossRoomTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,7 +57,11 @@ public class AetherEventDispatch {
      * @see PlacementBanEvent.SpawnParticles
      */
     public static PlacementBanEvent.SpawnParticles onPlacementSpawnParticles(LevelAccessor level, BlockPos pos, @Nullable Direction face, @Nullable ItemStack stack, @Nullable BlockState state) {
-        return new PlacementBanEvent.SpawnParticles(level, pos, face, stack, state);
+        PlacementBanEvent.SpawnParticles event = new PlacementBanEvent.SpawnParticles(level, pos, face, stack, state);
+        if (!event.isCanceled()) {
+            RecipeHooks.banOrConvert(level, pos);
+        }
+        return event;
     }
 
     /**
@@ -79,14 +84,22 @@ public class AetherEventDispatch {
      * @see PlacementConvertEvent
      */
     public static PlacementConvertEvent onPlacementConvert(LevelAccessor level, BlockPos pos, BlockState oldState, BlockState newState) {
-        return new PlacementConvertEvent(level, pos, oldState, newState);
+        PlacementConvertEvent event = new PlacementConvertEvent(level, pos, oldState, newState);
+        if (!event.isCanceled()) {
+            RecipeHooks.banOrConvert(level, pos);
+        }
+        return event;
     }
 
     /**
      * @see FreezeEvent.FreezeFromBlock
      */
     public static FreezeEvent.FreezeFromBlock onBlockFreezeFluid(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState fluidState, BlockState blockState, BlockState sourceBlock) {
-        return new FreezeEvent.FreezeFromBlock(level, pos, origin, fluidState, blockState, sourceBlock);
+        FreezeEvent.FreezeFromBlock event = new FreezeEvent.FreezeFromBlock(level, pos, origin, fluidState, blockState, sourceBlock);
+        if (RecipeHooks.preventBlockFreezing(level, origin, pos)) {
+            event.setCanceled(true);
+        }
+        return event;
     }
 
     /**
