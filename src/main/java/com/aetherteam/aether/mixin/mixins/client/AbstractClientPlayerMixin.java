@@ -18,7 +18,7 @@ public class AbstractClientPlayerMixin {
      * @param original The original {@link PlayerSkin} data.
      * @return {@link PlayerSkin} data with the texture of a cape if equipped and visible, otherwise uses the original cape texture.
      */
-    @WrapMethod(method = "getSkin()Lnet/minecraft/client/resources/PlayerSkin;")
+    @WrapMethod(method = "getSkin()Lnet/minecraft/world/entity/player/PlayerSkin;")
     private PlayerSkin getSkin(Operation<PlayerSkin> original) {
         AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) (Object) this;
         PlayerSkin skin = original.call();

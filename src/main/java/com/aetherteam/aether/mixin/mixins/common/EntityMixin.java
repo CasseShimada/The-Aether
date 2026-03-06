@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -88,5 +89,14 @@ public class EntityMixin {
             }
         }
         return null;
+    }
+
+    @Inject(at = @At("HEAD"), method = "teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/world/entity/Entity;")
+    private void aether$onTeleport(TeleportTransition transition, CallbackInfoReturnable<Entity> cir) {
+        Entity entity = (Entity) (Object) this;
+        if (!entity.level().isClientSide() && entity.level().dimension() != transition.newLevel().dimension()) {
+            DimensionHooks.dimensionTravel(entity, transition.newLevel().dimension());
+            DimensionHooks.removePlayerAerbunny(entity);
+        }
     }
 }

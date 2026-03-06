@@ -18,6 +18,7 @@ public class AetherFabric implements ModInitializer {
         DynamicRegistries.registerSynced(AetherMoaTypes.MOA_TYPE_REGISTRY_KEY, MoaType.CODEC);
         Aether.init();
         AetherNetworking.registerCommon();
+        AetherFabricEvents.register();
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> DimensionHooks.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand) ? InteractionResult.SUCCESS : InteractionResult.PASS);
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> AetherCommands.registerCommands(dispatcher));
     }

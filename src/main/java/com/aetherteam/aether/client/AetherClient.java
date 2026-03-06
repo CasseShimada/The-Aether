@@ -15,6 +15,7 @@ import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
@@ -139,6 +140,7 @@ public class AetherClient {
 
             if (client.player != null) {
                 CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
+                EntityHooks.launchMount(client.player);
             }
 
             if (client.screen instanceof AbstractContainerScreen<?> containerScreen

@@ -7,9 +7,7 @@
   "refmap": "aether.refmap.json",
   "mixins": [
     "common.AbstractArrowMixin",
-    "common.ArmorStandMixin",
     "common.BlockMixin",
-    "common.DimensionTypeMixin",
     "common.EntityMixin",
     "common.ItemMixin",
     "common.LivingEntityMixin",
@@ -44,8 +42,6 @@
     "client.AbstractClientPlayerMixin",
     "client.AdvancementToastMixin",
     "client.LogoRendererMixin",
-    "client.PauseScreenMixin",
-    "client.TippableArrowRendererMixin",
     "client.accessor.AbstractContainerScreenAccessor",
     "client.accessor.AbstractWidgetAccessor",
     "client.accessor.BossHealthOverlayAccessor",

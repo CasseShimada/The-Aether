@@ -4,20 +4,16 @@ import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
-import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin {
@@ -73,19 +69,5 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         CapabilityHooks.AetherPlayerHooks.update(player);
         DimensionHooks.travelling(player);
-    }
-
-    /**
-     * Sets the player as having a loaded cape if they have a cape accessory equipped and visible.
-     *
-     * @param cir The {@link Boolean} {@link CallbackInfoReturnable} used for the method's return value.
-     */
-    @Inject(at = @At(value = "HEAD"), method = "isModelPartShown(Lnet/minecraft/world/entity/player/PlayerModelPart;)Z", cancellable = true)
-    private void isModelPartShown(PlayerModelPart part, CallbackInfoReturnable<Boolean> cir) {
-        Player player = (Player) (Object) this;
-        ItemStack stack = AetherMixinHooks.isCapeVisible(player);
-        if (!stack.isEmpty()) {
-            cir.setReturnValue(true);
-        }
     }
 }

@@ -1,0 +1,69 @@
+package com.aetherteam.aether.fabric;
+
+import com.aetherteam.aether.event.hooks.CapabilityHooks;
+import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.PerkHooks;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.world.InteractionResult;
+
+public final class AetherFabricEvents {
+    private AetherFabricEvents() {
+    }
+
+    public static void register() {
+        ServerPlayerEvents.JOIN.register(player -> {
+            CapabilityHooks.AetherPlayerHooks.login(player);
+            CapabilityHooks.AetherTimeHooks.login(player);
+            PerkHooks.refreshPerks(player);
+            DimensionHooks.startInAether(player);
+        });
+
+        ServerPlayerEvents.LEAVE.register(CapabilityHooks.AetherPlayerHooks::logout);
+        ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> CapabilityHooks.AetherPlayerHooks.clone(newPlayer, !alive));
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> CapabilityHooks.AetherTimeHooks.respawn(newPlayer));
+
+        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+            EntityHooks.addGoals(entity);
+            CapabilityHooks.AetherPlayerHooks.joinLevel(entity);
+        });
+
+        ServerWorldEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
+        ServerTickEvents.END_WORLD_TICK.register(world -> {
+            DimensionHooks.tickTime(world);
+            DimensionHooks.checkEternalDayConfig(world);
+        });
+
+        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+            DimensionHooks.remountPlayerAerbunny(player);
+            CapabilityHooks.AetherPlayerHooks.changeDimension(player);
+            CapabilityHooks.AetherTimeHooks.changeDimension(player);
+        });
+
+        UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
+            if (level.isClientSide()) {
+                return InteractionResult.PASS;
+            }
+
+            EntityHooks.skyrootBucketMilking(entity, player, hand);
+            var result = EntityHooks.pickupBucketable(entity, player, hand);
+            if (result.isPresent()) {
+                return result.get();
+            }
+
+            if (hitResult != null) {
+                result = EntityHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
+                if (result.isPresent()) {
+                    return result.get();
+                }
+            }
+
+            return InteractionResult.PASS;
+        });
+    }
+}
