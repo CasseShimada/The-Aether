@@ -516,8 +516,9 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      */
     @Override
     public void setBossName(Component component) {
-        this.getEntityData().set(DATA_BOSS_NAME_ID, component);
-        this.bossFight.setName(component);
+        Component safeComponent = component != null ? component : this.getEntityData().get(DATA_BOSS_NAME_ID);
+        this.getEntityData().set(DATA_BOSS_NAME_ID, safeComponent);
+        this.bossFight.setName(safeComponent);
     }
 
     /**
@@ -788,7 +789,9 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     @Override
     public void setCustomName(@Nullable Component name) {
         super.setCustomName(name);
-        this.setBossName(name);
+        if (name != null) {
+            this.setBossName(name);
+        }
     }
 
     protected SoundEvent getAwakenSound() {

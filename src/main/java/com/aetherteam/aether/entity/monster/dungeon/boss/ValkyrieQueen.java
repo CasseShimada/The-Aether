@@ -598,8 +598,9 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
      */
     @Override
     public void setBossName(Component component) {
-        this.getEntityData().set(DATA_BOSS_NAME, component);
-        this.bossFight.setName(component);
+        Component safeComponent = component != null ? component : this.getEntityData().get(DATA_BOSS_NAME);
+        this.getEntityData().set(DATA_BOSS_NAME, safeComponent);
+        this.bossFight.setName(safeComponent);
     }
 
     /**
@@ -708,7 +709,9 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     public void setCustomName(@Nullable Component pName) {
         super.setCustomName(pName);
-        this.setBossName(pName);
+        if (pName != null) {
+            this.setBossName(pName);
+        }
     }
 
     protected SoundEvent getInteractSound() {
