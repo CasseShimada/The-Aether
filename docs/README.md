@@ -26,8 +26,6 @@ You can also support the Aether project and The Aether Team by telling your frie
 If you're interested in sponsoring the Aether project or The Aether Team, please [contact Oz#1986 on the Aether Community Discord](https://discord.gg/aethermod).
 
 ## :package: Download the latest releases
-[![Modloader: Forge](https://img.shields.io/badge/mod%20loader-forge-CC974D?style=flat-square)](https://files.minecraftforge.net/net/minecraftforge/forge/)
-[![Modloader: NeoForge](https://img.shields.io/badge/mod%20loader-neoforge-E08234?style=flat-square)](https://neoforged.net/)
 [![Modloader: Fabric](https://img.shields.io/badge/mod%20loader-fabric-1F6FEB?style=flat-square)](https://fabricmc.net/use/installer/)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/YhmgMVyu?color=00AF5C&logo=modrinth)](https://modrinth.com/mod/aether)
 [![Modrinth Version](https://img.shields.io/modrinth/game-versions/YhmgMVyu?color=00AF5C&label=latest&logo=modrinth&last=true)](https://modrinth.com/mod/aether)

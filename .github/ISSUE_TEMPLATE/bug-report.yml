@@ -43,8 +43,8 @@ body:
     id: modloader
     attributes:
       label: Mod Loader
-      description: What mod loader are you using? E.g. NeoForge or Fabric
-      placeholder: "NeoForge"
+      description: What mod loader are you using? E.g. Fabric
+      placeholder: "Fabric"
     validations:
       required: true
   - type: input
