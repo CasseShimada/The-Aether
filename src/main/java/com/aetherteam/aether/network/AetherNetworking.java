@@ -34,6 +34,7 @@ import com.aetherteam.aether.network.packet.serverbound.ServerHaloPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.network.packet.serverbound.StepHeightPacket;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
+import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -104,6 +105,7 @@ public final class AetherNetworking {
         registerC2S(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove.STREAM_CODEC);
         registerC2S(StepHeightPacket.TYPE, StepHeightPacket.STREAM_CODEC);
         registerC2S(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
+        registerC2S(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket.STREAM_CODEC);
 
         // BIDIRECTIONAL
         registerS2C(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
@@ -132,6 +134,7 @@ public final class AetherNetworking {
         registerServerReceiver(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove::execute);
         registerServerReceiver(StepHeightPacket.TYPE, StepHeightPacket::execute);
         registerServerReceiver(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket::execute);
+        registerServerReceiver(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket::execute);
 
         registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
         registerServerReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
