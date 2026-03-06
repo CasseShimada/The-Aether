@@ -19,7 +19,7 @@ Status legend:
 | `DimensionListener#onPlayerTraveling` | `PlayerMixin#tick()` | DONE | Calls `DimensionHooks.travelling`. |
 | `DimensionListener#onWorldLoad` | `ServerWorldEvents.LOAD` -> `DimensionHooks.initializeLevelData` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onSleepFinish` | none | MISSING | Needs sleep-finish time rewrite bridge. |
-| `DimensionListener#onTriedToSleep` | none | MISSING | Needs `EntitySleepEvents` integration. |
+| `DimensionListener#onTriedToSleep` | `EntitySleepEvents.ALLOW_SLEEPING` -> `DimensionHooks.isEternalDay` | DONE | Eternal-day sleep blocking restored. |
 | `DimensionListener#onAlterGround` | none | MISSING | Needs Fabric equivalent terrain-mod hook. |
 | `EntityListener#onEntityJoin` | `ServerEntityEvents.ENTITY_LOAD` -> `EntityHooks.addGoals` | DONE | Registered in `AetherFabricEvents`. |
 | `EntityListener#onMountEntity` | `PlayerMixin#rideTick()` custom flow | PARTIAL | Dismount prevention path exists; mount event parity not complete. |
@@ -30,7 +30,7 @@ Status legend:
 | `EntityListener#onLightningStrike` | none | MISSING | Needs lightning strike entity callback bridge. |
 | `EntityListener#onPlayerDrops` | none | MISSING | Needs death-drop callback bridge. |
 | `EntityListener#onDropExperience` | none | MISSING | Needs exp-drop callback bridge. |
-| `EntityListener#onEffectApply` | none | MISSING | Needs `ServerMobEffectEvents` guard hook. |
+| `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |
 | `EntityListener#onEntitySplit` | none | MISSING | Needs mob split/collision equivalent bridge. |
 | `EntityListener#onLoadPlayerFile` | none | MISSING | Needs player data migration hook in Fabric flow. |
 | `ItemListener#onTooltipAdd` | Nitrogen tooltip listener bridge in `AetherClient` | PARTIAL | Tooltip predicate chain exists; full parity needs audit. |

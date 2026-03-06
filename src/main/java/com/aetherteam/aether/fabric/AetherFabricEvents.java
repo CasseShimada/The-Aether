@@ -4,13 +4,16 @@ import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -44,6 +47,12 @@ public final class AetherFabricEvents {
             CapabilityHooks.AetherPlayerHooks.changeDimension(player);
             CapabilityHooks.AetherTimeHooks.changeDimension(player);
         });
+
+        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
+                DimensionHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
+
+        ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
+                !EntityHooks.preventInebriation(entity, effectInstance));
 
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             if (level.isClientSide()) {
