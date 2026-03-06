@@ -1,0 +1,12 @@
+package com.aetherteam.aether.client.renderer.entity.state;
+
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+
+public class AerwhaleRenderState extends LivingEntityRenderState {
+    public float yRotData; //todo ?
+    public float xRotData;
+
+    @Override
+    public void clearExtraData() {
+    }
+}

@@ -21,14 +21,15 @@ import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
+import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.AccessoriesContainer;
 import io.wispforest.accessories.api.slot.SlotEntryReference;
-import io.wispforest.accessories.api.slot.SlotReferenceImpl;
+import io.wispforest.accessories.api.slot.SlotReference;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,26 +43,23 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.bee.Bee;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.fox.Fox;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -78,10 +76,10 @@ public class EntityHooks {
     public static void addGoals(Entity entity) {
         if (entity.getClass() == Bee.class) {
             Bee bee = (Bee) entity;
-            bee.getGoalSelector().addGoal(7, new BeeGrowBerryBushGoal(bee));
+            ((MobAccessor) bee).aether$getGoalSelector().addGoal(7, new BeeGrowBerryBushGoal(bee));
         } else if (entity.getClass() == Fox.class) {
             Fox fox = (Fox) entity;
-            fox.goalSelector.addGoal(10, new FoxEatBerryBushGoal(fox, 1.2F, 12, 1));
+            ((MobAccessor) fox).aether$getGoalSelector().addGoal(10, new FoxEatBerryBushGoal(fox, 1.2F, 12, 1));
         }
     }
 
@@ -149,7 +147,7 @@ public class EntityHooks {
      * @param armorMaterials The {@link ArmorMaterials} to get an item from.
      * @see EntityHooks#spawnWithAccessories(Entity, DifficultyInstance)
      */
-    private static void equipAccessory(Mob mob, SlotTypeReference identifier, Holder<ArmorMaterial> armorMaterials) {
+    private static void equipAccessory(Mob mob, SlotTypeReference identifier, ArmorMaterial armorMaterials) {
         AccessoriesCapability accessories = AccessoriesCapability.get(mob);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
@@ -180,23 +178,23 @@ public class EntityHooks {
      * @see EntityHooks#equipAccessory(Mob, SlotTypeReference, Holder)
      */
     @Nullable
-    private static Item getEquipmentForSlot(SlotTypeReference identifier, Holder<ArmorMaterial> armorMaterial) {
+    private static Item getEquipmentForSlot(SlotTypeReference identifier, ArmorMaterial armorMaterial) {
         if (identifier.equals(GlovesItem.getStaticIdentifier())) {
-            if (armorMaterial.is(ArmorMaterials.LEATHER)) {
+            if (armorMaterial == ArmorMaterials.LEATHER) {
                 return AetherItems.LEATHER_GLOVES.get();
-            } else if (armorMaterial.is(ArmorMaterials.GOLD)) {
+            } else if (armorMaterial == ArmorMaterials.GOLD) {
                 return AetherItems.GOLDEN_GLOVES.get();
-            } else if (armorMaterial.is(ArmorMaterials.CHAIN)) {
+            } else if (armorMaterial == ArmorMaterials.CHAINMAIL) {
                 return AetherItems.CHAINMAIL_GLOVES.get();
-            } else if (armorMaterial.is(ArmorMaterials.IRON)) {
+            } else if (armorMaterial == ArmorMaterials.IRON) {
                 return AetherItems.IRON_GLOVES.get();
-            } else if (armorMaterial.is(ArmorMaterials.DIAMOND)) {
+            } else if (armorMaterial == ArmorMaterials.DIAMOND) {
                 return AetherItems.DIAMOND_GLOVES.get();
             }
         } else if (identifier.equals(PendantItem.getStaticIdentifier())) {
-            if (armorMaterial.is(ArmorMaterials.IRON)) {
+            if (armorMaterial == ArmorMaterials.IRON) {
                 return AetherItems.IRON_PENDANT.get();
-            } else if (armorMaterial.is(ArmorMaterials.GOLD)) {
+            } else if (armorMaterial == ArmorMaterials.GOLD) {
                 return AetherItems.GOLDEN_PENDANT.get();
             }
         }
@@ -239,7 +237,7 @@ public class EntityHooks {
      */
     public static boolean dismountPrevention(Entity rider, Entity mount, boolean dismounting) {
         if (dismounting && rider.isShiftKeyDown()) {
-            return (mount instanceof MountableAnimal && !mount.onGround() && !mount.isInFluidType() && !mount.isPassenger()) || (mount instanceof Swet swet && !swet.isFriendly());
+            return (mount instanceof MountableAnimal && !mount.onGround() && !mount.isInLiquid() && !mount.isPassenger()) || (mount instanceof Swet swet && !swet.isFriendly());
         }
         return false;
     }
@@ -323,7 +321,7 @@ public class EntityHooks {
                         CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketStack);
                     }
                     target.discard();
-                    interactionResult = Optional.of(InteractionResult.sidedSuccess(level.isClientSide()));
+                    interactionResult = Optional.of(level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER);
                 } else {
                     interactionResult = Optional.of(InteractionResult.FAIL);
                 }
@@ -361,7 +359,7 @@ public class EntityHooks {
                             if (accessoriesContainer != null) {
                                 ItemStack itemStack = accessoriesContainer.getAccessories().getItem(0);
                                 if (stack.getItem() instanceof AccessoryItem accessoryItem) {
-                                    SlotReferenceImpl slotContext = new SlotReferenceImpl(armorStand, identifier.slotName(), 0);
+                                    SlotReference slotContext = SlotReference.of(armorStand, identifier.slotName(), 0);
                                     accessoriesContainer.getAccessories().setItem(0, stack.copy());
                                     if (accessoryItem instanceof GlovesItem glovesItem) {
                                         armorStand.level().playSound(null, armorStand.blockPosition(), glovesItem.getEquipSound(stack, slotContext).event().value(), armorStand.getSoundSource(), 1, 1);
@@ -516,8 +514,8 @@ public class EntityHooks {
      */
     public static boolean thunderCrystalHitItems(Entity entity, LightningBolt lightning) {
         if (entity instanceof ItemEntity) {
-            if (lightning.hasData(AetherDataAttachments.LIGHTNING_TRACKER)) {
-                return lightning.getData(AetherDataAttachments.LIGHTNING_TRACKER).getOwner(lightning.level()) instanceof ValkyrieQueen;
+            if (lightning.hasAttached(AetherDataAttachments.LIGHTNING_TRACKER)) {
+                return lightning.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).getOwner(lightning.level()) instanceof ValkyrieQueen;
             }
         }
         return false;
@@ -532,7 +530,7 @@ public class EntityHooks {
      */
     public static void trackDrops(LivingEntity entity, Collection<ItemEntity> itemDrops) {
         if (entity instanceof Player player) {
-            itemDrops.forEach(itemEntity -> itemEntity.getData(AetherDataAttachments.DROPPED_ITEM).setOwner(player));
+            itemDrops.forEach(itemEntity -> itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).setOwner(player));
         }
     }
 
@@ -552,12 +550,12 @@ public class EntityHooks {
             for (SlotTypeReference identifier : allSlots) {
                 if (!itemStacks.isEmpty()) {
                     ItemStack itemStack = itemStacks.getFirst();
-                    float f = mob.getData(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier);
+                    float f = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier);
                     boolean flag = f > 1.0F;
                     if (!itemStack.isEmpty()) {
                         itemStacks.removeIf((stack) -> ItemStack.isSameItemSameComponents(stack, itemStack));
                     }
-                    if (!itemStack.isEmpty() && itemStack.getEnchantmentLevel(entity.level().holderOrThrow(Enchantments.VANISHING_CURSE)) == 0 && recentlyHit && Math.max(mob.getRandom().nextFloat() - (float) looting * 0.01F, 0.0F) < f) {
+                    if (!itemStack.isEmpty() && EnchantmentHelper.getItemEnchantmentLevel(entity.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.VANISHING_CURSE), itemStack) == 0 && recentlyHit && Math.max(mob.getRandom().nextFloat() - (float) looting * 0.01F, 0.0F) < f) {
                         if (!flag && itemStack.isDamageableItem()) {
                             itemStack.setDamageValue(itemStack.getMaxDamage() - mob.getRandom().nextInt(1 + mob.getRandom().nextInt(Math.max(itemStack.getMaxDamage() - 3, 1))));
                         }
@@ -579,7 +577,7 @@ public class EntityHooks {
      * @see com.aetherteam.aether.event.listeners.EntityListener#onDropExperience(LivingExperienceDropEvent)
      */
     public static int modifyExperience(LivingEntity entity, int experience) {
-        if (entity instanceof Mob mob && mob.hasData(AetherDataAttachments.MOB_ACCESSORY)) {
+        if (entity instanceof Mob mob && mob.hasAttached(AetherDataAttachments.MOB_ACCESSORY)) {
             AccessoriesCapability accessories = AccessoriesCapability.get(entity);
             if (accessories != null) {
                 if (experience > 0) {
@@ -588,7 +586,7 @@ public class EntityHooks {
                         AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
                         if (accessoriesContainer != null) {
                             ItemStack stack = accessoriesContainer.getAccessories().getItem(0);
-                            if (!stack.isEmpty() && mob.getData(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier) <= 1.0F) {
+                            if (!stack.isEmpty() && mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier) <= 1.0F) {
                                 experience += 1 + mob.getRandom().nextInt(3);
                             }
                         }
@@ -608,7 +606,7 @@ public class EntityHooks {
      * @see com.aetherteam.aether.event.listeners.EntityListener#onEffectApply(MobEffectEvent.Applicable)
      */
     public static boolean preventInebriation(LivingEntity livingEntity, MobEffectInstance appliedInstance) {
-        return livingEntity.hasEffect(AetherEffects.REMEDY) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION.get();
+        return livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY.get())) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION.get();
     }
 
     /**

@@ -5,28 +5,38 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
+import com.aetherteam.aether.registry.DeferredHolder;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
-    protected ResourceLocation PENDANT_LOCATION;
+    protected Identifier PENDANT_LOCATION;
 
     public PendantItem(String pendantLocation, Holder<SoundEvent> pendantSound, Properties properties) {
-        this(ResourceLocation.fromNamespaceAndPath(Aether.MODID, pendantLocation), pendantSound, properties);
+        this(Identifier.fromNamespaceAndPath(Aether.MODID, pendantLocation), pendantSound, properties);
     }
 
-    public PendantItem(ResourceLocation pendantLocation, Holder<SoundEvent> pendantSound, Properties properties) {
+    public PendantItem(String pendantLocation, DeferredHolder<SoundEvent, SoundEvent> pendantSound, Properties properties) {
+        this(Identifier.fromNamespaceAndPath(Aether.MODID, pendantLocation), pendantSound, properties);
+    }
+
+    public PendantItem(Identifier pendantLocation, Holder<SoundEvent> pendantSound, Properties properties) {
+        super(pendantSound, properties);
+        this.setRenderTexture(pendantLocation.getNamespace(), pendantLocation.getPath());
+    }
+
+    public PendantItem(Identifier pendantLocation, DeferredHolder<SoundEvent, SoundEvent> pendantSound, Properties properties) {
         super(pendantSound, properties);
         this.setRenderTexture(pendantLocation.getNamespace(), pendantLocation.getPath());
     }
 
     public void setRenderTexture(String modId, String registryName) {
-        this.PENDANT_LOCATION = ResourceLocation.fromNamespaceAndPath(modId, "textures/models/accessory/pendant/" + registryName + "_accessory.png");
+        this.PENDANT_LOCATION = Identifier.fromNamespaceAndPath(modId, "textures/models/accessory/pendant/" + registryName + "_accessory.png");
     }
 
-    public ResourceLocation getPendantTexture() {
+    public Identifier getPendantTexture() {
         return this.PENDANT_LOCATION;
     }
 
@@ -40,6 +50,6 @@ public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
     }
 
     public static SlotTypeReference getStaticIdentifier() {
-        return AetherConfig.COMMON.use_default_accessories_menu.get() ? new SlotTypeReference("necklace") : AetherAccessorySlots.getPendantSlotType();
+        return AetherConfig.COMMON.use_default_accessories_menu.get() ? () -> "necklace" : AetherAccessorySlots.getPendantSlotType();
     }
 }

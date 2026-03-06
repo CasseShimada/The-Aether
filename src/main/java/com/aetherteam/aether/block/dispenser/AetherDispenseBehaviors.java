@@ -8,8 +8,8 @@ import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import io.wispforest.accessories.api.AccessoriesAPI;
 import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.Accessory;
-import io.wispforest.accessories.api.EquipAction;
+import io.wispforest.accessories.api.core.Accessory;
+import io.wispforest.accessories.api.equip.EquipAction;
 import io.wispforest.accessories.api.slot.SlotReference;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
 import it.unimi.dsi.fastutil.Pair;
@@ -19,6 +19,7 @@ import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,8 +41,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class AetherDispenseBehaviors {
+    private static final Predicate<Entity> ACCESSORY_TARGET_SELECTOR = EntitySelector.NO_SPECTATORS.and(Entity::isAlive);
+
     /**
      * Behavior for allowing dispensers to equip accessories to players.
      */
@@ -62,7 +66,7 @@ public class AetherDispenseBehaviors {
      */
     public static boolean dispenseAccessory(BlockSource blockSource, ItemStack stack) {
         BlockPos pos = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING));
-        List<LivingEntity> list = blockSource.level().getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS.and(new EntitySelector.MobCanWearArmorEntitySelector(stack)));
+        List<LivingEntity> list = blockSource.level().getEntitiesOfClass(LivingEntity.class, new AABB(pos), ACCESSORY_TARGET_SELECTOR::test);
         if (list.isEmpty()) {
             return false;
         } else {
@@ -73,7 +77,7 @@ public class AetherDispenseBehaviors {
                 Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(itemStack);
                 Pair<SlotReference, EquipAction> equipReference = capability.canEquipAccessory(itemStack, true);
                 if (equipReference != null) {
-                    SlotTypeReference slotTypeReference = new SlotTypeReference(equipReference.first().slotName());
+                    SlotTypeReference slotTypeReference = equipReference.first()::slotName;
                     if (accessory.canEquip(itemStack, equipReference.first())) {
                         accessory.onEquipFromUse(itemStack, equipReference.left());
                         equipReference.second().equipStack(itemStack.copy());
@@ -82,7 +86,7 @@ public class AetherDispenseBehaviors {
                                 armorStand.setShowArms(true);
                             }
                         } else if (livingEntity instanceof Mob mob && EntityHooks.canMobSpawnWithAccessories(mob)) {
-                            mob.getData(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
+                            mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
                             mob.setPersistenceRequired();
                         }
                     }
@@ -132,7 +136,7 @@ public class AetherDispenseBehaviors {
             DispensibleContainerItem dispensibleContainerItem = (DispensibleContainerItem) stack.getItem();
             BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
             Level level = source.level();
-            if (dispensibleContainerItem.emptyContents(null, level, blockpos, null, stack)) {
+            if (dispensibleContainerItem.emptyContents(null, level, blockpos, null)) {
                 dispensibleContainerItem.checkExtraContent(null, level, stack, blockpos);
                 return new ItemStack(AetherItems.SKYROOT_BUCKET.get());
             } else {
@@ -167,4 +171,10 @@ public class AetherDispenseBehaviors {
             }
         }
     };
+
+    public static void registerDispenserBehaviors() {
+        DispenserBlock.registerBehavior(AetherItems.HAMMER_OF_KINGBDOGZ.get(), DISPENSE_KINGBDOGZ_HAMMER_BEHAVIOR);
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_WATER_BUCKET.get(), SKYROOT_BUCKET_DISPENSE_BEHAVIOR);
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_BUCKET.get(), SKYROOT_BUCKET_PICKUP_BEHAVIOR);
+    }
 }

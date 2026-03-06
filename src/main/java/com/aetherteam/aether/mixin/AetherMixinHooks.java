@@ -5,15 +5,13 @@ import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MinecraftServerAccessor;
-import com.mojang.datafixers.util.Pair;
 import io.wispforest.accessories.Accessories;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.AccessoriesContainer;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
-import io.wispforest.accessories.impl.ExpandedSimpleContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -23,7 +21,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.StreamSupport;
 
 public class AetherMixinHooks {
     /**
@@ -39,18 +36,16 @@ public class AetherMixinHooks {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(CapeItem.getStaticIdentifier());
 
             if (accessoriesContainer != null) {
-                ExpandedSimpleContainer simpleAccessoriesContainer = accessoriesContainer.getAccessories();
-                ExpandedSimpleContainer simpleCosmeticsContainer = accessoriesContainer.getCosmeticAccessories();
+                var simpleAccessoriesContainer = accessoriesContainer.getAccessories();
+                var simpleCosmeticsContainer = accessoriesContainer.getCosmeticAccessories();
 
-                Pair<Integer, ItemStack> stack = StreamSupport.stream(simpleAccessoriesContainer.spliterator(), true).findFirst().orElse(null);
-                Pair<Integer, ItemStack> cosmeticStack = StreamSupport.stream(simpleCosmeticsContainer.spliterator(), true).findFirst().orElse(null);
-                if (cosmeticStack != null && !cosmeticStack.getSecond().isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
+                ItemStack stack = simpleAccessoriesContainer.getItem(0);
+                ItemStack cosmeticStack = simpleCosmeticsContainer.getItem(0);
+                if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
                     stack = cosmeticStack;
                 }
-                if (stack != null) {
-                    if (accessoriesContainer.shouldRender(stack.getFirst())) {
-                        return stack.getSecond();
-                    }
+                if (!stack.isEmpty() && accessoriesContainer.shouldRender(0)) {
+                    return stack;
                 }
             }
         }
@@ -61,11 +56,11 @@ public class AetherMixinHooks {
      * Gets the cape texture from a {@link CapeItem}.
      *
      * @param stack The {@link ItemStack}.
-     * @return The {@link ResourceLocation} texture from the cape.
+     * @return The {@link Identifier} texture from the cape.
      */
-    public static ResourceLocation getCapeTexture(ItemStack stack) {
+    public static Identifier getCapeTexture(ItemStack stack) {
         if (stack.getItem() instanceof CapeItem capeItem) {
-            for (Map.Entry<Predicate<ItemStack>, ResourceLocation> entry : AetherClient.CAPE_SECRETS.entrySet()) {
+            for (Map.Entry<Predicate<ItemStack>, Identifier> entry : AetherClient.CAPE_SECRETS.entrySet()) {
                 if (entry.getKey().test(stack)) {
                     return entry.getValue();
                 }

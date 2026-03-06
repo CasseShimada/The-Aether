@@ -4,7 +4,6 @@ import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.AccessoriesContainer;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
-import io.wispforest.accessories.impl.ExpandedSimpleContainer;
 import net.minecraft.client.gui.screens.inventory.SmithingScreen;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -38,7 +37,7 @@ public class SmithingScreenMixin {
             if (accessories != null) {
                 AccessoriesContainer accessoriesContainer = accessories.getContainer(slotTypeReference);
                 if (accessoriesContainer != null) {
-                    ExpandedSimpleContainer simpleContainer = accessoriesContainer.getAccessories();
+                    var simpleContainer = accessoriesContainer.getAccessories();
                     simpleContainer.setItem(0, ItemStack.EMPTY);
                     for (EquipmentSlot slot : EquipmentSlot.values()) {
                         this.armorStandPreview.setItemSlot(slot, ItemStack.EMPTY);

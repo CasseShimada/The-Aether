@@ -2,10 +2,12 @@ package com.aetherteam.aether.item.accessories;
 
 import com.aetherteam.aether.block.dispenser.AetherDispenseBehaviors;
 import com.aetherteam.aether.client.AetherSoundEvents;
-import io.wispforest.accessories.api.Accessory;
+import com.aetherteam.aether.registry.DeferredHolder;
 import io.wispforest.accessories.api.SoundEventData;
+import io.wispforest.accessories.api.core.Accessory;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +21,14 @@ public class AccessoryItem extends Item implements Accessory {
         this(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GENERIC, properties);
     }
 
+    public AccessoryItem(DeferredHolder<SoundEvent, SoundEvent> soundEventSupplier, Properties properties) {
+        this(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEventSupplier.get()), properties);
+    }
+
+    public AccessoryItem(SoundEvent soundEvent, Properties properties) {
+        this(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEvent), properties);
+    }
+
     public AccessoryItem(Holder<SoundEvent> soundEventSupplier, Properties properties) {
         super(properties);
         this.soundEventSupplier = soundEventSupplier;
@@ -26,7 +36,7 @@ public class AccessoryItem extends Item implements Accessory {
     }
 
     @Override
-    public boolean canEquipFromUse(ItemStack stack) {
+    public boolean canEquipFromUse(ItemStack stack, SlotReference reference) {
         return true;
     }
 

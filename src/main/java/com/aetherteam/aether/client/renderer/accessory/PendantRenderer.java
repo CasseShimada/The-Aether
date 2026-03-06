@@ -4,16 +4,17 @@ import com.aetherteam.aether.client.renderer.AetherModelLayers;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.wispforest.accessories.api.client.AccessoryRenderer;
-import io.wispforest.accessories.api.slot.SlotReference;
+import io.wispforest.accessories.api.client.AccessoriesRenderStateKeys;
+import io.wispforest.accessories.api.client.AccessoryRenderState;
+import io.wispforest.accessories.api.client.renderers.AccessoryRenderer;
+import io.wispforest.accessories.api.client.rendering.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.item.ItemStack;
 
 public class PendantRenderer implements AccessoryRenderer {
@@ -24,10 +25,17 @@ public class PendantRenderer implements AccessoryRenderer {
     }
 
     @Override
-    public <M extends LivingEntity> void render(ItemStack stack, SlotReference reference, PoseStack poseStack, EntityModel<M> entityModel, MultiBufferSource multiBufferSource, int packedLight, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        PendantItem pendantItem = (PendantItem) stack.getItem();
-        AccessoryRenderer.followBodyRotations(reference.entity(), this.pendant);
-        VertexConsumer consumer = ItemRenderer.getArmorFoilBuffer(multiBufferSource, RenderType.armorCutoutNoCull(pendantItem.getPendantTexture()), false);
-        this.pendant.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <S extends LivingEntityRenderState> void render(AccessoryRenderState accessoryState, S entityState, EntityModel<S> entityModel, PoseStack poseStack, SubmitNodeCollector collector) {
+        ItemStack stack = accessoryState.getStateData(AccessoriesRenderStateKeys.ITEM_STACK);
+        if (!(stack.getItem() instanceof PendantItem pendantItem) || !(entityState instanceof HumanoidRenderState humanoidState) || !(entityModel instanceof HumanoidModel<?> humanoidModel)) {
+            return;
+        }
+
+        this.pendant.body.loadPose(humanoidModel.body.storePose());
+        AccessoryRenderer.transformToFace(poseStack, this.pendant.body, Side.FRONT);
+
+        int packedLight = entityState.getStateData(AccessoriesRenderStateKeys.LIGHT);
+        collector.order(0).submitModel(this.pendant, humanoidState, poseStack, this.pendant.renderType(pendantItem.getPendantTexture()), packedLight, LivingEntityRenderer.getOverlayCoords(humanoidState, 0.0F), -1, null);
     }
 }

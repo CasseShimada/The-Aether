@@ -7,25 +7,25 @@ import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
 import io.wispforest.accessories.api.slot.SlotTypeReference;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class CapeItem extends AccessoryItem implements SlotIdentifierHolder {
-    protected ResourceLocation CAPE_LOCATION;
+    protected Identifier CAPE_LOCATION;
 
     public CapeItem(String capeLocation, Properties properties) {
-        this(ResourceLocation.fromNamespaceAndPath(Aether.MODID, capeLocation), properties);
+        this(Identifier.fromNamespaceAndPath(Aether.MODID, capeLocation), properties);
     }
 
-    public CapeItem(ResourceLocation capeLocation, Properties properties) {
+    public CapeItem(Identifier capeLocation, Properties properties) {
         super(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_CAPE, properties);
         this.setRenderTexture(capeLocation.getNamespace(), capeLocation.getPath());
     }
 
     public void setRenderTexture(String modId, String registryName) {
-        this.CAPE_LOCATION = ResourceLocation.fromNamespaceAndPath(modId, "textures/models/accessory/capes/" + registryName + "_accessory.png");
+        this.CAPE_LOCATION = Identifier.fromNamespaceAndPath(modId, "textures/models/accessory/capes/" + registryName + "_accessory.png");
     }
 
-    public ResourceLocation getCapeTexture() {
+    public Identifier getCapeTexture() {
         return this.CAPE_LOCATION;
     }
 
@@ -40,6 +40,6 @@ public class CapeItem extends AccessoryItem implements SlotIdentifierHolder {
     }
 
     public static SlotTypeReference getStaticIdentifier() {
-        return AetherConfig.COMMON.use_default_accessories_menu.get() ? new SlotTypeReference("cape") : AetherAccessorySlots.getCapeSlotType();
+        return AetherConfig.COMMON.use_default_accessories_menu.get() ? () -> "cape" : AetherAccessorySlots.getCapeSlotType();
     }
 }
