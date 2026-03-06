@@ -25,9 +25,9 @@ Status legend:
 | `EntityListener#onMountEntity` | `PlayerMixin#rideTick()` custom flow | PARTIAL | Dismount prevention path exists; mount event parity not complete. |
 | `EntityListener#onRiderTick` | `ClientTickEvents.END_CLIENT_TICK` -> `EntityHooks.launchMount` | DONE | Client-side rider launch behavior restored. |
 | `EntityListener#onInteractWithEntity` | `UseEntityCallback` -> entity interaction hook chain | DONE | Milking/bucket/armor stand routing wired. |
-| `EntityListener#onProjectileHitEntity` | none | MISSING | Needs projectile impact callback/mixin bridge. |
-| `EntityListener#onShieldBlock` | none | MISSING | Needs living shield block equivalent bridge. |
-| `EntityListener#onLightningStrike` | none | MISSING | Needs lightning strike entity callback bridge. |
+| `EntityListener#onProjectileHitEntity` | `FishingHookMixin#onHitEntity` head cancel -> `EntityHooks.preventEntityHooked` | DONE | Fishing-hook impact cancellation parity restored for unhookable entities. |
+| `EntityListener#onShieldBlock` | `LivingEntityMixin#applyItemBlocking` head override -> `EntityHooks.preventSliderShieldBlock` | DONE | Slider shield-block cancel behavior restored in damage-blocking pipeline. |
+| `EntityListener#onLightningStrike` | `EntityMixin#thunderHit` head cancel -> lightning key/thunder-crystal guards | DONE | Lightning strike cancellation parity restored for protected Aether items. |
 | `EntityListener#onPlayerDrops` | none | MISSING | Needs death-drop callback bridge. |
 | `EntityListener#onDropExperience` | none | MISSING | Needs exp-drop callback bridge. |
 | `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |

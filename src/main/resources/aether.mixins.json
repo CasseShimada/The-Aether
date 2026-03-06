@@ -9,6 +9,7 @@
     "common.AbstractArrowMixin",
     "common.BlockMixin",
     "common.EntityMixin",
+    "common.FishingHookMixin",
     "common.ItemMixin",
     "common.LevelMixin",
     "common.LivingEntityMixin",
