@@ -31,7 +31,7 @@ Status legend:
 | `EntityListener#onPlayerDrops` | `LivingEntityMixin#dropAllDeathLoot + drop(...)` death-window tracking bridge | DONE | Player death drops now receive owner tracking on spawned `ItemEntity` drops. |
 | `EntityListener#onDropExperience` | `LivingEntityMixin#getExperienceReward` return rewrite -> `EntityHooks.modifyExperience` | DONE | Experience drop modifier parity restored for accessory-equipped mobs. |
 | `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |
-| `EntityListener#onEntitySplit` | none | MISSING | Needs mob split/collision equivalent bridge. |
+| `EntityListener#onEntitySplit` | `SlimeMixin#remove` split-spawn `addFreshEntity` guard -> `EntityHooks.preventSplit` | DONE | Swet split cancellation restored without altering base removal flow. |
 | `EntityListener#onLoadPlayerFile` | none | MISSING | Needs player data migration hook in Fabric flow. |
 | `ItemListener#onTooltipAdd` | Nitrogen tooltip listener bridge in `AetherClient` | PARTIAL | Tooltip predicate chain exists; full parity needs audit. |
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |

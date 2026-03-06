@@ -15,6 +15,7 @@
     "common.LivingEntityMixin",
     "common.MobMixin",
     "common.PlayerMixin",
+    "common.SlimeMixin",
     "common.ServerLevelMixin",
     "common.ServerPlayerMixin",
     "common.accessor.AbstractContainerMenuAccessor",
