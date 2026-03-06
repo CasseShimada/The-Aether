@@ -18,7 +18,7 @@ Status legend:
 | `DimensionListener#onPlayerChangedDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` | DONE | `remountPlayerAerbunny` + capability/time sync. |
 | `DimensionListener#onPlayerTraveling` | `PlayerMixin#tick()` | DONE | Calls `DimensionHooks.travelling`. |
 | `DimensionListener#onWorldLoad` | `ServerWorldEvents.LOAD` -> `DimensionHooks.initializeLevelData` | DONE | Registered in `AetherFabricEvents`. |
-| `DimensionListener#onSleepFinish` | none | MISSING | Needs sleep-finish time rewrite bridge. |
+| `DimensionListener#onSleepFinish` | `ServerLevelMixin#wakeUpAllPlayers` tail -> `DimensionHooks.finishSleep` | DONE | Sleep-finish time rewrite parity restored for Aether dimensions. |
 | `DimensionListener#onTriedToSleep` | `EntitySleepEvents.ALLOW_SLEEPING` -> `DimensionHooks.isEternalDay` | DONE | Eternal-day sleep blocking restored. |
 | `DimensionListener#onAlterGround` | none | MISSING | Needs Fabric equivalent terrain-mod hook. |
 | `EntityListener#onEntityJoin` | `ServerEntityEvents.ENTITY_LOAD` -> `EntityHooks.addGoals` | DONE | Registered in `AetherFabricEvents`. |

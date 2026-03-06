@@ -13,6 +13,7 @@
     "common.LivingEntityMixin",
     "common.MobMixin",
     "common.PlayerMixin",
+    "common.ServerLevelMixin",
     "common.ServerPlayerMixin",
     "common.accessor.AbstractContainerMenuAccessor",
     "common.accessor.AbstractFurnaceBlockEntityAccessor",
