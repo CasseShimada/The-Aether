@@ -6,7 +6,7 @@ import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.resources.Identifier;
 
 public class CapeItem extends AccessoryItem implements SlotIdentifierHolder {

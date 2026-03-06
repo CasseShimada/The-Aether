@@ -2,8 +2,8 @@ package com.aetherteam.aether.item.accessories.gloves;
 
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.item.combat.AetherArmorMaterials;
-import io.wispforest.accessories.api.attributes.AccessoryAttributeBuilder;
-import io.wispforest.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilder;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;

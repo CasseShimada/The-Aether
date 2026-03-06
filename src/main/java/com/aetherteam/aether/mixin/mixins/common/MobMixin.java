@@ -5,7 +5,8 @@ import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,7 +43,7 @@ public class MobMixin {
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "equipItemIfPossible(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;")
     private ItemStack equipItemIfPossible(ItemStack original, @Local(ordinal = 0, argsOnly = true) ItemStack stack) {
         Mob mob = (Mob) (Object) this;
-        var data = mob.getData(AetherDataAttachments.MOB_ACCESSORY);
+        var data = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY);
         SlotTypeReference identifier = AetherMixinHooks.getIdentifierForItem(mob, stack);
         if (identifier != null) {
             ItemStack accessory = AetherMixinHooks.getItemByIdentifier(mob, identifier);
@@ -50,7 +51,9 @@ public class MobMixin {
             if (flag && mob.canHoldItem(stack)) {
                 double dropChance = data.getEquipmentDropChance(identifier);
                 if (!accessory.isEmpty() && Math.max(mob.getRandom().nextFloat() - 0.1F, 0.0F) < dropChance) {
-                    mob.spawnAtLocation(accessory);
+                    if (mob.level() instanceof ServerLevel serverLevel) {
+                        mob.spawnAtLocation(serverLevel, accessory);
+                    }
                 }
                 AetherMixinHooks.setItemByIdentifier(mob, stack, identifier);
                 data.setGuaranteedDrop(identifier);

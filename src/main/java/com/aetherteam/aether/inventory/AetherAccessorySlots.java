@@ -3,30 +3,30 @@ package com.aetherteam.aether.inventory;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
-import io.wispforest.accessories.api.AccessoriesAPI;
-import io.wispforest.accessories.api.slot.SlotBasedPredicate;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
-import io.wispforest.accessories.api.slot.UniqueSlotHandling;
-import net.minecraft.resources.ResourceLocation;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.slot.SlotBasedPredicate;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.slot.UniqueSlotHandling;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
 public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCallback {
-    private static final ResourceLocation GLOVES_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gloves_items");
-    private static final ResourceLocation RING_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "ring_items");
-    private static final ResourceLocation PENDANT_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "pendant_items");
-    private static final ResourceLocation CAPE_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "cape_items");
-    private static final ResourceLocation SHIELD_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "shield_items");
-    private static final ResourceLocation ACCESSORY_PREDICATE = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "accessory_items");
+    private static final Identifier GLOVES_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "gloves_items");
+    private static final Identifier RING_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "ring_items");
+    private static final Identifier PENDANT_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "pendant_items");
+    private static final Identifier CAPE_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "cape_items");
+    private static final Identifier SHIELD_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "shield_items");
+    private static final Identifier ACCESSORY_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_items");
 
-    public static final ResourceLocation GLOVES_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "gloves_slot");
-    public static final ResourceLocation RING_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "ring_slot");
-    public static final ResourceLocation PENDANT_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "pendant_slot");
-    public static final ResourceLocation CAPE_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "cape_slot");
-    public static final ResourceLocation SHIELD_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "shield_slot");
-    public static final ResourceLocation ACCESSORY_SLOT_LOCATION = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "accessory_slot");
+    public static final Identifier GLOVES_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "gloves_slot");
+    public static final Identifier RING_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "ring_slot");
+    public static final Identifier PENDANT_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "pendant_slot");
+    public static final Identifier CAPE_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "cape_slot");
+    public static final Identifier SHIELD_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "shield_slot");
+    public static final Identifier ACCESSORY_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_slot");
 
     public static final AetherAccessorySlots INSTANCE = new AetherAccessorySlots();
 

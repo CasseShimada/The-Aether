@@ -2,58 +2,66 @@ package com.aetherteam.aether.client.gui.component.menu;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.gui.screen.menu.AetherTitleScreen;
+import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonBuilderAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonAccessor;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 public class AetherMenuButton extends Button {
-    private static final WidgetSprites AETHER_WIDGETS = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "title/button"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "title/button_highlighted"));
-    private static final WidgetSprites AETHER_WIDGETS_SMALL = new WidgetSprites(ResourceLocation.fromNamespaceAndPath(Aether.MODID, "title/button"), ResourceLocation.fromNamespaceAndPath(Aether.MODID, "title/button_highlighted_small"));
+    private static final WidgetSprites AETHER_WIDGETS = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "title/button"), Identifier.fromNamespaceAndPath(Aether.MODID, "title/button_highlighted"));
+    private static final WidgetSprites AETHER_WIDGETS_SMALL = new WidgetSprites(Identifier.fromNamespaceAndPath(Aether.MODID, "title/button"), Identifier.fromNamespaceAndPath(Aether.MODID, "title/button_highlighted_small"));
     public final int originalX;
     public final int originalY;
     public int hoverOffset;
     public int buttonCountOffset;
     public boolean serverButton;
+    private final Event<ButtonEvents.AdjustRendering> adjustRenderingEvent = EventFactory.createArrayBacked(ButtonEvents.AdjustRendering.class, listeners -> (button, guiGraphics, texture, x, y, width, height) -> {
+        for (ButtonEvents.AdjustRendering listener : listeners) {
+            if (listener.render(button, guiGraphics, texture, x, y, width, height)) {
+                return true;
+            }
+        }
+        return false;
+    });
 
     public AetherMenuButton(AetherTitleScreen screen, Builder builder) {
-        super(builder);
+        this((ButtonBuilderAccessor) builder);
+    }
+
+    private AetherMenuButton(ButtonBuilderAccessor builderAccessor) {
+        super(builderAccessor.aether$getX(), builderAccessor.aether$getY(), builderAccessor.aether$getWidth(), builderAccessor.aether$getHeight(), builderAccessor.aether$getMessage(), builderAccessor.aether$getOnPress(), builderAccessor.aether$getCreateNarration());
+        this.setTooltip(builderAccessor.aether$getTooltip());
         this.originalX = this.getX();
         this.originalY = this.getY();
         this.hoverOffset = 0;
     }
 
     public AetherMenuButton(AetherTitleScreen screen, Button oldButton) {
-        this(screen, new Builder(oldButton.getMessage(), (button) -> oldButton.onPress()).bounds(oldButton.getX(), oldButton.getY(), oldButton.getWidth(), oldButton.getHeight()).createNarration((button) -> ((ButtonAccessor) oldButton).callCreateNarrationMessage()));
+        this(screen, new Builder(oldButton.getMessage(), ((ButtonAccessor) oldButton).aether$getOnPress()).bounds(oldButton.getX(), oldButton.getY(), oldButton.getWidth(), oldButton.getHeight()).createNarration(((ButtonAccessor) oldButton).aether$getCreateNarration()));
         oldButton.visible = false;
         oldButton.active = false;
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        PoseStack poseStack = guiGraphics.pose();
+    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
 
-        ResourceLocation location = this.getWidth() < 100 ? AETHER_WIDGETS_SMALL.get(this.isActive(), this.isHoveredOrFocused()) : AETHER_WIDGETS.get(this.isActive(), this.isHoveredOrFocused());
+        Identifier location = this.getWidth() < 100 ? AETHER_WIDGETS_SMALL.get(this.isActive(), this.isHoveredOrFocused()) : AETHER_WIDGETS.get(this.isActive(), this.isHoveredOrFocused());
 
-        RenderSystem.enableBlend();
-        guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-        guiGraphics.blitSprite(location, 200, 20, 0, 0, this.getX() + this.hoverOffset, this.getY(), 200, 20);
-        RenderSystem.disableBlend();
-
-        poseStack.pushPose();
-        float textX = this.getX() + 35 + this.hoverOffset;
-        float textY = this.getY() + (this.height - 8) / 2.0F;
-        poseStack.translate(textX, textY, 0.0F);
-        guiGraphics.drawString(font, this.getMessage(), 0, 0, this.getTextColor(mouseX, mouseY) | Mth.ceil(this.alpha * 255.0F) << 24);
-        poseStack.popPose();
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.getX() + this.hoverOffset, this.getY(), this.getWidth(), this.getHeight());
+        int textX = this.getX() + 35 + this.hoverOffset;
+        int textY = this.getY() + (this.height - 8) / 2;
+        guiGraphics.drawString(font, this.getMessage(), textX, textY, this.getTextColor(mouseX, mouseY) | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     /**
@@ -69,5 +77,9 @@ public class AetherMenuButton extends Button {
         } else {
             return this.isMouseOver(mouseX, mouseY) ? 13746759 : 15457113;
         }
+    }
+
+    public Event<ButtonEvents.AdjustRendering> getRenderingEvent() {
+        return this.adjustRenderingEvent;
     }
 }

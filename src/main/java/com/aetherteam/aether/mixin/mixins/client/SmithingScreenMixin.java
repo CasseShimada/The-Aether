@@ -1,9 +1,9 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.AccessoriesContainer;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesContainer;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.client.gui.screens.inventory.SmithingScreen;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;

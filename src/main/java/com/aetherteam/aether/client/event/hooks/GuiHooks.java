@@ -11,34 +11,33 @@ import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.entity.AetherBossMob;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
+import com.aetherteam.aether.mixin.mixins.client.accessor.AbstractContainerScreenAccessor;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
 import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.nitrogen.api.users.User;
 import com.aetherteam.nitrogen.api.users.UserData;
 import com.mojang.blaze3d.platform.InputConstants;
-import io.wispforest.accessories.client.gui.AccessoriesScreen;
+import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -77,7 +76,8 @@ public class GuiHooks {
     public static AccessoryButton setupAccessoryButton(Screen screen, Tuple<Integer, Integer> offsets) {
         AbstractContainerScreen<?> containerScreen = canCreateAccessoryButtonForScreen(screen);
         if (containerScreen != null) {
-            return new AccessoryButton(containerScreen, containerScreen.getGuiLeft() + offsets.getA(), containerScreen.getGuiTop() + offsets.getB(), AetherAccessoriesScreen.ACCESSORIES_BUTTON);
+            AbstractContainerScreenAccessor accessor = (AbstractContainerScreenAccessor) containerScreen;
+            return new AccessoryButton(containerScreen, accessor.aether$getLeftPos() + offsets.getA(), accessor.aether$getTopPos() + offsets.getB(), AetherAccessoriesScreen.ACCESSORIES_BUTTON);
         }
         return null;
     }
@@ -179,7 +179,7 @@ public class GuiHooks {
      */
     public static void drawTrivia(Screen screen, GuiGraphics guiGraphics) {
         generateTrivia(screen);
-        if (screen instanceof GenericMessageScreen || screen instanceof LevelLoadingScreen || screen instanceof ReceivingLevelScreen) {
+        if (screen instanceof GenericMessageScreen || screen instanceof LevelLoadingScreen) {
             Component triviaLine = Aether.TRIVIA_READER.getTriviaLine(); // Get the current trivia line to display.
             if (triviaLine != null && AetherConfig.STARTUP.enable_trivia.get()) {
                 Font font = Minecraft.getInstance().font;
@@ -230,13 +230,13 @@ public class GuiHooks {
      * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiDraw(ScreenEvent.Render.Post)
      */
     public static void drawAetherTravelMessage(Screen screen, GuiGraphics guiGraphics) {
-        if (screen instanceof ReceivingLevelScreen || screen instanceof ProgressScreen) {
+        if (screen instanceof LevelLoadingScreen || screen instanceof ProgressScreen) {
             if (Minecraft.getInstance().player != null) {
                 if (DimensionHooks.displayAetherTravel) {
                     if (DimensionHooks.playerLeavingAether) {
-                        guiGraphics.drawCenteredString(screen.getMinecraft().font, Component.translatable("gui.aether.descending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
+                        guiGraphics.drawCenteredString(Minecraft.getInstance().font, Component.translatable("gui.aether.descending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
                     } else {
-                        guiGraphics.drawCenteredString(screen.getMinecraft().font, Component.translatable("gui.aether.ascending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
+                        guiGraphics.drawCenteredString(Minecraft.getInstance().font, Component.translatable("gui.aether.ascending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
                     }
                 }
             }
@@ -288,7 +288,7 @@ public class GuiHooks {
     public static void closeContainerMenu(int key, int action) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.screen instanceof AbstractContainerScreen<?> abstractContainerScreen) {
-            if (!AetherConfig.CLIENT.disable_accessory_button.get() && AetherKeys.OPEN_ACCESSORY_INVENTORY.getKey().getValue() == key && (action == InputConstants.PRESS || action == InputConstants.REPEAT)) {
+            if (!AetherConfig.CLIENT.disable_accessory_button.get() && AetherKeys.OPEN_ACCESSORY_INVENTORY.matches(new KeyEvent(key, 0, 0)) && (action == InputConstants.PRESS || action == InputConstants.REPEAT)) {
                 abstractContainerScreen.onClose();
             }
         }
@@ -319,10 +319,10 @@ public class GuiHooks {
     public static void drawBar(GuiGraphics guiGraphics, int x, int y, BossEvent bossEvent, AetherBossMob<?> aetherBossMob) {
         if (aetherBossMob.getBossBarBackgroundTexture() != null && aetherBossMob.getBossBarTexture() != null) {
             x -= 37; // The default boss health bar is offset by -91. We need -128.
-            guiGraphics.blitSprite(aetherBossMob.getBossBarBackgroundTexture(), 256, 16, 0, 0, x, y, 256, 16);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, aetherBossMob.getBossBarBackgroundTexture(), 256, 16, 0, 0, x, y, 256, 16);
             int health = (int) (bossEvent.getProgress() * 256.0F);
             if (health > 0) {
-                guiGraphics.blitSprite(aetherBossMob.getBossBarTexture(), 256, 16, 0, 0, x, y, health, 16);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, aetherBossMob.getBossBarTexture(), 256, 16, 0, 0, x, y, health, 16);
             }
         }
     }

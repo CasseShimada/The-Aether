@@ -1,8 +1,8 @@
 package com.aetherteam.aether.item.accessories.cape;
 
 import com.aetherteam.aether.Aether;
-import io.wispforest.accessories.api.slot.SlotReference;
-import net.minecraft.resources.ResourceLocation;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -13,7 +13,7 @@ public class AgilityCapeItem extends CapeItem {
     /**
      * The unique identifier for the item's step height modifier.
      */
-    private static final ResourceLocation STEP_HEIGHT_ID = ResourceLocation.fromNamespaceAndPath(Aether.MODID, "agility_cape_step_height");
+    private static final Identifier STEP_HEIGHT_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "agility_cape_step_height");
 
     public AgilityCapeItem(String capeLocation, Properties properties) {
         super(capeLocation, properties);

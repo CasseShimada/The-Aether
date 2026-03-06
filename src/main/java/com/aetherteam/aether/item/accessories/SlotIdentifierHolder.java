@@ -1,6 +1,6 @@
 package com.aetherteam.aether.item.accessories;
 
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 
 /**
  * Functional interface whose only defines an accessory slot identifier for an item.

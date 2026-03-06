@@ -3,11 +3,10 @@ package com.aetherteam.aether.inventory.menu;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.mixin.mixins.common.accessor.AbstractContainerMenuAccessor;
 import com.aetherteam.aether.mixin.mixins.common.accessor.CraftingMenuAccessor;
-import com.mojang.datafixers.util.Pair;
-import io.wispforest.accessories.api.AccessoriesAPI;
-import io.wispforest.accessories.api.menu.AccessoriesSlotGenerator;
-import io.wispforest.accessories.api.slot.SlotType;
-import net.minecraft.resources.ResourceLocation;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.menu.AccessoriesSlotGenerator;
+import com.aetherteam.aether.accessories.api.slot.SlotType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class AetherAccessoriesMenu extends InventoryMenu {
-    private static final Map<EquipmentSlot, ResourceLocation> TEXTURE_EMPTY_SLOTS = Map.of(
+    private static final Map<EquipmentSlot, Identifier> TEXTURE_EMPTY_SLOTS = Map.of(
         EquipmentSlot.FEET,
         InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS,
         EquipmentSlot.LEGS,
@@ -72,8 +71,29 @@ public class AetherAccessoriesMenu extends InventoryMenu {
 
         for (int k = 0; k < 4; k++) {
             EquipmentSlot equipmentslot = SLOT_IDS[k];
-            ResourceLocation resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
-            this.addSlot(new ArmorSlot(playerInventory, this.owner, equipmentslot, 36 + (3 - k), 59, 8 + k * 18, resourcelocation));
+            Identifier resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
+            this.addSlot(new Slot(playerInventory, 36 + (3 - k), 59, 8 + k * 18) {
+                @Override
+                public void setByPlayer(ItemStack oldStack, ItemStack newStack) {
+                    AetherAccessoriesMenu.this.owner.onEquipItem(equipmentslot, newStack, oldStack);
+                    super.setByPlayer(oldStack, newStack);
+                }
+
+                @Override
+                public int getMaxStackSize() {
+                    return 1;
+                }
+
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return AetherAccessoriesMenu.this.owner.getEquipmentSlotForItem(stack) == equipmentslot;
+                }
+
+                @Override
+                public Identifier getNoItemIcon() {
+                    return resourcelocation;
+                }
+            });
         }
 
         for (int l = 0; l < 3; l++) {
@@ -94,8 +114,8 @@ public class AetherAccessoriesMenu extends InventoryMenu {
             }
 
             @Override
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+            public Identifier getNoItemIcon() {
+                return InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD;
             }
         });
     }
@@ -115,7 +135,7 @@ public class AetherAccessoriesMenu extends InventoryMenu {
     public void removed(Player player) {
         super.removed(player);
         this.resultSlots.clearContent();
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
             this.clearContainer(player, this.craftSlots);
         }
     }

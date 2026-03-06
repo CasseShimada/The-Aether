@@ -5,8 +5,8 @@ import com.aetherteam.aether.event.AetherEventDispatch;
 import com.aetherteam.aether.event.FreezeEvent;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.AccessoryFreezableRecipe;
-import io.wispforest.accessories.api.AccessoriesAPI;
-import io.wispforest.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +35,9 @@ public interface FreezingAccessory extends FreezingBehavior<ItemStack> {
         if (!(livingEntity instanceof Player player) || (!player.getAbilities().flying && !player.isSpectator())) {
             int damage = this.freezeBlocks(livingEntity.level(), livingEntity.blockPosition(), stack, 1.9F);
             if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                context.getStack().hurtAndBreak(damage / 3, serverLevel, livingEntity, (item) -> AccessoriesAPI.breakStack(context));
+                if (livingEntity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    context.getStack().hurtAndBreak(damage / 3, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(context));
+                }
             }
         }
     }
@@ -54,8 +57,14 @@ public interface FreezingAccessory extends FreezingBehavior<ItemStack> {
         if (!level.isClientSide()) {
             BlockState oldBlockState = level.getBlockState(pos);
             FluidState fluidState = level.getFluidState(pos);
-            for (RecipeHolder<AccessoryFreezableRecipe> recipe : level.getRecipeManager().getAllRecipesFor(AetherRecipeTypes.ACCESSORY_FREEZABLE.get())) {
-                AccessoryFreezableRecipe freezableRecipe = recipe.value();
+            if (!(level.recipeAccess() instanceof RecipeManager recipeManager)) {
+                return 0;
+            }
+            for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
+                if (recipe.value().getType() != AetherRecipeTypes.ACCESSORY_FREEZABLE.get()) {
+                    continue;
+                }
+                AccessoryFreezableRecipe freezableRecipe = (AccessoryFreezableRecipe) recipe.value();
                 if (fluidState.isEmpty() || oldBlockState.is(fluidState.createLegacyBlock().getBlock())) { // Default freezing behavior.
                     if (freezableRecipe.matches(level, pos, oldBlockState)) {
                         BlockState newBlockState = freezableRecipe.getResultState(oldBlockState);

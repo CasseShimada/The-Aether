@@ -2,8 +2,8 @@ package com.aetherteam.aether.item.accessories.miscellaneous;
 
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.abilities.SlowFallAccessory;
-import io.wispforest.accessories.api.events.extra.AllowWalkingOnSnow;
-import io.wispforest.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.world.item.ItemStack;
 

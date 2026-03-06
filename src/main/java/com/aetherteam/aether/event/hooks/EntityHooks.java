@@ -22,11 +22,11 @@ import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionIte
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.AccessoriesContainer;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
-import io.wispforest.accessories.api.slot.SlotReference;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesContainer;
+import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;

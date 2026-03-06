@@ -7,7 +7,7 @@ import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.mixin.mixins.common.accessor.LivingEntityAccessor;
 import com.aetherteam.aether.network.packet.clientbound.SetInvisibilityPacket;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
-import io.wispforest.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

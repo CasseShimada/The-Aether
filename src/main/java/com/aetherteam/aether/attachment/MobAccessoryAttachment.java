@@ -2,7 +2,7 @@ package com.aetherteam.aether.attachment;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 
 import java.util.HashMap;
 import java.util.Map;

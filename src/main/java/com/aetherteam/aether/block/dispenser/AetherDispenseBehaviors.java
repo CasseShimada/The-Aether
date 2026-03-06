@@ -6,12 +6,12 @@ import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
-import io.wispforest.accessories.api.AccessoriesAPI;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.core.Accessory;
-import io.wispforest.accessories.api.equip.EquipAction;
-import io.wispforest.accessories.api.slot.SlotReference;
-import io.wispforest.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.core.Accessory;
+import com.aetherteam.aether.accessories.api.equip.EquipAction;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -57,7 +57,7 @@ public class AetherDispenseBehaviors {
     };
 
     /**
-     * Based on {@link net.minecraft.world.item.ArmorItem#dispenseArmor(BlockSource, ItemStack)} and {@link io.wispforest.accessories.impl.AccessoriesEventHandler#attemptEquipFromUse(Player, InteractionHand)}.<br><br>
+     * Based on {@link net.minecraft.world.item.ArmorItem#dispenseArmor(BlockSource, ItemStack)} and {@link com.aetherteam.aether.accessories.impl.AccessoriesEventHandler#attemptEquipFromUse(Player, InteractionHand)}.<br><br>
      * Handles checking if an accessory shot from a dispenser can be equipped, and handles that equipping behavior if it can.
      *
      * @param blockSource The {@link BlockSource} for the dispenser.
