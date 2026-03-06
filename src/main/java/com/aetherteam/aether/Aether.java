@@ -66,6 +66,7 @@ public final class Aether {
 
         DIRECTORY.toFile().mkdirs();
 
+        Reflection.initialize(AetherDataAttachments.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherEntityTypes.registerEntityAttributes();
