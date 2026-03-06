@@ -22,7 +22,7 @@ Status legend:
 | `DimensionListener#onTriedToSleep` | `EntitySleepEvents.ALLOW_SLEEPING` -> `DimensionHooks.isEternalDay` | DONE | Eternal-day sleep blocking restored. |
 | `DimensionListener#onAlterGround` | `AlterGroundDecoratorMixin#placeBlockAt` podzol replacement guard | DONE | Aether Dirt is preserved when tree decorators attempt podzol replacement. |
 | `EntityListener#onEntityJoin` | `ServerEntityEvents.ENTITY_LOAD` -> `EntityHooks.addGoals` | DONE | Registered in `AetherFabricEvents`. |
-| `EntityListener#onMountEntity` | `PlayerMixin#rideTick()` custom flow | PARTIAL | Dismount prevention path exists; mount event parity not complete. |
+| `EntityListener#onMountEntity` | `EntityMixin#startRiding/stopRiding` + `PlayerMixin#rideTick` dismount intent sync | DONE | Mount tracking and dismount prevention are now bridged in the entity ride lifecycle. |
 | `EntityListener#onRiderTick` | `ClientTickEvents.END_CLIENT_TICK` -> `EntityHooks.launchMount` | DONE | Client-side rider launch behavior restored. |
 | `EntityListener#onInteractWithEntity` | `UseEntityCallback` -> entity interaction hook chain | DONE | Milking/bucket/armor stand routing wired. |
 | `EntityListener#onProjectileHitEntity` | `FishingHookMixin#onHitEntity` head cancel -> `EntityHooks.preventEntityHooked` | DONE | Fishing-hook impact cancellation parity restored for unhookable entities. |

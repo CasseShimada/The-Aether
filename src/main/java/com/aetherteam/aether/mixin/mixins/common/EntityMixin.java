@@ -109,4 +109,24 @@ public class EntityMixin {
             ci.cancel();
         }
     }
+
+    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;ZZ)Z", at = @At("RETURN"))
+    private void aether$trackMountStart(Entity vehicle, boolean force, boolean suppressCancellation, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValueZ()) {
+            EntityHooks.trackMount(vehicle, false);
+        }
+    }
+
+    @Inject(method = "stopRiding()V", at = @At("HEAD"), cancellable = true)
+    private void aether$handleMountDismount(CallbackInfo ci) {
+        Entity rider = (Entity) (Object) this;
+        Entity mount = rider.getVehicle();
+        if (mount != null) {
+            if (EntityHooks.dismountPrevention(rider, mount, true)) {
+                ci.cancel();
+                return;
+            }
+            EntityHooks.trackMount(mount, true);
+        }
+    }
 }
