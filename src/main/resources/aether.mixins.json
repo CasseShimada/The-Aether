@@ -50,6 +50,7 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.AdvancementToastMixin",
+    "client.FogRendererMixin",
     "client.LogoRendererMixin",
     "client.accessor.AbstractContainerScreenAccessor",
     "client.accessor.AbstractWidgetAccessor",
@@ -57,6 +58,7 @@
     "client.accessor.ButtonAccessor",
     "client.accessor.ButtonBuilderAccessor",
     "client.accessor.EntityRendererAccessor",
+    "client.accessor.FogDataAccessor",
     "client.accessor.GhostSlotsAccessor",
     "client.accessor.GuiAccessor",
     "client.accessor.MinecraftAccessor",
