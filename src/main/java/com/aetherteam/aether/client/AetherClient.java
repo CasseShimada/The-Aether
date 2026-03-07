@@ -145,6 +145,7 @@ public class AetherClient {
 
             if (client.player != null) {
                 CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
+                CapabilityClientHooks.AetherPlayerHooks.tickInput(client.player);
                 EntityHooks.launchMount(client.player);
             }
 

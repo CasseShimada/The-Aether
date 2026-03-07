@@ -35,6 +35,24 @@ public class CapabilityClientHooks {
         }
 
         /**
+         * Fabric does not provide the same global post key/mouse events that NeoForge uses for this sync path.
+         * Poll per-tick input states so the server always receives up-to-date hit and jump-ability flags.
+         */
+        public static void tickInput(Player player) {
+            var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
+
+            boolean isHitting = Minecraft.getInstance().options.keyAttack.isDown();
+            if (isHitting != aetherPlayer.isHitting()) {
+                aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setHitting", isHitting);
+            }
+
+            boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
+            if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
+                aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
+            }
+        }
+
+        /**
          * Checks for mouse input.
          *
          * @param button The {@link Integer} ID for the button.
