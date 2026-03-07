@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 public class PhygHaloLayer extends RenderLayer<PhygRenderState, PigModel> {
@@ -39,7 +40,7 @@ public class PhygHaloLayer extends RenderLayer<PhygRenderState, PigModel> {
             this.phygHalo.halo.yRot = quadrupedModelAccessor.aether$getHead().yRot;
             this.phygHalo.halo.xRot = quadrupedModelAccessor.aether$getHead().xRot;
             this.phygHalo.setupAnim(renderState);
-            collector.order(0).submitModel(this.phygHalo, renderState, poseStack, this.phygHalo.renderType(HALO_LOCATION), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), 1073741823, null);
+            collector.order(0).submitModel(this.phygHalo, renderState, poseStack, RenderTypes.eyes(HALO_LOCATION), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), 1073741823, null);
         }
     }
 }

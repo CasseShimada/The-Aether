@@ -2,12 +2,13 @@ package com.aetherteam.aether.client.renderer.entity.layers;
 
 import com.aetherteam.aether.client.renderer.entity.state.SwetRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -25,9 +26,11 @@ public class SwetOuterLayer extends RenderLayer<SwetRenderState, SlimeModel> {
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, SwetRenderState renderState, float v, float v1) {
-        if (!renderState.isInvisible) {
+        boolean outline = renderState.appearsGlowing() && renderState.isInvisible;
+        if (!renderState.isInvisible || outline) {
+            RenderType renderType = outline ? RenderTypes.outline(this.texture) : RenderTypes.entityTranslucent(this.texture);
             this.outer.setupAnim(renderState);
-            collector.order(0).submitModel(this.outer, renderState, poseStack, this.outer.renderType(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.outer, renderState, poseStack, renderType, packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 }

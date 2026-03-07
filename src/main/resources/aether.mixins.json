@@ -23,6 +23,7 @@
     "common.SlimeMixin",
     "common.ServerLevelMixin",
     "common.ServerPlayerMixin",
+    "common.TimelineMixin",
     "common.accessor.AbstractContainerMenuAccessor",
     "common.accessor.AbstractFurnaceBlockEntityAccessor",
     "common.accessor.BaseSpawnerAccessor",

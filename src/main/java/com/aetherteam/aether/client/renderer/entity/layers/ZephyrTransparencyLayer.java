@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 public class ZephyrTransparencyLayer extends RenderLayer<ZephyrRenderState, EntityModel<ZephyrRenderState>> {
@@ -35,7 +36,7 @@ public class ZephyrTransparencyLayer extends RenderLayer<ZephyrRenderState, Enti
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, ZephyrRenderState renderState, float netHeadYaw, float headPitch) {
         if (this.getParentModel() instanceof ZephyrModel && !renderState.isInvisible) {
             this.transparency.setupAnim(renderState);
-            collector.order(0).submitModel(this.transparency, renderState, poseStack, this.transparency.renderType(ZEPHYR_TRANSPARENCY_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.transparency, renderState, poseStack, RenderTypes.entityTranslucent(ZEPHYR_TRANSPARENCY_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 }

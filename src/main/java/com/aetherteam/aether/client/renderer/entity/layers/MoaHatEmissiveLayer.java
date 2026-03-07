@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ public class MoaHatEmissiveLayer extends RenderLayer<MoaRenderState, MoaModel> {
         Identifier texture = this.getMoaSkinLocation(renderState);
         if (texture != null && !renderState.isInvisible) {
             this.hat.setupAnim(renderState);
-            collector.order(0).submitModel(this.hat, renderState, poseStack, this.hat.renderType(texture), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.hat, renderState, poseStack, RenderTypes.eyes(texture), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
@@ -47,7 +48,7 @@ public class MoaSaddleLayer extends RenderLayer<MoaRenderState, MoaModel> {
                 texture = moaSkin;
             }
             this.saddle.setupAnim(renderState);
-            collector.order(0).submitModel(this.saddle, renderState, poseStack, this.saddle.renderType(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.saddle, renderState, poseStack, RenderTypes.entityCutoutNoCull(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 

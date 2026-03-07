@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
@@ -37,7 +38,7 @@ public class MoaEmissiveLayer extends RenderLayer<MoaRenderState, MoaModel> {
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, MoaRenderState renderState, float netHeadYaw, float headPitch) {
         Identifier moaSkin = this.getMoaSkinLocation(renderState);
         if (moaSkin != null && !renderState.isInvisible) {
-            collector.order(0).submitModel(this.getParentModel(), renderState, poseStack, this.getParentModel().renderType(moaSkin), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.getParentModel(), renderState, poseStack, RenderTypes.eyes(moaSkin), 15728640, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 
