@@ -24,12 +24,13 @@ public class FallPathNavigation extends GroundPathNavigation {
         Vec3 vec3 = this.getTempMobPos();
         this.maxDistanceToWaypoint = this.mob.getBbWidth() > 0.75F ? this.mob.getBbWidth() / 2.0F : 0.75F - this.mob.getBbWidth() / 2.0F;
         Vec3i vec3i = this.path.getNextNodePos();
-        double d0 = Math.abs(this.mob.getX() - ((double) vec3i.getX() + 0.5D));
+        double d0 = Math.abs(this.mob.getX() - ((double) vec3i.getX() + (this.mob.getBbWidth() + 1) / 2D));
         double d1 = Math.abs(this.mob.getY() - (double) vec3i.getY());
-        double d2 = Math.abs(this.mob.getZ() - ((double) vec3i.getZ() + 0.5D));
+        double d2 = Math.abs(this.mob.getZ() - ((double) vec3i.getZ() + (this.mob.getBbWidth() + 1) / 2D));
 
-        // Keep airborne pathing updates while matching 1.21.11 node-centering and Y-threshold checks.
-        boolean flag = d0 < (double) this.maxDistanceToWaypoint && d2 < (double) this.maxDistanceToWaypoint && d1 < 1.0D;
+        // Keep the airborne-pathing threshold behavior aligned with the 1.21.1 baseline.
+        float fallDistance = this.mob.getMaxFallDistance();
+        boolean flag = d0 <= (double) this.maxDistanceToWaypoint && d2 <= (double) this.maxDistanceToWaypoint && d1 < fallDistance;
         if (flag || this.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vec3)) {
             this.path.advance();
         }
