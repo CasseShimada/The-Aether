@@ -54,4 +54,4 @@ Status legend:
 | NeoForge listener group | Fabric equivalent / bridge | Status | Notes |
 |---|---|---|---|
 | `abilities/*` listeners | scattered item/mixin direct calls | DONE | Accessory/armor/tool/weapon hooks are bridged by `BlockMixin`, `PlayerMixin`, `LivingEntityMixin`, `ProjectileMixin`, and item-tool mixins. |
-| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks + `FogRendererMixin` + `SoundEngineMixin` | PARTIAL | Core callbacks and play-sound interception parity are wired; remaining status is in-world validation for rendering/AI behavior. |
+| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks + `FogRendererMixin` + `SoundEngineMixin` + `AvatarRendererMixin` | PARTIAL | Core callbacks, play-sound interception, and invisibility-cloak player/arm render suppression are wired; remaining status is in-world validation for rendering/AI behavior. |

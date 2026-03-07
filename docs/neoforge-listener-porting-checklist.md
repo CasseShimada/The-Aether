@@ -67,6 +67,7 @@ This checklist maps legacy NeoForge listener points from `The-Aether` 1.21.1 to 
 | tool action bridges (strip/flatten/till) | `AxeItemMixin` / `ShovelItemMixin` / `HoeItemMixin` | Done |
 | Holystone extra drop hook | `BlockMixin#playerDestroy` | Done |
 | tool debuff sync on login | `ServerPlayerEvents.JOIN` calling `setDebuffToolsState` | Done |
+| invisibility cloak render suppression (`RenderPlayerEvent.Pre` / `RenderArmEvent`) | `AvatarRendererMixin` render-state and hand-render cancellation | Done |
 
 ## Remaining Runtime Validation Focus
 
