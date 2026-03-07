@@ -46,7 +46,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -761,7 +760,7 @@ public class EntityHooks {
      * for Aether sky mobs that should remain present around active players.
      */
     public static void tickAetherSkySpawns(ServerLevel level) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL || level.getGameTime() % 200L != 0L) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL || level.getGameTime() % 80L != 0L) {
             return;
         }
 
@@ -770,12 +769,11 @@ public class EntityHooks {
                 continue;
             }
 
-            RandomSource random = level.getRandom();
-            if (random.nextFloat() < 0.35F) {
-                trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 2, 10);
-            }
-            if (random.nextFloat() < 0.2F) {
-                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 8);
+            // NeoForge used dedicated mob categories for these groups (sky monster cap 4, aerwhale cap 1).
+            // Fabric lacks those enum extensions, so we reproduce the cadence explicitly per active player.
+            trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 4, 20);
+            if (level.getGameTime() % 240L == 0L) {
+                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 20);
             }
         }
     }
@@ -796,8 +794,7 @@ public class EntityHooks {
                 continue;
             }
 
-            int groundY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-            int y = Mth.clamp(groundY + 8 + random.nextInt(24), level.getMinY() + 1, level.getMaxY() - 2);
+            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
             BlockPos spawnPos = new BlockPos(x, y, z);
             if (!level.hasChunkAt(spawnPos) || !SpawnPlacements.checkSpawnRules(entityType, level, EntitySpawnReason.NATURAL, spawnPos, random)) {
                 continue;

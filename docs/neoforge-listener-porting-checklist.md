@@ -77,5 +77,5 @@ This checklist maps legacy NeoForge listener points from `The-Aether` 1.21.1 to 
 | Aether sky render hook parity | `SkyRendererMixin` + `LevelRendererMixin` + `LightTextureMixin` restore sky state, celestial fade, cloud toggle, and colder lightmap hooks | Done (pending in-world visual confirmation) |
 | Client resources/rendering | no Aether missing model/texture/material warnings in fresh client log | Pending fresh client run |
 | Aether sky rendering | sky sphere and dimension sky not black in-world | Pending in-game validation |
-| Sky mob natural spawning | Zephyr/Aerwhale spawn cadence and visibility around players | Pending in-world validation |
+| Sky mob natural spawning | Fabric sky-spawn bridge now uses valid `ON_GROUND` spawn heights and category-equivalent caps/cadence for Zephyr/Aerwhale | Updated bridge, pending in-world validation |
 | Aether cliff pathfinding | no cliff-jump regression for affected mobs | Pending in-world validation |
