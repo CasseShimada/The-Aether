@@ -203,6 +203,8 @@ public class DimensionHooks {
             if (serverLevelAccessor.aether$getServerLevelData().getGameRules().get(GameRules.ADVANCE_TIME)) {
                 serverLevel.setDayTime(serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
             }
+
+            EntityHooks.tickAetherSkySpawns(serverLevel);
         }
     }
 

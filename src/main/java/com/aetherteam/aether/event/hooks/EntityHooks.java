@@ -7,11 +7,14 @@ import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.effect.AetherEffects;
+import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.entity.monster.Swet;
+import com.aetherteam.aether.entity.monster.Zephyr;
 import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
+import com.aetherteam.aether.entity.passive.Aerwhale;
 import com.aetherteam.aether.entity.passive.FlyingCow;
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.projectile.crystal.ThunderCrystal;
@@ -31,6 +34,7 @@ import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -42,7 +46,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -64,6 +70,7 @@ import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.WorldData;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -747,5 +754,71 @@ public class EntityHooks {
      */
     public static boolean preventSplit(Mob mob) {
         return mob.getType().is(AetherTags.Entities.SWETS);
+    }
+
+    /**
+     * Bridges custom NeoForge mob-category behavior by performing low-frequency natural spawn attempts
+     * for Aether sky mobs that should remain present around active players.
+     */
+    public static void tickAetherSkySpawns(ServerLevel level) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL || level.getGameTime() % 200L != 0L) {
+            return;
+        }
+
+        for (ServerPlayer player : level.players()) {
+            if (player.isSpectator()) {
+                continue;
+            }
+
+            RandomSource random = level.getRandom();
+            if (random.nextFloat() < 0.35F) {
+                trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 2, 10);
+            }
+            if (random.nextFloat() < 0.2F) {
+                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 8);
+            }
+        }
+    }
+
+    private static <T extends Mob> void trySpawnNearPlayer(ServerLevel level, ServerPlayer player, EntityType<T> entityType, double radius, int maxNearby, int attempts) {
+        int nearby = level.getEntities((Entity) null, player.getBoundingBox().inflate(radius), entity -> entity.getType() == entityType).size();
+        if (nearby >= maxNearby) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+        BlockPos origin = player.blockPosition();
+        for (int i = 0; i < attempts; i++) {
+            int x = origin.getX() + random.nextInt((int) radius * 2 + 1) - (int) radius;
+            int z = origin.getZ() + random.nextInt((int) radius * 2 + 1) - (int) radius;
+            int horizontalDistance = Math.abs(x - origin.getX()) + Math.abs(z - origin.getZ());
+            if (horizontalDistance < 24) {
+                continue;
+            }
+
+            int groundY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+            int y = Mth.clamp(groundY + 8 + random.nextInt(24), level.getMinY() + 1, level.getMaxY() - 2);
+            BlockPos spawnPos = new BlockPos(x, y, z);
+            if (!level.hasChunkAt(spawnPos) || !SpawnPlacements.checkSpawnRules(entityType, level, EntitySpawnReason.NATURAL, spawnPos, random)) {
+                continue;
+            }
+
+            T mob = entityType.create(level, EntitySpawnReason.NATURAL);
+            if (mob == null) {
+                continue;
+            }
+
+            mob.setPos(x + 0.5, y, z + 0.5);
+            mob.setYRot(random.nextFloat() * 360.0F);
+            mob.setXRot(0.0F);
+            if (!mob.checkSpawnObstruction(level)) {
+                mob.discard();
+                continue;
+            }
+
+            mob.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.NATURAL, null);
+            level.addFreshEntityWithPassengers(mob);
+            return;
+        }
     }
 }
