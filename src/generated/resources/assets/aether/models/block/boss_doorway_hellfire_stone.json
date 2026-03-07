@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "aether:block/dungeon/hellfire_stone"
-  }
+  "parent": "aether:block/hellfire_stone"
 }

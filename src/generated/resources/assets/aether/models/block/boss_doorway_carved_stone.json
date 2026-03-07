@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "aether:block/dungeon/carved_stone"
-  }
+  "parent": "aether:block/carved_stone"
 }

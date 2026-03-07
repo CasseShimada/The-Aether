@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "aether:block/dungeon/light_angelic_stone"
-  }
+  "parent": "aether:block/light_angelic_stone"
 }

@@ -28,6 +28,8 @@ public final class AetherSkyRenderHooks {
             return;
         }
 
+        renderState.sunAngle = getAetherSunAngle(level, partialTick);
+
         // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
 
@@ -37,6 +39,23 @@ public final class AetherSkyRenderHooks {
 
         renderState.sunriseAndSunsetColor = getSunriseAndSunsetColor(renderState.sunAngle);
         renderState.shouldRenderDarkDisc = false;
+    }
+
+    public static float getAetherSunAngle(ClientLevel level, float partialTick) {
+        long ticksPerDay = Math.max(1L, AetherTimeAttachment.getTicksPerDay());
+        float timeOfDay = ((float) Math.floorMod(level.getDayTime(), ticksPerDay) + partialTick) / (float) ticksPerDay;
+        float shiftedTimeOfDay = timeOfDay - 0.25F;
+        if (shiftedTimeOfDay < 0.0F) {
+            shiftedTimeOfDay += 1.0F;
+        }
+        if (shiftedTimeOfDay > 1.0F) {
+            shiftedTimeOfDay -= 1.0F;
+        }
+
+        float baseTimeOfDay = shiftedTimeOfDay;
+        shiftedTimeOfDay = 1.0F - (Mth.cos(shiftedTimeOfDay * Mth.PI) + 1.0F) / 2.0F;
+        shiftedTimeOfDay = baseTimeOfDay + (shiftedTimeOfDay - baseTimeOfDay) / 3.0F;
+        return shiftedTimeOfDay * (Mth.PI * 2.0F);
     }
 
     public static int getSunriseAndSunsetColor(float sunAngle) {

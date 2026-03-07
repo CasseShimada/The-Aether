@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "aether:block/dungeon/sentry_stone"
-  }
+  "parent": "aether:block/sentry_stone"
 }
