@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "wall": "aether:block/natural/icestone"
+    "wall": "aether:item/block/natural/icestone"
   }
 }

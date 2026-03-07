@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "aether:block/natural/white_flower"
+    "layer0": "aether:item/block/natural/white_flower"
   }
 }

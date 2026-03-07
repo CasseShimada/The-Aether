@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "wall": "aether:block/natural/mossy_holystone"
+    "wall": "aether:item/block/natural/mossy_holystone"
   }
 }

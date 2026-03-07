@@ -163,7 +163,7 @@
     }
   ],
   "textures": {
-    "face": "aether:block/dungeon/sentry_stone",
-    "overlay": "aether:block/dungeon/treasure"
+    "face": "aether:item/block/dungeon/sentry_stone",
+    "overlay": "aether:item/block/dungeon/treasure"
   }
 }

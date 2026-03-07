@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/button_inventory",
   "textures": {
-    "texture": "aether:block/natural/holystone"
+    "texture": "aether:item/block/natural/holystone"
   }
 }

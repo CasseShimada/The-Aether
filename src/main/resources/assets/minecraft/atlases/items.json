@@ -8,22 +8,22 @@
     {
       "type": "minecraft:directory",
       "source": "block/construction",
-      "prefix": "block/construction/"
+      "prefix": "item/block/construction/"
     },
     {
       "type": "minecraft:directory",
       "source": "block/dungeon",
-      "prefix": "block/dungeon/"
+      "prefix": "item/block/dungeon/"
     },
     {
       "type": "minecraft:directory",
       "source": "block/natural",
-      "prefix": "block/natural/"
+      "prefix": "item/block/natural/"
     },
     {
       "type": "minecraft:directory",
       "source": "block/utility",
-      "prefix": "block/utility/"
+      "prefix": "item/block/utility/"
     },
     {
       "type": "minecraft:paletted_permutations",

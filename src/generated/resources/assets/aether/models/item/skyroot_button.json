@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/button_inventory",
   "textures": {
-    "texture": "aether:block/construction/skyroot_planks"
+    "texture": "aether:item/block/construction/skyroot_planks"
   }
 }

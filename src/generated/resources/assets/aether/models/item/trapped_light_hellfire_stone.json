@@ -163,7 +163,7 @@
     }
   ],
   "textures": {
-    "face": "aether:block/dungeon/light_hellfire_stone",
-    "overlay": "aether:block/dungeon/exclamation"
+    "face": "aether:item/block/dungeon/light_hellfire_stone",
+    "overlay": "aether:item/block/dungeon/exclamation"
   }
 }

@@ -163,7 +163,7 @@
     }
   ],
   "textures": {
-    "face": "aether:block/dungeon/angelic_stone",
-    "overlay": "aether:block/dungeon/exclamation"
+    "face": "aether:item/block/dungeon/angelic_stone",
+    "overlay": "aether:item/block/dungeon/exclamation"
   }
 }
