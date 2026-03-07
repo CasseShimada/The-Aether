@@ -13,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
  * A path navigator that doesn't require the entity to be on the ground to update the path.
  */
 public class FallPathNavigation extends GroundPathNavigation {
+    private static final int MAX_SAFE_GROUND_DROP = 1;
+
     public FallPathNavigation(Mob mob, Level level) {
         super(mob, level);
     }
@@ -29,7 +31,7 @@ public class FallPathNavigation extends GroundPathNavigation {
 
         Vec3 vec3 = this.getTempMobPos();
         Vec3i vec3i = this.path.getNextNodePos();
-        if (this.mob.onGround() && !this.isPathSegmentSafe(vec3, vec3i)) {
+        if (this.mob.onGround() && !this.isPathSegmentSafe(vec3, vec3i, MAX_SAFE_GROUND_DROP)) {
             this.stop();
             return;
         }
@@ -49,8 +51,12 @@ public class FallPathNavigation extends GroundPathNavigation {
         this.doStuckDetection(vec3);
     }
 
-    private boolean isPathSegmentSafe(Vec3 currentPos, Vec3i nextNodePos) {
-        int maxDrop = Math.max(1, this.mob.getMaxFallDistance());
+    private boolean isPathSegmentSafe(Vec3 currentPos, Vec3i nextNodePos, int maxDrop) {
+        int currentY = Mth.floor(currentPos.y());
+        if (nextNodePos.getY() < currentY - maxDrop) {
+            return false;
+        }
+
         if (!this.hasSafeSupport(nextNodePos.getX(), nextNodePos.getY(), nextNodePos.getZ(), maxDrop)) {
             return false;
         }
