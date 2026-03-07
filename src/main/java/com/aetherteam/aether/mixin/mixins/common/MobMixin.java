@@ -5,11 +5,19 @@ import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import javax.annotation.Nullable;
 
 @Mixin(Mob.class)
 public class MobMixin {
@@ -59,5 +67,13 @@ public class MobMixin {
             }
         }
         return original;
+    }
+
+    @Inject(method = "finalizeSpawn", at = @At("RETURN"))
+    private void aether$spawnWithAccessories(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnData, CallbackInfoReturnable<SpawnGroupData> cir) {
+        Mob mob = (Mob) (Object) this;
+        if (EntityHooks.canMobSpawnWithAccessories(mob)) {
+            EntityHooks.spawnWithAccessories(mob, difficulty);
+        }
     }
 }
