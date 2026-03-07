@@ -48,7 +48,7 @@ public class MoaSaddleLayer extends RenderLayer<MoaRenderState, MoaModel> {
                 texture = moaSkin;
             }
             this.saddle.setupAnim(renderState);
-            collector.order(0).submitModel(this.saddle, renderState, poseStack, RenderTypes.entityCutoutNoCull(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.saddle, renderState, poseStack, RenderTypes.entityCutoutNoCull(texture, false), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 

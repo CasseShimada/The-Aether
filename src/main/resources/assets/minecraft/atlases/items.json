@@ -6,6 +6,26 @@
       "prefix": "item/"
     },
     {
+      "type": "minecraft:directory",
+      "source": "block/construction",
+      "prefix": "block/construction/"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "block/dungeon",
+      "prefix": "block/dungeon/"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "block/natural",
+      "prefix": "block/natural/"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "block/utility",
+      "prefix": "block/utility/"
+    },
+    {
       "type": "minecraft:paletted_permutations",
       "palette_key": "minecraft:trims/color_palettes/trim_palette",
       "permutations": {

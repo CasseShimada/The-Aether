@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -58,7 +59,7 @@ public class SheepuffWoolLayer extends RenderLayer<SheepuffRenderState, Sheepuff
                 } else {
                     color = ARGB.opaque(renderState.woolColor.getTextureDiffuseColor());
                 }
-                collector.order(0).submitModel(entitymodel, renderState, poseStack, entitymodel.renderType(SHEEPUFF_WOOL_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), color, null);
+                collector.order(0).submitModel(entitymodel, renderState, poseStack, RenderTypes.entityCutoutNoCull(SHEEPUFF_WOOL_TEXTURE, false), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), color, null);
             }
         }
     }

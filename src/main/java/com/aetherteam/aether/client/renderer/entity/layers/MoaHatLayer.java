@@ -42,7 +42,7 @@ public class MoaHatLayer extends RenderLayer<MoaRenderState, MoaModel> {
         Identifier texture = this.getMoaSkinLocation(renderState);
         if (texture != null && !renderState.isInvisible) {
             this.hat.setupAnim(renderState);
-            collector.order(0).submitModel(this.hat, renderState, poseStack, RenderTypes.entityCutoutNoCull(texture), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.order(0).submitModel(this.hat, renderState, poseStack, RenderTypes.entityCutoutNoCull(texture, false), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 

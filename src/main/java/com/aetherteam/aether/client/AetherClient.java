@@ -12,6 +12,7 @@ import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
+import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
@@ -72,6 +73,7 @@ public class AetherClient {
         AetherOverlays.registerOverlays();
         AetherRenderers.registerEntityRenderers();
         AetherRenderers.registerLayerDefinitions();
+        AetherBlockRenderLayers.register();
         AetherRenderers.addEntityLayers();
         AetherRenderers.bakeModels();
         AetherRenderEffects.registerRenderEffects();
