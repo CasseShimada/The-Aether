@@ -16,12 +16,14 @@ import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.ItemHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -118,6 +120,9 @@ public class AetherClient {
     }
 
     private static void registerClientCallbacks() {
+        ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
+                ItemHooks.addDungeonTooltips(components, stack, tooltipType));
+
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             configureScreen(screen);
             ScreenEvents.afterRender(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {

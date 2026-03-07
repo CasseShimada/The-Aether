@@ -2,11 +2,17 @@ package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
+import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
+import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
+import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +22,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -75,5 +82,59 @@ public class LivingEntityMixin {
     private void aether$modifyExperienceReward(ServerLevel level, net.minecraft.world.entity.Entity attacker, CallbackInfoReturnable<Integer> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         cir.setReturnValue(EntityHooks.modifyExperience(livingEntity, cir.getReturnValueI()));
+    }
+
+    @Inject(method = "tick()V", at = @At("TAIL"))
+    private void aether$applyArmorTickAbilities(CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        ValkyrieArmor.handleFlight(livingEntity);
+        NeptuneArmor.boostWaterSwimming(livingEntity);
+        PhoenixArmor.boostLavaSwimming(livingEntity);
+        PhoenixArmor.damageArmor(livingEntity);
+    }
+
+    @Inject(method = "jumpFromGround()V", at = @At("TAIL"))
+    private void aether$boostJump(CallbackInfo ci) {
+        GravititeArmor.boostedJump((LivingEntity) (Object) this);
+    }
+
+    @Inject(method = "causeFallDamage(DFLnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
+    private void aether$cancelFallDamage(double fallDistance, float multiplier, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if (AbilityHooks.ArmorHooks.fallCancellation((LivingEntity) (Object) this)) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
+    private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        AbilityHooks.AccessoryHooks.setAttack(source);
+        AbilityHooks.WeaponHooks.stickDart(livingEntity, source);
+        if (AbilityHooks.AccessoryHooks.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @ModifyVariable(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    private float aether$modifyIncomingDamage(float amount, ServerLevel level, DamageSource source) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        Entity direct = source.getDirectEntity();
+        amount = AbilityHooks.WeaponHooks.reduceWeaponEffectiveness(livingEntity, direct, amount);
+        return AbilityHooks.WeaponHooks.reduceArmorEffectiveness(livingEntity, direct, amount);
+    }
+
+    @ModifyReturnValue(method = "getVisibilityPercent(Lnet/minecraft/world/entity/Entity;)D", at = @At("RETURN"))
+    private double aether$modifyVisibility(double original, Entity lookingEntity) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (lookingEntity != null) {
+            if (AbilityHooks.AccessoryHooks.preventTargeting(livingEntity, lookingEntity)
+                    && !AbilityHooks.AccessoryHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+                return 0.0D;
+            }
+            if (AbilityHooks.AccessoryHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+                return 1.0D;
+            }
+        }
+        return original;
     }
 }

@@ -5,6 +5,10 @@ import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
+import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
+import com.aetherteam.aether.perk.types.MoaSkins;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -29,6 +33,9 @@ public final class AetherFabricEvents {
             CapabilityHooks.AetherPlayerHooks.login(player);
             CapabilityHooks.AetherTimeHooks.login(player);
             PerkHooks.refreshPerks(player);
+            AbilityHooks.ToolHooks.setDebuffToolsState(player);
+            MoaSkins.registerMoaSkins(player.level());
+            PacketDistributor.sendToPlayer(player, new RegisterMoaSkinsPacket());
             DimensionHooks.startInAether(player);
         });
 

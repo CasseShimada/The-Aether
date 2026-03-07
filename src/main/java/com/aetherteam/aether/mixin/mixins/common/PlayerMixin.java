@@ -4,11 +4,14 @@ import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -69,5 +72,16 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         CapabilityHooks.AetherPlayerHooks.update(player);
         DimensionHooks.travelling(player);
+    }
+
+    @ModifyReturnValue(method = "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", at = @At("RETURN"))
+    private float aether$modifyBreakSpeed(float original, BlockState state) {
+        Player player = (Player) (Object) this;
+        ItemStack stack = player.getMainHandItem();
+        float speed = original;
+        speed = AbilityHooks.AccessoryHooks.handleZaniteRingAbility(player, speed);
+        speed = AbilityHooks.AccessoryHooks.handleZanitePendantAbility(player, speed);
+        speed = AbilityHooks.ToolHooks.handleZaniteToolAbility(stack, speed);
+        return AbilityHooks.ToolHooks.reduceToolEffectiveness(player, state, stack, speed);
     }
 }
