@@ -14,11 +14,11 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
-public class PhygHaloLayer extends RenderLayer<PhygRenderState, PigModel> {
+public class PhygHaloLayer<M extends PigModel> extends RenderLayer<PhygRenderState, M> {
     private static final Identifier HALO_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/models/perks/halo.png");
     private final HaloModel<PhygRenderState> phygHalo;
 
-    public PhygHaloLayer(RenderLayerParent<PhygRenderState, PigModel> entityRenderer, HaloModel<PhygRenderState> haloModel) {
+    public PhygHaloLayer(RenderLayerParent<PhygRenderState, M> entityRenderer, HaloModel<PhygRenderState> haloModel) {
         super(entityRenderer);
         this.phygHalo = haloModel;
     }
