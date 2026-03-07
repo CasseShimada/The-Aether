@@ -43,7 +43,11 @@ public class SheepuffWoolLayer extends RenderLayer<SheepuffRenderState, Sheepuff
             if (renderState.puff) {
                 entitymodel = renderState.isBaby ? this.babyPuffModel : this.adultPuffModel;
             }
-            if (!renderState.isInvisible) {
+            if (renderState.isInvisible) {
+                if (renderState.appearsGlowing()) {
+                    collector.submitModel(entitymodel, renderState, poseStack, RenderTypes.outline(SHEEPUFF_WOOL_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -16777216, null, renderState.outlineColor, null);
+                }
+            } else {
                 int color;
                 if (renderState.nameTag != null && "jeb_".equals(renderState.nameTag.getString())) {
                     int j = 25;
@@ -59,7 +63,7 @@ public class SheepuffWoolLayer extends RenderLayer<SheepuffRenderState, Sheepuff
                 } else {
                     color = ARGB.opaque(renderState.woolColor.getTextureDiffuseColor());
                 }
-                collector.order(0).submitModel(entitymodel, renderState, poseStack, RenderTypes.entityCutoutNoCull(SHEEPUFF_WOOL_TEXTURE, false), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), color, null);
+                coloredCutoutModelCopyLayerRender(entitymodel, SHEEPUFF_WOOL_TEXTURE, poseStack, collector, packedLight, renderState, color, 0);
             }
         }
     }

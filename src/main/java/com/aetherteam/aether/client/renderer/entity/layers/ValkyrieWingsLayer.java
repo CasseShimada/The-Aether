@@ -5,10 +5,8 @@ import com.aetherteam.aether.client.renderer.entity.model.ValkyrieWingsModel;
 import com.aetherteam.aether.client.renderer.entity.state.ValkyrieRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
@@ -36,7 +34,7 @@ public class ValkyrieWingsLayer<T extends ValkyrieRenderState> extends RenderLay
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, T renderState, float netHeadYaw, float headPitch) {
         this.setupWingRotation(renderState, renderState.ageInTicks);
         if (!renderState.isInvisible) {
-            collector.order(0).submitModel(this.wings, renderState, poseStack, RenderTypes.entityCutoutNoCull(this.wingsLocation, false), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            renderColoredCutoutModel(this.wings, this.wingsLocation, poseStack, collector, packedLight, renderState, -1, 0);
         }
     }
 
