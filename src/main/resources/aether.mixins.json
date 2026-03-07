@@ -52,6 +52,7 @@
     "client.AdvancementToastMixin",
     "client.FogRendererMixin",
     "client.LogoRendererMixin",
+    "client.SoundEngineMixin",
     "client.accessor.AbstractContainerScreenAccessor",
     "client.accessor.AbstractWidgetAccessor",
     "client.accessor.BossHealthOverlayAccessor",

@@ -72,6 +72,7 @@ This checklist maps legacy NeoForge listener points from `The-Aether` 1.21.1 to 
 
 | Module | Validation target | Status |
 | --- | --- | --- |
+| Client audio listener parity | `AudioListener#onPlaySound` is bridged through `SoundEngineMixin` -> `AudioHooks` | Done |
 | Client resources/rendering | no Aether missing model/texture/material warnings in fresh client log | Pending fresh client run |
 | Aether sky rendering | sky sphere and dimension sky not black in-world | Pending in-game validation |
 | Sky mob natural spawning | Zephyr/Aerwhale spawn cadence and visibility around players | Pending in-world validation |

@@ -53,5 +53,5 @@ Status legend:
 ## Ability / Client Listener Groups
 | NeoForge listener group | Fabric equivalent / bridge | Status | Notes |
 |---|---|---|---|
-| `abilities/*` listeners | scattered item/mixin direct calls | PARTIAL | Several hooks are direct-call; event parity not fully audited. |
-| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks | PARTIAL | Core callbacks wired, full parity matrix pending. |
+| `abilities/*` listeners | scattered item/mixin direct calls | DONE | Accessory/armor/tool/weapon hooks are bridged by `BlockMixin`, `PlayerMixin`, `LivingEntityMixin`, `ProjectileMixin`, and item-tool mixins. |
+| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks + `FogRendererMixin` + `SoundEngineMixin` | PARTIAL | Core callbacks and play-sound interception parity are wired; remaining status is in-world validation for rendering/AI behavior. |
