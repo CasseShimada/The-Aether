@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
  * A stroll goal that is capable of looking for land positions to target while falling.
  */
 public class FallingRandomStrollGoal extends RandomStrollGoal {
-    private static final int MAX_SAFE_GROUND_DROP = 1;
     private final float probability;
 
     public FallingRandomStrollGoal(PathfinderMob mob, double speed) {
@@ -37,7 +36,7 @@ public class FallingRandomStrollGoal extends RandomStrollGoal {
             Vec3 vec3 = LandRandomPos.getPos(this.mob, 12, this.mob.getMaxFallDistance());
             return vec3 != null ? vec3 : super.getPosition();
         } else {
-            return this.mob.getRandom().nextFloat() >= this.probability ? LandRandomPos.getPos(this.mob, 10, MAX_SAFE_GROUND_DROP) : super.getPosition();
+            return this.mob.getRandom().nextFloat() >= this.probability ? LandRandomPos.getPos(this.mob, 10, this.mob.getMaxFallDistance()) : super.getPosition();
         }
     }
 }

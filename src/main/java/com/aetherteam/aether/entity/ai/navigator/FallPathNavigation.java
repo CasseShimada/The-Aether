@@ -1,8 +1,6 @@
 package com.aetherteam.aether.entity.ai.navigator;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -13,8 +11,6 @@ import net.minecraft.world.phys.Vec3;
  * A path navigator that doesn't require the entity to be on the ground to update the path.
  */
 public class FallPathNavigation extends GroundPathNavigation {
-    private static final int MAX_SAFE_GROUND_DROP = 1;
-
     public FallPathNavigation(Mob mob, Level level) {
         super(mob, level);
     }
@@ -25,18 +21,9 @@ public class FallPathNavigation extends GroundPathNavigation {
      */
     @Override
     protected void followThePath() {
-        if (this.path == null || this.path.isDone()) {
-            return;
-        }
-
         Vec3 vec3 = this.getTempMobPos();
-        Vec3i vec3i = this.path.getNextNodePos();
-        if (this.mob.onGround() && !this.isPathSegmentSafe(vec3, vec3i, MAX_SAFE_GROUND_DROP)) {
-            this.stop();
-            return;
-        }
-
         this.maxDistanceToWaypoint = this.mob.getBbWidth() > 0.75F ? this.mob.getBbWidth() / 2.0F : 0.75F - this.mob.getBbWidth() / 2.0F;
+        Vec3i vec3i = this.path.getNextNodePos();
         double d0 = Math.abs(this.mob.getX() - ((double) vec3i.getX() + (this.mob.getBbWidth() + 1) / 2D));
         double d1 = Math.abs(this.mob.getY() - (double) vec3i.getY());
         double d2 = Math.abs(this.mob.getZ() - ((double) vec3i.getZ() + (this.mob.getBbWidth() + 1) / 2D));
@@ -49,50 +36,6 @@ public class FallPathNavigation extends GroundPathNavigation {
         }
 
         this.doStuckDetection(vec3);
-    }
-
-    private boolean isPathSegmentSafe(Vec3 currentPos, Vec3i nextNodePos, int maxDrop) {
-        int currentY = Mth.floor(currentPos.y());
-        if (nextNodePos.getY() < currentY - maxDrop) {
-            return false;
-        }
-
-        if (!this.hasSafeSupport(nextNodePos.getX(), nextNodePos.getY(), nextNodePos.getZ(), maxDrop)) {
-            return false;
-        }
-
-        double nextCenterX = nextNodePos.getX() + 0.5D;
-        double nextCenterZ = nextNodePos.getZ() + 0.5D;
-        double dx = nextCenterX - currentPos.x();
-        double dz = nextCenterZ - currentPos.z();
-        double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
-        if (horizontalDistance <= 0.001D) {
-            return true;
-        }
-
-        int steps = Math.max(1, Mth.ceil(horizontalDistance / 0.5D));
-        int sampleY = Mth.floor(Math.max(currentPos.y(), nextNodePos.getY()));
-        for (int i = 1; i <= steps; i++) {
-            double progress = (double) i / (double) steps;
-            int sampleX = Mth.floor(Mth.lerp(progress, currentPos.x(), nextCenterX));
-            int sampleZ = Mth.floor(Mth.lerp(progress, currentPos.z(), nextCenterZ));
-            if (!this.hasSafeSupport(sampleX, sampleY, sampleZ, maxDrop)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean hasSafeSupport(int x, int y, int z, int maxDrop) {
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(x, y - 1, z);
-        for (int i = 0; i <= maxDrop && mutable.getY() >= this.level.getMinY(); i++) {
-            if (!this.level.getFluidState(mutable).isEmpty() || !this.level.getBlockState(mutable).getCollisionShape(this.level, mutable).isEmpty()) {
-                return true;
-            }
-            mutable.move(0, -1, 0);
-        }
-        return false;
     }
 
     /**

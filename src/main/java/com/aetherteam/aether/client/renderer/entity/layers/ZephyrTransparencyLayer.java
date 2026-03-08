@@ -36,7 +36,7 @@ public class ZephyrTransparencyLayer extends RenderLayer<ZephyrRenderState, Enti
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, ZephyrRenderState renderState, float netHeadYaw, float headPitch) {
         if (this.getParentModel() instanceof ZephyrModel && !renderState.isInvisible) {
             this.transparency.setupAnim(renderState);
-            collector.order(0).submitModel(this.transparency, renderState, poseStack, RenderTypes.entityTranslucent(ZEPHYR_TRANSPARENCY_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
+            collector.submitModel(this.transparency, renderState, poseStack, RenderTypes.entityTranslucent(ZEPHYR_TRANSPARENCY_TEXTURE), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -1, null);
         }
     }
 }
