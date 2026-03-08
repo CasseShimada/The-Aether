@@ -1,6 +1,7 @@
 package com.aetherteam.aether.client.renderer.level;
 
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -30,7 +31,7 @@ public final class AetherSkyRenderHooks {
         }
 
         renderState.sunAngle = getAetherSunAngle(level, partialTick);
-        renderState.skyColor = getAetherSkyColor(level, partialTick, renderState.sunAngle);
+        renderState.skyColor = getAetherSkyColor(level, partialTick);
 
         // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
@@ -43,14 +44,15 @@ public final class AetherSkyRenderHooks {
         renderState.shouldRenderDarkDisc = false;
     }
 
-    public static int getAetherSkyColor(ClientLevel level, float partialTick, float sunAngle) {
+    public static int getAetherSkyColor(ClientLevel level, float partialTick) {
         int baseSkyColor = 0x78A7FF;
         var skyColorEntry = level.dimensionType().attributes().get(EnvironmentAttributes.SKY_COLOR);
         if (skyColorEntry != null && skyColorEntry.argument() instanceof Integer skyColor) {
             baseSkyColor = skyColor;
         }
 
-        float dayBrightness = Mth.cos(sunAngle) * 2.0F + 0.5F;
+        float timeOfDay = getAetherTimeOfDay(level, partialTick);
+        float dayBrightness = Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.5F;
         dayBrightness = Mth.clamp(dayBrightness, 0.0F, 1.0F);
 
         float red = ARGB.redFloat(baseSkyColor) * dayBrightness;
@@ -79,8 +81,13 @@ public final class AetherSkyRenderHooks {
     }
 
     public static float getAetherSunAngle(ClientLevel level, float partialTick) {
+        return getAetherTimeOfDay(level, partialTick) * (Mth.PI * 2.0F);
+    }
+
+    private static float getAetherTimeOfDay(ClientLevel level, float partialTick) {
         long ticksPerDay = Math.max(1L, AetherTimeAttachment.getTicksPerDay());
-        float timeOfDay = ((float) Math.floorMod(level.getDayTime(), ticksPerDay) + partialTick) / (float) ticksPerDay;
+        long dayTime = getAetherDayTime(level);
+        float timeOfDay = ((float) Math.floorMod(dayTime, ticksPerDay) + partialTick) / (float) ticksPerDay;
         float shiftedTimeOfDay = timeOfDay - 0.25F;
         if (shiftedTimeOfDay < 0.0F) {
             shiftedTimeOfDay += 1.0F;
@@ -91,8 +98,7 @@ public final class AetherSkyRenderHooks {
 
         float baseTimeOfDay = shiftedTimeOfDay;
         shiftedTimeOfDay = 1.0F - (Mth.cos(shiftedTimeOfDay * Mth.PI) + 1.0F) / 2.0F;
-        shiftedTimeOfDay = baseTimeOfDay + (shiftedTimeOfDay - baseTimeOfDay) / 3.0F;
-        return shiftedTimeOfDay * (Mth.PI * 2.0F);
+        return baseTimeOfDay + (shiftedTimeOfDay - baseTimeOfDay) / 3.0F;
     }
 
     public static int getSunriseAndSunsetColor(float sunAngle) {
@@ -119,7 +125,7 @@ public final class AetherSkyRenderHooks {
     }
 
     public static float[] getCelestialOpacities(ClientLevel level, float rainBrightness) {
-        long dayTime = level.getDayTime() % (long) AetherTimeAttachment.getTicksPerDay();
+        long dayTime = getAetherDayTime(level) % (long) AetherTimeAttachment.getTicksPerDay();
         long multiplier = AetherTimeAttachment.getTicksPerDayMultiplier();
 
         float sunOpacity;
@@ -143,5 +149,15 @@ public final class AetherSkyRenderHooks {
         sunOpacity = Mth.clamp(sunOpacity - rainPenalty, 0.0F, 1.0F);
         moonOpacity = Mth.clamp(moonOpacity - rainPenalty, 0.0F, 1.0F);
         return new float[]{sunOpacity, moonOpacity};
+    }
+
+    private static long getAetherDayTime(ClientLevel level) {
+        if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
+            long attachmentDayTime = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).getDayTime();
+            if (attachmentDayTime >= 0L) {
+                return attachmentDayTime;
+            }
+        }
+        return level.getDayTime();
     }
 }

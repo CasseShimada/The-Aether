@@ -3,19 +3,26 @@ package com.aetherteam.aether.inventory.menu;
 import com.aetherteam.aether.inventory.container.LoreInventory;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.Identifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -114,16 +121,48 @@ public class LoreBookMenu extends AbstractContainerMenu {
     @Environment(EnvType.CLIENT)
     public String getLoreEntryKey(ItemStack stack) {
         Optional<String> key = LORE_ENTRY_OVERRIDES.entrySet().stream().filter(e -> e.getKey().apply(this.loreInventory.player.registryAccess()).test(stack)).findAny().map(Map.Entry::getValue);
-        return key.orElseGet(() -> {
-            if (stack.getItemName().getContents() instanceof TranslatableContents translatableContents) {
-                return "lore." + translatableContents.getKey();
+        if (key.isPresent()) {
+            return key.get();
+        }
+
+        List<String> candidates = this.getLoreEntryCandidates(stack);
+        for (String candidate : candidates) {
+            if (I18n.exists(candidate)) {
+                return candidate;
             }
-            return "lore." + stack.getItem().getDescriptionId();
-        });
+        }
+        return candidates.isEmpty() ? "lore.item.minecraft.air" : candidates.getFirst();
     }
 
     @Environment(EnvType.CLIENT)
     public boolean loreEntryKeyExists(ItemStack stack) {
         return I18n.exists(this.getLoreEntryKey(stack));
+    }
+
+    @Environment(EnvType.CLIENT)
+    private List<String> getLoreEntryCandidates(ItemStack stack) {
+        Set<String> candidates = new LinkedHashSet<>();
+
+        if (stack.getHoverName().getContents() instanceof TranslatableContents translatableContents) {
+            candidates.add("lore." + translatableContents.getKey());
+        }
+        if (stack.getItemName().getContents() instanceof TranslatableContents translatableContents) {
+            candidates.add("lore." + translatableContents.getKey());
+        }
+        candidates.add("lore." + stack.getItem().getDescriptionId());
+
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (itemId != null) {
+            candidates.add("lore.item." + itemId.getNamespace() + "." + itemId.getPath());
+        }
+
+        if (stack.getItem() instanceof BlockItem blockItem) {
+            Identifier blockId = BuiltInRegistries.BLOCK.getKey(blockItem.getBlock());
+            if (blockId != null) {
+                candidates.add("lore.block." + blockId.getNamespace() + "." + blockId.getPath());
+            }
+        }
+
+        return new ArrayList<>(candidates);
     }
 }
