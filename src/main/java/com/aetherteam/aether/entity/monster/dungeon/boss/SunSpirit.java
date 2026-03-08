@@ -228,10 +228,12 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      */
     public void burnEntities() {
         List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0, -2, 0).contract(-0.75, 0, -0.75).contract(0.75, 0, 0.75));
-        for (Entity target : entities) {
-            if (target instanceof LivingEntity) {
-                target.hurt(AetherDamageTypes.entityDamageSource(this.level(), AetherDamageTypes.INCINERATION, this), INCINERATION_DAMAGE);
-                target.igniteForSeconds(INCINERATION_FIRE_DURATION);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            for (Entity target : entities) {
+                if (target instanceof LivingEntity livingEntity) {
+                    livingEntity.hurtServer(serverLevel, AetherDamageTypes.entityDamageSource(this.level(), AetherDamageTypes.INCINERATION, this), INCINERATION_DAMAGE);
+                    target.igniteForSeconds(INCINERATION_FIRE_DURATION);
+                }
             }
         }
     }

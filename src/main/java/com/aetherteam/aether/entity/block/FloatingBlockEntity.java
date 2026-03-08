@@ -29,6 +29,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
@@ -254,7 +255,13 @@ public class FloatingBlockEntity extends Entity {
                     ? floatable.getFallDamageSource(this)
                     : AetherDamageTypes.entityDamageSource(this.level(), AetherDamageTypes.FLOATING_BLOCK, this);
                 float f = (float) Math.min(Mth.floor((float) i * this.fallDamagePerDistance), this.fallDamageMax);
-                this.level().getEntities(this, this.getBoundingBox(), predicate).forEach((entity) -> entity.hurt(damageSource, f));
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    this.level().getEntities(this, this.getBoundingBox(), predicate).forEach((entity) -> {
+                        if (entity instanceof LivingEntity livingEntity) {
+                            livingEntity.hurtServer(serverLevel, damageSource, f);
+                        }
+                    });
+                }
                 boolean flag = this.getBlockState().is(BlockTags.ANVIL);
                 if (flag && f > 0.0F && this.random.nextFloat() < 0.05F + (float) i * 0.05F) {
                     BlockState blockstate = AnvilBlock.damage(this.getBlockState());

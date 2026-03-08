@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.dimension.DimensionType;
 
 import javax.annotation.Nullable;
@@ -29,6 +30,7 @@ public final class AetherSkyRenderHooks {
         }
 
         renderState.sunAngle = getAetherSunAngle(level, partialTick);
+        renderState.skyColor = getAetherSkyColor(level, partialTick, renderState.sunAngle);
 
         // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
@@ -39,6 +41,41 @@ public final class AetherSkyRenderHooks {
 
         renderState.sunriseAndSunsetColor = getSunriseAndSunsetColor(renderState.sunAngle);
         renderState.shouldRenderDarkDisc = false;
+    }
+
+    public static int getAetherSkyColor(ClientLevel level, float partialTick, float sunAngle) {
+        int baseSkyColor = 0x78A7FF;
+        var skyColorEntry = level.dimensionType().attributes().get(EnvironmentAttributes.SKY_COLOR);
+        if (skyColorEntry != null && skyColorEntry.argument() instanceof Integer skyColor) {
+            baseSkyColor = skyColor;
+        }
+
+        float dayBrightness = Mth.cos(sunAngle) * 2.0F + 0.5F;
+        dayBrightness = Mth.clamp(dayBrightness, 0.0F, 1.0F);
+
+        float red = ARGB.redFloat(baseSkyColor) * dayBrightness;
+        float green = ARGB.greenFloat(baseSkyColor) * dayBrightness;
+        float blue = ARGB.blueFloat(baseSkyColor) * dayBrightness;
+
+        float rainLevel = level.getRainLevel(partialTick);
+        if (rainLevel > 0.0F) {
+            float rainGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.61F;
+            float rainMix = 1.0F - rainLevel * 0.2F;
+            red = red * rainMix + rainGray * (1.0F - rainMix);
+            green = green * rainMix + rainGray * (1.0F - rainMix);
+            blue = blue * rainMix + rainGray * (1.0F - rainMix);
+        }
+
+        float thunderLevel = level.getThunderLevel(partialTick);
+        if (thunderLevel > 0.0F) {
+            float thunderGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.48F;
+            float thunderMix = 1.0F - thunderLevel * 0.21F;
+            red = red * thunderMix + thunderGray * (1.0F - thunderMix);
+            green = green * thunderMix + thunderGray * (1.0F - thunderMix);
+            blue = blue * thunderMix + thunderGray * (1.0F - thunderMix);
+        }
+
+        return ARGB.colorFromFloat(1.0F, Mth.clamp(red, 0.0F, 1.0F), Mth.clamp(green, 0.0F, 1.0F), Mth.clamp(blue, 0.0F, 1.0F));
     }
 
     public static float getAetherSunAngle(ClientLevel level, float partialTick) {

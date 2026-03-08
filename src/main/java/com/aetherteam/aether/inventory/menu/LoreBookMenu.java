@@ -11,6 +11,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.chat.contents.TranslatableContents;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -113,7 +114,12 @@ public class LoreBookMenu extends AbstractContainerMenu {
     @Environment(EnvType.CLIENT)
     public String getLoreEntryKey(ItemStack stack) {
         Optional<String> key = LORE_ENTRY_OVERRIDES.entrySet().stream().filter(e -> e.getKey().apply(this.loreInventory.player.registryAccess()).test(stack)).findAny().map(Map.Entry::getValue);
-        return key.orElseGet(() -> "lore." + stack.getItem().getDescriptionId());
+        return key.orElseGet(() -> {
+            if (stack.getItemName().getContents() instanceof TranslatableContents translatableContents) {
+                return "lore." + translatableContents.getKey();
+            }
+            return "lore." + stack.getItem().getDescriptionId();
+        });
     }
 
     @Environment(EnvType.CLIENT)

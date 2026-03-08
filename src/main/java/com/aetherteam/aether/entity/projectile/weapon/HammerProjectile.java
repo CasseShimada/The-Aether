@@ -15,6 +15,7 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
@@ -151,8 +152,8 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
     public void launchTarget(Entity target) {
         if (target != this.getOwner()) {
             if (this.getOwner() == null || target != this.getOwner().getVehicle()) {
-                if (target instanceof LivingEntity livingEntity) {
-                    livingEntity.hurt(this.damageSources().thrown(this, this.getOwner()), 7);
+                if (this.level() instanceof ServerLevel serverLevel && target instanceof LivingEntity livingEntity) {
+                    livingEntity.hurtServer(serverLevel, this.damageSources().thrown(this, this.getOwner()), 7);
                     livingEntity.push(this.getDeltaMovement().x(), 0.6, this.getDeltaMovement().z());
                 }
             }
