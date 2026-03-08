@@ -31,7 +31,6 @@ public final class AetherSkyRenderHooks {
         }
 
         renderState.sunAngle = getAetherSunAngle(level, partialTick);
-        renderState.skyColor = getAetherSkyColor(level, partialTick);
 
         // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
@@ -40,7 +39,8 @@ public final class AetherSkyRenderHooks {
             return;
         }
 
-        renderState.sunriseAndSunsetColor = getSunriseAndSunsetColor(renderState.sunAngle);
+        // Keep horizon tint disabled while eternal day is active.
+        renderState.sunriseAndSunsetColor = isEternalDay(level) ? 0 : getSunriseAndSunsetColor(renderState.sunAngle);
         renderState.shouldRenderDarkDisc = false;
     }
 
@@ -158,11 +158,25 @@ public final class AetherSkyRenderHooks {
 
     public static long getAetherDayTime(ClientLevel level) {
         if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
-            long attachmentDayTime = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).getDayTime();
+            AetherTimeAttachment attachment = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
+            long attachmentDayTime = attachment.getDayTime();
             if (attachmentDayTime >= 0L) {
                 return attachmentDayTime;
             }
+            if (attachment.isEternalDay()) {
+                return AetherTimeAttachment.getTicksPerDay() / 4L;
+            }
+        }
+        if (!AetherConfig.SERVER.disable_eternal_day.get()) {
+            return AetherTimeAttachment.getTicksPerDay() / 4L;
         }
         return level.getDayTime();
+    }
+
+    private static boolean isEternalDay(ClientLevel level) {
+        if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
+            return level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
+        }
+        return !AetherConfig.SERVER.disable_eternal_day.get();
     }
 }

@@ -11,7 +11,6 @@
     "common.AxeItemMixin",
     "common.BlockMixin",
     "common.EntityMixin",
-    "common.EnvironmentAttributeSystemMixin",
     "common.FishingHookMixin",
     "common.HoeItemMixin",
     "common.ItemMixin",
@@ -57,9 +56,9 @@
     "common.accessor.ZombifiedPiglinAccessor"
   ],
   "client": [
-    "client.ClientLevelMixin",
     "client.AvatarRendererMixin",
     "client.AbstractClientPlayerMixin",
+    "client.ClientLevelMixin",
     "client.AdvancementToastMixin",
     "client.FogRendererMixin",
     "client.LevelRendererMixin",
