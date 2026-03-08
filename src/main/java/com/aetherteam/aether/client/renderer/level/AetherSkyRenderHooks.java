@@ -84,7 +84,7 @@ public final class AetherSkyRenderHooks {
         return getAetherTimeOfDay(level, partialTick) * (Mth.PI * 2.0F);
     }
 
-    private static float getAetherTimeOfDay(ClientLevel level, float partialTick) {
+    public static float getAetherTimeOfDay(ClientLevel level, float partialTick) {
         long ticksPerDay = Math.max(1L, AetherTimeAttachment.getTicksPerDay());
         long dayTime = getAetherDayTime(level);
         float timeOfDay = ((float) Math.floorMod(dayTime, ticksPerDay) + partialTick) / (float) ticksPerDay;
@@ -99,6 +99,11 @@ public final class AetherSkyRenderHooks {
         float baseTimeOfDay = shiftedTimeOfDay;
         shiftedTimeOfDay = 1.0F - (Mth.cos(shiftedTimeOfDay * Mth.PI) + 1.0F) / 2.0F;
         return baseTimeOfDay + (shiftedTimeOfDay - baseTimeOfDay) / 3.0F;
+    }
+
+    public static net.minecraft.world.phys.Vec3 getAetherSkyColorVector(ClientLevel level, float partialTick) {
+        int color = getAetherSkyColor(level, partialTick);
+        return new net.minecraft.world.phys.Vec3(ARGB.redFloat(color), ARGB.greenFloat(color), ARGB.blueFloat(color));
     }
 
     public static int getSunriseAndSunsetColor(float sunAngle) {
@@ -151,7 +156,7 @@ public final class AetherSkyRenderHooks {
         return new float[]{sunOpacity, moonOpacity};
     }
 
-    private static long getAetherDayTime(ClientLevel level) {
+    public static long getAetherDayTime(ClientLevel level) {
         if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
             long attachmentDayTime = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).getDayTime();
             if (attachmentDayTime >= 0L) {
