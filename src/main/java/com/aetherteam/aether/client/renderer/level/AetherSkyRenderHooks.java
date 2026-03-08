@@ -31,6 +31,9 @@ public final class AetherSkyRenderHooks {
         }
 
         renderState.sunAngle = getAetherSunAngle(level, partialTick);
+        renderState.skyColor = getAetherSkyColor(level, partialTick);
+        // Aether never uses vanilla's lower-half dark disc.
+        renderState.shouldRenderDarkDisc = false;
 
         // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
@@ -41,7 +44,6 @@ public final class AetherSkyRenderHooks {
 
         // Keep horizon tint disabled while eternal day is active.
         renderState.sunriseAndSunsetColor = isEternalDay(level) ? 0 : getSunriseAndSunsetColor(renderState.sunAngle);
-        renderState.shouldRenderDarkDisc = false;
     }
 
     public static int getAetherSkyColor(ClientLevel level, float partialTick) {
