@@ -4,6 +4,7 @@ import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
+import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.BossInfoPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientDeveloperGlowPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientGrabItemPacket;
@@ -43,6 +44,7 @@ public final class AetherNetworkingClient {
         registered = true;
 
         registerClientReceiver(AetherTravelPacket.TYPE, AetherTravelPacket::execute);
+        registerClientReceiver(AccessorySyncPacket.TYPE, AccessorySyncPacket::execute);
         registerClientReceiver(BossInfoPacket.Display.TYPE, BossInfoPacket.Display::execute);
         registerClientReceiver(BossInfoPacket.Remove.TYPE, BossInfoPacket.Remove::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply::execute);

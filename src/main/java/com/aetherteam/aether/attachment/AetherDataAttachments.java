@@ -12,6 +12,9 @@ public class AetherDataAttachments {
     public static final AttachmentType<MobAccessoryAttachment> MOB_ACCESSORY = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "mob_accessory"),
             builder -> builder.initializer(MobAccessoryAttachment::new).persistent(MobAccessoryAttachment.CODEC).copyOnDeath());
 
+    public static final AttachmentType<AccessoryInventoryAttachment> ACCESSORY_INVENTORY = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_inventory"),
+            builder -> builder.initializer(AccessoryInventoryAttachment::new).persistent(AccessoryInventoryAttachment.CODEC).copyOnDeath());
+
     public static final AttachmentType<PhoenixArrowAttachment> PHOENIX_ARROW = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "phoenix_arrow"),
             builder -> builder.initializer(PhoenixArrowAttachment::new).persistent(PhoenixArrowAttachment.CODEC));
 

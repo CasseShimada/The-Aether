@@ -1,5 +1,6 @@
 package com.aetherteam.aether.mixin;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 public class AetherMixinPlugin implements IMixinConfigPlugin {
     private boolean isOptiFineInstalled = false;
+    private boolean isTwilightForestInstalled = false;
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -17,6 +19,7 @@ public class AetherMixinPlugin implements IMixinConfigPlugin {
             isOptiFineInstalled = true;
         } catch (ClassNotFoundException ignored) {
         }
+        this.isTwilightForestInstalled = FabricLoader.getInstance().isModLoaded("twilightforest");
     }
 
     @Override
@@ -26,6 +29,10 @@ public class AetherMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.startsWith("com.aetherteam.aether.mixin.mixins.common.compat.twilight.") && !this.isTwilightForestInstalled) {
+            return false;
+        }
+
         if (this.isOptiFineInstalled) {
             if (mixinClassName.equals("com.aetherteam.aether.mixin.mixins.client.BossHealthOverlayMixin")) return false;
             if (mixinClassName.equals("com.aetherteam.aether.mixin.mixins.client.optifine.BossHealthOverlayMixin")) return true;

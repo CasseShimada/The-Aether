@@ -2,23 +2,27 @@ package com.aetherteam.aether.accessories.api;
 
 import com.aetherteam.aether.accessories.api.slot.SlotType;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AccessoriesContainer {
     private final AccessoriesCapability capability;
     private final SlotType slotType;
-    private final SimpleContainer accessories;
-    private final SimpleContainer cosmeticAccessories;
+    private final TrackedSimpleContainer accessories;
+    private final TrackedSimpleContainer cosmeticAccessories;
     private final boolean[] renderFlags;
+    private boolean suppressUpdates;
 
     public AccessoriesContainer(AccessoriesCapability capability, SlotType slotType) {
         this.capability = capability;
         this.slotType = slotType;
-        this.accessories = new SimpleContainer(slotType.size());
-        this.cosmeticAccessories = new SimpleContainer(slotType.size());
+        this.accessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
+        this.cosmeticAccessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
         this.renderFlags = new boolean[Math.max(1, slotType.size())];
-        for (int i = 0; i < this.renderFlags.length; i++) {
-            this.renderFlags[i] = true;
-        }
+        Arrays.fill(this.renderFlags, true);
     }
 
     public AccessoriesCapability capability() {
@@ -42,8 +46,71 @@ public class AccessoriesContainer {
     }
 
     public void setShouldRender(int slotIndex, boolean value) {
-        if (slotIndex >= 0 && slotIndex < this.renderFlags.length) {
+        if (slotIndex >= 0 && slotIndex < this.renderFlags.length && this.renderFlags[slotIndex] != value) {
             this.renderFlags[slotIndex] = value;
+            this.onContainerChanged();
+        }
+    }
+
+    public void load(List<ItemStack> equipped, List<ItemStack> cosmetic, boolean[] renderFlags) {
+        this.suppressUpdates = true;
+        try {
+            this.accessories.clearContent();
+            this.cosmeticAccessories.clearContent();
+
+            for (int i = 0; i < this.accessories.getContainerSize(); i++) {
+                ItemStack equippedStack = i < equipped.size() ? equipped.get(i) : ItemStack.EMPTY;
+                ItemStack cosmeticStack = i < cosmetic.size() ? cosmetic.get(i) : ItemStack.EMPTY;
+                this.accessories.setItem(i, equippedStack == null ? ItemStack.EMPTY : equippedStack.copy());
+                this.cosmeticAccessories.setItem(i, cosmeticStack == null ? ItemStack.EMPTY : cosmeticStack.copy());
+            }
+
+            for (int i = 0; i < this.renderFlags.length; i++) {
+                this.renderFlags[i] = i < renderFlags.length ? renderFlags[i] : true;
+            }
+        } finally {
+            this.suppressUpdates = false;
+        }
+    }
+
+    public List<ItemStack> equippedCopies() {
+        return this.copyItems(this.accessories);
+    }
+
+    public List<ItemStack> cosmeticCopies() {
+        return this.copyItems(this.cosmeticAccessories);
+    }
+
+    public boolean[] renderFlagsCopy() {
+        return Arrays.copyOf(this.renderFlags, this.renderFlags.length);
+    }
+
+    private void onContainerChanged() {
+        if (!this.suppressUpdates) {
+            this.capability.onContainerChanged(this.slotType.name());
+        }
+    }
+
+    private List<ItemStack> copyItems(SimpleContainer container) {
+        List<ItemStack> items = new ArrayList<>(container.getContainerSize());
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            items.add(container.getItem(i).copy());
+        }
+        return items;
+    }
+
+    private static final class TrackedSimpleContainer extends SimpleContainer {
+        private final Runnable onChanged;
+
+        private TrackedSimpleContainer(int size, Runnable onChanged) {
+            super(size);
+            this.onChanged = onChanged;
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            this.onChanged.run();
         }
     }
 }

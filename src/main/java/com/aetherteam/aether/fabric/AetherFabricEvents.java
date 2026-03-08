@@ -1,5 +1,6 @@
 package com.aetherteam.aether.fabric;
 
+import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
@@ -16,6 +17,7 @@ import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.world.InteractionResult;
@@ -37,16 +39,27 @@ public final class AetherFabricEvents {
             MoaSkins.registerMoaSkins(player.level());
             PacketDistributor.sendToPlayer(player, new RegisterMoaSkinsPacket());
             DimensionHooks.startInAether(player);
+            AccessoryRuntime.forceSync(player);
         });
 
-        ServerPlayerEvents.LEAVE.register(CapabilityHooks.AetherPlayerHooks::logout);
+        ServerPlayerEvents.LEAVE.register(player -> {
+            CapabilityHooks.AetherPlayerHooks.logout(player);
+            AccessoryRuntime.clear(player);
+        });
         ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> CapabilityHooks.AetherPlayerHooks.clone(newPlayer, !alive));
-        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> CapabilityHooks.AetherTimeHooks.respawn(newPlayer));
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            CapabilityHooks.AetherTimeHooks.respawn(newPlayer);
+            AccessoryRuntime.forceSync(newPlayer);
+        });
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             EntityHooks.addGoals(entity);
             CapabilityHooks.AetherPlayerHooks.joinLevel(entity);
+            if (entity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
+                AccessoryRuntime.forceSync(livingEntity);
+            }
         });
+        ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> AccessoryRuntime.clear(entity));
 
         ServerWorldEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
         ServerTickEvents.END_WORLD_TICK.register(world -> {
@@ -58,7 +71,10 @@ public final class AetherFabricEvents {
             DimensionHooks.remountPlayerAerbunny(player);
             CapabilityHooks.AetherPlayerHooks.changeDimension(player);
             CapabilityHooks.AetherTimeHooks.changeDimension(player);
+            AccessoryRuntime.forceSync(player);
         });
+
+        EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
 
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
                 DimensionHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);

@@ -78,6 +78,10 @@ public final class AccessoriesAPI {
             Accessory accessory = getOrDefaultAccessory(current);
             accessory.onUnequip(current, reference);
             reference.setStack(ItemStack.EMPTY);
+            AccessoriesCapability capability = AccessoriesCapability.get(reference.entity());
+            if (capability != null) {
+                capability.handleImmediateUnequip(reference);
+            }
         }
     }
 

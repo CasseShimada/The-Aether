@@ -9,6 +9,8 @@ import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
+import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.core.registries.Registries;
@@ -33,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -126,6 +129,7 @@ public class LivingEntityMixin {
         NeptuneArmor.boostWaterSwimming(livingEntity);
         PhoenixArmor.boostLavaSwimming(livingEntity);
         PhoenixArmor.damageArmor(livingEntity);
+        AccessoryRuntime.tick(livingEntity);
     }
 
     @Inject(method = "jumpFromGround()V", at = @At("TAIL"))
@@ -172,4 +176,13 @@ public class LivingEntityMixin {
         }
         return original;
     }
+
+    @ModifyReturnValue(method = "isHolding(Ljava/util/function/Predicate;)Z", at = @At("RETURN"))
+    private boolean aether$includeAccessoryHolding(boolean original, Predicate<ItemStack> predicate) {
+        if (original) {
+            return true;
+        }
+        return AccessoryEffectBridge.isHoldingEquivalent((LivingEntity) (Object) this, predicate);
+    }
+
 }

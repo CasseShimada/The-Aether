@@ -4,6 +4,7 @@ import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
+import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.BossInfoPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientDeveloperGlowPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientGrabItemPacket;
@@ -63,6 +64,7 @@ public final class AetherNetworking {
     private static void registerPayloadTypes() {
         // CLIENTBOUND
         registerS2C(AetherTravelPacket.TYPE, AetherTravelPacket.STREAM_CODEC);
+        registerS2C(AccessorySyncPacket.TYPE, AccessorySyncPacket.STREAM_CODEC);
         registerS2C(BossInfoPacket.Display.TYPE, BossInfoPacket.Display.STREAM_CODEC);
         registerS2C(BossInfoPacket.Remove.TYPE, BossInfoPacket.Remove.STREAM_CODEC);
         registerS2C(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply.STREAM_CODEC);
