@@ -8,6 +8,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FogType;
 import org.apache.commons.lang3.tuple.Triple;
@@ -107,22 +108,27 @@ public class DimensionClientHooks {
                 FogType fluidState = camera.getFluidInCamera();
                 if (fluidState == FogType.NONE) {
                     float rainLevel = clientLevel.getRainLevel(1.0F);
-                    if (rainLevel > 0.0) { // Check for rain.
-                        float f14 = 1.0F + rainLevel * 0.8F;
-                        float f17 = 1.0F + rainLevel * 0.56F;
-                        red *= f14;
-                        green *= f14;
-                        blue *= f17;
+                    if (rainLevel > 0.0F) {
+                        // Keep weather response visible without shifting hue into bright yellow.
+                        float rainGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.61F;
+                        float rainMix = 1.0F - rainLevel * 0.2F;
+                        red = red * rainMix + rainGray * (1.0F - rainMix);
+                        green = green * rainMix + rainGray * (1.0F - rainMix);
+                        blue = blue * rainMix + rainGray * (1.0F - rainMix);
                     }
                     float thunderLevel = clientLevel.getThunderLevel(1.0F);
-                    if (thunderLevel > 0.0) { // Check for thunder.
-                        float f18 = 1.0F + thunderLevel * 0.66F;
-                        float f19 = 1.0F + thunderLevel * 0.76F;
-                        red *= f18;
-                        green *= f18;
-                        blue *= f19;
+                    if (thunderLevel > 0.0F) {
+                        float thunderGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.48F;
+                        float thunderMix = 1.0F - thunderLevel * 0.21F;
+                        red = red * thunderMix + thunderGray * (1.0F - thunderMix);
+                        green = green * thunderMix + thunderGray * (1.0F - thunderMix);
+                        blue = blue * thunderMix + thunderGray * (1.0F - thunderMix);
                     }
-                    return Triple.of(red, green, blue);
+                    return Triple.of(
+                            Mth.clamp(red, 0.0F, 1.0F),
+                            Mth.clamp(green, 0.0F, 1.0F),
+                            Mth.clamp(blue, 0.0F, 1.0F)
+                    );
                 }
             }
         }
