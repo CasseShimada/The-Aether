@@ -60,7 +60,7 @@ public class ZephyrModel extends EntityModel<ZephyrRenderState> {
 
     @Override
     public void setupAnim(ZephyrRenderState renderState) {
-        float motion = Mth.sin((renderState.walkAnimationSpeed * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.5F;
+        float motion = Mth.sin((renderState.walkAnimationPos * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationSpeed * 0.5F;
 
         this.rightFace.y = 8 - motion;
         this.rightFace.x = -motion * 0.5F;
@@ -74,15 +74,15 @@ public class ZephyrModel extends EntityModel<ZephyrRenderState> {
         this.bodyLeftSideFront.y = this.bodyRightSideFront.y;
         this.bodyLeftSideBack.y = this.bodyRightSideBack.y;
 
-        this.tailBase.x = Mth.sin((renderState.walkAnimationSpeed * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.75F;
+        this.tailBase.x = Mth.sin((renderState.walkAnimationPos * 20.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationSpeed * 0.75F;
         this.tailBase.y = 8 - motion;
-        this.tailBase.yRot = Mth.sin(renderState.ageInTicks * 0.5F) * renderState.walkAnimationPos * 0.75F;
+        this.tailBase.yRot = Mth.sin(renderState.ageInTicks * 0.5F) * renderState.walkAnimationSpeed * 0.75F;
 
-        this.tailMiddle.x = Mth.sin((renderState.walkAnimationSpeed * 15.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.85F;
+        this.tailMiddle.x = Mth.sin((renderState.walkAnimationPos * 15.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationSpeed * 0.85F;
         this.tailMiddle.y = motion * 1.25F;
         this.tailMiddle.yRot = this.tailBase.yRot + 0.25F;
 
-        this.tailEnd.x = Mth.sin((renderState.walkAnimationSpeed * 10.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationPos * 0.95F;
+        this.tailEnd.x = Mth.sin((renderState.walkAnimationPos * 10.0F) / Mth.RAD_TO_DEG) * renderState.walkAnimationSpeed * 0.95F;
         this.tailEnd.y = -motion;
         this.tailEnd.yRot = this.tailMiddle.yRot + 0.35F;
     }

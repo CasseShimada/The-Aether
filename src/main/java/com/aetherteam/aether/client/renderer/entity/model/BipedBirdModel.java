@@ -71,8 +71,8 @@ public abstract class BipedBirdModel<T extends BipedBirdRenderState> extends Ent
             this.leftWing.setPos(3.001F, -3.0F, 3.0F);
             this.rightWing.xRot = 0.0F;
             this.leftWing.xRot = 0.0F;
-            this.rightLeg.xRot = Mth.cos(renderState.walkAnimationSpeed * 0.6662F) * 1.4F * renderState.walkAnimationPos;
-            this.leftLeg.xRot = Mth.cos(renderState.walkAnimationSpeed * 0.6662F + Mth.PI) * 1.4F * renderState.walkAnimationPos;
+            this.rightLeg.xRot = Mth.cos(renderState.walkAnimationPos * 0.6662F) * 1.4F * renderState.walkAnimationSpeed;
+            this.leftLeg.xRot = Mth.cos(renderState.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * renderState.walkAnimationSpeed;
             this.rightWing.yRot = 0.0F;
         }
 

@@ -63,7 +63,6 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
     private final Map<AccessoriesBasedSlot, ToggleButton> cosmeticButtons = new LinkedHashMap<>();
     private final RecipeBookComponent<?> recipeBookComponent;
     private boolean widthTooNarrow;
-    private boolean buttonClicked;
     private boolean isRenderButtonHovered;
     @Nullable
     private Slot destroyItemSlot;
@@ -99,13 +98,6 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
             this.getRecipeBookComponent().toggleVisibility();
             this.updateScreenPosition();
         }
-
-        this.addRenderableWidget(new ImageButton(this.leftPos + 142, this.height / 2 - 22, 20, 18, RecipeBookComponent.RECIPE_BUTTON_SPRITES, (pressed) -> {
-            this.getRecipeBookComponent().toggleVisibility();
-            this.updateScreenPosition();
-            pressed.setPosition(this.leftPos + 142, this.height / 2 - 22);
-            this.buttonClicked = true;
-        }));
 
         this.updateRenderButtons();
 
@@ -317,16 +309,6 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
             return true;
         } else {
             return (!this.widthTooNarrow || !this.getRecipeBookComponent().isVisible()) && super.mouseClicked(event, doubleClick);
-        }
-    }
-
-    @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
-        if (this.buttonClicked) {
-            this.buttonClicked = false;
-            return true;
-        } else {
-            return super.mouseReleased(event);
         }
     }
 

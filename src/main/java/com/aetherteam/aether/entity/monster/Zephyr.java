@@ -39,6 +39,7 @@ public class Zephyr extends PathfinderMob implements Enemy {
         super(type, level);
         this.moveControl = new ZephyrMoveControl(this);
         this.xpReward = 5;
+        this.setNoGravity(true);
     }
 
     @Override
@@ -85,6 +86,9 @@ public class Zephyr extends PathfinderMob implements Enemy {
     @Override
     public void aiStep() {
         super.aiStep();
+        if (!this.isNoGravity()) {
+            this.setNoGravity(true);
+        }
         if (this.getY() < this.level().getMinY() - 2 || this.getY() > this.level().getMaxY()) {
             this.discard();
         }
@@ -161,7 +165,16 @@ public class Zephyr extends PathfinderMob implements Enemy {
     }
 
     @Override
+    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return true;
+    }
+
+    protected boolean shouldDespawnInPeaceful() {
         return true;
     }
 

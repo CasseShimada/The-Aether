@@ -51,10 +51,14 @@ public class AccessoryButton extends ImageButton {
         if (this.parentScreen instanceof CreativeModeInventoryScreen screen) {
             boolean isInventoryTab = screen.isInventoryOpen();
             this.active = isInventoryTab;
+            this.visible = isInventoryTab;
         } else if (this.parentScreen instanceof AetherAccessoriesScreen screen) {
-            this.active = screen.getMenu().hasButton;
+            boolean hasButton = screen.getMenu().hasButton;
+            this.active = hasButton;
+            this.visible = hasButton;
         } else {
             this.active = true;
+            this.visible = true;
         }
     }
 }
