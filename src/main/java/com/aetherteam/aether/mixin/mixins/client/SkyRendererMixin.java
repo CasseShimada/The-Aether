@@ -45,6 +45,11 @@ public abstract class SkyRendererMixin {
         float sunOpacity = opacities[0];
         float moonOpacity = opacities[1];
 
+        // If custom opacity logic yields no visible celestial bodies, fall back to vanilla rendering.
+        if (sunOpacity <= 0.001F && moonOpacity <= 0.001F) {
+            return;
+        }
+
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
 
