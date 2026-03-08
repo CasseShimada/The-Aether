@@ -109,20 +109,18 @@ public class DimensionClientHooks {
                 if (fluidState == FogType.NONE) {
                     float rainLevel = clientLevel.getRainLevel(1.0F);
                     if (rainLevel > 0.0F) {
-                        // Keep weather response visible without shifting hue into bright yellow.
-                        float rainGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.61F;
-                        float rainMix = 1.0F - rainLevel * 0.2F;
-                        red = red * rainMix + rainGray * (1.0F - rainMix);
-                        green = green * rainMix + rainGray * (1.0F - rainMix);
-                        blue = blue * rainMix + rainGray * (1.0F - rainMix);
+                        // NeoForge baseline brightens Aether weather fog; keep it hue-neutral to avoid yellow artifacts.
+                        float weatherBrightness = 1.0F + rainLevel * 0.8F;
+                        red *= weatherBrightness;
+                        green *= weatherBrightness;
+                        blue *= weatherBrightness;
                     }
                     float thunderLevel = clientLevel.getThunderLevel(1.0F);
                     if (thunderLevel > 0.0F) {
-                        float thunderGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.48F;
-                        float thunderMix = 1.0F - thunderLevel * 0.21F;
-                        red = red * thunderMix + thunderGray * (1.0F - thunderMix);
-                        green = green * thunderMix + thunderGray * (1.0F - thunderMix);
-                        blue = blue * thunderMix + thunderGray * (1.0F - thunderMix);
+                        float thunderBrightness = 1.0F + thunderLevel * 0.72F;
+                        red *= thunderBrightness;
+                        green *= thunderBrightness;
+                        blue *= thunderBrightness;
                     }
                     return Triple.of(
                             Mth.clamp(red, 0.0F, 1.0F),
