@@ -11,6 +11,7 @@
     "common.AxeItemMixin",
     "common.BlockMixin",
     "common.EntityMixin",
+    "common.EnvironmentAttributeSystemMixin",
     "common.FishingHookMixin",
     "common.HoeItemMixin",
     "common.ItemMixin",
