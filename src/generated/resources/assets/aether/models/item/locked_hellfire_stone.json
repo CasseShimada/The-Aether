@@ -164,6 +164,7 @@
   ],
   "textures": {
     "face": "aether:item/block/dungeon/hellfire_stone",
-    "overlay": "aether:item/block/dungeon/lock"
+    "overlay": "aether:item/block/dungeon/lock",
+    "particle": "#face"
   }
 }

@@ -164,6 +164,7 @@
   ],
   "textures": {
     "face": "aether:item/block/dungeon/light_hellfire_stone",
-    "overlay": "aether:item/block/dungeon/exclamation"
+    "overlay": "aether:item/block/dungeon/exclamation",
+    "particle": "#face"
   }
 }

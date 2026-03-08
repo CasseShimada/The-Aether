@@ -164,6 +164,7 @@
   ],
   "textures": {
     "face": "aether:item/block/dungeon/sentry_stone",
-    "overlay": "aether:item/block/dungeon/door"
+    "overlay": "aether:item/block/dungeon/door",
+    "particle": "#face"
   }
 }

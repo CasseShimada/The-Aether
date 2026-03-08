@@ -164,6 +164,7 @@
   ],
   "textures": {
     "face": "aether:item/block/dungeon/sentry_stone",
-    "overlay": "aether:item/block/dungeon/exclamation"
+    "overlay": "aether:item/block/dungeon/exclamation",
+    "particle": "#face"
   }
 }
