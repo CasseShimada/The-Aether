@@ -1,5 +1,8 @@
 package com.aetherteam.aether.inventory.menu;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.aetherteam.aether.inventory.container.LoreInventory;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
@@ -17,7 +20,11 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +35,7 @@ import java.util.function.Predicate;
 
 public class LoreBookMenu extends AbstractContainerMenu {
     private static final Map<Function<RegistryAccess, Predicate<ItemStack>>, String> LORE_ENTRY_OVERRIDES = new HashMap<>();
+    private static Set<String> CACHED_LORE_KEYS = null;
     private final LoreInventory loreInventory;
     private boolean loreEntryExists;
 
@@ -168,6 +176,35 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
     @Environment(EnvType.CLIENT)
     private boolean hasLoreEntryTranslation(String key) {
+        if (getKnownLoreKeys().contains(key)) {
+            return true;
+        }
         return !I18n.get(key).equals(key);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static Set<String> getKnownLoreKeys() {
+        if (CACHED_LORE_KEYS != null) {
+            return CACHED_LORE_KEYS;
+        }
+
+        Set<String> keys = new LinkedHashSet<>();
+        try (InputStream stream = LoreBookMenu.class.getClassLoader().getResourceAsStream("assets/aether/lang/en_us.json")) {
+            if (stream != null) {
+                JsonElement root = JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                if (root.isJsonObject()) {
+                    JsonObject object = root.getAsJsonObject();
+                    for (String key : object.keySet()) {
+                        if (key.startsWith("lore.")) {
+                            keys.add(key);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        CACHED_LORE_KEYS = Collections.unmodifiableSet(keys);
+        return CACHED_LORE_KEYS;
     }
 }
