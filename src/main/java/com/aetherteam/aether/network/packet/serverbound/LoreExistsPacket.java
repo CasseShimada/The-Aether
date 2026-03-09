@@ -1,6 +1,7 @@
 package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.advancement.AetherAdvancementTriggers;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -34,8 +35,17 @@ public record LoreExistsPacket(int playerID, ItemStack itemStack, boolean exists
 
     public static void execute(LoreExistsPacket payload, AetherPayloadContext context) {
         Player playerEntity = context.player();
-        if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer && playerEntity.containerMenu instanceof LoreBookMenu menu) {
+        if (playerEntity.level().getServer() != null
+            && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer
+            && playerEntity.containerMenu instanceof LoreBookMenu menu) {
             menu.setLoreEntryExists(payload.exists());
+
+            if (payload.exists() && !payload.itemStack().isEmpty()) {
+                ItemStack current = menu.getSlot(0).getItem();
+                if (ItemStack.isSameItemSameComponents(current, payload.itemStack())) {
+                    AetherAdvancementTriggers.LORE_ENTRY.get().trigger(serverPlayer, payload.itemStack());
+                }
+            }
         }
     }
 }

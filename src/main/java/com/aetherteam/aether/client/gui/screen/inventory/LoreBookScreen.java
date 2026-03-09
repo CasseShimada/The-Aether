@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
@@ -29,7 +28,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
     private LorePageButton previousButton, nextButton;
     private int currentPageNumber;
-    private ItemStack lastStack;
 
     public LoreBookScreen(LoreBookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -83,9 +81,11 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         if (!itemStack.isEmpty()) { // Checks if there is an item placed in the book.
             String entryKey = this.getMenu().getLoreEntryKey(itemStack); // Get the translation key for the item's lore entry.
 
-            if (I18n.exists(entryKey)) { // Checks if the lore entry exists for that item.
+            if (this.getMenu().loreEntryKeyExists(itemStack)) { // Checks if the lore entry exists for that item.
                 Component entry = Component.translatable(entryKey);
+                this.pages.clear();
                 this.createPages(entry); // Sets up pages.
+                this.currentPageNumber = Math.min(this.currentPageNumber, Math.max(this.pages.size() - 1, 0));
 
                 if (this.currentPageNumber == 0) { // Behavior for first page.
                     Component title = itemStack.getHoverName().plainCopy();
@@ -95,9 +95,11 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
                 } else { // Behavior for subsequent pages.
                     this.createText(guiGraphics, this.pages.get(this.currentPageNumber), 136, 10); // Draw lines for the given page.
                 }
+            } else {
+                this.pages.clear();
+                this.currentPageNumber = 0;
             }
-        }
-        if (itemStack.isEmpty() || !itemStack.is(this.lastStack.getItem())) { // Resets page information if the item is removed or replaced.
+        } else { // Resets page information if the item is removed.
             this.pages.clear();
             this.currentPageNumber = 0;
         }
@@ -105,8 +107,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         // Determines when the page switching buttons can be clicked.
         this.previousButton.active = this.currentPageNumber > 0;
         this.nextButton.active = this.currentPageNumber < this.pages.size() - 1;
-
-        this.lastStack = itemStack;
     }
 
     /**

@@ -127,7 +127,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
         List<String> candidates = this.getLoreEntryCandidates(stack);
         for (String candidate : candidates) {
-            if (I18n.exists(candidate)) {
+            if (this.hasLoreEntryTranslation(candidate)) {
                 return candidate;
             }
         }
@@ -136,7 +136,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
     @Environment(EnvType.CLIENT)
     public boolean loreEntryKeyExists(ItemStack stack) {
-        return I18n.exists(this.getLoreEntryKey(stack));
+        return this.hasLoreEntryTranslation(this.getLoreEntryKey(stack));
     }
 
     @Environment(EnvType.CLIENT)
@@ -164,5 +164,10 @@ public class LoreBookMenu extends AbstractContainerMenu {
         }
 
         return new ArrayList<>(candidates);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private boolean hasLoreEntryTranslation(String key) {
+        return !I18n.get(key).equals(key);
     }
 }
