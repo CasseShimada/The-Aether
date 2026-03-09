@@ -82,7 +82,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
             String entryKey = this.getMenu().getLoreEntryKey(itemStack); // Get the translation key for the item's lore entry.
 
             if (this.getMenu().loreEntryKeyExists(itemStack)) { // Checks if the lore entry exists for that item.
-                Component entry = Component.translatable(entryKey);
+                Component entry = Component.literal(this.getMenu().resolveLoreEntryText(entryKey));
                 this.pages.clear();
                 this.createPages(entry); // Sets up pages.
                 this.currentPageNumber = Math.min(this.currentPageNumber, Math.max(this.pages.size() - 1, 0));

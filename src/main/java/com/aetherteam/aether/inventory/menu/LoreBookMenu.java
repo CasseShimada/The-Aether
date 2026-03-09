@@ -36,6 +36,7 @@ import java.util.function.Predicate;
 public class LoreBookMenu extends AbstractContainerMenu {
     private static final Map<Function<RegistryAccess, Predicate<ItemStack>>, String> LORE_ENTRY_OVERRIDES = new HashMap<>();
     private static Set<String> CACHED_LORE_KEYS = null;
+    private static Map<String, String> CACHED_LORE_ENTRY_TEXTS = null;
     private final LoreInventory loreInventory;
     private boolean loreEntryExists;
 
@@ -188,15 +189,37 @@ public class LoreBookMenu extends AbstractContainerMenu {
             return CACHED_LORE_KEYS;
         }
 
-        Set<String> keys = new LinkedHashSet<>();
+        Map<String, String> entries = getKnownLoreEntryTexts();
+        Set<String> keys = new LinkedHashSet<>(entries.keySet());
+
+        CACHED_LORE_KEYS = Collections.unmodifiableSet(keys);
+        return CACHED_LORE_KEYS;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public String resolveLoreEntryText(String key) {
+        String localized = I18n.get(key);
+        if (!localized.equals(key)) {
+            return localized;
+        }
+        return getKnownLoreEntryTexts().getOrDefault(key, key);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static Map<String, String> getKnownLoreEntryTexts() {
+        if (CACHED_LORE_ENTRY_TEXTS != null) {
+            return CACHED_LORE_ENTRY_TEXTS;
+        }
+
+        Map<String, String> entries = new HashMap<>();
         try (InputStream stream = LoreBookMenu.class.getClassLoader().getResourceAsStream("assets/aether/lang/en_us.json")) {
             if (stream != null) {
                 JsonElement root = JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 if (root.isJsonObject()) {
                     JsonObject object = root.getAsJsonObject();
-                    for (String key : object.keySet()) {
-                        if (key.startsWith("lore.")) {
-                            keys.add(key);
+                    for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+                        if (entry.getKey().startsWith("lore.") && entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString()) {
+                            entries.put(entry.getKey(), entry.getValue().getAsString());
                         }
                     }
                 }
@@ -204,7 +227,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
         } catch (Exception ignored) {
         }
 
-        CACHED_LORE_KEYS = Collections.unmodifiableSet(keys);
-        return CACHED_LORE_KEYS;
+        CACHED_LORE_ENTRY_TEXTS = Collections.unmodifiableMap(entries);
+        return CACHED_LORE_ENTRY_TEXTS;
     }
 }
