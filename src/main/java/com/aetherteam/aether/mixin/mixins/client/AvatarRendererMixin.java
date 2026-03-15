@@ -2,7 +2,9 @@ package com.aetherteam.aether.mixin.mixins.client;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
+import com.aetherteam.aether.client.renderer.accessory.layer.PlayerGlovesLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerPendantLayer;
+import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -27,6 +29,9 @@ public abstract class AvatarRendererMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void aether$addPendantLayer(EntityRendererProvider.Context context, boolean slim, CallbackInfo ci) {
+        this.addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
+            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES)),
+            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM))));
         this.addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
     }
 
