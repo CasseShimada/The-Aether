@@ -69,6 +69,7 @@ public final class Aether {
         Reflection.initialize(AetherDataAttachments.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
+        AetherPoi.registerBlockStateMappings();
         AetherEntityTypes.registerEntityAttributes();
         AetherEntityTypes.registerSpawnPlacements();
 

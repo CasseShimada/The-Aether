@@ -49,6 +49,7 @@
     "common.accessor.LookAtPlayerGoalAccessor",
     "common.accessor.MinecraftServerAccessor",
     "common.accessor.MobAccessor",
+    "common.accessor.PoiTypesAccessor",
     "common.accessor.ServerGamePacketListenerImplAccessor",
     "common.accessor.ServerLevelAccessor",
     "common.accessor.SpawnPlacementsAccessor",
