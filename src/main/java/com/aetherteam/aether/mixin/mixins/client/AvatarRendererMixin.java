@@ -19,6 +19,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -52,6 +53,12 @@ public abstract class AvatarRendererMixin {
     private GlovesModel aether$glovesSlimFirstPersonModel;
 
     @Unique
+    private GlovesModel aether$glovesTrimFirstPersonModel;
+
+    @Unique
+    private GlovesModel aether$glovesTrimSlimFirstPersonModel;
+
+    @Unique
     private PlayerModel aether$shieldFirstPersonModel;
 
     @Unique
@@ -61,11 +68,15 @@ public abstract class AvatarRendererMixin {
     private void aether$addPendantLayer(EntityRendererProvider.Context context, boolean slim, CallbackInfo ci) {
         this.aether$glovesFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES));
         this.aether$glovesSlimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM));
+        this.aether$glovesTrimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM));
+        this.aether$glovesTrimSlimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM));
         this.aether$shieldFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false);
         this.aether$shieldSlimFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true);
         this.addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES)),
-            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM))));
+            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM)),
+            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM)),
+            new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM))));
         this.addLayer(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
@@ -122,13 +133,22 @@ public abstract class AvatarRendererMixin {
         }
 
         GlovesModel glovesModel = slim ? this.aether$glovesSlimFirstPersonModel : this.aether$glovesFirstPersonModel;
+        GlovesModel glovesTrimModel = slim ? this.aether$glovesTrimSlimFirstPersonModel : this.aether$glovesTrimFirstPersonModel;
         ModelPart gloveArm = rightArm ? glovesModel.rightArm : glovesModel.leftArm;
         gloveArm.loadPose(arm.storePose());
         gloveArm.xRot = 0.0F;
         submitNodeCollector.submitModelPart(gloveArm, poseStack, RenderTypes.armorCutoutNoCull(glovesItem.getGlovesTexture()), packedLight, OverlayTexture.NO_OVERLAY, null, false, false, DyedItemColor.getOrDefault(stack, -1), null, 0);
 
+        TextureAtlasSprite trimSprite = AetherMixinHooks.getHumanoidArmorTrimSprite(stack, glovesItem);
+        if (trimSprite != null) {
+            ModelPart gloveTrimArm = rightArm ? glovesTrimModel.rightArm : glovesTrimModel.leftArm;
+            gloveTrimArm.loadPose(arm.storePose());
+            gloveTrimArm.xRot = 0.0F;
+            submitNodeCollector.order(1).submitModelPart(gloveTrimArm, poseStack, AetherMixinHooks.getArmorTrimRenderType(stack), packedLight, OverlayTexture.NO_OVERLAY, trimSprite, false, false, -1, null, 0);
+        }
+
         if (stack.hasFoil()) {
-            submitNodeCollector.order(1).submitModelPart(gloveArm, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, null, false, false, -1, null, 0);
+            submitNodeCollector.order(trimSprite != null ? 2 : 1).submitModelPart(gloveArm, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, null, false, false, -1, null, 0);
         }
     }
 

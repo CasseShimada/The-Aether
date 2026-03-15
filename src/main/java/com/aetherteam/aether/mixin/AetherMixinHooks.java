@@ -11,11 +11,16 @@ import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.nio.file.Path;
@@ -50,6 +55,22 @@ public class AetherMixinHooks {
             return capeItem.getCapeTexture();
         }
         return null;
+    }
+
+    public static TextureAtlasSprite getHumanoidArmorTrimSprite(ItemStack stack, GlovesItem glovesItem) {
+        ArmorTrim trim = stack.get(DataComponents.TRIM);
+        if (trim == null) {
+            return null;
+        }
+        return Minecraft.getInstance()
+            .getAtlasManager()
+            .getAtlasOrThrow(Sheets.ARMOR_TRIMS_SHEET)
+            .getSprite(trim.layerAssetId("humanoid", glovesItem.getMaterial().assetId()));
+    }
+
+    public static RenderType getArmorTrimRenderType(ItemStack stack) {
+        ArmorTrim trim = stack.get(DataComponents.TRIM);
+        return trim != null ? Sheets.armorTrimsSheet(trim.pattern().value().decal()) : null;
     }
 
     public static ItemStack getVisibleAccessory(LivingEntity livingEntity, SlotTypeReference identifier, int slotIndex) {
