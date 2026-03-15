@@ -60,6 +60,8 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.AvatarRendererMixin",
+    "client.ArmorStandRenderStateMixin",
+    "client.ArmorStandRendererMixin",
     "client.ClientLevelMixin",
     "client.AdvancementToastMixin",
     "client.FogRendererMixin",

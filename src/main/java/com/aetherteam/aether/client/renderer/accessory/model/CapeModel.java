@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
  * [CODE COPY] - {@link net.minecraft.client.model.player.PlayerModel}.<br><br>
  * Only copied parts related to capes.
  */
-public class CapeModel extends HumanoidModel<HumanoidRenderState> {
+public class CapeModel<T extends HumanoidRenderState> extends HumanoidModel<T> {
     private final ModelPart cloak;
 
     public CapeModel(ModelPart root) {
@@ -26,7 +26,7 @@ public class CapeModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     @Override
-    public void setupAnim(HumanoidRenderState renderState) {
+    public void setupAnim(T renderState) {
         super.setupAnim(renderState);
         if (renderState.chestEquipment.isEmpty()) {
             if (renderState.isCrouching) {
