@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.aetherteam.aether.inventory.container.LoreInventory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,9 +23,6 @@ import net.minecraft.resources.Identifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -212,15 +210,14 @@ public class LoreBookMenu extends AbstractContainerMenu {
         }
 
         Map<String, String> entries = new HashMap<>();
-        try (InputStream stream = LoreBookMenu.class.getClassLoader().getResourceAsStream("assets/aether/lang/en_us.json")) {
-            if (stream != null) {
-                JsonElement root = JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-                if (root.isJsonObject()) {
-                    JsonObject object = root.getAsJsonObject();
-                    for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-                        if (entry.getKey().startsWith("lore.") && entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString()) {
-                            entries.put(entry.getKey(), entry.getValue().getAsString());
-                        }
+        Identifier languageFile = Identifier.fromNamespaceAndPath("aether", "lang/en_us.json");
+        try (var reader = Minecraft.getInstance().getResourceManager().openAsReader(languageFile)) {
+            JsonElement root = JsonParser.parseReader(reader);
+            if (root.isJsonObject()) {
+                JsonObject object = root.getAsJsonObject();
+                for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+                    if (entry.getKey().startsWith("lore.") && entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString()) {
+                        entries.put(entry.getKey(), entry.getValue().getAsString());
                     }
                 }
             }
