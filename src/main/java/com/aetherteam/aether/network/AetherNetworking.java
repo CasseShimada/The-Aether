@@ -1,6 +1,7 @@
 package com.aetherteam.aether.network;
 
 import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
+import com.aetherteam.aether.accessories.networking.server.ToggleAccessoryRenderPacket;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
@@ -109,6 +110,7 @@ public final class AetherNetworking {
         registerC2S(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove.STREAM_CODEC);
         registerC2S(StepHeightPacket.TYPE, StepHeightPacket.STREAM_CODEC);
         registerC2S(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
+        registerC2S(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket.STREAM_CODEC);
         registerC2S(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket.STREAM_CODEC);
 
         // BIDIRECTIONAL
@@ -139,6 +141,7 @@ public final class AetherNetworking {
         registerServerReceiver(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove::execute);
         registerServerReceiver(StepHeightPacket.TYPE, StepHeightPacket::execute);
         registerServerReceiver(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket::execute);
+        registerServerReceiver(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket::execute);
         registerServerReceiver(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket::execute);
 
         registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);

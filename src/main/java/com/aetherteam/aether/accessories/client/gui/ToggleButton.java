@@ -1,6 +1,8 @@
 package com.aetherteam.aether.accessories.client.gui;
 
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
+import com.aetherteam.aether.accessories.networking.AccessoriesNetworking;
+import com.aetherteam.aether.accessories.networking.server.ToggleAccessoryRenderPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -9,7 +11,11 @@ public class ToggleButton extends Button {
     private final AccessoriesBasedSlot slot;
 
     private ToggleButton(int x, int y, AccessoriesBasedSlot slot) {
-        super(x, y, 12, 12, Component.empty(), (button) -> slot.toggleRender(), DEFAULT_NARRATION);
+        super(x, y, 12, 12, Component.empty(), (button) -> {
+            boolean shouldRender = !slot.shouldRender();
+            slot.setRender(shouldRender);
+            AccessoriesNetworking.sendToServer(new ToggleAccessoryRenderPacket(slot.slotName(), slot.slotIndex(), shouldRender));
+        }, DEFAULT_NARRATION);
         this.slot = slot;
     }
 

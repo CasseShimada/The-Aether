@@ -25,6 +25,14 @@ public class AccessoriesBasedSlot extends Slot {
         return this.slotType;
     }
 
+    public String slotName() {
+        return this.slotType.name();
+    }
+
+    public int slotIndex() {
+        return this.slotIndex;
+    }
+
     @Override
     public boolean isActive() {
         return true;
@@ -37,5 +45,13 @@ public class AccessoriesBasedSlot extends Slot {
 
     public void toggleRender() {
         this.container.setShouldRender(this.slotIndex, !this.container.shouldRender(this.slotIndex));
+    }
+
+    public boolean shouldRender() {
+        return this.container.shouldRender(this.slotIndex);
+    }
+
+    public void setRender(boolean value) {
+        this.container.setShouldRender(this.slotIndex, value);
     }
 }
