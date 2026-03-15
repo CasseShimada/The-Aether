@@ -76,6 +76,11 @@ public class AccessoriesCapability {
 
     @Nullable
     public Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot) {
+        return this.canEquipAccessory(stack, requireEmptySlot, reference -> true);
+    }
+
+    @Nullable
+    public Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter) {
         List<SlotType> validSlots = AccessoriesAPI.getValidSlotTypes(this.entity, stack);
         for (SlotType slotType : validSlots) {
             AccessoriesContainer container = this.getOrCreateContainer(slotType.name(), slotType.size());
@@ -84,6 +89,9 @@ public class AccessoriesCapability {
                 if (!requireEmptySlot || existing.isEmpty()) {
                     int index = slotIndex;
                     SlotReference reference = SlotReference.of(this.entity, slotType.name(), index);
+                    if (!slotFilter.test(reference)) {
+                        continue;
+                    }
                     EquipAction action = EquipAction.of(equippedStack -> container.getAccessories().setItem(index, equippedStack));
                     return Pair.of(reference, action);
                 }
