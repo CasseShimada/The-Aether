@@ -1,5 +1,6 @@
 package com.aetherteam.aether.network;
 
+import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
@@ -96,6 +97,7 @@ public final class AetherNetworking {
         registerC2S(ClearItemPacket.TYPE, ClearItemPacket.STREAM_CODEC);
         registerC2S(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket.STREAM_CODEC);
         registerC2S(LoreExistsPacket.TYPE, LoreExistsPacket.STREAM_CODEC);
+        registerC2S(NukeAccessories.TYPE, NukeAccessories.STREAM_CODEC);
         registerC2S(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket.STREAM_CODEC);
         registerC2S(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket.STREAM_CODEC);
         registerC2S(OpenInventoryPacket.TYPE, OpenInventoryPacket.STREAM_CODEC);
@@ -125,6 +127,7 @@ public final class AetherNetworking {
         registerServerReceiver(ClearItemPacket.TYPE, ClearItemPacket::execute);
         registerServerReceiver(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket::execute);
         registerServerReceiver(LoreExistsPacket.TYPE, LoreExistsPacket::execute);
+        registerServerReceiver(NukeAccessories.TYPE, NukeAccessories::execute);
         registerServerReceiver(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket::execute);
         registerServerReceiver(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket::execute);
         registerServerReceiver(OpenInventoryPacket.TYPE, OpenInventoryPacket::execute);

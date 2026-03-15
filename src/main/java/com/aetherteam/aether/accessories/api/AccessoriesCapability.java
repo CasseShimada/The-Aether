@@ -134,6 +134,30 @@ public class AccessoriesCapability {
         return references;
     }
 
+    public void clearAccessories(boolean clearCosmeticAccessories) {
+        for (SlotEntryReference reference : List.copyOf(this.getAllEquipped())) {
+            AccessoriesAPI.breakStack(reference.reference());
+        }
+
+        if (!clearCosmeticAccessories) {
+            return;
+        }
+
+        this.ensureContainers();
+        for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
+            AccessoriesContainer container = this.containers.get(definition.type().name());
+            if (container == null) {
+                continue;
+            }
+
+            for (int slotIndex = 0; slotIndex < container.getCosmeticAccessories().getContainerSize(); slotIndex++) {
+                if (!container.getCosmeticAccessories().getItem(slotIndex).isEmpty()) {
+                    container.getCosmeticAccessories().setItem(slotIndex, ItemStack.EMPTY);
+                }
+            }
+        }
+    }
+
     public void process(boolean runAccessoryTick) {
         if (this.processing) {
             return;
