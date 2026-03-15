@@ -31,25 +31,7 @@ public class AetherMixinHooks {
      * @see com.aetherteam.aether.mixin.mixins.client.PlayerSkinMixin
      */
     public static ItemStack isCapeVisible(LivingEntity livingEntity) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
-        if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(CapeItem.getStaticIdentifier());
-
-            if (accessoriesContainer != null) {
-                var simpleAccessoriesContainer = accessoriesContainer.getAccessories();
-                var simpleCosmeticsContainer = accessoriesContainer.getCosmeticAccessories();
-
-                ItemStack stack = simpleAccessoriesContainer.getItem(0);
-                ItemStack cosmeticStack = simpleCosmeticsContainer.getItem(0);
-                if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
-                    stack = cosmeticStack;
-                }
-                if (!stack.isEmpty() && accessoriesContainer.shouldRender(0)) {
-                    return stack;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
+        return getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
     }
 
     /**
@@ -68,6 +50,23 @@ public class AetherMixinHooks {
             return capeItem.getCapeTexture();
         }
         return null;
+    }
+
+    public static ItemStack getVisibleAccessory(LivingEntity livingEntity, SlotTypeReference identifier, int slotIndex) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        if (accessories != null) {
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+
+            if (accessoriesContainer != null && accessoriesContainer.shouldRender(slotIndex)) {
+                ItemStack stack = accessoriesContainer.getAccessories().getItem(slotIndex);
+                ItemStack cosmeticStack = accessoriesContainer.getCosmeticAccessories().getItem(slotIndex);
+                if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
+                    stack = cosmeticStack;
+                }
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     /**

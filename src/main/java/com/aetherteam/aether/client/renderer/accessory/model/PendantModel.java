@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class PendantModel extends HumanoidModel<HumanoidRenderState> {
+public class PendantModel<T extends HumanoidRenderState> extends HumanoidModel<T> {
     public PendantModel(ModelPart root) {
         super(root);
     }
@@ -20,7 +20,7 @@ public class PendantModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     @Override
-    public void setupAnim(HumanoidRenderState renderState) {
+    public void setupAnim(T renderState) {
         this.root().visible = false;
         this.body.visible = true;
     }

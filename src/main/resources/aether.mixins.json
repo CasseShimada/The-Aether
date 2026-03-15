@@ -58,8 +58,8 @@
     "common.accessor.ZombifiedPiglinAccessor"
   ],
   "client": [
-    "client.AvatarRendererMixin",
     "client.AbstractClientPlayerMixin",
+    "client.AvatarRendererMixin",
     "client.ClientLevelMixin",
     "client.AdvancementToastMixin",
     "client.FogRendererMixin",
