@@ -141,6 +141,7 @@ public class AetherPortalForcer {
             for (int l2 = 0; l2 < 3; ++l2) {
                 mutablePos.setWithOffset(blockPos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());
                 this.level.setBlock(mutablePos, blockState, 2 | 16);
+                AetherPoi.registerPortal(this.level, mutablePos);
             }
         }
 

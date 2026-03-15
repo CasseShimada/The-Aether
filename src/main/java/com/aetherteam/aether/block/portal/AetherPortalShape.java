@@ -2,6 +2,7 @@ package com.aetherteam.aether.block.portal;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
+import com.aetherteam.aether.world.AetherPoi;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -152,7 +153,12 @@ public class AetherPortalShape {
 
     public void createPortalBlocks() {
         BlockState blockState = AetherBlocks.AETHER_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
-        BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((pos) -> this.level.setBlock(pos, blockState, 2 | 16));
+        BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((pos) -> {
+            this.level.setBlock(pos, blockState, 2 | 16);
+            if (this.level instanceof ServerLevel serverLevel) {
+                AetherPoi.registerPortal(serverLevel, pos);
+            }
+        });
     }
 
     public boolean isComplete() {

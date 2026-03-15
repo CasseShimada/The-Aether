@@ -2,8 +2,10 @@ package com.aetherteam.aether.item.miscellaneous;
 
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.block.portal.AetherPortalBlock;
+import com.aetherteam.aether.world.AetherPoi;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -73,6 +75,9 @@ public class AetherPortalItem extends Item {
                 BlockPos truePos = axis == Direction.Axis.X ? new BlockPos(pos.getX(), v, pos.getZ() + h) : new BlockPos(pos.getX() + h, v, pos.getZ());
                 Direction.Axis trueAxis = axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
                 level.setBlock(truePos, AetherBlocks.AETHER_PORTAL.get().defaultBlockState().setValue(AetherPortalBlock.AXIS, trueAxis), 2 | 16);
+                if (level instanceof ServerLevel serverLevel) {
+                    AetherPoi.registerPortal(serverLevel, truePos);
+                }
             }
         }
 
