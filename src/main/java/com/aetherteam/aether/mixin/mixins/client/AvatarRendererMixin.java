@@ -4,6 +4,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerGlovesLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerPendantLayer;
+import com.aetherteam.aether.client.renderer.accessory.layer.PlayerShieldOfRepulsionLayer;
 import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,6 +33,9 @@ public abstract class AvatarRendererMixin {
         this.addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM))));
+        this.addLayer(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
+            new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
+            new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
         this.addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
     }
 
