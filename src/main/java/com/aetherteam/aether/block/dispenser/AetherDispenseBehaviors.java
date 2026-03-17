@@ -69,31 +69,36 @@ public class AetherDispenseBehaviors {
         List<LivingEntity> list = blockSource.level().getEntitiesOfClass(LivingEntity.class, new AABB(pos), ACCESSORY_TARGET_SELECTOR::test);
         if (list.isEmpty()) {
             return false;
-        } else {
-            LivingEntity livingEntity = list.getFirst();
-            ItemStack itemStack = stack.split(1);
-            AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
-            if (capability != null) {
-                Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(itemStack);
-                Pair<SlotReference, EquipAction> equipReference = capability.canEquipAccessory(itemStack, true);
-                if (equipReference != null) {
-                    SlotTypeReference slotTypeReference = equipReference.first()::slotName;
-                    if (accessory.canEquip(itemStack, equipReference.first())) {
-                        accessory.onEquipFromUse(itemStack, equipReference.left());
-                        equipReference.second().equipStack(itemStack.copy());
-                        if (livingEntity instanceof ArmorStand armorStand) {
-                            if (equipReference.first().slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
-                                armorStand.setShowArms(true);
-                            }
-                        } else if (livingEntity instanceof Mob mob && EntityHooks.canMobSpawnWithAccessories(mob)) {
-                            mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
-                            mob.setPersistenceRequired();
-                        }
-                    }
-                }
-            }
         }
-        return true;
+
+        Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(stack);
+        for (LivingEntity livingEntity : list) {
+            AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
+            if (capability == null) {
+                continue;
+            }
+
+            Pair<SlotReference, EquipAction> equipReference = capability.canEquipAccessory(stack, true);
+            if (equipReference == null || !accessory.canEquip(stack, equipReference.first())) {
+                continue;
+            }
+
+            ItemStack itemStack = stack.split(1);
+            SlotTypeReference slotTypeReference = SlotTypeReference.of(equipReference.first().slotName());
+            accessory.onEquipFromUse(itemStack, equipReference.left());
+            equipReference.second().equipStack(itemStack.copy());
+            if (livingEntity instanceof ArmorStand armorStand) {
+                if (equipReference.first().slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
+                    armorStand.setShowArms(true);
+                }
+            } else if (livingEntity instanceof Mob mob && EntityHooks.canMobSpawnWithAccessories(mob)) {
+                mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
+                mob.setPersistenceRequired();
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**
