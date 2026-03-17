@@ -13,7 +13,7 @@ public class AvatarMixin {
     @Inject(method = "isModelPartShown(Lnet/minecraft/world/entity/player/PlayerModelPart;)Z", at = @At("HEAD"), cancellable = true)
     private void aether$showCapeModelPartWhenAccessoryEquipped(PlayerModelPart part, CallbackInfoReturnable<Boolean> cir) {
         Avatar avatar = (Avatar) (Object) this;
-        if (!AetherMixinHooks.isCapeVisible(avatar).isEmpty()) {
+        if (part == PlayerModelPart.CAPE && !AetherMixinHooks.isCapeVisible(avatar).isEmpty()) {
             cir.setReturnValue(true);
         }
     }
