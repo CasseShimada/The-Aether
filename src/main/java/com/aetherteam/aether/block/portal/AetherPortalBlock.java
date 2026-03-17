@@ -5,6 +5,7 @@ import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.sound.FadeOutSoundInstance;
 import com.aetherteam.aether.world.LevelUtil;
+import com.aetherteam.aether.world.AetherPoi;
 import net.minecraft.util.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -59,6 +60,9 @@ public class AetherPortalBlock extends Block implements Portal {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl) {
         if (entity.canUsePortal(false)) {
+            if (level instanceof ServerLevel serverLevel) {
+                AetherPoi.registerPortal(serverLevel, pos);
+            }
             entity.setAsInsidePortal(this, pos);
         }
     }
