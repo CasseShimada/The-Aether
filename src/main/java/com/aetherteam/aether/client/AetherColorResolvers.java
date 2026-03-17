@@ -6,11 +6,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.GrassColor;
 
 public class AetherColorResolvers {
     private static final int AETHER_GRASS_COLOR = 0xB1FFCB;
@@ -34,6 +33,6 @@ public class AetherColorResolvers {
     }
 
     public static void registerItemColor() {
-        // 1.21.11 item tinting is data-driven through item model tint sources.
+        // 1.21.11 item tinting is data-driven via assets/*/items/*.json.
     }
 }

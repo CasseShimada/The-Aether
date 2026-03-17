@@ -1,6 +1,16 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "aether:item/black_moa_egg"
+    "model": "aether:item/black_moa_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 2236962
+      }
+    ]
   }
 }

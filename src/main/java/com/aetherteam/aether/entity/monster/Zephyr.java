@@ -27,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class Zephyr extends PathfinderMob implements Enemy {
+public class Zephyr extends Mob implements Enemy {
     private static final EntityDataAccessor<Integer> DATA_CHARGE_TIME_ID = SynchedEntityData.defineId(Zephyr.class, EntityDataSerializers.INT);
 
     private int cloudScale;
@@ -51,7 +51,7 @@ public class Zephyr extends PathfinderMob implements Enemy {
     }
 
     public static AttributeSupplier.Builder createMobAttributes() {
-        return PathfinderMob.createMobAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0)
                 .add(Attributes.FOLLOW_RANGE, 50.0);
     }
@@ -162,11 +162,6 @@ public class Zephyr extends PathfinderMob implements Enemy {
     @Override
     protected float getSoundVolume() {
         return 3.0F;
-    }
-
-    @Override
-    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
-        return false;
     }
 
     @Override

@@ -1,6 +1,10 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "aether:item/chest_mimic"
+    "type": "minecraft:special",
+    "base": "aether:item/chest_mimic",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "minecraft:normal"
+    }
   }
 }
