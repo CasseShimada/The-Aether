@@ -29,6 +29,7 @@ import com.mojang.logging.LogUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IExtraIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -56,6 +57,17 @@ public class AetherJEIPlugin implements IModPlugin {
     @Override
     public Identifier getPluginUid() {
         return Identifier.fromNamespaceAndPath(Aether.MODID, "jei");
+    }
+
+    @Override
+    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
+        List<ItemStack> extraItems = BuiltInRegistries.ITEM.stream()
+                .map(ItemStack::new)
+                .filter(stack -> !stack.isEmpty())
+                .filter(stack -> Objects.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace(), Aether.MODID))
+                .toList();
+        registration.addExtraItemStacks(extraItems);
+        LOGGER.info("Registered {} extra Aether item stacks with JEI.", extraItems.size());
     }
 
     @Override

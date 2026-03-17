@@ -28,7 +28,12 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
     private LorePageButton previousButton, nextButton;
     private int currentPageNumber;
+    private ItemStack currentLoreStack = ItemStack.EMPTY;
+    private boolean currentLoreExists;
+    private String currentLoreEntryKey = "";
+    private String currentLoreText = "";
     private String lastLoggedLoreState;
+    private String lastLorePageState;
 
     public LoreBookScreen(LoreBookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -55,8 +60,10 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.updateLoreContent();
         this.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderLoreContent(guiGraphics);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
@@ -78,39 +85,62 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         Component item = Component.translatable("gui.aether.book_of_lore.item");
         this.drawRightBookText(guiGraphics, this.font, item, 78, 67);
 
-        ItemStack itemStack = this.getMenu().slots.getFirst().getItem();
-        if (!itemStack.isEmpty()) { // Checks if there is an item placed in the book.
-            String entryKey = this.getMenu().getLoreEntryKey(itemStack); // Get the translation key for the item's lore entry.
-            boolean exists = this.getMenu().loreEntryKeyExists(itemStack);
-            String resolvedText = exists ? this.getMenu().resolveLoreEntryText(entryKey) : "";
-            this.logLoreState(itemStack, entryKey, exists, resolvedText);
-
-            if (exists) { // Checks if the lore entry exists for that item.
-                Component entry = Component.literal(resolvedText);
-                this.pages.clear();
-                this.createPages(entry); // Sets up pages.
-                this.currentPageNumber = Math.min(this.currentPageNumber, Math.max(this.pages.size() - 1, 0));
-
-                if (this.currentPageNumber == 0) { // Behavior for first page.
-                    Component title = itemStack.getHoverName().plainCopy();
-                    this.createText(guiGraphics, this.font.split(title, 98), 136, 10); // Draw text for the item name.
-
-                    this.createText(guiGraphics, this.pages.get(0), 136, 32); // Draw lines for first page.
-                } else { // Behavior for subsequent pages.
-                    this.createText(guiGraphics, this.pages.get(this.currentPageNumber), 136, 10); // Draw lines for the given page.
-                }
-            } else {
-                this.pages.clear();
-                this.currentPageNumber = 0;
-            }
-        } else { // Resets page information if the item is removed.
-            this.pages.clear();
-            this.currentPageNumber = 0;
-        }
-
         // Determines when the page switching buttons can be clicked.
         this.previousButton.active = this.currentPageNumber > 0;
         this.nextButton.active = this.currentPageNumber < this.pages.size() - 1;
+    }
+
+    private void updateLoreContent() {
+        ItemStack itemStack = this.getMenu().getSlot(0).getItem();
+        if (itemStack.isEmpty()) {
+            this.currentLoreStack = ItemStack.EMPTY;
+            this.currentLoreExists = false;
+            this.currentLoreEntryKey = "";
+            this.currentLoreText = "";
+            this.pages.clear();
+            this.currentPageNumber = 0;
+            this.lastLorePageState = "";
+        } else {
+            String entryKey = this.getMenu().getLoreEntryKey(itemStack);
+            boolean exists = this.getMenu().loreEntryKeyExists(itemStack);
+            String resolvedText = exists ? this.getMenu().resolveLoreEntryText(entryKey) : "";
+            String state = LoreBookMenu.describeStack(itemStack) + "|" + entryKey + "|" + exists + "|" + resolvedText;
+
+            this.currentLoreStack = itemStack.copy();
+            this.currentLoreExists = exists;
+            this.currentLoreEntryKey = entryKey;
+            this.currentLoreText = resolvedText;
+            this.logLoreState(itemStack, entryKey, exists, resolvedText);
+
+            if (!state.equals(this.lastLorePageState)) {
+                this.lastLorePageState = state;
+                this.pages.clear();
+                this.currentPageNumber = 0;
+                if (exists) {
+                    this.createPages(Component.literal(resolvedText));
+                }
+            }
+            this.currentPageNumber = Math.min(this.currentPageNumber, Math.max(this.pages.size() - 1, 0));
+        }
+
+        if (this.previousButton != null && this.nextButton != null) {
+            this.previousButton.active = this.currentPageNumber > 0;
+            this.nextButton.active = this.currentPageNumber < this.pages.size() - 1;
+        }
+    }
+
+    private void renderLoreContent(GuiGraphics guiGraphics) {
+        if (this.currentLoreStack.isEmpty() || !this.currentLoreExists || this.pages.isEmpty()) {
+            return;
+        }
+
+        if (this.currentPageNumber == 0) {
+            Component title = this.currentLoreStack.getHoverName().plainCopy();
+            this.createText(guiGraphics, this.font.split(title, 98), this.leftPos + 136, this.topPos + 10);
+            this.createText(guiGraphics, this.pages.get(0), this.leftPos + 136, this.topPos + 32);
+        } else {
+            this.createText(guiGraphics, this.pages.get(this.currentPageNumber), this.leftPos + 136, this.topPos + 10);
+        }
     }
 
     /**
