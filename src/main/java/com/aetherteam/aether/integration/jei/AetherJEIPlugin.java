@@ -25,11 +25,15 @@ import com.aetherteam.aether.recipe.recipes.item.AltarRepairRecipe;
 import com.aetherteam.aether.recipe.recipes.item.EnchantingRecipe;
 import com.aetherteam.aether.recipe.recipes.item.FreezingRecipe;
 import com.aetherteam.aether.recipe.recipes.item.IncubationRecipe;
+import com.mojang.logging.LogUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -37,13 +41,18 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @JeiPlugin
 public class AetherJEIPlugin implements IModPlugin {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     @Override
     public Identifier getPluginUid() {
         return Identifier.fromNamespaceAndPath(Aether.MODID, "jei");
@@ -120,6 +129,26 @@ public class AetherJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()), PlacementConversionRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL), ItemBanRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Blocks.TORCH), BlockBanRecipeCategory.RECIPE_TYPE);
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        Set<Identifier> jeiItems = jeiRuntime.getIngredientManager().getAllIngredients(VanillaTypes.ITEM_STACK).stream()
+                .map(ItemStack::getItem)
+                .map(BuiltInRegistries.ITEM::getKey)
+                .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
+                .collect(LinkedHashSet::new, Set::add, Set::addAll);
+        List<Identifier> missingItems = BuiltInRegistries.ITEM.stream()
+                .map(BuiltInRegistries.ITEM::getKey)
+                .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
+                .filter(id -> !jeiItems.contains(id))
+                .toList();
+
+        if (missingItems.isEmpty()) {
+            LOGGER.info("JEI runtime registered {} Aether items.", jeiItems.size());
+        } else {
+            LOGGER.warn("JEI runtime registered {} Aether items and is still missing {} entries: {}", jeiItems.size(), missingItems.size(), missingItems.stream().limit(20).toList());
+        }
     }
 
     private <T> List<T> getRecipes(List<? extends RecipeHolder<?>> allRecipes, Class<T> recipeClass) {

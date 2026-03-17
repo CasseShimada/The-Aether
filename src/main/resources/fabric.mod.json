@@ -21,6 +21,9 @@
     ],
     "client": [
       "com.aetherteam.aether.fabric.AetherFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "com.aetherteam.aether.integration.jei.AetherJEIPlugin"
     ]
   },
   "mixins": [
