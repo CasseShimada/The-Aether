@@ -1,7 +1,11 @@
 package com.aetherteam.aether.accessories.compat;
 
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
+import com.aetherteam.aether.accessories.api.events.extra.PiglinNeutralInducer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -70,6 +74,14 @@ public final class AccessoryEffectBridge {
         return ItemStack.EMPTY;
     }
 
+    public static TriState shouldAllowWalkingOnSnow(LivingEntity entity) {
+        return evaluateAccessoryTriState(entity, AllowWalkingOnSnow.class, (effect, stack, reference) -> effect.allowWalkingOnSnow(stack, reference));
+    }
+
+    public static TriState shouldMakePiglinsNeutral(LivingEntity entity) {
+        return evaluateAccessoryTriState(entity, PiglinNeutralInducer.class, (effect, stack, reference) -> effect.makePiglinsNeutral(stack, reference));
+    }
+
     /**
      * Optional Twilight Forest compatibility path for equipment-slot consumption checks.
      */
@@ -131,5 +143,42 @@ public final class AccessoryEffectBridge {
 
     private static EquipmentSlot resolveEquipmentSlot(LivingEntity entity, ItemStack stack) {
         return entity.getEquipmentSlotForItem(stack);
+    }
+
+    private static <T> TriState evaluateAccessoryTriState(LivingEntity entity, Class<T> effectClass, TriStateEvaluator<T> evaluator) {
+        AccessoriesCapability capability = AccessoriesCapability.get(entity);
+        if (capability == null) {
+            return TriState.DEFAULT;
+        }
+
+        TriState fallback = TriState.DEFAULT;
+        for (SlotEntryReference reference : capability.getAllEquipped()) {
+            ItemStack stack = reference.stack();
+            T effect = effectClass.isInstance(stack.getItem()) ? effectClass.cast(stack.getItem()) : null;
+            if (effect == null) {
+                var accessory = AccessoriesAPI.getOrDefaultAccessory(stack);
+                if (effectClass.isInstance(accessory)) {
+                    effect = effectClass.cast(accessory);
+                }
+            }
+            if (effect == null) {
+                continue;
+            }
+
+            TriState state = evaluator.evaluate(effect, stack, reference.reference());
+            if (state == TriState.TRUE) {
+                return TriState.TRUE;
+            }
+            if (state == TriState.FALSE) {
+                fallback = TriState.FALSE;
+            }
+        }
+
+        return fallback;
+    }
+
+    @FunctionalInterface
+    private interface TriStateEvaluator<T> {
+        TriState evaluate(T effect, ItemStack stack, com.aetherteam.aether.accessories.api.slot.SlotReference reference);
     }
 }
