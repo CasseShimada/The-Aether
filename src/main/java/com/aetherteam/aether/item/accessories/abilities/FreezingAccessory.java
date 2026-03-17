@@ -10,6 +10,7 @@ import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,9 +35,18 @@ public interface FreezingAccessory extends FreezingBehavior<ItemStack> {
         LivingEntity livingEntity = context.entity();
         if (!(livingEntity instanceof Player player) || (!player.getAbilities().flying && !player.isSpectator())) {
             int damage = this.freezeBlocks(livingEntity.level(), livingEntity.blockPosition(), stack, 1.9F);
-            if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                if (livingEntity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                    context.getStack().hurtAndBreak(damage / 3, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(context));
+            int durabilityLoss = damage / 3;
+            if (durabilityLoss <= 0 || livingEntity.level().isClientSide()) {
+                return;
+            }
+
+            if (livingEntity.level() instanceof ServerLevel serverLevel && livingEntity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                context.getStack().hurtAndBreak(durabilityLoss, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(context));
+            } else {
+                ItemStack accessoryStack = context.getStack();
+                accessoryStack.hurtAndBreak(durabilityLoss, livingEntity, EquipmentSlot.MAINHAND);
+                if (accessoryStack.isEmpty()) {
+                    context.setStack(ItemStack.EMPTY);
                 }
             }
         }

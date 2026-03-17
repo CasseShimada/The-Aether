@@ -63,9 +63,7 @@ public class AbilityHooks {
         public static void damageGloves(Player player) {
             SlotEntryReference slotResult = EquipmentUtil.getGloves(player);
             if (slotResult != null) {
-                if (player.level() instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
-                    slotResult.stack().hurtAndBreak(1, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(slotResult.reference()));
-                }
+                damageAccessoryItem(slotResult, player, 1);
             }
         }
 
@@ -79,9 +77,7 @@ public class AbilityHooks {
             for (SlotEntryReference slotResult : slotResults) {
                 if (slotResult != null) {
                     if (state.getDestroySpeed(level, pos) > 0 && entity.getRandom().nextInt(6) == 0) {
-                        if (entity.level() instanceof ServerLevel serverLevel && entity instanceof ServerPlayer serverPlayer) {
-                            slotResult.stack().hurtAndBreak(1, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(slotResult.reference()));
-                        }
+                        damageAccessoryItem(slotResult, entity, 1);
                     }
                 }
             }
@@ -96,10 +92,25 @@ public class AbilityHooks {
             SlotEntryReference slotResult = EquipmentUtil.getZanitePendant(entity);
             if (slotResult != null) {
                 if (state.getDestroySpeed(level, pos) > 0 && entity.getRandom().nextInt(6) == 0) {
-                    if (entity.level() instanceof ServerLevel serverLevel && entity instanceof ServerPlayer serverPlayer) {
-                        slotResult.stack().hurtAndBreak(1, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(slotResult.reference()));
-                    }
+                    damageAccessoryItem(slotResult, entity, 1);
                 }
+            }
+        }
+
+        private static void damageAccessoryItem(SlotEntryReference slotResult, LivingEntity entity, int amount) {
+            if (entity.level().isClientSide() || amount <= 0) {
+                return;
+            }
+
+            if (entity.level() instanceof ServerLevel serverLevel && entity instanceof ServerPlayer serverPlayer) {
+                slotResult.stack().hurtAndBreak(amount, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(slotResult.reference()));
+                return;
+            }
+
+            ItemStack stack = slotResult.stack();
+            stack.hurtAndBreak(amount, entity, EquipmentSlot.MAINHAND);
+            if (stack.isEmpty()) {
+                slotResult.reference().setStack(ItemStack.EMPTY);
             }
         }
 

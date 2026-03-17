@@ -9,6 +9,7 @@ import com.aetherteam.nitrogen.ConstantsUtil;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Input;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,6 +70,12 @@ public interface ShieldOfRepulsionAccessory {
             if (impactedLiving.level() instanceof ServerLevel serverLevel) {
                 if (impactedLiving instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                     slotResult.stack().hurtAndBreak(1, serverLevel, serverPlayer, (item) -> AccessoriesAPI.breakStack(slotResult.reference()));
+                } else {
+                    var stack = slotResult.stack();
+                    stack.hurtAndBreak(1, impactedLiving, EquipmentSlot.MAINHAND);
+                    if (stack.isEmpty()) {
+                        slotResult.reference().setStack(net.minecraft.world.item.ItemStack.EMPTY);
+                    }
                 }
             }
             return true;
