@@ -17,19 +17,18 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class LoreBookMenu extends AbstractContainerMenu {
     private static final Map<Function<RegistryAccess, Predicate<ItemStack>>, String> LORE_ENTRY_OVERRIDES = new HashMap<>();
@@ -128,17 +127,33 @@ public class LoreBookMenu extends AbstractContainerMenu {
     @Environment(EnvType.CLIENT)
     public String getLoreEntryKey(ItemStack stack) {
         Optional<String> key = LORE_ENTRY_OVERRIDES.entrySet().stream().filter(e -> e.getKey().apply(this.loreInventory.player.registryAccess()).test(stack)).findAny().map(Map.Entry::getValue);
-        if (key.isPresent()) {
+        if (key.isPresent() && this.hasLoreEntryTranslation(key.get())) {
             return key.get();
         }
 
-        List<String> candidates = this.getLoreEntryCandidates(stack);
-        for (String candidate : candidates) {
-            if (this.hasLoreEntryTranslation(candidate)) {
-                return candidate;
+        String defaultKey = "lore." + stack.getItem().getDescriptionId();
+        if (this.hasLoreEntryTranslation(defaultKey)) {
+            return defaultKey;
+        }
+
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (itemId != null) {
+            String itemKey = "lore.item." + itemId.getNamespace() + "." + itemId.getPath();
+            if (this.hasLoreEntryTranslation(itemKey)) {
+                return itemKey;
             }
         }
-        return candidates.isEmpty() ? "lore.item.minecraft.air" : candidates.getFirst();
+
+        if (stack.getItem() instanceof BlockItem blockItem) {
+            Identifier blockId = BuiltInRegistries.BLOCK.getKey(blockItem.getBlock());
+            if (blockId != null) {
+                String blockKey = "lore.block." + blockId.getNamespace() + "." + blockId.getPath();
+                if (this.hasLoreEntryTranslation(blockKey)) {
+                    return blockKey;
+                }
+            }
+        }
+        return defaultKey;
     }
 
     @Environment(EnvType.CLIENT)
@@ -147,38 +162,8 @@ public class LoreBookMenu extends AbstractContainerMenu {
     }
 
     @Environment(EnvType.CLIENT)
-    private List<String> getLoreEntryCandidates(ItemStack stack) {
-        Set<String> candidates = new LinkedHashSet<>();
-
-        if (stack.getHoverName().getContents() instanceof TranslatableContents translatableContents) {
-            candidates.add("lore." + translatableContents.getKey());
-        }
-        if (stack.getItemName().getContents() instanceof TranslatableContents translatableContents) {
-            candidates.add("lore." + translatableContents.getKey());
-        }
-        candidates.add("lore." + stack.getItem().getDescriptionId());
-
-        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        if (itemId != null) {
-            candidates.add("lore.item." + itemId.getNamespace() + "." + itemId.getPath());
-        }
-
-        if (stack.getItem() instanceof BlockItem blockItem) {
-            Identifier blockId = BuiltInRegistries.BLOCK.getKey(blockItem.getBlock());
-            if (blockId != null) {
-                candidates.add("lore.block." + blockId.getNamespace() + "." + blockId.getPath());
-            }
-        }
-
-        return new ArrayList<>(candidates);
-    }
-
-    @Environment(EnvType.CLIENT)
     private boolean hasLoreEntryTranslation(String key) {
-        if (getKnownLoreKeys().contains(key)) {
-            return true;
-        }
-        return !I18n.get(key).equals(key);
+        return I18n.exists(key) || getKnownLoreKeys().contains(key);
     }
 
     @Environment(EnvType.CLIENT)
@@ -196,9 +181,8 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
     @Environment(EnvType.CLIENT)
     public String resolveLoreEntryText(String key) {
-        String localized = I18n.get(key);
-        if (!localized.equals(key)) {
-            return localized;
+        if (I18n.exists(key)) {
+            return I18n.get(key);
         }
         return getKnownLoreEntryTexts().getOrDefault(key, key);
     }
@@ -210,21 +194,46 @@ public class LoreBookMenu extends AbstractContainerMenu {
         }
 
         Map<String, String> entries = new HashMap<>();
-        Identifier languageFile = Identifier.fromNamespaceAndPath("aether", "lang/en_us.json");
-        try (var reader = Minecraft.getInstance().getResourceManager().openAsReader(languageFile)) {
-            JsonElement root = JsonParser.parseReader(reader);
-            if (root.isJsonObject()) {
-                JsonObject object = root.getAsJsonObject();
-                for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-                    if (entry.getKey().startsWith("lore.") && entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString()) {
-                        entries.put(entry.getKey(), entry.getValue().getAsString());
-                    }
-                }
-            }
-        } catch (Exception ignored) {
+        loadLoreEntriesFromResourceManager(entries);
+        if (entries.isEmpty()) {
+            loadLoreEntriesFromClasspath(entries);
         }
 
         CACHED_LORE_ENTRY_TEXTS = Collections.unmodifiableMap(entries);
         return CACHED_LORE_ENTRY_TEXTS;
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void loadLoreEntriesFromResourceManager(Map<String, String> entries) {
+        Identifier languageFile = Identifier.fromNamespaceAndPath("aether", "lang/en_us.json");
+        try (var reader = Minecraft.getInstance().getResourceManager().openAsReader(languageFile)) {
+            loadLoreEntriesFromJson(reader, entries);
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void loadLoreEntriesFromClasspath(Map<String, String> entries) {
+        try (var stream = LoreBookMenu.class.getResourceAsStream("/assets/aether/lang/en_us.json")) {
+            if (stream != null) {
+                try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                    loadLoreEntriesFromJson(reader, entries);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void loadLoreEntriesFromJson(java.io.Reader reader, Map<String, String> entries) {
+        JsonElement root = JsonParser.parseReader(reader);
+        if (root.isJsonObject()) {
+            JsonObject object = root.getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+                if (entry.getKey().startsWith("lore.") && entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString()) {
+                    entries.put(entry.getKey(), entry.getValue().getAsString());
+                }
+            }
+        }
     }
 }
