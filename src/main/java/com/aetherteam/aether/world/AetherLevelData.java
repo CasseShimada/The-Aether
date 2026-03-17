@@ -1,8 +1,6 @@
 package com.aetherteam.aether.world;
 
-import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.DerivedLevelData;

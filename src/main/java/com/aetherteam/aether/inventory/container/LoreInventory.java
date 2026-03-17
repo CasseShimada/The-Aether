@@ -1,5 +1,6 @@
 package com.aetherteam.aether.inventory.container;
 
+import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.network.packet.serverbound.LoreExistsPacket;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,6 +35,8 @@ public class LoreInventory extends SimpleContainer {
             if (this.menu != null) {
                 this.menu.setLoreEntryExists(exists);
             }
+            Aether.LOGGER.info("Book of Lore client slot update: player='{}', slot={}, stack={}, exists={}, menuPresent={}",
+                    this.player.getScoreboardName(), index, LoreBookMenu.describeStack(stack), exists, this.menu != null);
             PacketDistributor.sendToServer(new LoreExistsPacket(this.player.getId(), stack.copy(), exists));
         }
         super.setItem(index, stack);

@@ -28,6 +28,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
     private LorePageButton previousButton, nextButton;
     private int currentPageNumber;
+    private String lastLoggedLoreState;
 
     public LoreBookScreen(LoreBookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -80,9 +81,12 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         ItemStack itemStack = this.getMenu().slots.getFirst().getItem();
         if (!itemStack.isEmpty()) { // Checks if there is an item placed in the book.
             String entryKey = this.getMenu().getLoreEntryKey(itemStack); // Get the translation key for the item's lore entry.
+            boolean exists = this.getMenu().loreEntryKeyExists(itemStack);
+            String resolvedText = exists ? this.getMenu().resolveLoreEntryText(entryKey) : "";
+            this.logLoreState(itemStack, entryKey, exists, resolvedText);
 
-            if (this.getMenu().loreEntryKeyExists(itemStack)) { // Checks if the lore entry exists for that item.
-                Component entry = Component.literal(this.getMenu().resolveLoreEntryText(entryKey));
+            if (exists) { // Checks if the lore entry exists for that item.
+                Component entry = Component.literal(resolvedText);
                 this.pages.clear();
                 this.createPages(entry); // Sets up pages.
                 this.currentPageNumber = Math.min(this.currentPageNumber, Math.max(this.pages.size() - 1, 0));
@@ -175,5 +179,15 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
     private void drawBookText(GuiGraphics guiGraphics, Font fontRenderer, FormattedCharSequence sequence, int x, int y) {
         guiGraphics.drawString(fontRenderer, sequence, x, y, 4210752, false);
+    }
+
+    private void logLoreState(ItemStack itemStack, String entryKey, boolean exists, String resolvedText) {
+        String state = LoreBookMenu.describeStack(itemStack) + "|" + entryKey + "|" + exists + "|" + resolvedText;
+        if (!state.equals(this.lastLoggedLoreState)) {
+            this.lastLoggedLoreState = state;
+            Aether.LOGGER.info("Book of Lore screen state: stack={}, key='{}', exists={}, textLength={}, preview='{}'",
+                    LoreBookMenu.describeStack(itemStack), entryKey, exists, resolvedText.length(),
+                    resolvedText.length() > 80 ? resolvedText.substring(0, 80) + "..." : resolvedText);
+        }
     }
 }

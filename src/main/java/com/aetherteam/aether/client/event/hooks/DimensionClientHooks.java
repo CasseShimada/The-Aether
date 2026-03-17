@@ -9,6 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FogType;
 import org.apache.commons.lang3.tuple.Triple;
@@ -109,23 +112,32 @@ public class DimensionClientHooks {
                 if (fluidState == FogType.NONE) {
                     float rainLevel = clientLevel.getRainLevel(1.0F);
                     if (rainLevel > 0.0F) {
-                        // NeoForge baseline brightens Aether weather fog; keep it hue-neutral to avoid yellow artifacts.
-                        float weatherBrightness = 1.0F + rainLevel * 0.8F;
-                        red *= weatherBrightness;
-                        green *= weatherBrightness;
-                        blue *= weatherBrightness;
+                        float redBrightness = 1.0F + rainLevel * 0.8F;
+                        float greenBrightness = 1.0F + rainLevel * 0.8F;
+                        float blueBrightness = 1.0F + rainLevel * 0.56F;
+                        red *= redBrightness;
+                        green *= greenBrightness;
+                        blue *= blueBrightness;
                     }
                     float thunderLevel = clientLevel.getThunderLevel(1.0F);
                     if (thunderLevel > 0.0F) {
-                        float thunderBrightness = 1.0F + thunderLevel * 0.72F;
-                        red *= thunderBrightness;
-                        green *= thunderBrightness;
-                        blue *= thunderBrightness;
+                        float redBrightness = 1.0F + thunderLevel * 0.66F;
+                        float greenBrightness = 1.0F + thunderLevel * 0.66F;
+                        float blueBrightness = 1.0F + thunderLevel * 0.76F;
+                        red *= redBrightness;
+                        green *= greenBrightness;
+                        blue *= blueBrightness;
                     }
+                    int defaultFogColor = 0xC0D8FF;
+                    var fogEntry = clientLevel.dimensionType().attributes().get(EnvironmentAttributes.FOG_COLOR);
+                    if (fogEntry != null && fogEntry.argument() instanceof Integer fogColor) {
+                        defaultFogColor = fogColor;
+                    }
+                    Vec3 defaultFog = new Vec3(ARGB.redFloat(defaultFogColor), ARGB.greenFloat(defaultFogColor), ARGB.blueFloat(defaultFogColor));
                     return Triple.of(
-                            Mth.clamp(red, 0.0F, 1.0F),
-                            Mth.clamp(green, 0.0F, 1.0F),
-                            Mth.clamp(blue, 0.0F, 1.0F)
+                            Mth.clamp((float) Math.min(red, defaultFog.x()), 0.0F, 1.0F),
+                            Mth.clamp((float) Math.min(green, defaultFog.y()), 0.0F, 1.0F),
+                            Mth.clamp((float) Math.min(blue, defaultFog.z()), 0.0F, 1.0F)
                     );
                 }
             }

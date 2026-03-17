@@ -32,5 +32,8 @@ public class ClientLevelMixin {
 
         result.addTimeBasedLayer(EnvironmentAttributes.SKY_COLOR, (current, tickId) ->
                 AetherSkyRenderHooks.getAetherSkyColor(level, 0.0F));
+
+        result.addTimeBasedLayer(EnvironmentAttributes.CLOUD_COLOR, (current, tickId) ->
+                AetherSkyRenderHooks.getAetherCloudColor(level, 0.0F));
     }
 }

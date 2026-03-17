@@ -38,14 +38,25 @@ public record LoreExistsPacket(int playerID, ItemStack itemStack, boolean exists
         if (playerEntity.level().getServer() != null
             && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer
             && playerEntity.containerMenu instanceof LoreBookMenu menu) {
+            Aether.LOGGER.info("Book of Lore server packet: player='{}', payloadStack={}, exists={}, menuStack={}",
+                    serverPlayer.getScoreboardName(), LoreBookMenu.describeStack(payload.itemStack()), payload.exists(),
+                    LoreBookMenu.describeStack(menu.getSlot(0).getItem()));
             menu.setLoreEntryExists(payload.exists());
 
             if (payload.exists() && !payload.itemStack().isEmpty()) {
                 ItemStack current = menu.getSlot(0).getItem();
                 if (ItemStack.isSameItemSameComponents(current, payload.itemStack())) {
+                    Aether.LOGGER.info("Book of Lore advancement trigger accepted for player='{}' with {}",
+                            serverPlayer.getScoreboardName(), LoreBookMenu.describeStack(payload.itemStack()));
                     AetherAdvancementTriggers.LORE_ENTRY.get().trigger(serverPlayer, payload.itemStack());
+                } else {
+                    Aether.LOGGER.warn("Book of Lore advancement trigger rejected because menu stack {} did not match payload {}",
+                            LoreBookMenu.describeStack(current), LoreBookMenu.describeStack(payload.itemStack()));
                 }
             }
+        } else {
+            Aether.LOGGER.warn("Book of Lore server packet could not be applied: sender='{}', payloadPlayerId={}, stack={}, exists={}",
+                    playerEntity.getScoreboardName(), payload.playerID(), LoreBookMenu.describeStack(payload.itemStack()), payload.exists());
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.aetherteam.aether.inventory.menu;
 
+import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.inventory.container.LoreInventory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.aetherteam.aether.inventory.container.LoreInventory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
@@ -34,6 +35,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
     private static final Map<Function<RegistryAccess, Predicate<ItemStack>>, String> LORE_ENTRY_OVERRIDES = new HashMap<>();
     private static Set<String> CACHED_LORE_KEYS = null;
     private static Map<String, String> CACHED_LORE_ENTRY_TEXTS = null;
+    private static boolean loggedLoreCache;
     private final LoreInventory loreInventory;
     private boolean loreEntryExists;
 
@@ -119,6 +121,15 @@ public class LoreBookMenu extends AbstractContainerMenu {
         this.loreEntryExists = loreEntryExists;
     }
 
+    public static String describeStack(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return "<empty>";
+        }
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        String itemName = itemId != null ? itemId.toString() : stack.getItem().toString();
+        return itemName + " x" + stack.getCount() + " [" + stack.getHoverName().getString() + "]";
+    }
+
     @Environment(EnvType.CLIENT)
     public static void addLoreEntryOverride(Function<RegistryAccess, Predicate<ItemStack>> predicate, String entry) {
         LORE_ENTRY_OVERRIDES.putIfAbsent(predicate, entry);
@@ -128,11 +139,13 @@ public class LoreBookMenu extends AbstractContainerMenu {
     public String getLoreEntryKey(ItemStack stack) {
         Optional<String> key = LORE_ENTRY_OVERRIDES.entrySet().stream().filter(e -> e.getKey().apply(this.loreInventory.player.registryAccess()).test(stack)).findAny().map(Map.Entry::getValue);
         if (key.isPresent() && this.hasLoreEntryTranslation(key.get())) {
+            Aether.LOGGER.info("Book of Lore resolved override key '{}' for {}", key.get(), describeStack(stack));
             return key.get();
         }
 
         String defaultKey = "lore." + stack.getItem().getDescriptionId();
         if (this.hasLoreEntryTranslation(defaultKey)) {
+            Aether.LOGGER.info("Book of Lore resolved default key '{}' for {}", defaultKey, describeStack(stack));
             return defaultKey;
         }
 
@@ -140,6 +153,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
         if (itemId != null) {
             String itemKey = "lore.item." + itemId.getNamespace() + "." + itemId.getPath();
             if (this.hasLoreEntryTranslation(itemKey)) {
+                Aether.LOGGER.info("Book of Lore resolved registry item key '{}' for {}", itemKey, describeStack(stack));
                 return itemKey;
             }
         }
@@ -149,16 +163,21 @@ public class LoreBookMenu extends AbstractContainerMenu {
             if (blockId != null) {
                 String blockKey = "lore.block." + blockId.getNamespace() + "." + blockId.getPath();
                 if (this.hasLoreEntryTranslation(blockKey)) {
+                    Aether.LOGGER.info("Book of Lore resolved registry block key '{}' for {}", blockKey, describeStack(stack));
                     return blockKey;
                 }
             }
         }
+        Aether.LOGGER.info("Book of Lore did not find a direct lore key for {}; falling back to '{}'", describeStack(stack), defaultKey);
         return defaultKey;
     }
 
     @Environment(EnvType.CLIENT)
     public boolean loreEntryKeyExists(ItemStack stack) {
-        return this.hasLoreEntryTranslation(this.getLoreEntryKey(stack));
+        String key = this.getLoreEntryKey(stack);
+        boolean exists = this.hasLoreEntryTranslation(key);
+        Aether.LOGGER.info("Book of Lore key existence check for {} -> key='{}', exists={}", describeStack(stack), key, exists);
+        return exists;
     }
 
     @Environment(EnvType.CLIENT)
@@ -199,6 +218,10 @@ public class LoreBookMenu extends AbstractContainerMenu {
             loadLoreEntriesFromClasspath(entries);
         }
 
+        if (!loggedLoreCache) {
+            loggedLoreCache = true;
+            Aether.LOGGER.info("Book of Lore cached {} lore entries", entries.size());
+        }
         CACHED_LORE_ENTRY_TEXTS = Collections.unmodifiableMap(entries);
         return CACHED_LORE_ENTRY_TEXTS;
     }
@@ -208,7 +231,9 @@ public class LoreBookMenu extends AbstractContainerMenu {
         Identifier languageFile = Identifier.fromNamespaceAndPath("aether", "lang/en_us.json");
         try (var reader = Minecraft.getInstance().getResourceManager().openAsReader(languageFile)) {
             loadLoreEntriesFromJson(reader, entries);
-        } catch (Exception ignored) {
+            Aether.LOGGER.info("Book of Lore loaded {} entries from resource manager file {}", entries.size(), languageFile);
+        } catch (Exception exception) {
+            Aether.LOGGER.warn("Book of Lore failed to load {} from the resource manager", languageFile, exception);
         }
     }
 
@@ -218,9 +243,13 @@ public class LoreBookMenu extends AbstractContainerMenu {
             if (stream != null) {
                 try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                     loadLoreEntriesFromJson(reader, entries);
+                    Aether.LOGGER.info("Book of Lore loaded {} entries from the classpath fallback", entries.size());
                 }
+            } else {
+                Aether.LOGGER.warn("Book of Lore classpath fallback '/assets/aether/lang/en_us.json' was missing");
             }
-        } catch (Exception ignored) {
+        } catch (Exception exception) {
+            Aether.LOGGER.warn("Book of Lore failed to load lore entries from the classpath fallback", exception);
         }
     }
 

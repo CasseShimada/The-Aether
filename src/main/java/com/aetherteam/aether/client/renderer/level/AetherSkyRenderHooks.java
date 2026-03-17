@@ -82,6 +82,40 @@ public final class AetherSkyRenderHooks {
         return ARGB.colorFromFloat(1.0F, Mth.clamp(red, 0.0F, 1.0F), Mth.clamp(green, 0.0F, 1.0F), Mth.clamp(blue, 0.0F, 1.0F));
     }
 
+    public static int getAetherCloudColor(ClientLevel level, float partialTick) {
+        float timeOfDay = getAetherTimeOfDay(level, partialTick);
+        float brightness = Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.5F;
+        brightness = Mth.clamp(brightness, 0.0F, 1.0F);
+
+        float red = 1.0F;
+        float green = 1.0F;
+        float blue = 1.0F;
+
+        float rainLevel = level.getRainLevel(partialTick);
+        if (rainLevel > 0.0F) {
+            float rainGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.725F;
+            float rainMix = 1.0F - rainLevel * 0.8F;
+            red = red * rainMix + rainGray * (1.0F - rainMix);
+            green = green * rainMix + rainGray * (1.0F - rainMix);
+            blue = blue * rainMix + rainGray * (1.0F - rainMix);
+        }
+
+        red *= brightness * 0.9F + 0.1F;
+        green *= brightness * 0.9F + 0.1F;
+        blue *= brightness * 0.85F + 0.15F;
+
+        float thunderLevel = level.getThunderLevel(partialTick);
+        if (thunderLevel > 0.0F) {
+            float thunderGray = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.5F;
+            float thunderMix = 1.0F - thunderLevel * 0.7F;
+            red = red * thunderMix + thunderGray * (1.0F - thunderMix);
+            green = green * thunderMix + thunderGray * (1.0F - thunderMix);
+            blue = blue * thunderMix + thunderGray * (1.0F - thunderMix);
+        }
+
+        return ARGB.colorFromFloat(0.8F, Mth.clamp(red, 0.0F, 1.0F), Mth.clamp(green, 0.0F, 1.0F), Mth.clamp(blue, 0.0F, 1.0F));
+    }
+
     public static float getAetherSunAngle(ClientLevel level, float partialTick) {
         return getAetherTimeOfDay(level, partialTick) * (Mth.PI * 2.0F);
     }
