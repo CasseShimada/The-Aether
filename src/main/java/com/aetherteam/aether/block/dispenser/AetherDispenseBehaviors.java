@@ -71,15 +71,16 @@ public class AetherDispenseBehaviors {
             return false;
         }
 
-        Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(stack);
+        ItemStack candidateStack = stack.copyWithCount(1);
+        Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(candidateStack);
         for (LivingEntity livingEntity : list) {
             AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
             if (capability == null) {
                 continue;
             }
 
-            Pair<SlotReference, EquipAction> equipReference = capability.canEquipAccessory(stack, true);
-            if (equipReference == null || !accessory.canEquip(stack, equipReference.first())) {
+            Pair<SlotReference, EquipAction> equipReference = capability.canEquipAccessory(candidateStack, true);
+            if (equipReference == null || !accessory.canEquip(candidateStack, equipReference.first())) {
                 continue;
             }
 
