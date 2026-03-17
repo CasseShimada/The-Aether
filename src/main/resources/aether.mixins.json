@@ -9,6 +9,7 @@
     "common.AbstractArrowMixin",
     "common.AlterGroundDecoratorMixin",
     "common.AxeItemMixin",
+    "common.AvatarMixin",
     "common.BlockMixin",
     "common.EntityMixin",
     "common.EnvironmentAttributeSystemMixin",
