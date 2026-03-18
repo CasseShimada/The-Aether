@@ -30,6 +30,8 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IExtraIngredientRegistration;
+import mezz.jei.api.registration.IIngredientAliasRegistration;
+import mezz.jei.api.registration.IModInfoRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -45,6 +47,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +56,7 @@ import java.util.Set;
 @JeiPlugin
 public class AetherJEIPlugin implements IModPlugin {
     private static final Logger LOGGER = LogUtils.getLogger();
+    private static final List<String> AETHER_SEARCH_ALIASES = List.of("aether", "the aether", "天境");
 
     @Override
     public Identifier getPluginUid() {
@@ -61,13 +65,21 @@ public class AetherJEIPlugin implements IModPlugin {
 
     @Override
     public void registerExtraIngredients(IExtraIngredientRegistration registration) {
-        List<ItemStack> extraItems = BuiltInRegistries.ITEM.stream()
-                .map(ItemStack::new)
-                .filter(stack -> !stack.isEmpty())
-                .filter(stack -> Objects.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace(), Aether.MODID))
-                .toList();
+        List<ItemStack> extraItems = getAllAetherItemStacks();
         registration.addExtraItemStacks(extraItems);
         LOGGER.info("Registered {} extra Aether item stacks with JEI.", extraItems.size());
+    }
+
+    @Override
+    public void registerIngredientAliases(IIngredientAliasRegistration registration) {
+        List<ItemStack> extraItems = getAllAetherItemStacks();
+        registration.addAliases(VanillaTypes.ITEM_STACK, extraItems, AETHER_SEARCH_ALIASES);
+        LOGGER.info("Registered {} JEI search aliases for {} Aether item stacks.", AETHER_SEARCH_ALIASES.size(), extraItems.size());
+    }
+
+    @Override
+    public void registerModInfo(IModInfoRegistration registration) {
+        registration.addModAliases(Aether.MODID, AETHER_SEARCH_ALIASES);
     }
 
     @Override
@@ -150,6 +162,18 @@ public class AetherJEIPlugin implements IModPlugin {
                 .map(BuiltInRegistries.ITEM::getKey)
                 .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
                 .collect(LinkedHashSet::new, Set::add, Set::addAll);
+        Collection<ItemStack> filteredItems = jeiRuntime.getIngredientFilter().getFilteredIngredients(VanillaTypes.ITEM_STACK);
+        List<ItemStack> visibleItems = jeiRuntime.getIngredientListOverlay().getVisibleIngredients(VanillaTypes.ITEM_STACK);
+        long filteredAetherItems = filteredItems.stream()
+                .map(ItemStack::getItem)
+                .map(BuiltInRegistries.ITEM::getKey)
+                .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
+                .count();
+        long visibleAetherItems = visibleItems.stream()
+                .map(ItemStack::getItem)
+                .map(BuiltInRegistries.ITEM::getKey)
+                .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
+                .count();
         List<Identifier> missingItems = BuiltInRegistries.ITEM.stream()
                 .map(BuiltInRegistries.ITEM::getKey)
                 .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
@@ -157,7 +181,8 @@ public class AetherJEIPlugin implements IModPlugin {
                 .toList();
 
         if (missingItems.isEmpty()) {
-            LOGGER.info("JEI runtime registered {} Aether items.", jeiItems.size());
+            LOGGER.info("JEI runtime registered {} Aether items. Filter text='{}', filteredVisibleToSearch={}, visibleInOverlay={}.",
+                    jeiItems.size(), jeiRuntime.getIngredientFilter().getFilterText(), filteredAetherItems, visibleAetherItems);
         } else {
             LOGGER.warn("JEI runtime registered {} Aether items and is still missing {} entries: {}", jeiItems.size(), missingItems.size(), missingItems.stream().limit(20).toList());
         }
@@ -165,5 +190,13 @@ public class AetherJEIPlugin implements IModPlugin {
 
     private <T> List<T> getRecipes(List<? extends RecipeHolder<?>> allRecipes, Class<T> recipeClass) {
         return allRecipes.stream().map(RecipeHolder::value).filter(recipeClass::isInstance).map(recipeClass::cast).toList();
+    }
+
+    private static List<ItemStack> getAllAetherItemStacks() {
+        return BuiltInRegistries.ITEM.stream()
+                .map(ItemStack::new)
+                .filter(stack -> !stack.isEmpty())
+                .filter(stack -> Objects.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace(), Aether.MODID))
+                .toList();
     }
 }

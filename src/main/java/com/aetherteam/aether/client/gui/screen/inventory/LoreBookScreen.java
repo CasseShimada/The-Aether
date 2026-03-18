@@ -64,7 +64,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         this.updateLoreContent();
         this.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        this.renderLoreContent(guiGraphics);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
@@ -85,6 +84,8 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         // Draws "Item:" text.
         Component item = Component.translatable("gui.aether.book_of_lore.item");
         this.drawRightBookText(guiGraphics, this.font, item, 78, 67);
+
+        this.renderLoreContent(guiGraphics);
 
         // Determines when the page switching buttons can be clicked.
         this.previousButton.active = this.currentPageNumber > 0;
@@ -135,16 +136,16 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
             return;
         }
 
-        int titleX = this.leftPos + 136;
-        int titleY = this.topPos + 10;
-        int bodyY = this.topPos + 32;
+        int titleX = 136;
+        int titleY = 10;
+        int bodyY = 32;
         List<FormattedCharSequence> currentPage = this.pages.get(this.currentPageNumber);
         int lineCount = currentPage != null ? currentPage.size() : 0;
         String renderState = LoreBookMenu.describeStack(this.currentLoreStack) + "|page=" + this.currentPageNumber + "|pages=" + this.pages.size() + "|lines=" + lineCount + "|x=" + titleX + "|titleY=" + titleY + "|bodyY=" + bodyY;
         if (!renderState.equals(this.lastLoggedRenderState)) {
             this.lastLoggedRenderState = renderState;
-            Aether.LOGGER.info("Book of Lore render pass: stack={}, page={}, pageCount={}, lineCount={}, titlePos=({}, {}), bodyY={}",
-                    LoreBookMenu.describeStack(this.currentLoreStack), this.currentPageNumber, this.pages.size(), lineCount, titleX, titleY, bodyY);
+            Aether.LOGGER.info("Book of Lore render pass: stack={}, page={}, pageCount={}, lineCount={}, localTitlePos=({}, {}), globalTitlePos=({}, {}), globalBodyY={}",
+                    LoreBookMenu.describeStack(this.currentLoreStack), this.currentPageNumber, this.pages.size(), lineCount, titleX, titleY, this.leftPos + titleX, this.topPos + titleY, this.topPos + bodyY);
         }
 
         guiGraphics.nextStratum();
