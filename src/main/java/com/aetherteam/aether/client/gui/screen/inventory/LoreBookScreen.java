@@ -34,6 +34,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
     private String currentLoreText = "";
     private String lastLoggedLoreState;
     private String lastLorePageState;
+    private String lastLoggedRenderState;
 
     public LoreBookScreen(LoreBookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -134,12 +135,25 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
             return;
         }
 
+        int titleX = this.leftPos + 136;
+        int titleY = this.topPos + 10;
+        int bodyY = this.topPos + 32;
+        List<FormattedCharSequence> currentPage = this.pages.get(this.currentPageNumber);
+        int lineCount = currentPage != null ? currentPage.size() : 0;
+        String renderState = LoreBookMenu.describeStack(this.currentLoreStack) + "|page=" + this.currentPageNumber + "|pages=" + this.pages.size() + "|lines=" + lineCount + "|x=" + titleX + "|titleY=" + titleY + "|bodyY=" + bodyY;
+        if (!renderState.equals(this.lastLoggedRenderState)) {
+            this.lastLoggedRenderState = renderState;
+            Aether.LOGGER.info("Book of Lore render pass: stack={}, page={}, pageCount={}, lineCount={}, titlePos=({}, {}), bodyY={}",
+                    LoreBookMenu.describeStack(this.currentLoreStack), this.currentPageNumber, this.pages.size(), lineCount, titleX, titleY, bodyY);
+        }
+
+        guiGraphics.nextStratum();
         if (this.currentPageNumber == 0) {
             Component title = this.currentLoreStack.getHoverName().plainCopy();
-            this.createText(guiGraphics, this.font.split(title, 98), this.leftPos + 136, this.topPos + 10);
-            this.createText(guiGraphics, this.pages.get(0), this.leftPos + 136, this.topPos + 32);
+            this.createText(guiGraphics, this.font.split(title, 98), titleX, titleY);
+            this.createText(guiGraphics, this.pages.get(0), titleX, bodyY);
         } else {
-            this.createText(guiGraphics, this.pages.get(this.currentPageNumber), this.leftPos + 136, this.topPos + 10);
+            this.createText(guiGraphics, this.pages.get(this.currentPageNumber), titleX, titleY);
         }
     }
 
