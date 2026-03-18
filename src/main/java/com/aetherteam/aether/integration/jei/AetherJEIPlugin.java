@@ -38,6 +38,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -57,6 +58,8 @@ import java.util.Set;
 public class AetherJEIPlugin implements IModPlugin {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<String> AETHER_SEARCH_ALIASES = List.of("aether", "the aether", "天境");
+    private static IJeiRuntime runtime;
+    private static String lastOverlayLogState;
 
     @Override
     public Identifier getPluginUid() {
@@ -157,6 +160,8 @@ public class AetherJEIPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        runtime = jeiRuntime;
+        lastOverlayLogState = null;
         Set<Identifier> jeiItems = jeiRuntime.getIngredientManager().getAllIngredients(VanillaTypes.ITEM_STACK).stream()
                 .map(ItemStack::getItem)
                 .map(BuiltInRegistries.ITEM::getKey)
@@ -188,6 +193,12 @@ public class AetherJEIPlugin implements IModPlugin {
         }
     }
 
+    @Override
+    public void onRuntimeUnavailable() {
+        runtime = null;
+        lastOverlayLogState = null;
+    }
+
     private <T> List<T> getRecipes(List<? extends RecipeHolder<?>> allRecipes, Class<T> recipeClass) {
         return allRecipes.stream().map(RecipeHolder::value).filter(recipeClass::isInstance).map(recipeClass::cast).toList();
     }
@@ -198,5 +209,30 @@ public class AetherJEIPlugin implements IModPlugin {
                 .filter(stack -> !stack.isEmpty())
                 .filter(stack -> Objects.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace(), Aether.MODID))
                 .toList();
+    }
+
+    public static void logVisibleOverlayState(Screen screen) {
+        if (runtime == null || screen == null) {
+            return;
+        }
+
+        List<ItemStack> visibleItems = runtime.getIngredientListOverlay().getVisibleIngredients(VanillaTypes.ITEM_STACK);
+        List<Identifier> sampleVisibleItems = visibleItems.stream()
+                .map(ItemStack::getItem)
+                .map(BuiltInRegistries.ITEM::getKey)
+                .limit(8)
+                .toList();
+        long visibleAetherItems = visibleItems.stream()
+                .map(ItemStack::getItem)
+                .map(BuiltInRegistries.ITEM::getKey)
+                .filter(id -> Objects.equals(id.getNamespace(), Aether.MODID))
+                .count();
+        String filterText = runtime.getIngredientFilter().getFilterText();
+        String state = screen.getClass().getName() + "|" + filterText + "|" + visibleItems.size() + "|" + visibleAetherItems + "|" + sampleVisibleItems;
+        if (!state.equals(lastOverlayLogState)) {
+            lastOverlayLogState = state;
+            LOGGER.info("JEI overlay state: screen={}, filter='{}', visibleCount={}, visibleAetherCount={}, sample={}",
+                    screen.getClass().getSimpleName(), filterText, visibleItems.size(), visibleAetherItems, sampleVisibleItems);
+        }
     }
 }

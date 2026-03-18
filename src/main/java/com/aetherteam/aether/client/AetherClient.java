@@ -9,6 +9,7 @@ import com.aetherteam.aether.client.event.hooks.GuiHooks;
 import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
 import com.aetherteam.aether.client.event.hooks.MenuHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
+import com.aetherteam.aether.client.gui.screen.inventory.LoreBookScreen;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -133,6 +134,10 @@ public class AetherClient {
                         accessoryButton.updateButtonState();
                     }
                 });
+                if (currentScreen instanceof LoreBookScreen loreBookScreen) {
+                    loreBookScreen.renderOverlayLoreContent(guiGraphics);
+                }
+                logJeiOverlayState(currentScreen);
                 if (!FabricLoader.getInstance().isModLoaded("tipsmod")) {
                     GuiHooks.drawTrivia(currentScreen, guiGraphics);
                 }
@@ -189,6 +194,18 @@ public class AetherClient {
                     Screens.getButtons(screen).add(abstractWidget);
                 }
             });
+        }
+    }
+
+    private static void logJeiOverlayState(Screen screen) {
+        if (!FabricLoader.getInstance().isModLoaded("jei")) {
+            return;
+        }
+        try {
+            Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
+            pluginClass.getMethod("logVisibleOverlayState", Screen.class).invoke(null, screen);
+        } catch (ReflectiveOperationException exception) {
+            Aether.LOGGER.debug("Failed to query JEI overlay state", exception);
         }
     }
 
