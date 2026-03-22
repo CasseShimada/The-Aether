@@ -10,11 +10,11 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = project.mod_version
+version = "${project.mod_version}-fabric"
 group = mod_group
 
 base {
-    archivesName = mod_id
+    archivesName = "${mod_id}-${minecraft_version}"
 }
 
 java {
