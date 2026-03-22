@@ -195,12 +195,12 @@ public final class AetherSkyRenderHooks {
     public static long getAetherDayTime(ClientLevel level) {
         if (level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
             AetherTimeAttachment attachment = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
+            if (attachment.isEternalDay()) {
+                return AetherTimeAttachment.getTicksPerDay() / 4L;
+            }
             long attachmentDayTime = attachment.getDayTime();
             if (attachmentDayTime >= 0L) {
                 return attachmentDayTime;
-            }
-            if (attachment.isEternalDay()) {
-                return AetherTimeAttachment.getTicksPerDay() / 4L;
             }
         }
         if (!AetherConfig.SERVER.disable_eternal_day.get()) {

@@ -78,6 +78,7 @@
     "client.accessor.BossHealthOverlayAccessor",
     "client.accessor.ButtonAccessor",
     "client.accessor.ButtonBuilderAccessor",
+    "client.accessor.ClientLevelAccessor",
     "client.accessor.EntityRendererAccessor",
     "client.accessor.FogDataAccessor",
     "client.accessor.GhostSlotsAccessor",
