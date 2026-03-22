@@ -27,26 +27,26 @@ public class MobAccessoryAttachment {
         this.accessoryDropChances = new HashMap<>(dropChances);
     }
 
-    public void setGuaranteedDrop(SlotTypeReference identifier) {
+    public synchronized void setGuaranteedDrop(SlotTypeReference identifier) {
         if (this.accessoryDropChances.containsKey(identifier.slotName())) {
-            this.getAccessoryDropChances().put(identifier.slotName(), 2.0F);
+            this.accessoryDropChances.put(identifier.slotName(), 2.0F);
         }
     }
 
-    public float getEquipmentDropChance(SlotTypeReference identifier) {
+    public synchronized float getEquipmentDropChance(SlotTypeReference identifier) {
         if (this.accessoryDropChances.containsKey(identifier.slotName())) {
-            return this.getAccessoryDropChances().get(identifier.slotName());
+            return this.accessoryDropChances.get(identifier.slotName());
         }
         return 0.0F;
     }
 
-    public void setDropChance(SlotTypeReference identifier, float chance) {
+    public synchronized void setDropChance(SlotTypeReference identifier, float chance) {
         if (this.accessoryDropChances.containsKey(identifier.slotName())) {
-            this.getAccessoryDropChances().put(identifier.slotName(), chance);
+            this.accessoryDropChances.put(identifier.slotName(), chance);
         }
     }
 
-    public Map<String, Float> getAccessoryDropChances() {
-        return this.accessoryDropChances;
+    public synchronized Map<String, Float> getAccessoryDropChances() {
+        return Map.copyOf(this.accessoryDropChances);
     }
 }

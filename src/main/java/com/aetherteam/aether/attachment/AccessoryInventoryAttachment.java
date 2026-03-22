@@ -33,23 +33,27 @@ public class AccessoryInventoryAttachment {
         }
     }
 
-    public Map<String, SlotStorage> rawSlots() {
-        return this.slots;
+    public synchronized Map<String, SlotStorage> rawSlots() {
+        Map<String, SlotStorage> snapshot = new LinkedHashMap<>();
+        for (Map.Entry<String, SlotStorage> entry : this.slots.entrySet()) {
+            snapshot.put(entry.getKey(), entry.getValue().copy());
+        }
+        return snapshot;
     }
 
-    public SlotStorage getOrCreateSlot(String slotName, int fallbackSize) {
+    public synchronized SlotStorage getOrCreateSlot(String slotName, int fallbackSize) {
         return this.slots.computeIfAbsent(slotName, key -> SlotStorage.empty(fallbackSize));
     }
 
-    public void putSlot(String slotName, SlotStorage storage) {
+    public synchronized void putSlot(String slotName, SlotStorage storage) {
         this.slots.put(slotName, storage.copy());
     }
 
-    public Set<String> slotNames() {
+    public synchronized Set<String> slotNames() {
         return Set.copyOf(this.slots.keySet());
     }
 
-    public void retainSlots(Set<String> slotNames) {
+    public synchronized void retainSlots(Set<String> slotNames) {
         this.slots.keySet().removeIf(slot -> !slotNames.contains(slot));
     }
 
@@ -58,6 +62,13 @@ public class AccessoryInventoryAttachment {
                               Map<Integer, ItemStack> cosmetic,
                               Set<Integer> hiddenRenderSlots) {
         private static final Codec<Set<Integer>> HIDDEN_SLOT_CODEC = Codec.INT.listOf().xmap(HashSet::new, ArrayList::new);
+
+        public SlotStorage {
+            size = Math.max(1, size);
+            equipped = Map.copyOf(copyStackMap(equipped));
+            cosmetic = Map.copyOf(copyStackMap(cosmetic));
+            hiddenRenderSlots = Set.copyOf(hiddenRenderSlots);
+        }
 
         public static final Codec<SlotStorage> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.INT.optionalFieldOf("size", 1).forGetter(SlotStorage::size),
@@ -71,12 +82,7 @@ public class AccessoryInventoryAttachment {
         }
 
         public SlotStorage copy() {
-            return new SlotStorage(
-                    this.size,
-                    copyStackMap(this.equipped),
-                    copyStackMap(this.cosmetic),
-                    new HashSet<>(this.hiddenRenderSlots)
-            );
+            return new SlotStorage(this.size, this.equipped, this.cosmetic, this.hiddenRenderSlots);
         }
 
         public SlotStorage normalizedSize(int fallbackSize) {
