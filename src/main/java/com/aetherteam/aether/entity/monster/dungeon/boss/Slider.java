@@ -256,19 +256,8 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      */
     private Optional<LivingEntity> canDamageSlider(DamageSource source) {
         if (this.level().getDifficulty() != Difficulty.PEACEFUL) {
-            if (source.getDirectEntity() instanceof LivingEntity attacker) {
-                if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
-                    if (attacker.getMainHandItem().is(ItemTags.PICKAXES)
-                        || attacker.getMainHandItem().is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
-                        || attacker.getMainHandItem().isCorrectToolForDrops(AetherBlocks.CARVED_STONE.get().defaultBlockState())) { // Check for correct tool.
-                        return Optional.of(attacker);
-                    } else {
-                        return this.sendInvalidToolMessage(attacker);
-                    }
-                } else {
-                    this.sendTooFarMessage(attacker);
-                }
-            } else if (source.getDirectEntity() instanceof Projectile projectile) {
+            Entity directEntity = source.getDirectEntity();
+            if (directEntity instanceof Projectile projectile) {
                 if (projectile.getOwner() instanceof LivingEntity attacker) {
                     if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
                         if (projectile.getType().is(AetherTags.Entities.SLIDER_DAMAGING_PROJECTILES)) {
@@ -280,6 +269,22 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                     } else {
                         return this.sendTooFarMessage(attacker);
                     }
+                }
+            } else {
+                LivingEntity attacker = source.getEntity() instanceof LivingEntity living ? living : directEntity instanceof LivingEntity living ? living : null;
+                if (attacker == null) {
+                    return Optional.empty();
+                }
+                if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
+                    if (attacker.getMainHandItem().is(ItemTags.PICKAXES)
+                        || attacker.getMainHandItem().is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
+                        || attacker.getMainHandItem().isCorrectToolForDrops(AetherBlocks.CARVED_STONE.get().defaultBlockState())) { // Check for correct tool.
+                        return Optional.of(attacker);
+                    } else {
+                        return this.sendInvalidToolMessage(attacker);
+                    }
+                } else {
+                    this.sendTooFarMessage(attacker);
                 }
             }
         }
