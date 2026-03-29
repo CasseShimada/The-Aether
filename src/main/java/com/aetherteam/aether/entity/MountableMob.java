@@ -96,9 +96,11 @@ public interface MountableMob {
                         vehicle.push(0.0, 0.1 * (jumpBoost.getAmplifier() + 1), 0.0);
                     }
                 }
+                vehicle.hurtMarked = true;
                 vehicle.onJump(vehicle);
             } else if (vehicle.getPlayerJumped() && vehicle.isMountJumping() && vehicle.canJump() && Swim.shouldSwim(vehicle)) {
                 vehicle.jumpFromGround();
+                vehicle.hurtMarked = true;
                 vehicle.onJump(vehicle);
             }
             // Handles step height.

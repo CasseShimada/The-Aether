@@ -142,6 +142,7 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
             double fallSpeed = Math.max(gravity.getValue() * -1.25, -0.1); // Entity isn't allowed to fall too slowly from gravity.
             if (this.getDeltaMovement().y() < fallSpeed) {
                 this.setDeltaMovement(this.getDeltaMovement().x(), fallSpeed, this.getDeltaMovement().z());
+                this.markHurt();
                 this.setEntityOnGround(false);
             }
         }

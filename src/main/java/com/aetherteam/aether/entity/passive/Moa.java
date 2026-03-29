@@ -207,6 +207,7 @@ public class Moa extends MountableAnimal implements WingedBird {
             double fallSpeed = Math.max(gravity.getValue() * -1.25, max); // Entity isn't allowed to fall too slowly from gravity.
             if (this.getDeltaMovement().y() < fallSpeed && !this.playerTriedToCrouch()) {
                 this.setDeltaMovement(this.getDeltaMovement().x(), fallSpeed, this.getDeltaMovement().z());
+                this.markHurt();
                 this.setEntityOnGround(false);
             }
         }
