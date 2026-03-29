@@ -193,14 +193,6 @@ public class LivingEntityMixin {
         return original || this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
     }
 
-    @ModifyReturnValue(method = "canGlideUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;)Z", at = @At("RETURN"))
-    private boolean aether$allowAccessoryElytraGlideUsing(boolean original, ItemStack stack, EquipmentSlot slot) {
-        if (original || slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
-            return original;
-        }
-        return this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
-    }
-
     @Unique
     private boolean aether$hasAccessoryElytra(LivingEntity livingEntity) {
         return AccessoryEffectBridge.findFirstByEquipmentSlot(livingEntity, EquipmentSlot.CHEST).is(Items.ELYTRA);
