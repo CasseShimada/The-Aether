@@ -103,7 +103,8 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
 
     @Override
     public InteractionResult mobInteract(Player playerEntity, InteractionHand hand) {
-        boolean flag = this.isFood(playerEntity.getItemInHand(hand));
+        ItemStack itemstack = playerEntity.getItemInHand(hand);
+        boolean flag = this.isFood(itemstack);
         if (!flag && this.isSaddled() && !this.isVehicle() && !playerEntity.isSecondaryUseActive()) {
             if (!this.level().isClientSide()) {
                 playerEntity.startRiding(this);
@@ -112,8 +113,16 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
         } else {
             InteractionResult interactionResult = super.mobInteract(playerEntity, hand);
             if (!interactionResult.consumesAction()) {
-                ItemStack itemstack = playerEntity.getItemInHand(hand);
-                return itemstack.is(Items.SADDLE) ? itemstack.interactLivingEntity(playerEntity, this, hand) : InteractionResult.PASS;
+                if (itemstack.is(Items.SADDLE) && this.isSaddleable() && !this.isSaddled()) {
+                    if (!this.level().isClientSide()) {
+                        this.equipSaddle(itemstack, SoundSource.NEUTRAL);
+                        if (!playerEntity.getAbilities().instabuild) {
+                            itemstack.shrink(1);
+                        }
+                    }
+                    return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
+                }
+                return InteractionResult.PASS;
             } else {
                 return interactionResult;
             }
