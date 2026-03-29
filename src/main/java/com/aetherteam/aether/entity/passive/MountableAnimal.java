@@ -1,5 +1,6 @@
 package com.aetherteam.aether.entity.passive;
 
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.MountableMob;
 import com.aetherteam.aether.entity.NotGrounded;
 import net.minecraft.core.BlockPos;
@@ -38,6 +39,7 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
     private static final EntityDataAccessor<Boolean> DATA_PLAYER_CROUCHED_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ENTITY_ON_GROUND_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_PASSENGER_ID = SynchedEntityData.defineId(MountableAnimal.class, EntityDataSerializers.BOOLEAN);
+    private boolean riderJumpInput;
 
     protected MountableAnimal(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -79,7 +81,15 @@ public abstract class MountableAnimal extends AetherAnimal implements MountableM
      * @see MountableMob#riderTick(Mob)
      */
     public void riderTick() {
-        this.riderTick(this);
+        if (this.getControllingPassenger() instanceof Player player) {
+            boolean isJumping = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isJumping();
+            this.setPlayerJumped(isJumping && !this.riderJumpInput);
+            this.riderJumpInput = isJumping;
+        } else {
+            this.setPlayerJumped(false);
+            this.setPlayerTriedToCrouch(false);
+            this.riderJumpInput = false;
+        }
     }
 
     /**
