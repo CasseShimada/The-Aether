@@ -3,15 +3,19 @@ package com.aetherteam.aether.accessories.compat;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.equipment.Equippable;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public final class AccessorySlotResolver {
     private static final TagKey<Item> ACCESSORIES_RING = tag("accessories", "ring");
@@ -26,7 +30,17 @@ public final class AccessorySlotResolver {
     private static final TagKey<Item> CURIOS_BACK = tag("curios", "back");
     private static final TagKey<Item> CURIOS_CHARM = tag("curios", "charm");
     private static final TagKey<Item> CURIOS_HAND = tag("curios", "hand");
+    private static final TagKey<Item> COMMON_SHIELDS = tag("c", "tools/shield");
+    private static final TagKey<Item> TWILIGHT_SCEPTERS = tag("twilightforest", "scepters");
     private static final Identifier TWILIGHT_KNIGHTMETAL_RING = Identifier.fromNamespaceAndPath("twilightforest", "knightmetal_ring");
+    private static final Identifier TWILIGHT_KNIGHTMETAL_SHIELD = Identifier.fromNamespaceAndPath("twilightforest", "knightmetal_shield");
+    private static final Set<Identifier> TWILIGHT_CHARM_ITEMS = Set.of(
+        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_life_1"),
+        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_life_2"),
+        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_1"),
+        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_2"),
+        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_3")
+    );
 
     private AccessorySlotResolver() {
     }
@@ -67,8 +81,7 @@ public final class AccessorySlotResolver {
             || stack.is(Items.ELYTRA)
             || stack.is(ACCESSORIES_CAPE)
             || stack.is(CURIOS_CAPE)
-            || stack.is(ACCESSORIES_BACK)
-            || stack.is(CURIOS_BACK);
+            || isBackAccessory(stack) && !matchesShield(stack);
     }
 
     public static boolean matchesShield(Item item) {
@@ -76,7 +89,12 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean matchesShield(ItemStack stack) {
-        return stack.is(AetherTags.Items.ACCESSORIES_SHIELDS);
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        return stack.is(AetherTags.Items.ACCESSORIES_SHIELDS)
+            || stack.is(COMMON_SHIELDS)
+            || Items.SHIELD.equals(stack.getItem())
+            || TWILIGHT_KNIGHTMETAL_SHIELD.equals(id)
+            || isBackAccessory(stack) && prefersEquipmentSlot(stack, EquipmentSlot.OFFHAND);
     }
 
     public static boolean matchesMisc(Item item) {
@@ -84,7 +102,12 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean matchesMisc(ItemStack stack) {
-        return stack.is(AetherTags.Items.ACCESSORIES_MISCELLANEOUS) || stack.is(ACCESSORIES_CHARM) || stack.is(CURIOS_CHARM);
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        return stack.is(AetherTags.Items.ACCESSORIES_MISCELLANEOUS)
+            || stack.is(ACCESSORIES_CHARM)
+            || stack.is(CURIOS_CHARM)
+            || stack.is(TWILIGHT_SCEPTERS)
+            || TWILIGHT_CHARM_ITEMS.contains(id);
     }
 
     public static boolean isCompatibleAccessory(ItemStack stack) {
@@ -116,5 +139,14 @@ public final class AccessorySlotResolver {
 
     private static TagKey<Item> tag(String namespace, String path) {
         return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(namespace, path));
+    }
+
+    private static boolean isBackAccessory(ItemStack stack) {
+        return stack.is(ACCESSORIES_BACK) || stack.is(CURIOS_BACK);
+    }
+
+    private static boolean prefersEquipmentSlot(ItemStack stack, EquipmentSlot slot) {
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        return equippable != null && equippable.slot() == slot;
     }
 }
