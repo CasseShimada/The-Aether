@@ -30,6 +30,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IIngredientAliasRegistration;
+import mezz.jei.api.registration.IExtraIngredientRegistration;
 import mezz.jei.api.registration.IModInfoRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -96,6 +97,19 @@ public class AetherJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(new PlacementConversionRecipeCategory(registration.getJeiHelpers().getGuiHelper(), registration.getJeiHelpers().getPlatformFluidHelper()));
         registration.addRecipeCategories(new ItemBanRecipeCategory(registration.getJeiHelpers().getGuiHelper(), registration.getJeiHelpers().getPlatformFluidHelper()));
         registration.addRecipeCategories(new BlockBanRecipeCategory(registration.getJeiHelpers().getGuiHelper(), registration.getJeiHelpers().getPlatformFluidHelper()));
+    }
+
+    @Override
+    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
+        registration.addExtraItemStacks(List.of(
+                new ItemStack(AetherItems.GOLDEN_FEATHER.get()),
+                new ItemStack(AetherItems.MUSIC_DISC_CHINCHILLA.get()),
+                new ItemStack(AetherItems.MUSIC_DISC_HIGH.get()),
+                new ItemStack(AetherItems.MUSIC_DISC_KLEPTO.get()),
+                new ItemStack(AetherItems.VALKYRIE_QUEEN_SPAWN_EGG.get()),
+                new ItemStack(AetherItems.SLIDER_SPAWN_EGG.get()),
+                new ItemStack(AetherItems.SUN_SPIRIT_SPAWN_EGG.get())
+        ));
     }
 
     @Override

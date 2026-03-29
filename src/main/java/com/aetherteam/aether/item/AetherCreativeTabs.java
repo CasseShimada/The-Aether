@@ -3,10 +3,13 @@ package com.aetherteam.aether.item;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.block.AetherBlocks;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import com.aetherteam.aether.registry.DeferredHolder;
 import com.aetherteam.aether.registry.DeferredRegister;
 
@@ -375,4 +378,14 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.ZEPHYR_SPAWN_EGG.get());
             }).build());
 
+    public static void registerVanillaTabEntries() {
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register(entries -> {
+            entries.addAfter(Items.LEATHER_BOOTS, AetherItems.LEATHER_GLOVES.get());
+            entries.addAfter(Items.CHAINMAIL_BOOTS, AetherItems.CHAINMAIL_GLOVES.get());
+            entries.addAfter(Items.IRON_BOOTS, AetherItems.IRON_GLOVES.get());
+            entries.addAfter(Items.GOLDEN_BOOTS, AetherItems.GOLDEN_GLOVES.get());
+            entries.addAfter(Items.DIAMOND_BOOTS, AetherItems.DIAMOND_GLOVES.get());
+            entries.addAfter(Items.NETHERITE_BOOTS, AetherItems.NETHERITE_GLOVES.get());
+        });
+    }
 }
