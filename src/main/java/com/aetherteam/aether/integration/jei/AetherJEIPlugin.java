@@ -29,7 +29,6 @@ import com.mojang.logging.LogUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.registration.IExtraIngredientRegistration;
 import mezz.jei.api.registration.IIngredientAliasRegistration;
 import mezz.jei.api.registration.IModInfoRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -67,17 +66,10 @@ public class AetherJEIPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
-        List<ItemStack> extraItems = getAllAetherItemStacks();
-        registration.addExtraItemStacks(extraItems);
-        LOGGER.info("Registered {} extra Aether item stacks with JEI.", extraItems.size());
-    }
-
-    @Override
     public void registerIngredientAliases(IIngredientAliasRegistration registration) {
-        List<ItemStack> extraItems = getAllAetherItemStacks();
-        registration.addAliases(VanillaTypes.ITEM_STACK, extraItems, AETHER_SEARCH_ALIASES);
-        LOGGER.info("Registered {} JEI search aliases for {} Aether item stacks.", AETHER_SEARCH_ALIASES.size(), extraItems.size());
+        List<ItemStack> aetherItems = getAllAetherItemStacks();
+        registration.addAliases(VanillaTypes.ITEM_STACK, aetherItems, AETHER_SEARCH_ALIASES);
+        LOGGER.info("Registered {} JEI search aliases for {} Aether item stacks.", AETHER_SEARCH_ALIASES.size(), aetherItems.size());
     }
 
     @Override

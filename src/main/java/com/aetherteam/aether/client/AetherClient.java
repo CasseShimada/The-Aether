@@ -9,7 +9,6 @@ import com.aetherteam.aether.client.event.hooks.GuiHooks;
 import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
 import com.aetherteam.aether.client.event.hooks.MenuHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
-import com.aetherteam.aether.client.gui.screen.inventory.LoreBookScreen;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -134,9 +133,6 @@ public class AetherClient {
                         accessoryButton.updateButtonState();
                     }
                 });
-                if (currentScreen instanceof LoreBookScreen loreBookScreen) {
-                    loreBookScreen.renderOverlayLoreContent(guiGraphics);
-                }
                 logJeiOverlayState(currentScreen);
                 if (!FabricLoader.getInstance().isModLoaded("tipsmod")) {
                     GuiHooks.drawTrivia(currentScreen, guiGraphics);

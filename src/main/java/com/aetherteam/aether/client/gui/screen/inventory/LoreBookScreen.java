@@ -85,6 +85,8 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         Component item = Component.translatable("gui.aether.book_of_lore.item");
         this.drawRightBookText(guiGraphics, this.font, item, 78, 67);
 
+        this.renderLoreContent(guiGraphics);
+
         // Determines when the page switching buttons can be clicked.
         this.previousButton.active = this.currentPageNumber > 0;
         this.nextButton.active = this.currentPageNumber < this.pages.size() - 1;
@@ -146,7 +148,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
                     LoreBookMenu.describeStack(this.currentLoreStack), this.currentPageNumber, this.pages.size(), lineCount, titleX, titleY, this.leftPos + titleX, this.topPos + titleY, this.topPos + bodyY);
         }
 
-        guiGraphics.nextStratum();
         if (this.currentPageNumber == 0) {
             Component title = this.currentLoreStack.getHoverName().plainCopy();
             this.createText(guiGraphics, this.font.split(title, 98), titleX, titleY);
@@ -154,14 +155,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         } else {
             this.createText(guiGraphics, this.pages.get(this.currentPageNumber), titleX, titleY);
         }
-    }
-
-    public void renderOverlayLoreContent(GuiGraphics guiGraphics) {
-        this.updateLoreContent();
-        guiGraphics.pose().pushMatrix();
-        guiGraphics.pose().translate(this.leftPos, this.topPos);
-        this.renderLoreContent(guiGraphics);
-        guiGraphics.pose().popMatrix();
     }
 
     /**
