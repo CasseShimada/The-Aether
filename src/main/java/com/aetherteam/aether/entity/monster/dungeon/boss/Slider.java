@@ -281,8 +281,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                     BlockState carvedStone = AetherBlocks.CARVED_STONE.get().defaultBlockState();
                     if (heldItem.is(ItemTags.PICKAXES)
                         || heldItem.is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
-                        || heldItem.isCorrectToolForDrops(carvedStone)
-                        || heldItem.getDestroySpeed(carvedStone) > 1.0F) { // Preserve pickaxe-style damage even if Fabric tool tagging differs.
+                        || heldItem.isCorrectToolForDrops(carvedStone)) {
                         return Optional.of(attacker);
                     } else {
                         return this.sendInvalidToolMessage(attacker);
