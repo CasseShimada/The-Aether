@@ -1,13 +1,13 @@
 package com.aetherteam.aether.mixin;
 
 import com.aetherteam.aether.client.AetherClient;
+import com.aetherteam.aether.accessories.Accessories;
+import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MinecraftServerAccessor;
-import com.aetherteam.aether.accessories.Accessories;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
-import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
@@ -36,7 +37,13 @@ public class AetherMixinHooks {
      * @see com.aetherteam.aether.mixin.mixins.client.PlayerSkinMixin
      */
     public static ItemStack isCapeVisible(LivingEntity livingEntity) {
-        return getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
+        ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
+        return getCapeTexture(stack) != null ? stack : ItemStack.EMPTY;
+    }
+
+    public static ItemStack getVisibleWingsAccessory(LivingEntity livingEntity) {
+        ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
+        return stack.is(Items.ELYTRA) ? stack : ItemStack.EMPTY;
     }
 
     /**

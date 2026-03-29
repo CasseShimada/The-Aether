@@ -2,6 +2,7 @@ package com.aetherteam.aether.mixin.mixins.client;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
+import com.aetherteam.aether.client.renderer.accessory.layer.PlayerAccessoryWingsLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerGlovesLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerPendantLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerShieldOfRepulsionLayer;
@@ -10,18 +11,20 @@ import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
 import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.mixin.mixins.client.accessor.LivingEntityRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.aetherteam.nitrogen.ConstantsUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -42,9 +45,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AvatarRendererMixin {
     @Shadow
     protected EntityModel model;
-
-    @Shadow
-    protected abstract boolean addLayer(RenderLayer<AvatarRenderState, PlayerModel> layer);
 
     @Unique
     private GlovesModel aether$glovesFirstPersonModel;
@@ -72,15 +72,16 @@ public abstract class AvatarRendererMixin {
         this.aether$glovesTrimSlimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM));
         this.aether$shieldFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false);
         this.aether$shieldSlimFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true);
-        this.addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
+        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM))));
-        this.addLayer(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
+        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
-        this.addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
+        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
+        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerAccessoryWingsLayer((AvatarRenderer) (Object) this, new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA)), context.getEquipmentRenderer()));
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 0)

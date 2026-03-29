@@ -17,12 +17,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.spongepowered.asm.mixin.Mixin;
@@ -129,6 +131,7 @@ public class LivingEntityMixin {
         NeptuneArmor.boostWaterSwimming(livingEntity);
         PhoenixArmor.boostLavaSwimming(livingEntity);
         PhoenixArmor.damageArmor(livingEntity);
+        this.aether$damageAccessoryElytra(livingEntity);
         AccessoryRuntime.tick(livingEntity);
     }
 
@@ -183,6 +186,41 @@ public class LivingEntityMixin {
             return true;
         }
         return AccessoryEffectBridge.isHoldingEquivalent((LivingEntity) (Object) this, predicate);
+    }
+
+    @ModifyReturnValue(method = "canGlide()Z", at = @At("RETURN"))
+    private boolean aether$allowAccessoryElytraGlide(boolean original) {
+        return original || this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
+    }
+
+    @ModifyReturnValue(method = "canGlideUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;)Z", at = @At("RETURN"))
+    private boolean aether$allowAccessoryElytraGlideUsing(boolean original, ItemStack stack, EquipmentSlot slot) {
+        if (original || slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
+            return original;
+        }
+        return this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
+    }
+
+    @Unique
+    private boolean aether$hasAccessoryElytra(LivingEntity livingEntity) {
+        return AccessoryEffectBridge.findFirstByEquipmentSlot(livingEntity, EquipmentSlot.CHEST).is(Items.ELYTRA);
+    }
+
+    @Unique
+    private void aether$damageAccessoryElytra(LivingEntity livingEntity) {
+        if (livingEntity.level().isClientSide() || !livingEntity.isFallFlying() || livingEntity.tickCount % 20 != 0) {
+            return;
+        }
+        if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+            return;
+        }
+
+        var reference = AccessoryEffectBridge.findFirstReferenceByEquipmentSlot(livingEntity, EquipmentSlot.CHEST);
+        if (reference == null || !reference.stack().is(Items.ELYTRA)) {
+            return;
+        }
+
+        reference.stack().hurtAndBreak(1, livingEntity, EquipmentSlot.CHEST);
     }
 
 }

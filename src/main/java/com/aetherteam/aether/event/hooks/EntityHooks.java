@@ -4,6 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.compat.AccessorySlotResolver;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.effect.AetherEffects;
@@ -361,20 +362,22 @@ public class EntityHooks {
                 return Optional.of(InteractionResult.SUCCESS);
             }
             if (!stack.isEmpty()) { // Equip behavior.
-                if (stack.is(AetherTags.Items.ACCESSORIES)) {
-                    SlotTypeReference identifier = null;
-                    if (stack.getItem() instanceof SlotIdentifierHolder slotIdentifierHolder) {
-                        identifier = slotIdentifierHolder.getIdentifier();
-                    }
-                    if (identifier != null) {
+                SlotTypeReference identifier = null;
+                if (stack.is(AetherTags.Items.ACCESSORIES) && stack.getItem() instanceof SlotIdentifierHolder slotIdentifierHolder) {
+                    identifier = slotIdentifierHolder.getIdentifier();
+                }
+                if (identifier == null) {
+                    identifier = AccessorySlotResolver.resolveSlotType(stack);
+                }
+                if (identifier != null) {
                         AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
                         if (accessories != null) {
                             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
                             if (accessoriesContainer != null) {
                                 ItemStack itemStack = accessoriesContainer.getAccessories().getItem(0);
+                                SlotReference slotContext = SlotReference.of(armorStand, identifier.slotName(), 0);
+                                accessoriesContainer.getAccessories().setItem(0, stack.copy());
                                 if (stack.getItem() instanceof AccessoryItem accessoryItem) {
-                                    SlotReference slotContext = SlotReference.of(armorStand, identifier.slotName(), 0);
-                                    accessoriesContainer.getAccessories().setItem(0, stack.copy());
                                     if (accessoryItem instanceof GlovesItem glovesItem) {
                                         armorStand.level().playSound(null, armorStand.blockPosition(), glovesItem.getEquipSound(stack, slotContext).event().value(), armorStand.getSoundSource(), 1, 1);
                                     } else if (accessoryItem instanceof PendantItem pendantItem) {
@@ -382,22 +385,23 @@ public class EntityHooks {
                                     } else {
                                         armorStand.level().playSound(null, armorStand.blockPosition(), SoundEvents.ARMOR_EQUIP_GENERIC.value(), armorStand.getSoundSource(), 1, 1);
                                     }
-                                    if (identifier.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
-                                        armorStand.setShowArms(true);
-                                    }
-                                    if (!player.isCreative()) {
-                                        int count = stack.getCount();
-                                        stack.shrink(count);
-                                    }
-                                    if (!itemStack.isEmpty()) {
-                                        player.setItemInHand(hand, itemStack);
-                                    }
-                                    return Optional.of(InteractionResult.SUCCESS);
+                                } else {
+                                    armorStand.level().playSound(null, armorStand.blockPosition(), SoundEvents.ARMOR_EQUIP_GENERIC.value(), armorStand.getSoundSource(), 1, 1);
                                 }
+                                if (identifier.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
+                                    armorStand.setShowArms(true);
+                                }
+                                if (!player.isCreative()) {
+                                    int count = stack.getCount();
+                                    stack.shrink(count);
+                                }
+                                if (!itemStack.isEmpty()) {
+                                    player.setItemInHand(hand, itemStack);
+                                }
+                                return Optional.of(InteractionResult.SUCCESS);
                             }
                         }
                     }
-                }
             } else { // Unequip behavior.
                 SlotTypeReference identifier = slotToUnequip(armorStand, pos);
                 if (identifier != null) {

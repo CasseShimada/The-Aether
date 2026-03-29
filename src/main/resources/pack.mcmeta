@@ -5,7 +5,6 @@
     },
     "pack_format": 75,
     "min_format": 75,
-    "max_format": 81,
-    "supported_formats": [75, 81]
+    "max_format": 81
   }
 }

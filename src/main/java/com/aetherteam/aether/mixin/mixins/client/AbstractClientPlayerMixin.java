@@ -26,7 +26,8 @@ public class AbstractClientPlayerMixin {
         if (!stack.isEmpty()) {
             Identifier texture = AetherMixinHooks.getCapeTexture(stack);
             if (texture != null) {
-                return new PlayerSkin(skin.body(), new ClientAsset.ResourceTexture(texture), skin.elytra(), skin.model(), skin.secure());
+                ClientAsset.ResourceTexture renderedTexture = new ClientAsset.ResourceTexture(texture);
+                return new PlayerSkin(skin.body(), renderedTexture, renderedTexture, skin.model(), skin.secure());
             }
         }
         return skin;

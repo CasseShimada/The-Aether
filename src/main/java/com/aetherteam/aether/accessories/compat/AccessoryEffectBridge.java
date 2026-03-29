@@ -15,9 +15,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.level.ItemLike;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -59,19 +60,25 @@ public final class AccessoryEffectBridge {
     }
 
     public static ItemStack findFirstByEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
+        SlotEntryReference reference = findFirstReferenceByEquipmentSlot(entity, slot);
+        return reference != null ? reference.stack() : ItemStack.EMPTY;
+    }
+
+    @Nullable
+    public static SlotEntryReference findFirstReferenceByEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
         if (capability == null) {
-            return ItemStack.EMPTY;
+            return null;
         }
 
         for (SlotEntryReference reference : capability.getAllEquipped()) {
             ItemStack stack = reference.stack();
             if (resolveEquipmentSlot(entity, stack) == slot) {
-                return stack;
+                return reference;
             }
         }
 
-        return ItemStack.EMPTY;
+        return null;
     }
 
     public static TriState shouldAllowWalkingOnSnow(LivingEntity entity) {
