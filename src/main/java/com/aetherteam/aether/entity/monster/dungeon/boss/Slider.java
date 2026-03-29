@@ -303,7 +303,11 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                 if (AetherConfig.COMMON.reposition_slider_message.get()) {
                     player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), true); // Invalid tool.
                 } else {
-                    player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), false); // Invalid tool.
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendSystemMessage(Component.translatable("gui.aether.slider.message.attack.invalid")); // Invalid tool.
+                    } else {
+                        player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), false); // Invalid tool.
+                    }
                 }
                 this.setChatCooldown(15);
             }

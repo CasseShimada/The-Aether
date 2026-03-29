@@ -158,6 +158,7 @@ public final class AetherNetworking {
     }
 
     private static <T extends CustomPacketPayload> void registerServerReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {
-        ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> handler.accept(payload, AetherPayloadContext.of(context.player())));
+        ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
+                context.player().level().getServer().execute(() -> handler.accept(payload, AetherPayloadContext.of(context.player()))));
     }
 }

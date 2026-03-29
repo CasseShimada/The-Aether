@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -182,7 +183,11 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
      * @param message The message {@link Component}.
      */
     protected void chat(Player player, Component message, boolean sound) {
-        player.displayClientMessage(message, false);
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.sendSystemMessage(message);
+        } else {
+            player.displayClientMessage(message, false);
+        }
     }
 
     /**

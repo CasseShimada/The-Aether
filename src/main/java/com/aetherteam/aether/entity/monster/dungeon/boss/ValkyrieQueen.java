@@ -384,7 +384,12 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
      */
     @Override
     protected void chat(Player player, Component message, boolean sound) {
-        player.displayClientMessage(Component.literal("[").append(this.getBossName().copy().withStyle(ChatFormatting.YELLOW)).append("]: ").append(message), false);
+        Component formattedMessage = Component.literal("[").append(this.getBossName().copy().withStyle(ChatFormatting.YELLOW)).append("]: ").append(message);
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.sendSystemMessage(formattedMessage);
+        } else {
+            player.displayClientMessage(formattedMessage, false);
+        }
         if (sound) {
             this.playSound(this.getInteractSound(), 1.0F, this.getVoicePitch());
         }
