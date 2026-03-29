@@ -28,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -40,9 +41,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+public abstract class LivingEntityMixin {
     @Unique
     private boolean aether$trackingDeathDrops;
+
+    @Shadow
+    public abstract void stopFallFlying();
 
     /**
      * Handles vertical swimming for Phoenix Armor in lava without being affected by the upwards speed debuff from lava.
@@ -191,6 +195,25 @@ public class LivingEntityMixin {
     @ModifyReturnValue(method = "canGlide()Z", at = @At("RETURN"))
     private boolean aether$allowAccessoryElytraGlide(boolean original) {
         return original || this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
+    }
+
+    @Inject(method = "updateFallFlying()V", at = @At("HEAD"), cancellable = true)
+    private void aether$handleAccessoryElytraFallFlying(CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+            return;
+        }
+
+        var reference = AccessoryEffectBridge.findFirstReferenceByEquipmentSlot(livingEntity, EquipmentSlot.CHEST);
+        if (reference == null || !reference.stack().is(Items.ELYTRA)) {
+            return;
+        }
+
+        if (livingEntity.onGround() || livingEntity.isInWater() || livingEntity.isPassenger()) {
+            this.stopFallFlying();
+        }
+
+        ci.cancel();
     }
 
     @Unique
