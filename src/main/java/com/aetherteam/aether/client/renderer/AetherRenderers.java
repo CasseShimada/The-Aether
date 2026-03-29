@@ -13,7 +13,9 @@ import com.aetherteam.aether.client.renderer.blockentity.SkyrootBedRenderer;
 import com.aetherteam.aether.client.renderer.blockentity.TreasureChestRenderer;
 import com.aetherteam.aether.client.renderer.entity.*;
 import com.aetherteam.aether.client.renderer.entity.model.*;
+import com.aetherteam.aether.client.renderer.player.layer.PlayerWingsLayer;
 import com.aetherteam.aether.entity.AetherEntityTypes;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -28,6 +30,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 
 public class AetherRenderers {
     public static void registerEntityRenderers() {
@@ -158,6 +161,11 @@ public class AetherRenderers {
     }
 
     public static void addEntityLayers() {
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
+            if (entityRenderer instanceof AvatarRenderer avatarRenderer) {
+                registrationHelper.register(new PlayerWingsLayer(avatarRenderer, new ValkyrieWingsModel<>(context.getModelSet().bakeLayer(AetherModelLayers.VALKYRIE_ARMOR_WINGS))));
+            }
+        });
     }
 
     public static void bakeModels() {
