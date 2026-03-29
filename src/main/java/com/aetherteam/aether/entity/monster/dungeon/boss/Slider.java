@@ -43,6 +43,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -276,9 +277,12 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                     return Optional.empty();
                 }
                 if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
-                    if (attacker.getMainHandItem().is(ItemTags.PICKAXES)
-                        || attacker.getMainHandItem().is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
-                        || attacker.getMainHandItem().isCorrectToolForDrops(AetherBlocks.CARVED_STONE.get().defaultBlockState())) { // Check for correct tool.
+                    ItemStack heldItem = attacker.getMainHandItem();
+                    BlockState carvedStone = AetherBlocks.CARVED_STONE.get().defaultBlockState();
+                    if (heldItem.is(ItemTags.PICKAXES)
+                        || heldItem.is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
+                        || heldItem.isCorrectToolForDrops(carvedStone)
+                        || heldItem.getDestroySpeed(carvedStone) > 1.0F) { // Preserve pickaxe-style damage even if Fabric tool tagging differs.
                         return Optional.of(attacker);
                     } else {
                         return this.sendInvalidToolMessage(attacker);
