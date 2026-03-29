@@ -1,30 +1,46 @@
 package com.aetherteam.aether.client.renderer.blockentity;
 
+import com.aetherteam.aether.block.AetherBlocks;
+import com.aetherteam.aether.block.dungeon.ChestMimicBlock;
 import com.aetherteam.aether.blockentity.ChestMimicBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class ChestMimicRenderer implements BlockEntityRenderer<ChestMimicBlockEntity, BlockEntityRenderState> {
+import java.util.Calendar;
+
+public class ChestMimicRenderer extends SingleChestRenderer<ChestMimicBlockEntity> {
+    private static final Material NORMAL_MATERIAL = new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/normal"));
+    private static final Material CHRISTMAS_MATERIAL = new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/christmas"));
+    private final boolean xmasTextures;
+
     public ChestMimicRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
+        Calendar calendar = Calendar.getInstance();
+        this.xmasTextures = calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26;
     }
 
     @Override
-    public BlockEntityRenderState createRenderState() {
-        return new BlockEntityRenderState();
+    public void extractRenderState(ChestMimicBlockEntity blockEntity, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockState blockState = blockEntity.getBlockState();
+        if (!(blockState.getBlock() instanceof ChestMimicBlock)) {
+            blockState = AetherBlocks.CHEST_MIMIC.get().defaultBlockState().setValue(ChestMimicBlock.FACING, Direction.SOUTH);
+        }
+        float angle = blockState.getValue(ChestMimicBlock.FACING).toYRot();
+        this.extractSingleChestRenderState(blockEntity, state, partialTick, angle, 0.0F, crumblingOverlay);
     }
 
     @Override
-    public void extractRenderState(ChestMimicBlockEntity blockEntity, BlockEntityRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay);
-    }
-
-    @Override
-    public void submit(BlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+    public void submit(ChestRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+        this.submitSingleChest(state, poseStack, collector, this.xmasTextures ? CHRISTMAS_MATERIAL : NORMAL_MATERIAL);
     }
 }
