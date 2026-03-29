@@ -66,7 +66,7 @@ public class DialogueAnswerComponent {
 
         public void render(GuiGraphics guiGraphics) {
             guiGraphics.fillGradient(this.x, this.y, this.x + width, this.y + 12, 0x66000000, 0x66000000);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.text, this.x + 1, this.y + 1, 0xFFFFFF);
+            guiGraphics.drawString(Minecraft.getInstance().font, this.text, this.x + 1, this.y + 1, 0xFFFFFFFF);
         }
     }
 }

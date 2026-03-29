@@ -1,27 +1,15 @@
 package com.aetherteam.aether.client.gui.component.dialogue;
 
-import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * A button widget that allows the player to select a line of dialogue to say to an NPC.
  */
 public class DialogueChoiceComponent extends Button {
-    private final Event<ButtonEvents.AdjustRendering> adjustRenderingEvent = EventFactory.createArrayBacked(ButtonEvents.AdjustRendering.class, listeners -> (button, guiGraphics, texture, x, y, width, height) -> {
-        for (ButtonEvents.AdjustRendering listener : listeners) {
-            if (listener.render(button, guiGraphics, texture, x, y, width, height)) {
-                return true;
-            }
-        }
-        return false;
-    });
-
     public DialogueChoiceComponent(MutableComponent message, Button.OnPress onPress) {
         super(0, 0, 0, 12, appendBrackets(message), onPress, DEFAULT_NARRATION);
         this.width = Minecraft.getInstance().font.width(this.getMessage()) + 2;
@@ -30,14 +18,10 @@ public class DialogueChoiceComponent extends Button {
     @Override
     protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         guiGraphics.fillGradient(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0x66000000, 0x66000000);
-        guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() + 1, this.isHovered() ? 0xFFFF55 : 0xFFFFFF);
+        guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), this.getX() + 1, this.getY() + 1, this.isHovered() ? 0xFFFFFF55 : 0xFFFFFFFF);
     }
 
     public static MutableComponent appendBrackets(MutableComponent component) {
         return Component.literal("[").append(component).append("]");
-    }
-
-    public Event<ButtonEvents.AdjustRendering> getRenderingEvent() {
-        return this.adjustRenderingEvent;
     }
 }
