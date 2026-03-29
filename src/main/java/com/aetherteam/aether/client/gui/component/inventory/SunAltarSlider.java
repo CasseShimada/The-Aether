@@ -6,11 +6,14 @@ import net.minecraft.network.chat.Component;
 import com.aetherteam.aether.network.PacketDistributor;
 
 public class SunAltarSlider extends AbstractSliderButton {
+    private final Component title;
     private final int timeScale;
 
     public SunAltarSlider(int x, int y, int width, int height, Component title, double value, int timeScale) {
         super(x, y, width, height, title, value);
+        this.title = title;
         this.timeScale = timeScale;
+        this.updateMessage();
     }
 
     @Override
@@ -21,5 +24,7 @@ public class SunAltarSlider extends AbstractSliderButton {
 
     @Override
     protected void updateMessage() {
+        long time = Math.floorMod((long) (this.value * this.timeScale), this.timeScale);
+        this.setMessage(this.title.copy().append(": ").append(Component.literal(Long.toString(time))));
     }
 }
