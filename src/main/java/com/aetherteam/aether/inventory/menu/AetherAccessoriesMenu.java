@@ -1,11 +1,11 @@
 package com.aetherteam.aether.inventory.menu;
 
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.mixin.mixins.common.accessor.AbstractContainerMenuAccessor;
 import com.aetherteam.aether.mixin.mixins.common.accessor.CraftingMenuAccessor;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesSlotGenerator;
-import com.aetherteam.aether.accessories.api.slot.SlotType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -15,10 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class AetherAccessoriesMenu extends InventoryMenu {
     private static final Map<EquipmentSlot, Identifier> TEXTURE_EMPTY_SLOTS = Map.of(
@@ -162,7 +159,6 @@ public class AetherAccessoriesMenu extends InventoryMenu {
             ItemStack itemStack1 = slot.getItem();
             itemStack = itemStack1.copy();
             EquipmentSlot equipmentSlot = player.getEquipmentSlotForItem(itemStack);
-            Collection<SlotType> accessorySlots = AccessoriesAPI.getValidSlotTypes(player, itemStack);
             if (index == 0) {
                 if (!this.moveItemStackTo(itemStack1, 17, 53, true)) {
                     return ItemStack.EMPTY;
@@ -181,11 +177,10 @@ public class AetherAccessoriesMenu extends InventoryMenu {
                 if (!this.moveItemStackTo(itemStack1, i, i + 1, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index < 53 && !accessorySlots.isEmpty() && !this.getEmptyAccessorySlots(accessorySlots).isEmpty()) {
-                for (int i : this.getEmptyAccessorySlots(accessorySlots)) {
-                    if (!this.moveItemStackTo(itemStack1, i, i + 1, false)) {
-                        return ItemStack.EMPTY;
-                    }
+            } else if (index < 53) {
+                int accessorySlotIndex = this.getFirstEmptyAccessorySlot(player, itemStack1);
+                if (accessorySlotIndex >= 0 && !this.moveItemStackTo(itemStack1, accessorySlotIndex, accessorySlotIndex + 1, false)) {
+                    return ItemStack.EMPTY;
                 }
             } else if (equipmentSlot == EquipmentSlot.OFFHAND && !(this.slots.get(53)).hasItem()) {
                 if (!this.moveItemStackTo(itemStack1, 53, 54, false)) {
@@ -218,20 +213,26 @@ public class AetherAccessoriesMenu extends InventoryMenu {
         return itemStack;
     }
 
-    private Set<Integer> getEmptyAccessorySlots(Collection<SlotType> slotData) {
-        Set<Integer> slots = new HashSet<>();
-        for (SlotType identifier : slotData) {
-            switch (identifier.name()) {
-                case "aether:pendant_slot" -> slots.add(5);
-                case "aether:cape_slot" -> slots.add(6);
-                case "aether:shield_slot" -> slots.add(7);
-                case "aether:ring_slot" -> slots.addAll(Set.of(8, 9));
-                case "aether:gloves_slot" -> slots.add(10);
-                case "aether:accessory_slot" -> slots.addAll(Set.of(11, 12));
-            }
+    private int getFirstEmptyAccessorySlot(Player player, ItemStack stack) {
+        AccessoriesCapability capability = AccessoriesCapability.get(player);
+        if (capability == null || AccessoriesAPI.getValidSlotTypes(player, stack).isEmpty()) {
+            return -1;
         }
-        slots.removeIf(index -> this.slots.get(index).hasItem());
-        return slots;
+
+        var equipReference = capability.canEquipAccessory(stack, true);
+        if (equipReference == null) {
+            return -1;
+        }
+
+        return switch (equipReference.first().slotName()) {
+            case "aether:pendant_slot" -> 5 + equipReference.first().slot();
+            case "aether:cape_slot" -> 6 + equipReference.first().slot();
+            case "aether:shield_slot" -> 7 + equipReference.first().slot();
+            case "aether:ring_slot" -> 8 + equipReference.first().slot();
+            case "aether:gloves_slot" -> 10 + equipReference.first().slot();
+            case "aether:accessory_slot" -> 11 + equipReference.first().slot();
+            default -> -1;
+        };
     }
 
     /**
