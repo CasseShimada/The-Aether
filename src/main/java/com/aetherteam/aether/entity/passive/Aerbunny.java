@@ -93,7 +93,12 @@ public class Aerbunny extends AetherAnimal {
     @Override
     public void tick() {
         super.tick();
-        if (!this.isFastFalling()) { // Handle slow-falling unless the Aerbunny is set to fall fast.
+        boolean ridingPlayer = this.getVehicle() instanceof Player;
+        if (ridingPlayer) {
+            // The player's passenger attachment controls mounted Aerbunnies in 1.21.11.
+            // Letting the bunny keep its own fall motion here causes visible jitter on the player's head.
+            this.setDeltaMovement(Vec3.ZERO);
+        } else if (!this.isFastFalling()) { // Handle slow-falling unless the Aerbunny is set to fall fast.
             this.handleFallSpeed();
         } else if (this.onGround()) {
             this.setFastFalling(false);
