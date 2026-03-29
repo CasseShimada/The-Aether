@@ -16,6 +16,9 @@ import java.util.Set;
  * Persistent accessory inventory payload used by the Aether self-written accessory core.
  */
 public class AccessoryInventoryAttachment {
+    private static final Codec<Map<Integer, ItemStack>> SLOT_STACK_MAP_CODEC = Codec.unboundedMap(Codec.STRING, ItemStack.CODEC)
+        .xmap(AccessoryInventoryAttachment::decodeSlotStackMap, AccessoryInventoryAttachment::encodeSlotStackMap);
+
     private final Map<String, SlotStorage> slots;
 
     public static final Codec<AccessoryInventoryAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -72,8 +75,8 @@ public class AccessoryInventoryAttachment {
 
         public static final Codec<SlotStorage> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.INT.optionalFieldOf("size", 1).forGetter(SlotStorage::size),
-                Codec.unboundedMap(Codec.INT, ItemStack.CODEC).optionalFieldOf("equipped", Map.of()).forGetter(SlotStorage::equipped),
-                Codec.unboundedMap(Codec.INT, ItemStack.CODEC).optionalFieldOf("cosmetic", Map.of()).forGetter(SlotStorage::cosmetic),
+                SLOT_STACK_MAP_CODEC.optionalFieldOf("equipped", Map.of()).forGetter(SlotStorage::equipped),
+                SLOT_STACK_MAP_CODEC.optionalFieldOf("cosmetic", Map.of()).forGetter(SlotStorage::cosmetic),
                 HIDDEN_SLOT_CODEC.optionalFieldOf("hidden_render_slots", Set.of()).forGetter(SlotStorage::hiddenRenderSlots)
         ).apply(instance, SlotStorage::new));
 
@@ -157,5 +160,31 @@ public class AccessoryInventoryAttachment {
             }
             return items;
         }
+    }
+
+    private static Map<Integer, ItemStack> decodeSlotStackMap(Map<String, ItemStack> source) {
+        Map<Integer, ItemStack> decoded = new HashMap<>();
+        for (Map.Entry<String, ItemStack> entry : source.entrySet()) {
+            try {
+                int slot = Integer.parseInt(entry.getKey());
+                ItemStack stack = entry.getValue();
+                if (!stack.isEmpty()) {
+                    decoded.put(slot, stack.copy());
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return decoded;
+    }
+
+    private static Map<String, ItemStack> encodeSlotStackMap(Map<Integer, ItemStack> source) {
+        Map<String, ItemStack> encoded = new HashMap<>();
+        for (Map.Entry<Integer, ItemStack> entry : source.entrySet()) {
+            ItemStack stack = entry.getValue();
+            if (!stack.isEmpty()) {
+                encoded.put(Integer.toString(entry.getKey()), stack.copy());
+            }
+        }
+        return encoded;
     }
 }
