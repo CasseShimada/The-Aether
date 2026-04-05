@@ -201,4 +201,21 @@ public abstract class LivingEntityMixin {
         return accessoryStack.is(Items.ELYTRA) ? accessoryStack : stack;
     }
 
+    @WrapOperation(method = "updateFallFlying()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getRandom(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/lang/Object;"))
+    private <T> T aether$selectAccessoryElytraDamageSlot(List<T> candidates, net.minecraft.util.RandomSource random, Operation<T> original) {
+        if (!candidates.isEmpty()) {
+            return original.call(candidates, random);
+        }
+
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)
+                && AccessoryEffectBridge.findFirstByEquipmentSlot(livingEntity, EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+            @SuppressWarnings("unchecked")
+            T chestSlot = (T) EquipmentSlot.CHEST;
+            return chestSlot;
+        }
+
+        return original.call(candidates, random);
+    }
+
 }
