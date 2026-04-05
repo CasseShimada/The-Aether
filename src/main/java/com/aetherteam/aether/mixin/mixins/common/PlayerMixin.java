@@ -5,9 +5,13 @@ import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin {
@@ -83,6 +89,22 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         CapabilityHooks.AetherPlayerHooks.update(player);
         DimensionHooks.travelling(player);
+    }
+
+    /**
+     * Vanilla guards this path with `isEmpty()`, but a transformed runtime can still reach `Util#getRandom` with an empty list.
+     * Preserve the normal selection logic and only short-circuit the impossible empty-list edge case.
+     */
+    @WrapOperation(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getRandom(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/lang/Object;"))
+    private <T> T aether$guardRandomTouchedExperienceOrb(List<T> entities, RandomSource random, Operation<T> original) {
+        return entities.isEmpty() ? null : original.call(entities, random);
+    }
+
+    @WrapOperation(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;touch(Lnet/minecraft/world/entity/Entity;)V", ordinal = 1))
+    private void aether$skipMissingRandomTouch(Player instance, Entity entity, Operation<Void> original) {
+        if (entity != null) {
+            original.call(instance, entity);
+        }
     }
 
     @ModifyReturnValue(method = "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", at = @At("RETURN"))
