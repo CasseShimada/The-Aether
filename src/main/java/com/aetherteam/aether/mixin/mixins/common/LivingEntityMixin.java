@@ -12,6 +12,8 @@ import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -44,9 +46,6 @@ import java.util.function.Predicate;
 public abstract class LivingEntityMixin {
     @Unique
     private boolean aether$trackingDeathDrops;
-
-    @Shadow
-    public abstract void stopFallFlying();
 
     /**
      * Handles vertical swimming for Phoenix Armor in lava without being affected by the upwards speed debuff from lava.
@@ -135,7 +134,6 @@ public abstract class LivingEntityMixin {
         NeptuneArmor.boostWaterSwimming(livingEntity);
         PhoenixArmor.boostLavaSwimming(livingEntity);
         PhoenixArmor.damageArmor(livingEntity);
-        this.aether$damageAccessoryElytra(livingEntity);
         AccessoryRuntime.tick(livingEntity);
     }
 
@@ -192,50 +190,15 @@ public abstract class LivingEntityMixin {
         return AccessoryEffectBridge.isHoldingEquivalent((LivingEntity) (Object) this, predicate);
     }
 
-    @ModifyReturnValue(method = "canGlide()Z", at = @At("RETURN"))
-    private boolean aether$allowAccessoryElytraGlide(boolean original) {
-        return original || this.aether$hasAccessoryElytra((LivingEntity) (Object) this);
-    }
-
-    @Inject(method = "updateFallFlying()V", at = @At("HEAD"), cancellable = true)
-    private void aether$handleAccessoryElytraFallFlying(CallbackInfo ci) {
-        LivingEntity livingEntity = (LivingEntity) (Object) this;
-        if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
-            return;
+    @WrapOperation(method = {"canGlide()Z", "updateFallFlying()V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
+    private ItemStack aether$useAccessoryElytraForVanillaFlightChecks(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
+        ItemStack stack = original.call(instance, slot);
+        if (slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
+            return stack;
         }
 
-        var reference = AccessoryEffectBridge.findFirstReferenceByEquipmentSlot(livingEntity, EquipmentSlot.CHEST);
-        if (reference == null || !reference.stack().is(Items.ELYTRA)) {
-            return;
-        }
-
-        if (livingEntity.onGround() || livingEntity.isInWater() || livingEntity.isPassenger()) {
-            this.stopFallFlying();
-        }
-
-        ci.cancel();
-    }
-
-    @Unique
-    private boolean aether$hasAccessoryElytra(LivingEntity livingEntity) {
-        return AccessoryEffectBridge.findFirstByEquipmentSlot(livingEntity, EquipmentSlot.CHEST).is(Items.ELYTRA);
-    }
-
-    @Unique
-    private void aether$damageAccessoryElytra(LivingEntity livingEntity) {
-        if (livingEntity.level().isClientSide() || !livingEntity.isFallFlying() || livingEntity.tickCount % 20 != 0) {
-            return;
-        }
-        if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
-            return;
-        }
-
-        var reference = AccessoryEffectBridge.findFirstReferenceByEquipmentSlot(livingEntity, EquipmentSlot.CHEST);
-        if (reference == null || !reference.stack().is(Items.ELYTRA)) {
-            return;
-        }
-
-        reference.stack().hurtAndBreak(1, livingEntity, EquipmentSlot.CHEST);
+        ItemStack accessoryStack = AccessoryEffectBridge.findFirstByEquipmentSlot(instance, EquipmentSlot.CHEST);
+        return accessoryStack.is(Items.ELYTRA) ? accessoryStack : stack;
     }
 
 }

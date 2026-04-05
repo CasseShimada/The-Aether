@@ -13,6 +13,7 @@
     "common.BlockMixin",
     "common.EntityMixin",
     "common.EnvironmentAttributeSystemMixin",
+    "common.FireworkRocketItemMixin",
     "common.FishingHookMixin",
     "common.HoeItemMixin",
     "common.ItemMixin",
