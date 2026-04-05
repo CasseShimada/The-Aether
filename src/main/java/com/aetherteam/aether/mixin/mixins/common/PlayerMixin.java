@@ -1,6 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.entity.passive.MountableAnimal;
+import com.aetherteam.aether.entity.monster.Swet;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.CapabilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
@@ -64,7 +65,7 @@ public abstract class PlayerMixin {
     private void rideTickTail(CallbackInfo ci, @Share("wantsToStopRiding") LocalBooleanRef wantsToStopRiding) {
         Player player = (Player) (Object) this;
         if (!player.level().isClientSide() && !player.isShiftKeyDown() && wantsToStopRiding.get()) {
-            if (player.isPassenger() && player.getVehicle() instanceof MountableAnimal) {
+            if (player.isPassenger() && (player.getVehicle() instanceof MountableAnimal || player.getVehicle() instanceof Swet)) {
                 player.setShiftKeyDown(true);
             }
         }
