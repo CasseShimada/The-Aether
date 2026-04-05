@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
@@ -48,8 +49,9 @@ public class PlayerAccessoryWingsLayer extends RenderLayer<AvatarRenderState, Pl
             return;
         }
 
-        this.getParentModel().copyTransforms(this.elytraModel);
-        this.elytraModel.setupAnim(renderState);
+        Identifier texture = getPlayerElytraTexture(renderState);
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 0.0F, 0.125F);
         this.equipmentRenderer.renderLayers(
             EquipmentClientInfo.LayerType.WINGS,
             equippable.assetId().orElseThrow(),
@@ -59,7 +61,20 @@ public class PlayerAccessoryWingsLayer extends RenderLayer<AvatarRenderState, Pl
             poseStack,
             collector,
             packedLight,
+            texture,
+            renderState.outlineColor,
             LivingEntityRenderer.getOverlayCoords(renderState, 0.0F)
         );
+        poseStack.popPose();
+    }
+
+    private static Identifier getPlayerElytraTexture(AvatarRenderState renderState) {
+        if (renderState.skin.elytra() != null) {
+            return renderState.skin.elytra().texturePath();
+        }
+        if (renderState.showCape && renderState.skin.cape() != null) {
+            return renderState.skin.cape().texturePath();
+        }
+        return null;
     }
 }

@@ -190,7 +190,7 @@ public abstract class LivingEntityMixin {
         return AccessoryEffectBridge.isHoldingEquivalent((LivingEntity) (Object) this, predicate);
     }
 
-    @WrapOperation(method = {"canGlide()Z", "updateFallFlying()V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
+    @WrapOperation(method = {"canGlide()Z", "updateFallFlying()V", "onEquippedItemBroken(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/entity/EquipmentSlot;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack aether$useAccessoryElytraForVanillaFlightChecks(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         ItemStack stack = original.call(instance, slot);
         if (slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
