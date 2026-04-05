@@ -64,7 +64,6 @@
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
-    "client.AvatarRenderStateMixin",
     "client.AvatarRendererMixin",
     "client.ArmorStandRenderStateMixin",
     "client.ArmorStandRendererMixin",
@@ -76,6 +75,7 @@
     "client.LogoRendererMixin",
     "client.SkyRendererMixin",
     "client.SoundEngineMixin",
+    "client.WingsLayerMixin",
     "client.accessor.AbstractContainerScreenAccessor",
     "client.accessor.AbstractWidgetAccessor",
     "client.accessor.BossHealthOverlayAccessor",
