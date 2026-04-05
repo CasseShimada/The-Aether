@@ -2,6 +2,7 @@ package com.aetherteam.aether.mixin.mixins.client;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.renderer.AetherModelLayers;
+import com.aetherteam.aether.client.renderer.accessory.state.AvatarAccessoryRenderState;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerAccessoryWingsLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerGlovesLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerPendantLayer;
@@ -81,7 +82,12 @@ public abstract class AvatarRendererMixin {
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
         ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
-        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerAccessoryWingsLayer((AvatarRenderer) (Object) this, new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA)), context.getEquipmentRenderer()));
+        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerAccessoryWingsLayer(
+            (AvatarRenderer) (Object) this,
+            new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA)),
+            new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA_BABY)),
+            context.getEquipmentRenderer()
+        ));
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 0)
@@ -89,6 +95,7 @@ public abstract class AvatarRendererMixin {
         if (avatar.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isWearingInvisibilityCloak()) {
             renderState.isInvisibleToPlayer = true;
         }
+        ((AvatarAccessoryRenderState) renderState).aether$setWingAccessory(AetherMixinHooks.getVisibleWingsAccessory(avatar).copy());
     }
 
     @Inject(method = "renderRightHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Z)V", at = @At("HEAD"), cancellable = true, require = 0)

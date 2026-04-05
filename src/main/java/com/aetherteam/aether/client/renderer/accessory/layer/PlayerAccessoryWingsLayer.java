@@ -1,9 +1,7 @@
 package com.aetherteam.aether.client.renderer.accessory.layer;
 
-import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.client.renderer.accessory.state.AvatarAccessoryRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -15,31 +13,28 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
 
 public class PlayerAccessoryWingsLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     private final ElytraModel elytraModel;
+    private final ElytraModel elytraBabyModel;
     private final EquipmentLayerRenderer equipmentRenderer;
 
-    public PlayerAccessoryWingsLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, ElytraModel elytraModel, EquipmentLayerRenderer equipmentRenderer) {
+    public PlayerAccessoryWingsLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, ElytraModel elytraModel, ElytraModel elytraBabyModel, EquipmentLayerRenderer equipmentRenderer) {
         super(renderer);
         this.elytraModel = elytraModel;
+        this.elytraBabyModel = elytraBabyModel;
         this.equipmentRenderer = equipmentRenderer;
     }
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, AvatarRenderState renderState, float netHeadYaw, float headPitch) {
-        if (renderState.isInvisible || Minecraft.getInstance().level == null) {
+        if (renderState.isInvisible) {
             return;
         }
 
-        if (!(Minecraft.getInstance().level.getEntity(renderState.id) instanceof LivingEntity livingEntity)) {
-            return;
-        }
-
-        ItemStack stack = AetherMixinHooks.getVisibleWingsAccessory(livingEntity);
+        ItemStack stack = ((AvatarAccessoryRenderState) renderState).aether$getWingAccessory();
         if (stack.isEmpty()) {
             return;
         }
@@ -50,12 +45,13 @@ public class PlayerAccessoryWingsLayer extends RenderLayer<AvatarRenderState, Pl
         }
 
         Identifier texture = getPlayerElytraTexture(renderState);
+        ElytraModel model = renderState.isBaby ? this.elytraBabyModel : this.elytraModel;
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 0.125F);
         this.equipmentRenderer.renderLayers(
             EquipmentClientInfo.LayerType.WINGS,
             equippable.assetId().orElseThrow(),
-            this.elytraModel,
+            model,
             renderState,
             stack,
             poseStack,

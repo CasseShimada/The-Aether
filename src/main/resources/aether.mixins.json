@@ -64,6 +64,7 @@
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
+    "client.AvatarRenderStateMixin",
     "client.AvatarRendererMixin",
     "client.ArmorStandRenderStateMixin",
     "client.ArmorStandRendererMixin",
