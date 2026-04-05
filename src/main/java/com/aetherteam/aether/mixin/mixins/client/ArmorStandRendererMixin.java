@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ArmorStandRendererMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void aether$addCapeLayer(EntityRendererProvider.Context context, CallbackInfo ci) {
-        ((LivingEntityRendererAccessor) this).aether$addLayer(new ArmorStandCapeLayer((ArmorStandRenderer) (Object) this, new CapeModel<>(context.bakeLayer(AetherModelLayers.CAPE))));
+        ((LivingEntityRendererAccessor) this).aether$getLayers().add(new ArmorStandCapeLayer((ArmorStandRenderer) (Object) this, new CapeModel<>(context.bakeLayer(AetherModelLayers.CAPE))));
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/decoration/ArmorStand;Lnet/minecraft/client/renderer/entity/state/ArmorStandRenderState;F)V", at = @At("TAIL"), require = 0)

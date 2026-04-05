@@ -69,15 +69,15 @@ public abstract class AvatarRendererMixin {
         this.aether$glovesTrimSlimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM));
         this.aether$shieldFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false);
         this.aether$shieldSlimFirstPersonModel = new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true);
-        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
+        ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerGlovesLayer((AvatarRenderer) (Object) this,
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM)),
             new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_TRIM_SLIM))));
-        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
+        ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerShieldOfRepulsionLayer((AvatarRenderer) (Object) this,
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
-        ((LivingEntityRendererAccessor) this).aether$addLayer(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
+        ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 0)
