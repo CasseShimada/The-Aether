@@ -28,6 +28,7 @@
     "common.compat.twilight.EntityEventsMixin",
     "common.compat.twilight.FortificationShieldAttachmentMixin",
     "common.compat.twilight.LifedrainScepterItemMixin",
+    "common.compat.twilight.UncraftingMenuMixin",
     "common.compat.twilight.TwilightWandItemMixin",
     "common.compat.twilight.TFItemStackUtilsMixin",
     "common.compat.twilight.ZombieWandItemMixin",
