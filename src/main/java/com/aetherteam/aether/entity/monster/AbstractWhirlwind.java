@@ -2,6 +2,7 @@ package com.aetherteam.aether.entity.monster;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.client.AetherSoundEvents;
+import com.aetherteam.aether.entity.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -88,7 +89,8 @@ public abstract class AbstractWhirlwind extends Mob {
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
     public static boolean checkWhirlwindSpawnRules(EntityType<? extends AbstractWhirlwind> whirlwind, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
-        return Mob.checkMobSpawnRules(whirlwind, level, reason, pos, random)
+        return EntityUtil.isInAether(level)
+                && Mob.checkMobSpawnRules(whirlwind, level, reason, pos, random)
                 && level.getRawBrightness(pos, 0) > 12
                 && level.getDifficulty() != Difficulty.PEACEFUL;
     }

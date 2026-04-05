@@ -1,6 +1,7 @@
 package com.aetherteam.aether.entity;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 public final class EntityUtil {
     /**
@@ -94,6 +96,22 @@ public final class EntityUtil {
                 serverLevel.addFreshEntity(lightningBolt);
             }
         }
+    }
+
+    /**
+     * Checks whether the current spawn context is in the Aether dimension.
+     *
+     * @param level The {@link LevelAccessor} to check in.
+     * @return Whether the level resolves to the Aether dimension, as a {@link Boolean}.
+     */
+    public static boolean isInAether(LevelAccessor level) {
+        if (level instanceof Level actualLevel) {
+            return actualLevel.dimension().equals(AetherDimensions.AETHER_LEVEL);
+        }
+        if (level instanceof ServerLevelAccessor serverLevelAccessor) {
+            return serverLevelAccessor.getLevel().dimension().equals(AetherDimensions.AETHER_LEVEL);
+        }
+        return false;
     }
 
     /**

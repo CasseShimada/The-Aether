@@ -4,6 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.effect.AetherEffects;
+import com.aetherteam.aether.entity.EntityUtil;
 import com.aetherteam.aether.entity.projectile.PoisonNeedle;
 import com.aetherteam.aether.item.AetherItems;
 import net.minecraft.core.BlockPos;
@@ -126,7 +127,8 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
     public static boolean checkAechorPlantSpawnRules(EntityType<? extends AechorPlant> aechorPlant, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).is(AetherTags.Blocks.AECHOR_PLANT_SPAWNABLE_ON)
+        return EntityUtil.isInAether(level)
+            && level.getBlockState(pos.below()).is(AetherTags.Blocks.AECHOR_PLANT_SPAWNABLE_ON)
             && level.getRawBrightness(pos, 0) > 8
             && level.getDifficulty() != Difficulty.PEACEFUL
             && (reason != EntitySpawnReason.NATURAL || (random.nextInt(10) == 0 && !inRadiusOfFlowers(level, pos, 10, 40)));

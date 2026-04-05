@@ -2,6 +2,7 @@ package com.aetherteam.aether.entity.passive;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
+import com.aetherteam.aether.entity.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -23,7 +24,8 @@ public abstract class AetherAnimal extends Animal {
      * [CODE COPY] - {@link Animal#checkAnimalSpawnRules(EntityType, LevelAccessor, EntitySpawnReason, BlockPos, RandomSource)}.
      */
     public static boolean checkAetherAnimalSpawnRules(EntityType<? extends AetherAnimal> animal, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).is(AetherTags.Blocks.AETHER_ANIMALS_SPAWNABLE_ON)
+        return EntityUtil.isInAether(level)
+                && level.getBlockState(pos.below()).is(AetherTags.Blocks.AETHER_ANIMALS_SPAWNABLE_ON)
                 && level.getRawBrightness(pos, 0) > 8;
     }
 

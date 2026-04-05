@@ -74,7 +74,8 @@ public class Zephyr extends Mob implements Enemy {
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
     public static boolean checkZephyrSpawnRules(EntityType<? extends Zephyr> zephyr, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
-        return Mob.checkMobSpawnRules(zephyr, level, reason, pos, random)
+        return EntityUtil.isInAether(level)
+                && Mob.checkMobSpawnRules(zephyr, level, reason, pos, random)
                 && EntityUtil.wholeHitboxCanSeeSky(level, pos, 2)
                 && level.getDifficulty() != Difficulty.PEACEFUL
                 && (reason != EntitySpawnReason.NATURAL || random.nextInt(11) == 0);

@@ -76,7 +76,8 @@ public class Aerwhale extends PathfinderMob {
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
     public static boolean checkAerwhaleSpawnRules(EntityType<? extends Aerwhale> aerwhale, LevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
-        return Mob.checkMobSpawnRules(aerwhale, level, reason, pos, random)
+        return EntityUtil.isInAether(level)
+                && Mob.checkMobSpawnRules(aerwhale, level, reason, pos, random)
                 && level.getFluidState(pos).is(Fluids.EMPTY)
                 && level.getRawBrightness(pos, 0) > 8
                 && EntityUtil.wholeHitboxCanSeeSky(level, pos, 1)

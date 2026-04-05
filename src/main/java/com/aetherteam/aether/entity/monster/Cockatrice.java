@@ -2,6 +2,7 @@ package com.aetherteam.aether.entity.monster;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.client.AetherSoundEvents;
+import com.aetherteam.aether.entity.EntityUtil;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.NotGrounded;
 import com.aetherteam.aether.entity.WingedBird;
@@ -96,7 +97,8 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
      * @return Whether this entity can spawn, as a {@link Boolean}.
      */
     public static boolean checkCockatriceSpawnRules(EntityType<? extends Cockatrice> cockatrice, ServerLevelAccessor level, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
-        return Mob.checkMobSpawnRules(cockatrice, level, reason, pos, random)
+        return EntityUtil.isInAether(level)
+                && Mob.checkMobSpawnRules(cockatrice, level, reason, pos, random)
                 && isDarkEnoughToSpawn(level, pos, random)
                 && !level.getBlockState(pos.below()).is(AetherTags.Blocks.COCKATRICE_SPAWNABLE_BLACKLIST)
                 && level.getDifficulty() != Difficulty.PEACEFUL
