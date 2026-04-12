@@ -4,7 +4,7 @@ import com.aetherteam.aether.client.gui.screen.menu.logo.LeftLogoRenderer;
 import com.aetherteam.aether.client.gui.screen.menu.splash.AetherSplashRenderer;
 import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.TitleScreenAccessor;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -68,24 +68,24 @@ public class VanillaLeftTitleScreen extends TitleScreen implements TitleScreenBe
     }
 
     /**
-     * [CODE COPY] - {@link TitleScreen#render(GuiGraphics, int, int, float)}.<br><br>
+     * [CODE COPY] - {@link TitleScreen#render(GuiGraphicsExtractor, int, int, float)}.<br><br>
      * Modified and abstracted using {@link TitleScreenBehavior}.
      */
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
         int xOffset = 0;
         TitleScreenBehavior.super.handleImageButtons(this, xOffset);
         TitleScreenBehavior.super.handleEssentialButtonsForLeftMenu(this);
     }
 
     @Override
-    public boolean forEachLineBranding(boolean includeMC, boolean reverse, BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
+    public boolean forEachLineBranding(boolean includeMC, boolean reverse, BiConsumer<Integer, String> lineConsumer, GuiGraphicsExtractor guiGraphics, int i) {
         return false;
     }
 
     @Override
-    public boolean forEachAboveCopyrightLineBranding(BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
+    public boolean forEachAboveCopyrightLineBranding(BiConsumer<Integer, String> lineConsumer, GuiGraphicsExtractor guiGraphics, int i) {
         return false;
     }
 

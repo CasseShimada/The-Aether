@@ -3,9 +3,11 @@ package com.aetherteam.aether.recipe.recipes.item;
 import com.aetherteam.aether.recipe.AetherBookCategory;
 import com.aetherteam.aether.recipe.book.AetherRecipeBookCategories;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -15,7 +17,11 @@ public abstract class AbstractAetherCookingRecipe extends AbstractCookingRecipe 
     private final AetherBookCategory category;
 
     public AbstractAetherCookingRecipe(RecipeType<? extends AbstractAetherCookingRecipe> recipeType, String group, AetherBookCategory category, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
-        super(group, getBookCategory(category), ingredient, result, experience, cookingTime);
+        this(recipeType, group, category, ingredient, ItemStackTemplate.fromNonEmptyStack(result), experience, cookingTime);
+    }
+
+    public AbstractAetherCookingRecipe(RecipeType<? extends AbstractAetherCookingRecipe> recipeType, String group, AetherBookCategory category, Ingredient ingredient, ItemStackTemplate result, float experience, int cookingTime) {
+        super(new Recipe.CommonInfo(false), new AbstractCookingRecipe.CookingBookInfo(getBookCategory(category), group), ingredient, result, experience, cookingTime);
         this.recipeType = recipeType;
         this.category = category;
     }
@@ -47,6 +53,10 @@ public abstract class AbstractAetherCookingRecipe extends AbstractCookingRecipe 
     }
 
     public ItemStack getResult() {
+        return this.result().create();
+    }
+
+    public ItemStackTemplate resultTemplate() {
         return this.result();
     }
 

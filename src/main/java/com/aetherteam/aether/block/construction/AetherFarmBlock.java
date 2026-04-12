@@ -13,16 +13,16 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AetherFarmBlock extends FarmBlock {
+public class AetherFarmBlock extends FarmlandBlock {
     public AetherFarmBlock(Properties properties) {
         super(properties);
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#getStateForPlacement(BlockPlaceContext)}.
+     * [CODE COPY] - {@link FarmlandBlock#getStateForPlacement(BlockPlaceContext)}.
      */
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -30,7 +30,7 @@ public class AetherFarmBlock extends FarmBlock {
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#tick(BlockState, ServerLevel, BlockPos, RandomSource)}.
+     * [CODE COPY] - {@link FarmlandBlock#tick(BlockState, ServerLevel, BlockPos, RandomSource)}.
      */
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -40,7 +40,7 @@ public class AetherFarmBlock extends FarmBlock {
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#randomTick(BlockState, ServerLevel, BlockPos, RandomSource)}.
+     * [CODE COPY] - {@link FarmlandBlock#randomTick(BlockState, ServerLevel, BlockPos, RandomSource)}.
      */
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -57,12 +57,12 @@ public class AetherFarmBlock extends FarmBlock {
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#fallOn(Level, BlockState, BlockPos, Entity, float)}.
+     * [CODE COPY] - {@link FarmlandBlock#fallOn(Level, BlockState, BlockPos, Entity, float)}.
      */
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
         if (!level.isClientSide()
-                && level.random.nextFloat() < fallDistance - 0.5F
+                && level.getRandom().nextFloat() < fallDistance - 0.5F
                 && entity instanceof LivingEntity
                 && (entity instanceof net.minecraft.world.entity.player.Player || level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING))
                 && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) {
@@ -72,21 +72,21 @@ public class AetherFarmBlock extends FarmBlock {
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#turnToDirt(Entity, BlockState, Level, BlockPos)}.
+     * [CODE COPY] - {@link FarmlandBlock#turnToDirt(Entity, BlockState, Level, BlockPos)}.
      */
     public static void turnToDirt(BlockState state, Level level, BlockPos pos) {
         level.setBlockAndUpdate(pos, pushEntitiesUp(state, AetherBlocks.AETHER_DIRT.get().defaultBlockState(), level, pos));
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#shouldMaintainFarmland(BlockGetter, BlockPos)}.
+     * [CODE COPY] - {@link FarmlandBlock#shouldMaintainFarmland(BlockGetter, BlockPos)}.
      */
     private static boolean shouldMaintainFarmland(BlockGetter level, BlockPos pos) {
         return level.getBlockState(pos.above()).is(BlockTags.MAINTAINS_FARMLAND);
     }
 
     /**
-     * [CODE COPY] - {@link FarmBlock#isNearWater(LevelReader, BlockPos)}.
+     * [CODE COPY] - {@link FarmlandBlock#isNearWater(LevelReader, BlockPos)}.
      */
     private static boolean isNearWater(LevelReader level, BlockPos pos) {
         for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-4, 0, -4), pos.offset(4, 1, 4))) {

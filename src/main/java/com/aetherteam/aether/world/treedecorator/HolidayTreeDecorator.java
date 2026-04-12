@@ -79,12 +79,12 @@ public class HolidayTreeDecorator extends TreeDecorator {
         for (int i = 9; i >= -4; i--) {
             BlockPos blockPos = pos.above(i);
             if (context.isAir(blockPos.above())) {
-                if ((level.isStateAtPosition(blockPos, HolidayTreeDecorator::isAetherGrass) || level.isStateAtPosition(blockPos, HolidayTreeDecorator::isLeaves) || Feature.isGrassOrDirt(level, blockPos)) && context.isAir(blockPos.above(4))) {
+                if ((level.isStateAtPosition(blockPos, HolidayTreeDecorator::isAetherGrass) || level.isStateAtPosition(blockPos, HolidayTreeDecorator::isLeaves) || level.isStateAtPosition(blockPos, HolidayTreeDecorator::isGrassOrDirt)) && context.isAir(blockPos.above(4))) {
                     if (distance <= random.nextFloat() / 2 * (1 - distance)) {
                         if (level.isStateAtPosition(blockPos, HolidayTreeDecorator::isLeaves)) {
                             context.setBlock(blockPos.above(), Blocks.SNOW.defaultBlockState());
                         } else {
-                            context.setBlock(blockPos.above(), this.provider.getState(random, blockPos));
+                            context.setBlock(blockPos.above(), this.provider.getState(context.level(), random, blockPos));
                         }
                     }
                 }
@@ -98,5 +98,9 @@ public class HolidayTreeDecorator extends TreeDecorator {
 
     private static boolean isLeaves(BlockState state) {
         return state.is(BlockTags.LEAVES);
+    }
+
+    private static boolean isGrassOrDirt(BlockState state) {
+        return state.is(BlockTags.DIRT) || state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL);
     }
 }

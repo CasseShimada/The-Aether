@@ -341,7 +341,7 @@ public class BronzeDungeonBuilder {
      * @return Whether the room position is close enough to the starting chunk, as a {@link Boolean}.
      */
     private boolean isCloseToCenter(ChunkPos chunkPos, BlockPos pos) {
-        ChunkPos currentChunk = new ChunkPos(pos);
+        ChunkPos currentChunk = ChunkPos.containing(pos);
         return chunkPos.getChessboardDistance(currentChunk) <= 3;
     }
 

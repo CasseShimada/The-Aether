@@ -31,7 +31,7 @@ public class PigSlayerItem extends SwordItem {
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker)) {
-            if (target.getType().is(AetherTags.Entities.PIGS)) {
+            if (target.getType().builtInRegistryHolder().is(AetherTags.Entities.PIGS)) {
                 if (target instanceof ZombifiedPiglin zombifiedPiglin) {
                     if (!(attacker instanceof Player player) || !player.isCreative()) {
                         ZombifiedPiglinAccessor zombifiedPiglinAccessor = (ZombifiedPiglinAccessor) zombifiedPiglin;
@@ -75,7 +75,7 @@ public class PigSlayerItem extends SwordItem {
     private static boolean canPerformAbility(LivingEntity target, DamageSource source) {
         if (source.getDirectEntity() instanceof LivingEntity attacker) {
             if (EquipmentUtil.isFullStrength(attacker)) {
-                if (target.getType().is(AetherTags.Entities.PIGS)) {
+                if (target.getType().builtInRegistryHolder().is(AetherTags.Entities.PIGS)) {
                     return attacker.getMainHandItem().is(AetherItems.PIG_SLAYER.get());
                 }
             }

@@ -64,34 +64,29 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
         return AetherRecipeSerializers.ITEM_PLACEMENT_BAN.get();
     }
 
-    public static class Serializer extends PlacementBanRecipeSerializer<ItemStack, Ingredient, SingleRecipeInput, ItemBanRecipe> {
-        public Serializer() {
-            super(ItemBanRecipe::new);
+    public static final class Serializer {
+        private static final MapCodec<ItemBanRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+                BlockStateRecipeUtil.KEY_CODEC.fieldOf("biome").forGetter(ItemBanRecipe::getBiome),
+                BlockStateIngredient.CODEC.optionalFieldOf("bypass").forGetter(ItemBanRecipe::getBypassBlock),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(ItemBanRecipe::getIngredient)
+        ).apply(inst, ItemBanRecipe::new));
+
+        private Serializer() {
         }
 
-        @Override
-        public MapCodec<ItemBanRecipe> codec() {
-            return RecordCodecBuilder.mapCodec(inst -> inst.group(
-                    BlockStateRecipeUtil.KEY_CODEC.fieldOf("biome").forGetter(ItemBanRecipe::getBiome),
-                    BlockStateIngredient.CODEC.optionalFieldOf("bypass").forGetter(ItemBanRecipe::getBypassBlock),
-                    Ingredient.CODEC.fieldOf("ingredient").forGetter(ItemBanRecipe::getIngredient)
-            ).apply(inst, this.getFactory()));
+        public static RecipeSerializer<ItemBanRecipe> create() {
+            return PlacementBanRecipeSerializer.create(CODEC, StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork));
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ItemBanRecipe> streamCodec() {
-            return StreamCodec.of(this::toNetwork, this::fromNetwork);
-        }
-
-        public ItemBanRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            Either<ResourceKey<Biome>, TagKey<Biome>> biome = BlockStateRecipeUtil.STREAM_CODEC.decode(buffer);
-            Optional<BlockStateIngredient> bypassBlock = buffer.readOptional((buf) -> BlockStateIngredient.CONTENTS_STREAM_CODEC.decode(buffer));
+        private static ItemBanRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+            Either<ResourceKey<Biome>, TagKey<Biome>> biome = PlacementBanRecipeSerializer.readBiome(buffer);
+            Optional<BlockStateIngredient> bypassBlock = PlacementBanRecipeSerializer.readBypass(buffer);
             Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             return new ItemBanRecipe(biome, bypassBlock, ingredient);
         }
 
-        public void toNetwork(RegistryFriendlyByteBuf buffer, ItemBanRecipe recipe) {
-            super.toNetwork(buffer, recipe);
+        private static void toNetwork(RegistryFriendlyByteBuf buffer, ItemBanRecipe recipe) {
+            PlacementBanRecipeSerializer.writeBase(buffer, recipe);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.getIngredient());
         }
     }

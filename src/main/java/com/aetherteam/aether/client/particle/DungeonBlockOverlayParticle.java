@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public class DungeonBlockOverlayParticle extends SingleQuadParticle {
     public DungeonBlockOverlayParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, SpriteSet spriteSet) {
-        super(level, xCoord, yCoord, zCoord, spriteSet.get(level.random));
+        super(level, xCoord, yCoord, zCoord, spriteSet.get(level.getRandom()));
         this.gravity = 0.0F;
         this.lifetime = 80;
         this.hasPhysics = false;

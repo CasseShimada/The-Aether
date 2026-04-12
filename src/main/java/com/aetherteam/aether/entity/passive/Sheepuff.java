@@ -224,7 +224,7 @@ public class Sheepuff extends AetherAnimal implements Shearable {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() instanceof DyeItem dyeItem && !this.isSheared()) {
-            DyeColor color = dyeItem.getDyeColor();
+            DyeColor color = com.aetherteam.aether.util.DyeUtil.colorOf(dyeItem);
             if (this.getColor() != color) {
                 if (this.getPuffed() && itemstack.getCount() >= 2) {
                     player.swing(hand);
@@ -416,16 +416,16 @@ public class Sheepuff extends AetherAnimal implements Shearable {
         return level
                 .recipeAccess()
                 .getRecipeFor(RecipeType.CRAFTING, craftingInput, level)
-                .map(recipeHolder -> recipeHolder.value().assemble(craftingInput, level.registryAccess()))
-                .map(ItemStack::getItem)
+                .map(recipeHolder -> recipeHolder.value().assemble(craftingInput))
+                .map(stack -> stack.getItem())
                 .filter(DyeItem.class::isInstance)
                 .map(DyeItem.class::cast)
-                .map(DyeItem::getDyeColor)
-                .orElseGet(() -> level.random.nextBoolean() ? dyeColor1 : dyeColor2);
+                .map(com.aetherteam.aether.util.DyeUtil::colorOf)
+                .orElseGet(() -> level.getRandom().nextBoolean() ? dyeColor1 : dyeColor2);
     }
 
     private static CraftingInput makeCraftInput(DyeColor color1, DyeColor color2) {
-        return CraftingInput.of(2, 1, List.of(new ItemStack(DyeItem.byColor(color1)), new ItemStack(DyeItem.byColor(color2))));
+        return CraftingInput.of(2, 1, List.of(new ItemStack(com.aetherteam.aether.util.DyeUtil.itemOf(color1)), new ItemStack(com.aetherteam.aether.util.DyeUtil.itemOf(color2))));
     }
 
     public float getHeadEatPositionScale(float pos) {

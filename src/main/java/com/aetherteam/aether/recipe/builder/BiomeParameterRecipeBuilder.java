@@ -79,9 +79,13 @@ public class BiomeParameterRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    @Override
     public Item getResult() {
         return Items.AIR;
+    }
+
+    @Override
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.getResult().getDefaultInstance());
     }
 
     @Override

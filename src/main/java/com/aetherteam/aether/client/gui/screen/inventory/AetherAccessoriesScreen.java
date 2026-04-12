@@ -20,7 +20,7 @@ import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -39,7 +39,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -85,9 +85,6 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
     @Override
     public void init() {
         super.init();
-        if (this.minecraft.player != null) {
-            this.imageWidth = this.minecraft.player.isCreative() ? 176 + this.creativeXOffset() : 176;
-        }
         this.widthTooNarrow = this.width < 379;
         this.getRecipeBookComponent().init(this.width, this.height, this.minecraft, this.widthTooNarrow);
         this.updateScreenPosition();
@@ -135,9 +132,9 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
         int i;
         if (this.getRecipeBookComponent().isVisible() && !this.widthTooNarrow) {
             int offset = 200 - this.creativeXOffset();
-            i = 177 + (this.width - this.imageWidth - offset) / 2;
+            i = 177 + (this.width - this.backgroundWidth() - offset) / 2;
         } else {
-            i = (this.width - this.imageWidth) / 2;
+            i = (this.width - this.backgroundWidth()) / 2;
         }
         this.leftPos = i;
         this.updateRenderButtons();
@@ -187,18 +184,18 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.updatePerkButtonPositions();
         if (this.getRecipeBookComponent().isVisible() && this.widthTooNarrow) {
-            this.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
-            this.getRecipeBookComponent().render(guiGraphics, mouseX, mouseY, partialTicks);
+            this.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
+            this.getRecipeBookComponent().extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
         } else {
-            this.getRecipeBookComponent().render(guiGraphics, mouseX, mouseY, partialTicks);
-            super.render(guiGraphics, mouseX, mouseY, partialTicks);
-            this.getRecipeBookComponent().renderGhostRecipe(guiGraphics, this.isBiggerResultSlot());
+            this.getRecipeBookComponent().extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+            super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+            this.getRecipeBookComponent().extractGhostRecipe(guiGraphics, this.isBiggerResultSlot());
 
             for (var cosmeticButton : this.cosmeticButtons.values()) {
-                cosmeticButton.render(guiGraphics, mouseX, mouseY, partialTicks);
+                cosmeticButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
             }
 
             boolean isButtonHovered = false;
@@ -231,22 +228,18 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
             if (this.destroyItemSlot != null && this.isHovering(this.destroyItemSlot.x, this.destroyItemSlot.y, 16, 16, mouseX, mouseY)) {
                 guiGraphics.setTooltipForNextFrame(this.font, Component.translatable("inventory.binSlot"), mouseX, mouseY);
             }
-
-            if (this.minecraft.player != null) {
-                this.imageWidth = this.minecraft.player.isCreative() ? 176 + this.creativeXOffset() : 176;
-            }
         }
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
-        this.getRecipeBookComponent().renderTooltip(guiGraphics, mouseX, mouseY, this.hoveredSlot);
+        this.extractTooltip(guiGraphics, mouseX, mouseY);
+        this.getRecipeBookComponent().extractTooltip(guiGraphics, mouseX, mouseY, this.hoveredSlot);
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (this.minecraft.player != null) {
             int i = this.leftPos;
             int j = this.topPos;
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.minecraft.player.isCreative() ? ACCESSORIES_INVENTORY_CREATIVE : ACCESSORIES_INVENTORY, i, j, 0.0F, 0.0F, this.imageWidth + this.creativeXOffset(), this.imageHeight, 256, 256);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, i + 9, j + 8, i + 58, j + 78, 30, 0.1575F, mouseX, mouseY, this.minecraft.player);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.minecraft.player.isCreative() ? ACCESSORIES_INVENTORY_CREATIVE : ACCESSORIES_INVENTORY, i, j, 0.0F, 0.0F, this.backgroundWidth(), this.imageHeight, 256, 256);
+            InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, i + 9, j + 8, i + 58, j + 78, 30, 0.1575F, mouseX, mouseY, this.minecraft.player);
         }
     }
 
@@ -257,8 +250,12 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
         return this.minecraft.player != null && this.minecraft.player.isCreative() ? 18 : 0;
     }
 
+    private int backgroundWidth() {
+        return 176 + this.creativeXOffset();
+    }
+
     @Override
-    protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void extractTooltip(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         Minecraft minecraft = this.minecraft;
         LocalPlayer clientPlayer = minecraft.player;
         if (clientPlayer != null && clientPlayer.inventoryMenu.getCarried().isEmpty()) {
@@ -271,9 +268,9 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (this.minecraft.player != null) {
-            guiGraphics.drawString(this.font, this.title, 115, 6, 4210752, false);
+            guiGraphics.text(this.font, this.title, 115, 6, 4210752, false);
         }
     }
 
@@ -317,10 +314,10 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      * Heavily modified to only have behavior for the item trash slot.
      */
     @Override
-    protected void slotClicked(@Nullable Slot slot, int slotId, int mouseButton, ClickType type) {
+    protected void slotClicked(@Nullable Slot slot, int slotId, int mouseButton, ContainerInput type) {
         if (this.minecraft.player != null && this.minecraft.gameMode != null) {
-            boolean flag = type == ClickType.QUICK_MOVE;
-            if (slot != null || type == ClickType.QUICK_CRAFT) {
+            boolean flag = type == ContainerInput.QUICK_MOVE;
+            if (slot != null || type == ContainerInput.QUICK_CRAFT) {
                 if (slot == null || slot.mayPickup(this.minecraft.player)) {
                     if (slot == this.destroyItemSlot && this.destroyItemSlot != null && flag) {
                         for (int j = 0; j < this.minecraft.player.inventoryMenu.getItems().size(); ++j) {

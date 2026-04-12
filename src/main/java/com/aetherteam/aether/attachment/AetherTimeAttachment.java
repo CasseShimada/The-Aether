@@ -2,6 +2,7 @@ package com.aetherteam.aether.attachment;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
+import com.aetherteam.aether.util.LevelTimeUtil;
 import com.aetherteam.aether.world.AetherLevelData;
 import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.network.packet.SyncPacket;
@@ -61,7 +62,7 @@ public class AetherTimeAttachment implements INBTSynchable {
      * Used to increment the time in Aether levels.
      */
     public long tickTime(Level level) {
-        long dayTime = level.getDayTime();
+        long dayTime = LevelTimeUtil.getTime(level);
         if (this.getDayTime() == -1 && !AetherConfig.SERVER.disable_eternal_day.get()) {
             dayTime = getTicksPerDay() / 4;
         }

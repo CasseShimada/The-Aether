@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public class AetherPortalParticle extends PortalParticle {
     public AetherPortalParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, SpriteSet spriteSet) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.getRandom()));
         float f = this.random.nextFloat() * 0.6F + 0.4F;
         this.rCol = this.gCol = this.bCol = f;
         this.rCol *= 0.2F;

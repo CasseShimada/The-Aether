@@ -10,7 +10,7 @@ import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.nitrogen.api.users.User;
 import com.aetherteam.nitrogen.api.users.UserData;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -226,14 +226,14 @@ public class AetherCustomizationsScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderTransparentBackground(guiGraphics);
-        guiGraphics.drawCenteredString(this.font, this.getTitle(), this.width / 2, 15, 16777215);
-        guiGraphics.drawCenteredString(this.font, Component.translatable("gui.aether.customization.color"), (this.width / 2 - 65) + 184, (this.height / 2 - 10) - 14, 16777215);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.extractTransparentBackground(guiGraphics);
+        guiGraphics.centeredText(this.font, this.getTitle(), this.width / 2, 15, 16777215);
+        guiGraphics.centeredText(this.font, Component.translatable("gui.aether.customization.color"), (this.width / 2 - 65) + 184, (this.height / 2 - 10) - 14, 16777215);
         if (this.minecraft.player != null) {
             int x = (this.width / 2) - 175;
             int y = (this.height / 2) + 50;
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x - 42, y - 208, x + 107, y + 12, 60, 0.725F, mouseX, mouseY, this.minecraft.player);
+            InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, x - 42, y - 208, x + 107, y + 12, 60, 0.725F, mouseX, mouseY, this.minecraft.player);
         }
         // Resets color values if they're invalid.
         if (this.haloColorBox != null && !this.haloColorBox.getValue().equals(this.haloColor)) {

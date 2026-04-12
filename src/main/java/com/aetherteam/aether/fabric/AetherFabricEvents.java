@@ -11,12 +11,12 @@ import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -61,13 +61,13 @@ public final class AetherFabricEvents {
         });
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> AccessoryRuntime.clear(entity));
 
-        ServerWorldEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
-        ServerTickEvents.END_WORLD_TICK.register(world -> {
+        ServerLevelEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
+        ServerTickEvents.END_LEVEL_TICK.register(world -> {
             DimensionHooks.tickTime(world);
             DimensionHooks.checkEternalDayConfig(world);
         });
 
-        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
             DimensionHooks.remountPlayerAerbunny(player);
             CapabilityHooks.AetherPlayerHooks.changeDimension(player);
             CapabilityHooks.AetherTimeHooks.changeDimension(player);

@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -52,7 +53,7 @@ public class AetherCookingRecipeBuilder implements RecipeBuilder {
         this.factory = factory;
     }
 
-    public static AetherCookingRecipeBuilder generic(Ingredient ingredient, RecipeCategory category, ItemLike result, float experience, int cookingTime, AetherCookingSerializer<?> serializer, AetherCookingSerializer.CookieBaker<?> factory) {
+    public static AetherCookingRecipeBuilder generic(Ingredient ingredient, RecipeCategory category, ItemLike result, float experience, int cookingTime, RecipeSerializer<? extends AbstractCookingRecipe> serializer, AetherCookingSerializer.CookieBaker<?> factory) {
         return new AetherCookingRecipeBuilder(category, determineRecipeCategory(serializer, category), new ItemStack(result), ingredient, experience, cookingTime, factory);
     }
 
@@ -62,7 +63,6 @@ public class AetherCookingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    @Override
     public Item getResult() {
         return this.result.getItem();
     }
@@ -74,13 +74,18 @@ public class AetherCookingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.result);
+    }
+
+    @Override
     public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> recipeKey) {
         Identifier id = recipeKey.identifier();
         this.ensureValid(id);
         Advancement.Builder advancement$builder = recipeOutput.advancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey)).rewards(AdvancementRewards.Builder.recipe(recipeKey)).requirements(AdvancementRequirements.Strategy.OR);
         Objects.requireNonNull(advancement$builder);
         this.criteria.forEach(advancement$builder::addCriterion);
-        AbstractCookingRecipe recipe = this.factory.create(Objects.requireNonNullElse(this.group, ""), this.bookCategory, this.ingredient, this.result, this.experience, this.cookingTime);
+        AbstractCookingRecipe recipe = this.factory.create(Objects.requireNonNullElse(this.group, ""), this.bookCategory, this.ingredient, ItemStackTemplate.fromNonEmptyStack(this.result), this.experience, this.cookingTime);
         recipeOutput.accept(recipeKey, recipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 

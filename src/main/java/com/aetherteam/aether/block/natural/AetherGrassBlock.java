@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
@@ -88,11 +87,12 @@ public class AetherGrassBlock extends GrassBlock {
             if (blockState.isAir()) {
                 Holder<PlacedFeature> featureHolder;
                 if (random.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> list = level.getBiome(blockPos).value().getGenerationSettings().getFlowerFeatures();
+                    List<ConfiguredFeature<?, ?>> list = level.getBiome(blockPos).value().getGenerationSettings().getBoneMealFeatures();
                     if (list.isEmpty()) {
                         continue;
                     }
-                    featureHolder = ((RandomPatchConfiguration) list.get(random.nextInt(list.size())).config()).feature();
+                    list.get(random.nextInt(list.size())).place(level, level.getChunkSource().getGenerator(), random, blockPos);
+                    continue;
                 } else {
                     if (grassFeatureOptional.isEmpty()) {
                         continue;

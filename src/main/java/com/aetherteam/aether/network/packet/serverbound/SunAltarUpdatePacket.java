@@ -3,11 +3,11 @@ package com.aetherteam.aether.network.packet.serverbound;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.command.SunAltarWhitelist;
+import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.permissions.Permissions;
@@ -39,12 +39,11 @@ public record SunAltarUpdatePacket(long dayTime, int timeScale) implements Custo
         if (playerEntity.level() instanceof ServerLevel level && (!AetherConfig.SERVER.sun_altar_whitelist.get() || playerEntity.permissions().hasPermission(Permissions.COMMANDS_ADMIN) || SunAltarWhitelist.INSTANCE.isWhiteListed(new NameAndId(playerEntity.getGameProfile())))) {
             if (AetherConfig.SERVER.sun_altar_dimensions.get().contains(level.dimension().identifier().toString())) {
                 // Get how many days have passed in the world first, then add to it.
-                var dayBase = level.getDayTime() / (long) payload.timeScale();
+                var dayBase = LevelTimeUtil.getTime(level) / (long) payload.timeScale();
                 var dayTime = (dayBase * payload.timeScale()) + payload.dayTime();
                 // Set the time.
-                level.setDayTime(dayTime);
-                boolean advanceTime = (boolean) level.getGameRules().get(GameRules.ADVANCE_TIME);
-                level.getServer().getPlayerList().broadcastAll(new ClientboundSetTimePacket(level.getGameTime(), level.getDayTime(), advanceTime), level.dimension());
+                LevelTimeUtil.setTime(level, dayTime);
+                level.getServer().getPlayerList().broadcastAll(level.clockManager().createFullSyncPacket(), level.dimension());
             }
         }
     }

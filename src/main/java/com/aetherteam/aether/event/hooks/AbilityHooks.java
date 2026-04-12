@@ -152,13 +152,13 @@ public class AbilityHooks {
             if (target instanceof Player player) {
                 var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                 return lookingEntity != null
-                        && !lookingEntity.getType().is(AetherTags.Entities.IGNORE_INVISIBILITY)
+                        && !lookingEntity.getType().builtInRegistryHolder().is(AetherTags.Entities.IGNORE_INVISIBILITY)
                         && data.isWearingInvisibilityCloak()
                         && data.isInvisibilityEnabled()
                         && !data.attackedWithInvisibility();
             } else {
                 return lookingEntity != null
-                        && !lookingEntity.getType().is(AetherTags.Entities.IGNORE_INVISIBILITY)
+                        && !lookingEntity.getType().builtInRegistryHolder().is(AetherTags.Entities.IGNORE_INVISIBILITY)
                         && EquipmentUtil.hasInvisibilityCloak(target);
             }
         }
@@ -171,7 +171,7 @@ public class AbilityHooks {
         public static boolean recentlyAttackedWithInvisibility(LivingEntity target, Entity lookingEntity) {
             if (target instanceof Player player) {
                 var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                return !lookingEntity.getType().is(AetherTags.Entities.IGNORE_INVISIBILITY)
+                return !lookingEntity.getType().builtInRegistryHolder().is(AetherTags.Entities.IGNORE_INVISIBILITY)
                         && data.isWearingInvisibilityCloak()
                         && data.isInvisibilityEnabled()
                         && data.attackedWithInvisibility();
@@ -459,7 +459,7 @@ public class AbilityHooks {
                 double pow = Math.max(Math.pow(damage, damage > 1.0 ? 0.6 : 1.6), 1.0);
                 if (source instanceof LivingEntity livingEntity) {
                     ItemStack stack = livingEntity.getMainHandItem();
-                    if ((target.getType().getDescriptionId().startsWith("entity.aether") || target.getType().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) && !target.getType().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY)) { // Checks if the target is an Aether entity.
+                    if ((target.getType().getDescriptionId().startsWith("entity.aether") || target.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) && !target.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY)) { // Checks if the target is an Aether entity.
                         if (!stack.isEmpty()) {
                             AtomicDouble value = new AtomicDouble(); // Used for checking if the attack damage from the item is greater than the attacker's default (fist).
                             stack.forEachModifier(EquipmentSlotGroup.MAINHAND, (attribute, modifier, display) -> {
@@ -473,8 +473,8 @@ public class AbilityHooks {
                         }
                     }
                 } else if (source instanceof Projectile) { // Used for reducing projectile weapon effectiveness.
-                    if ((target.getType().getDescriptionId().startsWith("entity.aether") || target.getType().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) && !target.getType().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY)) { // Checks if the target is an Aether entity.
-                        if ((!source.getType().getDescriptionId().startsWith("entity.aether") && !source.getType().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) // Checks if the projectile is non-Aether.
+                    if ((target.getType().getDescriptionId().startsWith("entity.aether") || target.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) && !target.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY)) { // Checks if the target is an Aether entity.
+                        if ((!source.getType().getDescriptionId().startsWith("entity.aether") && !source.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY)) // Checks if the projectile is non-Aether.
                                 && (!(source instanceof AbstractArrow abstractArrow) || !abstractArrow.hasAttached(AetherDataAttachments.PHOENIX_ARROW) || !abstractArrow.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW).isPhoenixArrow())) { // Special check against Phoenix Arrows.
                             damage = (float) pow;
                         }
@@ -495,7 +495,7 @@ public class AbilityHooks {
          */
         public static float reduceArmorEffectiveness(LivingEntity target, @Nullable Entity source, float damage) {
             if (source != null) {
-                if ((source.getType().getDescriptionId().startsWith("entity.aether") || source.getType().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY) && !source.getType().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY))) { // Checks if the attacker is an Aether entity.
+                if ((source.getType().getDescriptionId().startsWith("entity.aether") || source.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_AETHER_ENTITY) && !source.getType().builtInRegistryHolder().is(AetherTags.Entities.TREATED_AS_VANILLA_ENTITY))) { // Checks if the attacker is an Aether entity.
                     for (EquipmentSlot equipmentSlot : EquipmentSlot.VALUES) {
                         if (!equipmentSlot.isArmor()) {
                             continue;

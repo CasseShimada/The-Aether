@@ -6,7 +6,6 @@ import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
 import com.aetherteam.nitrogen.recipe.input.BlockStateRecipeInput;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.PlacementInfo;
@@ -83,8 +82,13 @@ public abstract class AbstractBlockStateRecipe implements BlockStateRecipe {
     }
 
     @Override
-    public ItemStack assemble(BlockStateRecipeInput input, HolderLookup.Provider provider) {
+    public ItemStack assemble(BlockStateRecipeInput input) {
         return new ItemStack(this.result.block());
+    }
+
+    @Override
+    public String group() {
+        return "";
     }
 
     @Override
@@ -96,6 +100,11 @@ public abstract class AbstractBlockStateRecipe implements BlockStateRecipe {
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.CRAFTING_MISC;
+    }
+
+    @Override
+    public boolean showNotification() {
+        return false;
     }
 
     @Override

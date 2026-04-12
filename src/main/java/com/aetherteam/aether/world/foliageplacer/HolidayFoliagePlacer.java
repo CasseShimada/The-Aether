@@ -5,7 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.util.valueproviders.IntProviders;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -15,7 +16,7 @@ import java.util.function.BiConsumer;
 
 public class HolidayFoliagePlacer extends FoliagePlacer {
     public static final MapCodec<HolidayFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> foliagePlacerParts(instance)
-            .and(IntProvider.codec(0, 24).fieldOf("trunk_height").forGetter((placer) -> placer.trunkHeight))
+            .and(IntProviders.codec(0, 24).fieldOf("trunk_height").forGetter((placer) -> placer.trunkHeight))
             .apply(instance, HolidayFoliagePlacer::new));
     private final IntProvider trunkHeight;
 
@@ -32,7 +33,7 @@ public class HolidayFoliagePlacer extends FoliagePlacer {
     /**
      * Places circular leaf rows around the center trunk in a Christmas tree shape.
      *
-     * @param level             The {@link LevelSimulatedReader}.
+     * @param level             The {@link WorldGenLevel}.
      * @param foliageSetter     The {@link BiConsumer} of a {@link BlockPos} and {@link BlockState} used for block placement.
      * @param random            The {@link RandomSource}.
      * @param config            The {@link TreeConfiguration}.
@@ -43,7 +44,7 @@ public class HolidayFoliagePlacer extends FoliagePlacer {
      * @param offset            The {@link Integer} for the foliage offset.
      */
     @Override
-    protected void createFoliage(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliagePlacer.FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+    protected void createFoliage(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliagePlacer.FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         BlockPos blockPos = attachment.pos();
         int i = 0;
         for (int l = offset; l >= offset - 7; --l) {
@@ -82,7 +83,7 @@ public class HolidayFoliagePlacer extends FoliagePlacer {
     /**
      * Places leaves outwards from a position at a certain distance.
      *
-     * @param level         The {@link LevelSimulatedReader}.
+     * @param level         The {@link WorldGenLevel}.
      * @param foliageSetter The {@link BiConsumer} of a {@link BlockPos} and {@link BlockState} used for block placement.
      * @param random        The {@link RandomSource}.
      * @param config        The {@link TreeConfiguration}.
@@ -92,7 +93,7 @@ public class HolidayFoliagePlacer extends FoliagePlacer {
      * @param distance      The {@link Integer} distance for offsetting the position.
      * @param range         The {@link Integer} range for placement.
      */
-    private void disk360(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, boolean doubleTrunk, BlockPos blockPos, int height, int distance, int range) {
+    private void disk360(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, boolean doubleTrunk, BlockPos blockPos, int height, int distance, int range) {
         this.placeLeavesRow(level, foliageSetter, random, config, blockPos.east(distance), range, height, doubleTrunk);
         this.placeLeavesRow(level, foliageSetter, random, config, blockPos.south(distance), range, height, doubleTrunk);
         this.placeLeavesRow(level, foliageSetter, random, config, blockPos.west(distance), range, height, doubleTrunk);

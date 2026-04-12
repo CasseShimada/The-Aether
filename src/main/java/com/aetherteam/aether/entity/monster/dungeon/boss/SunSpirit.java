@@ -111,7 +111,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     public SunSpirit(EntityType<? extends SunSpirit> type, Level level) {
         super(type, level);
         this.moveControl = new BlankMoveControl(this);
-        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
+        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getUUID(), this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
         this.setBossFight(false);
         this.origin = this.position();
         this.xpReward = XP_REWARD_BOSS;
@@ -346,7 +346,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
         if (this.level() instanceof ServerLevel level) {
             AABB room = this.getDungeon() == null ? this.getBoundingBox().inflate(16) : this.getDungeon().roomBounds();
             level.getPlayers(player -> room.contains(player.position()) && NON_COMBAT.test(level, this, player))
-                    .forEach(player -> player.displayClientMessage(message, false));
+                    .forEach(player -> com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, message, false));
         }
     }
 

@@ -43,7 +43,7 @@ public final class BlockPlacementUtil {
     @SuppressWarnings("UnusedReturnValue")
     public static boolean placeProvidedBlock(WorldGenLevel level, BlockStateProvider provider, BlockPos pos, RandomSource random) {
         if (level.getBlockState(pos).isAir()) {
-            return level.setBlock(pos, provider.getState(random, pos), 2);
+            return level.setBlock(pos, provider.getState(level, random, pos), 2);
         } else {
             return false;
         }

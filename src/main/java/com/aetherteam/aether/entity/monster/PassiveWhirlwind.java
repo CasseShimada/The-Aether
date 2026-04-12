@@ -51,7 +51,7 @@ public class PassiveWhirlwind extends AbstractWhirlwind {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.getItem() instanceof DyeItem dyeItem && player.isCreative()) {
-            this.setColorData(dyeItem.getDyeColor().getMapColor().col);
+            this.setColorData(com.aetherteam.aether.util.DyeUtil.colorOf(dyeItem).getMapColor().col);
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);

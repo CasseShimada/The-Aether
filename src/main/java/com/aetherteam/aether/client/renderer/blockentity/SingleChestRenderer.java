@@ -11,20 +11,20 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.Vec3;
 
 abstract class SingleChestRenderer<T extends BlockEntity> implements BlockEntityRenderer<T, ChestRenderState> {
-    private final MaterialSet materials;
+    private final SpriteGetter sprites;
     private final ChestModel model;
 
     protected SingleChestRenderer(BlockEntityRendererProvider.Context context) {
-        this.materials = context.materials();
+        this.sprites = context.sprites();
         this.model = new ChestModel(context.bakeLayer(AetherModelLayers.CHEST_MIMIC));
     }
 
@@ -33,17 +33,17 @@ abstract class SingleChestRenderer<T extends BlockEntity> implements BlockEntity
         return new ChestRenderState();
     }
 
-    protected void extractSingleChestRenderState(T blockEntity, ChestRenderState state, float partialTick, float angle, float openness, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    protected void extractSingleChestRenderState(T blockEntity, ChestRenderState state, float partialTick, net.minecraft.core.Direction facing, float openness, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay);
         state.type = ChestType.SINGLE;
-        state.angle = angle;
+        state.facing = facing;
         state.open = openness;
     }
 
-    protected void submitSingleChest(ChestRenderState state, PoseStack poseStack, SubmitNodeCollector collector, Material material) {
+    protected void submitSingleChest(ChestRenderState state, PoseStack poseStack, SubmitNodeCollector collector, SpriteId material) {
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-state.angle));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         float openness = 1.0F - state.open;
@@ -53,11 +53,11 @@ abstract class SingleChestRenderer<T extends BlockEntity> implements BlockEntity
             this.model,
             openness,
             poseStack,
-            material.renderType(texture -> Sheets.chestSheet()),
             state.lightCoords,
             OverlayTexture.NO_OVERLAY,
             -1,
-            this.materials.get(material),
+            material,
+            this.sprites,
             0,
             state.breakProgress
         );

@@ -26,7 +26,7 @@ import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.fabricmc.loader.api.FabricLoader;
@@ -127,8 +127,8 @@ public class AetherClient {
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             configureScreen(screen);
-            ScreenEvents.afterRender(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
-                Screens.getButtons(currentScreen).forEach(widget -> {
+            ScreenEvents.afterExtract(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
+                Screens.getWidgets(currentScreen).forEach(widget -> {
                     if (widget instanceof AccessoryButton accessoryButton) {
                         accessoryButton.updateButtonState();
                     }
@@ -166,9 +166,9 @@ public class AetherClient {
             AbilityHooks.ToolHooks.resetDebuffToolsState();
         });
 
-        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(context -> {
+        LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
             Minecraft minecraft = Minecraft.getInstance();
-            LevelClientHooks.renderDungeonBlockOverlays(context.matrices(), minecraft.gameRenderer.getMainCamera(), null, minecraft);
+            LevelClientHooks.renderDungeonBlockOverlays(context.poseStack(), minecraft.gameRenderer.getMainCamera(), null, minecraft);
         });
     }
 
@@ -180,14 +180,14 @@ public class AetherClient {
         var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
         var inventoryAccessoryButton = GuiHooks.setupAccessoryButton(screen, offsets);
         if (inventoryAccessoryButton != null && GuiHooks.isAccessoryButtonEnabled()) {
-            Screens.getButtons(screen).add(inventoryAccessoryButton);
+            Screens.getWidgets(screen).add(inventoryAccessoryButton);
         }
 
         GridLayout layout = GuiHooks.setupPerksButtons(screen);
         if (layout != null && !GuiHooks.isAccessoryButtonEnabled()) {
             layout.visitWidgets(widget -> {
                 if (widget instanceof AbstractWidget abstractWidget) {
-                    Screens.getButtons(screen).add(abstractWidget);
+                    Screens.getWidgets(screen).add(abstractWidget);
                 }
             });
         }

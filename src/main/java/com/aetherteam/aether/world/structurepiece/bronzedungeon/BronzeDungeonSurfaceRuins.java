@@ -47,7 +47,7 @@ public class BronzeDungeonSurfaceRuins extends StructurePiece {
         .add(AetherBlocks.MOSSY_HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
         .add(AetherBlocks.MOSSY_HOLYSTONE_SLAB.get().defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP), 3)
         .build());
-    private static final ConfiguredFeature<?, ? extends Feature<?>> MIXED_FLOWER_PATCH = new ConfiguredFeature<>(Feature.FLOWER, NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder()
+    private static final ConfiguredFeature<?, ? extends Feature<?>> MIXED_FLOWER_PATCH = new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder()
         .add(AetherFeatureStates.PURPLE_FLOWER, 1)
         .add(AetherFeatureStates.WHITE_FLOWER, 1)
     ), 24));
@@ -101,7 +101,7 @@ public class BronzeDungeonSurfaceRuins extends StructurePiece {
         BlockPos topPos = wallColumnStart.above(wallColumnHeight);
 		// Use full block only if the pillar top is too short (or is underground)
 		BlockStateProvider topProvider = wallColumnHeight < 1 ? BLOCKS : TOPS;
-		level.setBlock(topPos, topProvider.getState(random, topPos), 0b11);
+		level.setBlock(topPos, topProvider.getState(level, random, topPos), 0b11);
 	}
 
     private void placeColumnBlocks(WorldGenLevel level, RandomSource random, List<BlockPos> forPlacement) {
@@ -116,13 +116,13 @@ public class BronzeDungeonSurfaceRuins extends StructurePiece {
 
 			if (hasSkippedGap) {
                 BlockStateProvider tailProvider = level.getBlockState(posAt).isAir() ? BOTTOMS : BLOCKS;
-                level.setBlock(posAt, tailProvider.getState(random, posAt), 0b11);
+                level.setBlock(posAt, tailProvider.getState(level, random, posAt), 0b11);
 
                 BlockPos capPos = lastPos.above();
                 BlockStateProvider capProvider = level.getBlockState(capPos).isAir() ? TOPS : BLOCKS;
-                level.setBlock(capPos, capProvider.getState(random, capPos), 0b11);
+                level.setBlock(capPos, capProvider.getState(level, random, capPos), 0b11);
             } else {
-                level.setBlock(posAt, BLOCKS.getState(random, posAt), 0b11);
+                level.setBlock(posAt, BLOCKS.getState(level, random, posAt), 0b11);
             }
 
             lastPos = posAt;

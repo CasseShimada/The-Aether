@@ -18,7 +18,7 @@ public class FrozenParticle extends SingleQuadParticle {
     }
 
     public FrozenParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprite) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, sprite.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, sprite.get(level.getRandom()));
         this.xd *= 0.1;
         this.yd *= 0.1;
         this.zd *= 0.1;

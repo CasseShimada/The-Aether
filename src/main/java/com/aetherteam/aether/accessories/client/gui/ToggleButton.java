@@ -3,7 +3,7 @@ package com.aetherteam.aether.accessories.client.gui;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
 import com.aetherteam.aether.accessories.networking.AccessoriesNetworking;
 import com.aetherteam.aether.accessories.networking.server.ToggleAccessoryRenderPacket;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -28,6 +28,6 @@ public class ToggleButton extends Button {
     }
 
     @Override
-    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
     }
 }

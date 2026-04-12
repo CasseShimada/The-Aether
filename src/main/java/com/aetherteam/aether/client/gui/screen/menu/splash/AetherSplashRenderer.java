@@ -1,7 +1,7 @@
 package com.aetherteam.aether.client.gui.screen.menu.splash;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -18,7 +18,7 @@ public class AetherSplashRenderer extends SplashRenderer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int screenWidth, Font font, float colorModifier) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int screenWidth, Font font, float colorModifier) {
         guiGraphics.pose().pushMatrix();
         float splashX = this.alignedLeft ? 205.0F : (screenWidth / 2.0F) + (165.0F / 2.0F);
         float splashY = this.alignedLeft ? 57.0F : 68.0F;
@@ -28,7 +28,7 @@ public class AetherSplashRenderer extends SplashRenderer {
         textSize = textSize * 100.0F / 1 / (font.width(this.splash) + 32);
         guiGraphics.pose().scale(textSize, textSize);
         int color = (Mth.ceil(colorModifier * 255.0F) << 24) | 0x00FFFF00;
-        guiGraphics.drawCenteredString(font, this.splash, 0, -8, color);
+        guiGraphics.centeredText(font, this.splash, 0, -8, color);
         guiGraphics.pose().popMatrix();
     }
 }

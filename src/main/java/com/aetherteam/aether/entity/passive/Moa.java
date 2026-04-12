@@ -93,12 +93,12 @@ public class Moa extends MountableAnimal implements WingedBird {
 
     public Moa(EntityType<? extends Moa> type, Level level) {
         super(type, level);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
-        this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
+        this.setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0F);
+        this.setPathfindingMalus(PathType.FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.ON_TOP_OF_POWDER_SNOW, -1.0F);
         this.setPathfindingMalus(PathType.POWDER_SNOW, -1.0F);
-        this.setPathfindingMalus(PathType.DANGER_OTHER, -1.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_OTHER, -1.0F);
+        this.setPathfindingMalus(PathType.DAMAGING_IN_NEIGHBOR, -1.0F);
+        this.setPathfindingMalus(PathType.DAMAGING, -1.0F);
         this.setPathfindingMalus(PathType.LAVA, -1.0F);
     }
 

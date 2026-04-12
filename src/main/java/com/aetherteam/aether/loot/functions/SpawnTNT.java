@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec3;
@@ -48,7 +47,7 @@ public class SpawnTNT extends LootItemConditionalFunction {
     }
 
     @Override
-    public LootItemFunctionType<SpawnTNT> getType() {
-        return AetherLootFunctions.SPAWN_TNT.get();
+    public MapCodec<? extends LootItemConditionalFunction> codec() {
+        return CODEC;
     }
 }

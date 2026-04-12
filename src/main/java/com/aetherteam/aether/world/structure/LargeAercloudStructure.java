@@ -65,7 +65,7 @@ public class LargeAercloudStructure extends Structure {
                         BlockPos newPosition = new BlockPos(x1, y1, z1);
                         if (Math.abs(x1 - x) + Math.abs(y1 - y) + Math.abs(z1 - z) < 4 * size + random.nextInt(2)) {
                             positions.add(newPosition);
-                            chunks.putIfAbsent(new ChunkPos(newPosition), new HashSet<>());
+                            chunks.putIfAbsent(ChunkPos.containing(newPosition), new HashSet<>());
                         }
                     }
                 }
@@ -75,7 +75,7 @@ public class LargeAercloudStructure extends Structure {
         // Checks if positions are within their chunk.
         chunks.forEach(((chunkPos, blockPosSet) -> {
             Set<BlockPos> withinChunk = new LinkedHashSet<>(positions);
-            withinChunk.removeIf(pos -> !(new ChunkPos(pos).equals(chunkPos)));
+            withinChunk.removeIf(pos -> !ChunkPos.containing(pos).equals(chunkPos));
             blockPosSet.addAll(withinChunk);
         }));
 

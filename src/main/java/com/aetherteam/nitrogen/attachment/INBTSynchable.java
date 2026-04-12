@@ -72,7 +72,7 @@ public interface INBTSynchable {
         if (context.length == 0 || !(context[0] instanceof Level level) || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
-        for (ServerPlayer player : PlayerLookup.world(serverLevel)) {
+        for (ServerPlayer player : PlayerLookup.level(serverLevel)) {
             PacketDistributor.sendToPlayer(player, packet);
         }
     }

@@ -136,7 +136,7 @@ public abstract class AbstractWhirlwind extends Mob {
 
         // This code is used to move other entities around the Whirlwind.
         List<Entity> entityList = this.level().getEntities(this, this.getBoundingBox().expandTowards(2.5, 2.5, 2.5))
-                .stream().filter((entity -> !entity.getType().is(AetherTags.Entities.WHIRLWIND_UNAFFECTED))).toList();
+                .stream().filter((entity -> !entity.getType().builtInRegistryHolder().is(AetherTags.Entities.WHIRLWIND_UNAFFECTED))).toList();
         for (Entity entity : entityList) {
             double x = (float) entity.getX();
             double y = (float) entity.getY() - entity.getPassengerRidingPosition(this).y() * 0.6F;

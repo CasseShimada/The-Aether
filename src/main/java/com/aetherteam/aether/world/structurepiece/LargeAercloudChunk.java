@@ -59,7 +59,7 @@ public class LargeAercloudChunk extends StructurePiece {
     @Override
     public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox bounds, ChunkPos chunkPos, BlockPos blockPos) {
         if (!this.positions.isEmpty()) {
-            this.positions.removeIf(pos -> this.placeBlock(level, this.blocks.getState(random, pos), pos, bounds));
+            this.positions.removeIf(pos -> this.placeBlock(level, this.blocks.getState(level, random, pos), pos, bounds));
         }
     }
 

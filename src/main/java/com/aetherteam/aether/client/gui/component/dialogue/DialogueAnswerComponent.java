@@ -1,7 +1,7 @@
 package com.aetherteam.aether.client.gui.component.dialogue;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -20,7 +20,7 @@ public class DialogueAnswerComponent {
         this.updateDialogue(message);
     }
 
-    public void render(GuiGraphics guiGraphics) {
+    public void render(GuiGraphicsExtractor guiGraphics) {
         this.splitLines.forEach(element -> element.render(guiGraphics));
     }
 
@@ -64,9 +64,9 @@ public class DialogueAnswerComponent {
             this.width = width;
         }
 
-        public void render(GuiGraphics guiGraphics) {
+        public void render(GuiGraphicsExtractor guiGraphics) {
             guiGraphics.fillGradient(this.x, this.y, this.x + width, this.y + 12, 0x66000000, 0x66000000);
-            guiGraphics.drawString(Minecraft.getInstance().font, this.text, this.x + 1, this.y + 1, 0xFFFFFFFF);
+            guiGraphics.text(Minecraft.getInstance().font, this.text, this.x + 1, this.y + 1, 0xFFFFFFFF);
         }
     }
 }

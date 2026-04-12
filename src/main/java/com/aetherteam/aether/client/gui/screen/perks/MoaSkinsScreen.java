@@ -20,7 +20,7 @@ import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacke
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.Util;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -169,14 +169,14 @@ public class MoaSkinsScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
         this.checkUserConnectionStatus();
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderTransparentBackground(guiGraphics);
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.extractTransparentBackground(guiGraphics);
         this.renderWindow(guiGraphics);
         this.renderSlots(guiGraphics, mouseX, mouseY);
         this.renderInterface(guiGraphics, mouseX, mouseY, partialTicks);
@@ -187,9 +187,9 @@ public class MoaSkinsScreen extends Screen {
      * "Donate to the project to get Moa Skins!" or "Thank you for donating to the project!"
      * will also be displayed.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      */
-    private void renderWindow(GuiGraphics guiGraphics) {
+    private void renderWindow(GuiGraphicsExtractor guiGraphics) {
         User user = UserData.Client.getClientUser();
         Font font = this.minecraft.font;
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, MOA_SKINS_GUI, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
@@ -197,7 +197,7 @@ public class MoaSkinsScreen extends Screen {
         Component component = user == null ? Component.translatable("gui.aether.moa_skins.text.donate") : Component.translatable("gui.aether.moa_skins.text.reward");
         int y = (this.topPos + this.imageHeight - 69) + font.wordWrapHeight(component, this.imageWidth - 20);
         for (FormattedCharSequence sequence : font.split(component, this.imageWidth - 20)) {
-            guiGraphics.drawCenteredString(font, sequence, this.leftPos + (this.imageWidth / 2), y, 16777215);
+            guiGraphics.centeredText(font, sequence, this.leftPos + (this.imageWidth / 2), y, 16777215);
             y += 12;
         }
     }
@@ -205,11 +205,11 @@ public class MoaSkinsScreen extends Screen {
     /**
      * Renders the slots for selecting different Moa Skins from.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @param mouseX      The {@link Integer} for the mouse's x-position.
      * @param mouseY      The {@link Integer} for the mouse's y-position.
      */
-    private void renderSlots(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    private void renderSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (this.minecraft.player != null) {
             UUID uuid = this.minecraft.player.getUUID();
             Map<UUID, MoaData> userSkinsData = ClientMoaSkinPerkData.INSTANCE.getClientPerkData();
@@ -250,9 +250,9 @@ public class MoaSkinsScreen extends Screen {
     /**
      * Renders the scrollbar based on the leftmost position for it and the current x-offset as determined by {@link MoaSkinsScreen#scrollX}.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      */
-    private void renderScrollbar(GuiGraphics guiGraphics) {
+    private void renderScrollbar(GuiGraphicsExtractor guiGraphics) {
         int scrollbarTop = (this.topPos + (this.imageHeight / 2)) + 29;
         int scrollbarLeft = this.leftPos + 8;
 
@@ -264,11 +264,11 @@ public class MoaSkinsScreen extends Screen {
      * Using {@link MoaSkinsScreen#getSkinFromSlot(double, double)}, this checks if the mouse is currently hovered over a Moa Skin slot,
      * and if so, then it will display a tooltip with the name of the Moa Skin.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @param mouseX      The {@link Integer} for the mouse's x-position.
      * @param mouseY      The {@link Integer} for the mouse's y-position.
      */
-    private void renderSlotTooltips(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    private void renderSlotTooltips(GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         MoaSkins.MoaSkin skin = this.getSkinFromSlot(mouseX, mouseY);
         if (skin != null) {
             Component name = skin.getDisplayName();
@@ -279,12 +279,12 @@ public class MoaSkinsScreen extends Screen {
     /**
      * Renders elements of the interface over the black section of the GUI.
      *
-     * @param guiGraphics  The rendering {@link GuiGraphics}.
+     * @param guiGraphics  The rendering {@link GuiGraphicsExtractor}.
      * @param mouseX       The {@link Integer} for the mouse's x-position.
      * @param mouseY       The {@link Integer} for the mouse's y-position.
      * @param partialTicks The {@link Float} for the game's partial ticks.
      */
-    private void renderInterface(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    private void renderInterface(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         User user = UserData.Client.getClientUser();
         if (user != null && this.getSelectedSkin().getUserPredicate().test(user)) { // If the player has access to the selected skin.
             this.applyButton.active = true;
@@ -328,17 +328,17 @@ public class MoaSkinsScreen extends Screen {
             }
         }
         this.renderMoa(guiGraphics, partialTicks); // Renders the spinning Moa with the selected skin.
-        guiGraphics.drawCenteredString(this.minecraft.font, this.getSelectedSkin().getDisplayName(), this.leftPos + (this.imageWidth / 2), this.topPos + 12, 16777215); // Skin Name
-        guiGraphics.drawCenteredString(this.minecraft.font, this.getTitle(), this.leftPos + (this.imageWidth / 2), this.topPos - 15, 16777215); // Title
+        guiGraphics.centeredText(this.minecraft.font, this.getSelectedSkin().getDisplayName(), this.leftPos + (this.imageWidth / 2), this.topPos + 12, 16777215); // Skin Name
+        guiGraphics.centeredText(this.minecraft.font, this.getTitle(), this.leftPos + (this.imageWidth / 2), this.topPos - 15, 16777215); // Title
     }
 
     /**
      * Displays an infinity sign icon in the bottom left corner of the black GUI interface.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @param mouseOver   Whether the mouse is hovering over this icon, as a {@link Boolean}.
      */
-    private void renderLifetimeIcon(GuiGraphics guiGraphics, boolean mouseOver) {
+    private void renderLifetimeIcon(GuiGraphicsExtractor guiGraphics, boolean mouseOver) {
         Identifier location = PERMANENT_WIDGET.get(true, mouseOver);
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 8, 7); // Lifetime Icon
     }
@@ -346,10 +346,10 @@ public class MoaSkinsScreen extends Screen {
     /**
      * Displays an hourglass icon in the bottom left corner of the black GUI interface.
      *
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @param mouseOver   Whether the mouse is hovering over this icon, as a {@link Boolean}.
      */
-    private void renderPledgingIcon(GuiGraphics guiGraphics, boolean mouseOver) {
+    private void renderPledgingIcon(GuiGraphicsExtractor guiGraphics, boolean mouseOver) {
         Identifier location = TEMPORARY_WIDGET.get(true, mouseOver);
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.leftPos + 13, (this.topPos + (this.imageHeight / 2)) - 9, 7, 7);
     }
@@ -367,11 +367,11 @@ public class MoaSkinsScreen extends Screen {
      *
      * @param title       The title {@link MutableComponent} for the tooltip.
      * @param description The description {@link Component} for the tooltip.
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @param mouseX      The {@link Integer} for the mouse's x-position.
      * @param mouseY      The {@link Integer} for the mouse's y-position.
      */
-    private void renderTooltip(MutableComponent title, Component description, GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    private void renderTooltip(MutableComponent title, Component description, GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         List<FormattedCharSequence> tooltipLines = new ArrayList<>();
         tooltipLines.add(title.withStyle(ChatFormatting.GOLD).getVisualOrderText());
         tooltipLines.addAll(this.minecraft.font.split(description, this.width / 3));
@@ -383,7 +383,7 @@ public class MoaSkinsScreen extends Screen {
      *
      * @param partialTicks The {@link Float} for the game's partial ticks.
      */
-    private void renderMoa(GuiGraphics guiGraphics, float partialTicks) {
+    private void renderMoa(GuiGraphicsExtractor guiGraphics, float partialTicks) {
         if (this.minecraft.level != null) {
             if (this.getPreviewMoa() == null) { // Set up preview Moa if it doesn't exist.
                 Moa moa = AetherEntityTypes.MOA.get().create(this.minecraft.level, EntitySpawnReason.EVENT);
@@ -403,11 +403,11 @@ public class MoaSkinsScreen extends Screen {
     }
 
     /**
-     * [CODE COPY] - {@link net.minecraft.client.gui.screens.inventory.InventoryScreen#renderEntityInInventoryFollowsAngle(GuiGraphics, int, int, int, int, int, float, float, float, LivingEntity)} (GuiGraphics, int, int, int, float, float, LivingEntity)}.<br><br>
+     * [CODE COPY] - {@link net.minecraft.client.gui.screens.inventory.InventoryScreen#renderEntityInInventoryFollowsAngle(GuiGraphicsExtractor, int, int, int, int, int, float, float, float, LivingEntity)} (GuiGraphicsExtractor, int, int, int, float, float, LivingEntity)}.<br><br>
      * Code Modified so that the head rotation follows the body rotation and doesn't rotate separately.<br><br>
      */
-    public static void renderRotatingEntity(GuiGraphics guiGraphics, int startX, int startY, int endX, int endY, int scale, float yOffset, float angleXComponent, float angleYComponent, LivingEntity livingEntity) {
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, startX, startY, endX, endY, scale, yOffset, angleXComponent, angleYComponent, livingEntity);
+    public static void renderRotatingEntity(GuiGraphicsExtractor guiGraphics, int startX, int startY, int endX, int endY, int scale, float yOffset, float angleXComponent, float angleYComponent, LivingEntity livingEntity) {
+        InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, startX, startY, endX, endY, scale, yOffset, angleXComponent, angleYComponent, livingEntity);
     }
 
     /**

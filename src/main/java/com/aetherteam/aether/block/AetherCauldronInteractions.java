@@ -1,8 +1,10 @@
 package com.aetherteam.aether.block;
 
 import com.aetherteam.aether.item.AetherItems;
+import com.aetherteam.aether.mixin.mixins.common.accessor.CauldronInteractionDispatcherAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,11 +29,11 @@ public class AetherCauldronInteractions {
             emptySkyrootBucket(level, pos, player, hand, stack, Blocks.POWDER_SNOW_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY_POWDER_SNOW);
 
     public static final CauldronInteraction EMPTY_WATER = (state, level, pos, player, hand, stack) ->
-            CauldronInteraction.fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_WATER_BUCKET.get()), (blockState) ->
+            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_WATER_BUCKET.get()), (blockState) ->
                     blockState.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL);
 
     public static final CauldronInteraction EMPTY_POWDER_SNOW = (state, level, pos, player, hand, stack) ->
-            CauldronInteraction.fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get()), (blockState) ->
+            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get()), (blockState) ->
                     blockState.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL);
 
     /**
@@ -62,23 +64,43 @@ public class AetherCauldronInteractions {
         return sidedSuccess(level);
     }
 
+    private static InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, ItemStack filledStack, java.util.function.Predicate<BlockState> predicate, SoundEvent sound) {
+        if (!predicate.test(state)) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        if (!level.isClientSide()) {
+            Item item = stack.getItem();
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filledStack));
+            player.awardStat(Stats.USE_CAULDRON);
+            player.awardStat(Stats.ITEM_USED.get(item));
+            level.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
+            level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
+        }
+        return sidedSuccess(level);
+    }
+
     public static void registerCauldronInteractions() {
-        CauldronInteraction.EMPTY.map().put(AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        CauldronInteraction.WATER.map().put(AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        CauldronInteraction.LAVA.map().put(AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        CauldronInteraction.POWDER_SNOW.map().put(AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        CauldronInteraction.EMPTY.map().put(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        CauldronInteraction.WATER.map().put(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        CauldronInteraction.LAVA.map().put(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        CauldronInteraction.POWDER_SNOW.map().put(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        CauldronInteraction.WATER.map().put(AetherItems.SKYROOT_BUCKET.get(), EMPTY_WATER);
-        CauldronInteraction.POWDER_SNOW.map().put(AetherItems.SKYROOT_BUCKET.get(), EMPTY_POWDER_SNOW);
-        CauldronInteraction.WATER.map().put(AetherItems.RED_CAPE.get(), CAPE);
-        CauldronInteraction.WATER.map().put(AetherItems.BLUE_CAPE.get(), CAPE);
-        CauldronInteraction.WATER.map().put(AetherItems.YELLOW_CAPE.get(), CAPE);
+        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
+        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
+        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
+        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_BUCKET.get(), EMPTY_WATER);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_BUCKET.get(), EMPTY_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.RED_CAPE.get(), CAPE);
+        register(CauldronInteractions.WATER, AetherItems.BLUE_CAPE.get(), CAPE);
+        register(CauldronInteractions.WATER, AetherItems.YELLOW_CAPE.get(), CAPE);
     }
 
     private static InteractionResult sidedSuccess(Level level) {
         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+    }
+
+    private static void register(CauldronInteraction.Dispatcher dispatcher, Item item, CauldronInteraction interaction) {
+        ((CauldronInteractionDispatcherAccessor) dispatcher).aether$put(item, interaction);
     }
 }

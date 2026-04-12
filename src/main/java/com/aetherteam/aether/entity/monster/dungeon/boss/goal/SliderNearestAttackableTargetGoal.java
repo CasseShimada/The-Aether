@@ -14,11 +14,7 @@ public class SliderNearestAttackableTargetGoal<T extends LivingEntity> extends N
     }
 
     public SliderNearestAttackableTargetGoal(Mob mob, Class<T> targetType, int randomInterval, boolean mustSee, boolean mustReach, @Nullable Predicate<LivingEntity> targetPredicate) {
-        super(mob, targetType, randomInterval, mustSee, mustReach, (livingEntity, level) -> targetPredicate == null || targetPredicate.test(livingEntity));
-        this.targetConditions = TargetingConditions.forCombat()
-                .range(this.getFollowDistance())
-                .ignoreLineOfSight()
-                .selector((livingEntity, level) -> targetPredicate == null || targetPredicate.test(livingEntity));
+        super(mob, targetType, randomInterval, false, mustReach, (livingEntity, level) -> targetPredicate == null || targetPredicate.test(livingEntity));
     }
 
 }

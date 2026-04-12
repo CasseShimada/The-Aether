@@ -53,9 +53,12 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
         return AetherRecipeSerializers.PLACEMENT_CONVERSION.get();
     }
 
-    public static class Serializer extends BiomeParameterRecipeSerializer<PlacementConversionRecipe> {
-        public Serializer() {
-            super(PlacementConversionRecipe::new, PlacementConversionRecipe::new);
+    public static final class Serializer {
+        private Serializer() {
+        }
+
+        public static RecipeSerializer<PlacementConversionRecipe> create() {
+            return BiomeParameterRecipeSerializer.create(PlacementConversionRecipe::new);
         }
     }
 }

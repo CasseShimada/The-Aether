@@ -160,7 +160,7 @@ public class Aerwhale extends PathfinderMob {
             player.startRiding(this);
             if (!this.level().isClientSide()) {
                 MutableComponent msg = Component.literal("Serenity is the queen of W(h)ales!!");
-                player.level().players().forEach(p -> p.displayClientMessage(msg, false));
+                player.level().players().forEach(p -> com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(p, msg, false));
             }
             return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         }

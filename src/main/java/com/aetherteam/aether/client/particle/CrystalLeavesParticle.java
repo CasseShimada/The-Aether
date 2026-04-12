@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public class CrystalLeavesParticle extends PortalParticle {
     public CrystalLeavesParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, SpriteSet spriteSet) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.getRandom()));
         this.rCol = 0.0F;
         this.gCol = 0.645F;
         this.bCol = 0.745F;

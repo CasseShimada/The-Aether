@@ -186,7 +186,7 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.sendSystemMessage(message);
         } else {
-            player.displayClientMessage(message, false);
+            com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, message, false);
         }
     }
 

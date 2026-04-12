@@ -12,39 +12,33 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class BlockStateRecipeSerializer<T extends AbstractBlockStateRecipe> implements RecipeSerializer<T> {
-    private final AbstractBlockStateRecipe.Factory<T> factory;
-    private final MapCodec<T> codec;
-    private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
+import java.util.Optional;
 
-    public BlockStateRecipeSerializer(AbstractBlockStateRecipe.Factory<T> factory) {
-        this.factory = factory;
-        this.codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
+public final class BlockStateRecipeSerializer {
+    private BlockStateRecipeSerializer() {
+    }
+
+    public static <T extends AbstractBlockStateRecipe> RecipeSerializer<T> create(AbstractBlockStateRecipe.Factory<T> factory) {
+        MapCodec<T> codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 BlockStateIngredient.CODEC.fieldOf("ingredient").forGetter(AbstractBlockStateRecipe::getIngredient),
                 BlockPropertyPair.CODEC.fieldOf("result").forGetter(AbstractBlockStateRecipe::getResult),
                 Identifier.CODEC.optionalFieldOf("mcfunction").forGetter(AbstractBlockStateRecipe::getFunctionId)
         ).apply(instance, factory::create));
-        this.streamCodec = StreamCodec.of(this::toNetwork, this::fromNetwork);
+        StreamCodec<RegistryFriendlyByteBuf, T> streamCodec = StreamCodec.of(
+                BlockStateRecipeSerializer::toNetwork,
+                buffer -> fromNetwork(buffer, factory)
+        );
+        return new RecipeSerializer<>(codec, streamCodec);
     }
 
-    @Override
-    public MapCodec<T> codec() {
-        return this.codec;
-    }
-
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
-        return this.streamCodec;
-    }
-
-    public T fromNetwork(RegistryFriendlyByteBuf buffer) {
+    public static <T extends AbstractBlockStateRecipe> T fromNetwork(RegistryFriendlyByteBuf buffer, AbstractBlockStateRecipe.Factory<T> factory) {
         BlockStateIngredient ingredient = BlockStateIngredient.CONTENTS_STREAM_CODEC.decode(buffer);
         BlockPropertyPair result = BlockStateRecipeUtil.readPair(buffer);
-        java.util.Optional<Identifier> function = buffer.readOptional(FriendlyByteBuf::readIdentifier);
-        return this.factory.create(ingredient, result, function);
+        Optional<Identifier> function = buffer.readOptional(FriendlyByteBuf::readIdentifier);
+        return factory.create(ingredient, result, function);
     }
 
-    public void toNetwork(RegistryFriendlyByteBuf buffer, T recipe) {
+    public static <T extends AbstractBlockStateRecipe> void toNetwork(RegistryFriendlyByteBuf buffer, T recipe) {
         BlockStateIngredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.getIngredient());
         BlockStateRecipeUtil.writePair(buffer, recipe.getResult());
         buffer.writeOptional(recipe.getFunctionId(), (buf, id) -> buf.writeIdentifier(id));

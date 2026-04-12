@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(SplashRenderer.class)
 public class SplashRendererMixin {
-    @WrapOperation(method = "render(Lnet/minecraft/client/gui/GuiGraphics;ILnet/minecraft/client/gui/Font;F)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"))
+    @WrapOperation(method = "render(Lnet/minecraft/client/gui/GuiGraphicsExtractor;ILnet/minecraft/client/gui/Font;F)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"))
     private void render(PoseStack instance, float x, float y, float z, Operation<Void> original) {
         SplashRenderer renderer = (SplashRenderer) (Object) this;
         if (renderer instanceof CustomPosition customPosition) {

@@ -5,7 +5,7 @@ import com.aetherteam.aether.client.gui.screen.inventory.recipebook.IncubatorRec
 import com.aetherteam.aether.inventory.menu.IncubatorMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.recipe.book.AetherRecipeBookCategories;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
@@ -30,7 +30,7 @@ public class IncubatorScreen extends AbstractRecipeBookScreen<IncubatorMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int x, int y, float partialTicks) {
         int left = this.leftPos;
         int top = this.topPos;
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, INCUBATOR_GUI_TEXTURES, left, top, 0, 0, this.imageWidth, this.imageHeight, 256, 256);

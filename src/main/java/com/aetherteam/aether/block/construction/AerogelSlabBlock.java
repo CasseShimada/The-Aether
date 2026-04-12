@@ -20,7 +20,7 @@ public class AerogelSlabBlock extends SlabBlock implements AerogelCulling {
      * @return The {@link Integer} of how many light levels are blocked, plus 2 extra by default.
      */
     @Override
-    protected int getLightBlock(BlockState state) {
+    protected int getLightDampening(BlockState state) {
         return 3;
     }
 

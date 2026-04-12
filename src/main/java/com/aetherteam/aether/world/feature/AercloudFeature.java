@@ -28,7 +28,7 @@ public class AercloudFeature extends Feature<AercloudConfiguration> {
         boolean direction = random.nextBoolean();
         BlockPos blockPos = context.origin().offset(-random.nextInt(8), 0, (direction ? 8 : 0) - random.nextInt(8));
         AercloudConfiguration config = context.config();
-        BlockState blockState = config.block().getState(random, blockPos);
+        BlockState blockState = config.block().getState(level, random, blockPos);
 
         for (int amount = 0; amount < config.bounds(); ++amount) {
             int xOffset = random.nextInt(2);

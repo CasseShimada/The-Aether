@@ -59,9 +59,12 @@ public class AmbrosiumRecipe extends AbstractBlockStateRecipe implements MatchEv
         return (RecipeType<? extends Recipe<BlockStateRecipeInput>>) super.getType();
     }
 
-    public static class Serializer extends BlockStateRecipeSerializer<AmbrosiumRecipe> {
-        public Serializer() {
-            super(AmbrosiumRecipe::new);
+    public static final class Serializer {
+        private Serializer() {
+        }
+
+        public static RecipeSerializer<AmbrosiumRecipe> create() {
+            return BlockStateRecipeSerializer.create(AmbrosiumRecipe::new);
         }
     }
 }

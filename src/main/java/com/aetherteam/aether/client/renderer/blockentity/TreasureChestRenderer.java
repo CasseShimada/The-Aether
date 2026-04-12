@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.phys.Vec3;
 
 public class TreasureChestRenderer extends SingleChestRenderer<TreasureChestBlockEntity> {
@@ -18,8 +18,7 @@ public class TreasureChestRenderer extends SingleChestRenderer<TreasureChestBloc
 
     @Override
     public void extractRenderState(TreasureChestBlockEntity blockEntity, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        float angle = blockEntity.getBlockState().getValue(TreasureChestBlock.FACING).toYRot();
-        this.extractSingleChestRenderState(blockEntity, state, partialTick, angle, blockEntity.getOpenNess(partialTick), crumblingOverlay);
+        this.extractSingleChestRenderState(blockEntity, state, partialTick, blockEntity.getBlockState().getValue(TreasureChestBlock.FACING), blockEntity.getOpenNess(partialTick), crumblingOverlay);
     }
 
     @Override

@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,8 +19,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Calendar;
 
 public class ChestMimicRenderer extends SingleChestRenderer<ChestMimicBlockEntity> {
-    private static final Material NORMAL_MATERIAL = new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/normal"));
-    private static final Material CHRISTMAS_MATERIAL = new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/christmas"));
+    private static final SpriteId NORMAL_MATERIAL = new SpriteId(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/normal"));
+    private static final SpriteId CHRISTMAS_MATERIAL = new SpriteId(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath("minecraft", "entity/chest/christmas"));
     private final boolean xmasTextures;
 
     public ChestMimicRenderer(BlockEntityRendererProvider.Context context) {
@@ -35,8 +35,8 @@ public class ChestMimicRenderer extends SingleChestRenderer<ChestMimicBlockEntit
         if (!(blockState.getBlock() instanceof ChestMimicBlock)) {
             blockState = AetherBlocks.CHEST_MIMIC.get().defaultBlockState().setValue(ChestMimicBlock.FACING, Direction.SOUTH);
         }
-        float angle = blockState.getValue(ChestMimicBlock.FACING).toYRot();
-        this.extractSingleChestRenderState(blockEntity, state, partialTick, angle, 0.0F, crumblingOverlay);
+        Direction facing = blockState.getValue(ChestMimicBlock.FACING);
+        this.extractSingleChestRenderState(blockEntity, state, partialTick, facing, 0.0F, crumblingOverlay);
     }
 
     @Override

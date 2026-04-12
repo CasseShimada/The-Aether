@@ -18,7 +18,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -95,7 +95,7 @@ public abstract class AbstractPlacementBanRecipeCategory<T, S extends Predicate<
     }
 
     @Override
-    public void draw(R recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(R recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         if (recipe.getBypassBlock().isEmpty() || recipe.getBypassBlock().get().isEmpty()) {
             this.slot.draw(guiGraphics, 49, 0);
         } else {
@@ -103,7 +103,7 @@ public abstract class AbstractPlacementBanRecipeCategory<T, S extends Predicate<
             this.slot.draw(guiGraphics, 98, 0);
             String text = Component.translatable("gui.aether.jei.bypass").getString();
             Font font = Minecraft.getInstance().font;
-            guiGraphics.drawString(font, text, 24, 5, 0xFF808080);
+            guiGraphics.text(font, text, 24, 5, 0xFF808080);
         }
     }
 

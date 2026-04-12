@@ -7,7 +7,7 @@ import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonAccessor;
 import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -52,7 +52,7 @@ public class AetherMenuButton extends Button {
     }
 
     @Override
-    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
 
@@ -61,7 +61,7 @@ public class AetherMenuButton extends Button {
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.getX() + this.hoverOffset, this.getY(), this.getWidth(), this.getHeight());
         int textX = this.getX() + 35 + this.hoverOffset;
         int textY = this.getY() + (this.height - 8) / 2;
-        guiGraphics.drawString(font, this.getMessage(), textX, textY, this.getTextColor(mouseX, mouseY) | Mth.ceil(this.alpha * 255.0F) << 24);
+        guiGraphics.text(font, this.getMessage(), textX, textY, this.getTextColor(mouseX, mouseY) | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     /**

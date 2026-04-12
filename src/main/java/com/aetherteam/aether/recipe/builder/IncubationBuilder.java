@@ -50,7 +50,6 @@ public class IncubationBuilder implements RecipeBuilder {
         return this;
     }
 
-    @Override
     public Item getResult() {
         return Items.AIR;
     }
@@ -59,6 +58,11 @@ public class IncubationBuilder implements RecipeBuilder {
     public IncubationBuilder unlockedBy(String criterionName, Criterion criterionTrigger) {
         this.criteria.put(criterionName, criterionTrigger);
         return this;
+    }
+
+    @Override
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.getResult().getDefaultInstance());
     }
 
     @Override

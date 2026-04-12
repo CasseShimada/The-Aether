@@ -5,7 +5,7 @@ import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonBuilderAccessor;
 import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -31,13 +31,13 @@ public class LorePageButton extends Button {
     }
 
     @Override
-    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         Identifier location = BUTTON_TEXTURES.get(this.isActive(), this.isHoveredOrFocused());
         Minecraft minecraft = Minecraft.getInstance();
         Font fontRenderer = minecraft.font;
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, location, this.getX(), this.getY(), this.width, this.height);
         int color = this.active ? 0xFFFFFF : 0xA0A0A0;
-        guiGraphics.drawCenteredString(fontRenderer, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, color | 255 << 24);
+        guiGraphics.centeredText(fontRenderer, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, color | 255 << 24);
     }
 
     public Event<ButtonEvents.AdjustRendering> getRenderingEvent() {

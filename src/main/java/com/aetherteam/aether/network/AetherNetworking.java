@@ -150,11 +150,11 @@ public final class AetherNetworking {
     }
 
     private static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playS2C().register(type, codec);
+        PayloadTypeRegistry.clientboundPlay().register(type, codec);
     }
 
     private static <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playC2S().register(type, codec);
+        PayloadTypeRegistry.serverboundPlay().register(type, codec);
     }
 
     private static <T extends CustomPacketPayload> void registerServerReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {

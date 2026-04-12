@@ -6,7 +6,7 @@ import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.network.packet.serverbound.NpcPlayerInteractPacket;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -121,18 +121,18 @@ public class ValkyrieQueenDialogueScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
         this.dialogueAnswer.render(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     /**
-     * [CODE COPY] - {@link Screen#renderBackground(GuiGraphics, int, int, float)}.<br><br>
+     * [CODE COPY] - {@link Screen#renderBackground(GuiGraphicsExtractor, int, int, float)}.<br><br>
      * Remove code for dark gradient and dirt background.
      */
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
     }
 
     @Override

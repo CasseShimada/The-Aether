@@ -15,10 +15,10 @@ import com.aetherteam.aether.client.renderer.entity.*;
 import com.aetherteam.aether.client.renderer.entity.model.*;
 import com.aetherteam.aether.client.renderer.player.layer.PlayerWingsLayer;
 import com.aetherteam.aether.entity.AetherEntityTypes;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.slime.SlimeModel;
@@ -28,14 +28,14 @@ import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.blockentity.BedRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 
 public class AetherRenderers {
     public static void registerEntityRenderers() {
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_BED.get(), SkyrootBedRenderer::new);
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_SIGN.get(), (BlockEntityRendererProvider) SignRenderer::new);
+        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_SIGN.get(), (BlockEntityRendererProvider) StandingSignRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_HANGING_SIGN.get(), (BlockEntityRendererProvider) HangingSignRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.CHEST_MIMIC.get(), ChestMimicRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.TREASURE_CHEST.get(), TreasureChestRenderer::new);
@@ -86,72 +86,72 @@ public class AetherRenderers {
     }
 
     public static void registerLayerDefinitions() {
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_FOOT, BedRenderer::createFootLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_HEAD, BedRenderer::createHeadLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.CHEST_MIMIC, ChestModel::createSingleBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_FOOT, BedRenderer::createFootLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_HEAD, BedRenderer::createHeadLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.CHEST_MIMIC, ChestModel::createSingleBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG, () -> LegacyPigModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_BABY, () -> LegacyPigModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_WINGS, () -> QuadrupedWingsModel.createMainLayer(10.0F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_SADDLE, () -> LegacyPigModel.createBodyLayer(new CubeDeformation(0.5F)));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_HALO, () -> HaloModel.createLayer(3.0F, -4.0F, 12.0F, -6.0F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW, () -> LegacyCowModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_BABY, () -> LegacyCowModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_WINGS, () -> QuadrupedWingsModel.createMainLayer(0.0F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_SADDLE, () -> LegacyCowModel.createBodyLayer(new CubeDeformation(0.5F)));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF, SheepuffModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_BABY, SheepuffModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_WOOL, () -> SheepuffWoolModel.createFurLayer(new CubeDeformation(1.75F), 0.0F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_WOOL_PUFFED, () -> SheepuffWoolModel.createFurLayer(new CubeDeformation(3.75F), 2.0F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.AERBUNNY, AerbunnyModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA, () -> MoaModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA_HAT, () -> MoaModel.createBodyLayer(new CubeDeformation(0.23F)));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA_SADDLE, () -> MoaModel.createBodyLayer(new CubeDeformation(0.27F)));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.AERWHALE, AerwhaleModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.AERWHALE_CLASSIC, ClassicAerwhaleModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG, () -> LegacyPigModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_BABY, () -> LegacyPigModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_WINGS, () -> QuadrupedWingsModel.createMainLayer(10.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_SADDLE, () -> LegacyPigModel.createBodyLayer(new CubeDeformation(0.5F)));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG_HALO, () -> HaloModel.createLayer(3.0F, -4.0F, 12.0F, -6.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW, () -> LegacyCowModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_BABY, () -> LegacyCowModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_WINGS, () -> QuadrupedWingsModel.createMainLayer(0.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.FLYING_COW_SADDLE, () -> LegacyCowModel.createBodyLayer(new CubeDeformation(0.5F)));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF, SheepuffModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_BABY, SheepuffModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_WOOL, () -> SheepuffWoolModel.createFurLayer(new CubeDeformation(1.75F), 0.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHEEPUFF_WOOL_PUFFED, () -> SheepuffWoolModel.createFurLayer(new CubeDeformation(3.75F), 2.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.AERBUNNY, AerbunnyModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA, () -> MoaModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA_HAT, () -> MoaModel.createBodyLayer(new CubeDeformation(0.23F)));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.MOA_SADDLE, () -> MoaModel.createBodyLayer(new CubeDeformation(0.27F)));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.AERWHALE, AerwhaleModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.AERWHALE_CLASSIC, ClassicAerwhaleModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SWET, SlimeModel::createInnerBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SWET_OUTER, SlimeModel::createOuterBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.AECHOR_PLANT, AechorPlantModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.COCKATRICE, () -> CockatriceModel.createBodyLayer(CubeDeformation.NONE));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR, ZephyrModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR_TRANSPARENCY, ZephyrModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR_CLASSIC, ClassicZephyrModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SWET, SlimeModel::createInnerBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SWET_OUTER, SlimeModel::createOuterBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.AECHOR_PLANT, AechorPlantModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.COCKATRICE, () -> CockatriceModel.createBodyLayer(CubeDeformation.NONE));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR, ZephyrModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR_TRANSPARENCY, ZephyrModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.ZEPHYR_CLASSIC, ClassicZephyrModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.MIMIC, MimicModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SENTRY, SlimeModel::createOuterBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE, ValkyrieModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_WINGS, () -> ValkyrieWingsModel.createMainLayer(4.5F, 2.5F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.FIRE_MINION, FireMinionModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.MIMIC, MimicModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SENTRY, SlimeModel::createOuterBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE, ValkyrieModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_WINGS, () -> ValkyrieWingsModel.createMainLayer(4.5F, 2.5F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.FIRE_MINION, FireMinionModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SLIDER, SliderModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_QUEEN, ValkyrieModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_QUEEN_WINGS, () -> ValkyrieWingsModel.createMainLayer(4.5F, 2.5F));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SUN_SPIRIT, SunSpiritModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SLIDER, SliderModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_QUEEN, ValkyrieModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_QUEEN_WINGS, () -> ValkyrieWingsModel.createMainLayer(4.5F, 2.5F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SUN_SPIRIT, SunSpiritModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BOAT, BoatModel::createBoatModel);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_CHEST_BOAT, BoatModel::createChestBoatModel);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BOAT, BoatModel::createBoatModel);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_CHEST_BOAT, BoatModel::createChestBoatModel);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.CLOUD_MINION, CloudMinionModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.CLOUD_MINION, CloudMinionModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.CLOUD_CRYSTAL, CrystalModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.THUNDER_CRYSTAL, CrystalModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.CLOUD_CRYSTAL, CrystalModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.THUNDER_CRYSTAL, CrystalModel::createBodyLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_ARMOR_WINGS, () -> ValkyrieWingsModel.createMainLayer(3.5F, 3.375F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.VALKYRIE_ARMOR_WINGS, () -> ValkyrieWingsModel.createMainLayer(3.5F, 3.375F));
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PENDANT, PendantModel::createLayer);
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), false, false));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), false, true));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_SLIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), true, false));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM_SLIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), true, true));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_FIRST_PERSON, () -> GlovesModel.createLayer(new CubeDeformation(0.25F), false, false));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM_FIRST_PERSON, () -> GlovesModel.createLayer(new CubeDeformation(0.25F), false, true));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(1.1F), false), 64, 64));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(1.15F), true), 64, 64));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION_ARM, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.4F), false), 64, 64));
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.CAPE, CapeModel::createLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PENDANT, PendantModel::createLayer);
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), false, false));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), false, true));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_SLIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), true, false));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM_SLIM, () -> GlovesModel.createLayer(new CubeDeformation(0.5F), true, true));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_FIRST_PERSON, () -> GlovesModel.createLayer(new CubeDeformation(0.25F), false, false));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.GLOVES_TRIM_FIRST_PERSON, () -> GlovesModel.createLayer(new CubeDeformation(0.25F), false, true));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(1.1F), false), 64, 64));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(1.15F), true), 64, 64));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SHIELD_OF_REPULSION_ARM, () -> LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.4F), false), 64, 64));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.CAPE, CapeModel::createLayer);
 
-        EntityModelLayerRegistry.registerModelLayer(AetherModelLayers.PLAYER_HALO, () -> HaloModel.createLayer(0.0F, 0.0F, 0.0F, 0.0F));
+        ModelLayerRegistry.registerModelLayer(AetherModelLayers.PLAYER_HALO, () -> HaloModel.createLayer(0.0F, 0.0F, 0.0F, 0.0F));
     }
 
     /**
@@ -161,7 +161,7 @@ public class AetherRenderers {
     }
 
     public static void addEntityLayers() {
-        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
+        LivingEntityRenderLayerRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
             if (entityRenderer instanceof AvatarRenderer avatarRenderer) {
                 registrationHelper.register(new PlayerWingsLayer(avatarRenderer, new ValkyrieWingsModel<>(context.getModelSet().bakeLayer(AetherModelLayers.VALKYRIE_ARMOR_WINGS))));
             }

@@ -4,8 +4,9 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
+import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.state.SkyRenderState;
+import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -206,7 +207,7 @@ public final class AetherSkyRenderHooks {
         if (!AetherConfig.SERVER.disable_eternal_day.get()) {
             return AetherTimeAttachment.getTicksPerDay() / 4L;
         }
-        return level.getDayTime();
+        return LevelTimeUtil.getTime(level);
     }
 
     private static boolean isEternalDay(ClientLevel level) {

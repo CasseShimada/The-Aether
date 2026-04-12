@@ -158,7 +158,7 @@ public interface PhoenixArmor {
      * @param slot          The {@link EquipmentSlot} of the armor item.
      */
     private static void breakPhoenixArmor(LivingEntity entity, ItemStack equippedStack, ItemStack outcomeStack, EquipmentSlot slot) {
-        outcomeStack = new ItemStack(outcomeStack.getItemHolder(), 1, equippedStack.getComponentsPatch());
+        outcomeStack = new ItemStack(outcomeStack.typeHolder(), 1, equippedStack.getComponentsPatch());
         entity.setItemSlot(slot, outcomeStack);
         if (entity instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.INVENTORY_CHANGED.trigger(serverPlayer, serverPlayer.getInventory(), outcomeStack);
@@ -173,7 +173,7 @@ public interface PhoenixArmor {
      * @param outcomeStack The replacement {@link ItemStack}.
      */
     private static void breakPhoenixGloves(LivingEntity entity, SlotEntryReference slotResult, ItemStack outcomeStack) {
-        outcomeStack = new ItemStack(outcomeStack.getItemHolder(), 1, slotResult.stack().getComponentsPatch());
+        outcomeStack = new ItemStack(outcomeStack.typeHolder(), 1, slotResult.stack().getComponentsPatch());
         AccessoriesCapability accessories = AccessoriesCapability.get(entity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(slotResult.reference().type());

@@ -38,7 +38,7 @@ public class CloudCrystal extends AbstractCrystal implements WeaknessDamage {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity instanceof LivingEntity livingEntity && this.level() instanceof ServerLevel serverLevel) {
-            float bonus = entity.getType().is(AetherTags.Entities.FIRE_MOB) ? 3.0F : 0.0F;
+            float bonus = entity.getType().builtInRegistryHolder().is(AetherTags.Entities.FIRE_MOB) ? 3.0F : 0.0F;
             if (livingEntity.hurtServer(serverLevel, AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.CLOUD_CRYSTAL, this, this.getOwner()), 5.0F + bonus)) {
                 WeaknessDamage.super.damageWithWeakness(this, livingEntity, this.random);
             }

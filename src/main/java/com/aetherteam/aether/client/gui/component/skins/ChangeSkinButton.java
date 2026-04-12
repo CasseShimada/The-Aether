@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.gui.component.skins;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonBuilderAccessor;
 import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -33,7 +33,7 @@ public class ChangeSkinButton extends Button {
     }
 
     @Override
-    protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         Identifier location;
         if (this.buttonType == ButtonType.APPLY) {
             location = APPLY_WIDGET.get(this.isActive(), this.isHovered());

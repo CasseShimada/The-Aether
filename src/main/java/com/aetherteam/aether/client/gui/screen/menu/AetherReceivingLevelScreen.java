@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.gui.screen.menu;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.block.AetherBlocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.multiplayer.LevelLoadTracker;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -25,9 +25,9 @@ public class AetherReceivingLevelScreen extends LevelLoadingScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.isInAetherPortal) {
-            TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(AetherBlocks.AETHER_PORTAL.get().defaultBlockState());
+            TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(AetherBlocks.AETHER_PORTAL.get().defaultBlockState()).sprite();
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
         }
     }

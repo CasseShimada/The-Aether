@@ -8,7 +8,7 @@ import com.aetherteam.aether.client.gui.screen.menu.splash.AetherSplashRenderer;
 import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.TitleScreenAccessor;
 import net.minecraft.core.Holder;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
@@ -89,8 +89,8 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
         int xOffset = 0;
         for (GuiEventListener child : this.children()) {
             if (child instanceof AetherMenuButton aetherButton) { // Smoothly shifts the Aether-styled buttons to the right slightly when hovered over.
@@ -112,12 +112,12 @@ public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavio
     }
 
     @Override
-    public boolean forEachLineBranding(boolean includeMC, boolean reverse, BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
+    public boolean forEachLineBranding(boolean includeMC, boolean reverse, BiConsumer<Integer, String> lineConsumer, GuiGraphicsExtractor guiGraphics, int i) {
         return false;
     }
 
     @Override
-    public boolean forEachAboveCopyrightLineBranding(BiConsumer<Integer, String> lineConsumer, GuiGraphics guiGraphics, int i) {
+    public boolean forEachAboveCopyrightLineBranding(BiConsumer<Integer, String> lineConsumer, GuiGraphicsExtractor guiGraphics, int i) {
         return false;
     }
 

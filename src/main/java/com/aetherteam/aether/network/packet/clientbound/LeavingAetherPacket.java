@@ -12,7 +12,7 @@ import com.aetherteam.aether.network.AetherPayloadContext;
 /**
  * Marks the player as being in the process of leaving the Aether. This is used for displaying "Descending from the Aether" in the world loading screen.
  *
- * @see com.aetherteam.aether.client.event.hooks.GuiHooks#drawAetherTravelMessage(Screen, GuiGraphics)
+ * @see com.aetherteam.aether.client.event.hooks.GuiHooks#drawAetherTravelMessage(Screen, GuiGraphicsExtractor)
  */
 public record LeavingAetherPacket(boolean playerLeavingAether) implements CustomPacketPayload {
     public static final Type<LeavingAetherPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "leave_aether"));

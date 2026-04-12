@@ -145,7 +145,7 @@ public class TreasureChestBlock extends AbstractChestBlock<TreasureChestBlockEnt
                         return InteractionResult.SUCCESS;
                     }
                 }
-                player.displayClientMessage(Component.translatable(kind.getNamespace() + "." + kind.getPath() + "_treasure_chest_locked"), true);
+                com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.translatable(kind.getNamespace() + "." + kind.getPath() + "_treasure_chest_locked"), true);
             }
         }
         return InteractionResult.TRY_WITH_EMPTY_HAND;

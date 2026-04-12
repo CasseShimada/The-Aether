@@ -51,9 +51,13 @@ public class AltarRepairBuilder implements RecipeBuilder {
         return this;
     }
 
-    @Override
     public Item getResult() {
         return this.ingredient.items().findFirst().map(holder -> holder.value()).orElse(Items.AIR);
+    }
+
+    @Override
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.getResult().getDefaultInstance());
     }
 
     @Override

@@ -101,7 +101,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     public Slider(EntityType<? extends Slider> type, Level level) {
         super(type, level);
         this.moveControl = new BlankMoveControl(this);
-        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
+        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getUUID(), this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
         this.setBossFight(false);
         this.xpReward = XP_REWARD_BOSS;
         this.setRot(0, 0);
@@ -261,7 +261,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
             if (directEntity instanceof Projectile projectile) {
                 if (projectile.getOwner() instanceof LivingEntity attacker) {
                     if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
-                        if (projectile.getType().is(AetherTags.Entities.SLIDER_DAMAGING_PROJECTILES)) {
+                        if (projectile.getType().builtInRegistryHolder().is(AetherTags.Entities.SLIDER_DAMAGING_PROJECTILES)) {
                             return Optional.of(attacker);
                         } else {
                             projectile.setDeltaMovement(projectile.getDeltaMovement().scale(-1));
@@ -304,12 +304,12 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
         if (!this.level().isClientSide() && attacker instanceof Player player) {
             if (this.getChatCooldown() <= 0) {
                 if (AetherConfig.COMMON.reposition_slider_message.get()) {
-                    player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), true); // Invalid tool.
+                    com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.translatable("gui.aether.slider.message.attack.invalid"), true); // Invalid tool.
                 } else {
                     if (player instanceof ServerPlayer serverPlayer) {
                         serverPlayer.sendSystemMessage(Component.translatable("gui.aether.slider.message.attack.invalid")); // Invalid tool.
                     } else {
-                        player.displayClientMessage(Component.translatable("gui.aether.slider.message.attack.invalid"), false); // Invalid tool.
+                        com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.translatable("gui.aether.slider.message.attack.invalid"), false); // Invalid tool.
                     }
                 }
                 this.setChatCooldown(15);

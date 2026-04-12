@@ -5,7 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.util.valueproviders.IntProviders;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -15,7 +16,7 @@ import java.util.function.BiConsumer;
 
 public class CrystalFoliagePlacer extends FoliagePlacer {
     public static final MapCodec<CrystalFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) -> foliagePlacerParts(instance)
-            .and(IntProvider.codec(0, 24).fieldOf("trunk_height").forGetter((placer) -> placer.trunkHeight))
+            .and(IntProviders.codec(0, 24).fieldOf("trunk_height").forGetter((placer) -> placer.trunkHeight))
             .apply(instance, CrystalFoliagePlacer::new));
     private final IntProvider trunkHeight;
 
@@ -32,7 +33,7 @@ public class CrystalFoliagePlacer extends FoliagePlacer {
     /**
      * Places leaves in a diamond shape around the trunk with different radii at different heights.
      *
-     * @param level             The {@link LevelSimulatedReader}.
+     * @param level             The {@link WorldGenLevel}.
      * @param foliageSetter     The {@link BiConsumer} of a {@link BlockPos} and {@link BlockState} used for block placement.
      * @param random            The {@link RandomSource}.
      * @param config            The {@link TreeConfiguration}.
@@ -43,7 +44,7 @@ public class CrystalFoliagePlacer extends FoliagePlacer {
      * @param offset            The {@link Integer} for the foliage offset.
      */
     @Override
-    protected void createFoliage(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliagePlacer.FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+    protected void createFoliage(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliagePlacer.FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         BlockPos blockPos = attachment.pos();
         int i = 0;
         int j;
@@ -65,7 +66,7 @@ public class CrystalFoliagePlacer extends FoliagePlacer {
     /**
      * Places leaves in a diamond shape around a trunk piece.
      *
-     * @param level         The {@link LevelSimulatedReader}.
+     * @param level         The {@link WorldGenLevel}.
      * @param foliageSetter The {@link BiConsumer} of a {@link BlockPos} and {@link BlockState} used for block placement.
      * @param random        The {@link RandomSource}.
      * @param config        The {@link TreeConfiguration}.
@@ -73,7 +74,7 @@ public class CrystalFoliagePlacer extends FoliagePlacer {
      * @param radius        The {@link Integer} for the placement radius.
      * @param offset        The {@link Integer} for the placement offset.
      */
-    private void placeLeavesDiamond(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, FoliagePlacer.FoliageAttachment attachment, int radius, int offset) {
+    private void placeLeavesDiamond(WorldGenLevel level, FoliageSetter foliageSetter, RandomSource random, TreeConfiguration config, FoliagePlacer.FoliageAttachment attachment, int radius, int offset) {
         this.placeLeavesRow(level, foliageSetter, random, config, attachment.pos().north(), radius, offset, attachment.doubleTrunk());
         this.placeLeavesRow(level, foliageSetter, random, config, attachment.pos().south(), radius, offset, attachment.doubleTrunk());
         this.placeLeavesRow(level, foliageSetter, random, config, attachment.pos().west(), radius, offset, attachment.doubleTrunk());

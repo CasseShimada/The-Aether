@@ -11,7 +11,7 @@ public abstract class AbstractWhirlwindParticle<T extends AbstractWhirlwind> ext
 //    protected final AbstractWhirlwind whirlwind;
 
     public AbstractWhirlwindParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, sprite.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, sprite.get(level.getRandom()));
         this.animatedSprite = sprite;
 //        this.whirlwind = level.getNearestEntity(this.getWhirlwindType(), TARGET_CONDITION, null, xCoord, yCoord, zCoord, new AABB(this.x, this.y, this.z, this.x + 1, this.y + 1, this.z + 1)); //todo
 //        if (this.whirlwind != null) {

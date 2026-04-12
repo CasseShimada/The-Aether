@@ -143,8 +143,8 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
      * @return Whether the blocks were found in the radius, as a {@link Boolean}.
      */
     public static boolean inRadiusOfFlowers(LevelAccessor level, BlockPos pos, int radius, int radiusEnchanted) {
-        for (ChunkPos chunk : ChunkPos.rangeClosed(new ChunkPos(pos), radiusEnchanted).toList()) {
-            ChunkAccess chunkAccess = level.getChunk(chunk.x, chunk.z, ChunkStatus.FULL, false);
+        for (ChunkPos chunk : ChunkPos.rangeClosed(ChunkPos.containing(pos), radiusEnchanted).toList()) {
+            ChunkAccess chunkAccess = level.getChunk(chunk.x(), chunk.z(), ChunkStatus.FULL, false);
             if (chunkAccess != null) {
                 for (BlockPos blockEntityPos : chunkAccess.getBlockEntitiesPos()) {
                     if (blockEntityPos.distSqr(pos) <= radius * radius) {

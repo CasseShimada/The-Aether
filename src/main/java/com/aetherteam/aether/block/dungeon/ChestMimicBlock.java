@@ -117,7 +117,7 @@ public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterlogge
             mimic.setYHeadRot(angle);
             level.addFreshEntity(mimic);
             level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-            level.playSound(null, pos, AetherSoundEvents.BLOCK_CHEST_MIMIC_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+            level.playSound(null, pos, AetherSoundEvents.BLOCK_CHEST_MIMIC_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
             mimic.spawnAnim();
         }
     }

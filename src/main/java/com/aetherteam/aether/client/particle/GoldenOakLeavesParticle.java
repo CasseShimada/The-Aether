@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public class GoldenOakLeavesParticle extends PortalParticle {
     public GoldenOakLeavesParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, SpriteSet spriteSet) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.getRandom()));
         this.rCol = 0.976F;
         this.gCol = 0.745F;
         this.bCol = 0.0F;

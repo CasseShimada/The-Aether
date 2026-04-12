@@ -48,9 +48,12 @@ public class AccessoryFreezableRecipe extends AbstractBlockStateRecipe {
         return (RecipeType<? extends Recipe<BlockStateRecipeInput>>) super.getType();
     }
 
-    public static class Serializer extends BlockStateRecipeSerializer<AccessoryFreezableRecipe> {
-        public Serializer() {
-            super(AccessoryFreezableRecipe::new);
+    public static final class Serializer {
+        private Serializer() {
+        }
+
+        public static RecipeSerializer<AccessoryFreezableRecipe> create() {
+            return BlockStateRecipeSerializer.create(AccessoryFreezableRecipe::new);
         }
     }
 }

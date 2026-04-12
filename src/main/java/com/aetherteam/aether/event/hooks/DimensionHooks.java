@@ -12,6 +12,7 @@ import com.aetherteam.aether.mixin.mixins.common.accessor.ServerLevelAccessor;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
 import com.aetherteam.aether.network.packet.clientbound.LeavingAetherPacket;
 import com.aetherteam.aether.network.packet.clientbound.PortalInteractPacket;
+import com.aetherteam.aether.util.LevelTimeUtil;
 import com.aetherteam.aether.world.AetherLevelData;
 import com.aetherteam.aether.world.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -137,7 +138,7 @@ public class DimensionHooks {
                                 PacketDistributor.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
                                 optional.get().createPortalBlocks();
                                 if (!player.isCreative()) {
-                                    ItemStack craftingRemainder = stack.getItem().getCraftingRemainder();
+                                    ItemStack craftingRemainder = stack.getItem().getCraftingRemainder().create();
                                     if (stack.getCount() > 1) {
                                         stack.shrink(1);
                                         if (!craftingRemainder.isEmpty()) {
@@ -200,8 +201,8 @@ public class DimensionHooks {
             com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor levelAccessor = (com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor) level;
             long i = levelAccessor.aether$getLevelData().getGameTime() + 1L;
             serverLevelAccessor.aether$getServerLevelData().setGameTime(i);
-            if (serverLevelAccessor.aether$getServerLevelData().getGameRules().get(GameRules.ADVANCE_TIME)) {
-                serverLevel.setDayTime(serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
+            if (serverLevel.getGameRules().get(GameRules.ADVANCE_TIME)) {
+                LevelTimeUtil.setTime(serverLevel, serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
             }
 
             EntityHooks.tickAetherSkySpawns(serverLevel);
@@ -321,11 +322,10 @@ public class DimensionHooks {
     @Nullable
     public static Long finishSleep(LevelAccessor level, long newTime) {
         if (level instanceof ServerLevel serverLevel && serverLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            ServerLevelAccessor serverLevelAccessor = (ServerLevelAccessor) level;
-            serverLevelAccessor.aether$getServerLevelData().setRainTime(0);
-            serverLevelAccessor.aether$getServerLevelData().setRaining(false);
-            serverLevelAccessor.aether$getServerLevelData().setThunderTime(0);
-            serverLevelAccessor.aether$getServerLevelData().setThundering(false);
+            serverLevel.getWeatherData().setRainTime(0);
+            serverLevel.getWeatherData().setRaining(false);
+            serverLevel.getWeatherData().setThunderTime(0);
+            serverLevel.getWeatherData().setThundering(false);
 
             long time = newTime + (24000L * AetherTimeAttachment.getTicksPerDayMultiplier());
             return time - time % (long) AetherTimeAttachment.getTicksPerDay();

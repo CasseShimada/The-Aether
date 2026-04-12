@@ -30,7 +30,7 @@ public class HolySwordItem extends SwordItem {
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker)) {
-            if (target.getType().is(EntityTypeTags.UNDEAD) || target.isInvertedHealAndHarm()) {
+            if (target.getType().builtInRegistryHolder().is(EntityTypeTags.UNDEAD) || target.isInvertedHealAndHarm()) {
                 stack.hurtAndBreak(10, attacker, InteractionHand.MAIN_HAND);
             }
         }
@@ -62,7 +62,7 @@ public class HolySwordItem extends SwordItem {
     private static boolean canPerformAbility(LivingEntity target, DamageSource source) {
         if (source.getDirectEntity() instanceof LivingEntity attacker) {
             if (EquipmentUtil.isFullStrength(attacker)) {
-                if (target.getType().is(EntityTypeTags.UNDEAD) || target.isInvertedHealAndHarm()) {
+                if (target.getType().builtInRegistryHolder().is(EntityTypeTags.UNDEAD) || target.isInvertedHealAndHarm()) {
                     return attacker.getMainHandItem().is(AetherItems.HOLY_SWORD.get());
                 }
             }

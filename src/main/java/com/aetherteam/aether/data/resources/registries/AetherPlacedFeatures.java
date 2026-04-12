@@ -95,9 +95,9 @@ public class AetherPlacedFeatures {
                 ImprovedLayerPlacementModifier.of(Heightmap.Types.MOTION_BLOCKING, UniformInt.of(0, 1), 4),
                 BiomeFilter.biome(),
                 new ConfigFilter(AetherConfig.SERVER.generate_tall_grass));
-        register(context, AETHER_GRASS_BONEMEAL, configuredFeatures.getOrThrow(VegetationFeatures.SINGLE_PIECE_OF_GRASS),
+        register(context, AETHER_GRASS_BONEMEAL, configuredFeatures.getOrThrow(VegetationFeatures.GRASS),
                 PlacementUtils.isEmpty());
-        register(context, ENCHANTED_AETHER_GRASS_BONEMEAL, configuredFeatures.getOrThrow(VegetationFeatures.SINGLE_PIECE_OF_GRASS),
+        register(context, ENCHANTED_AETHER_GRASS_BONEMEAL, configuredFeatures.getOrThrow(VegetationFeatures.GRASS),
             PlacementUtils.isEmpty());
         register(context, WHITE_FLOWER_PATCH_PLACEMENT, configuredFeatures.getOrThrow(AetherConfiguredFeatures.WHITE_FLOWER_PATCH_CONFIGURATION),
                 RarityFilter.onAverageOnceEvery(8),

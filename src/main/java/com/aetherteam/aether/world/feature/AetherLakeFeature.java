@@ -60,7 +60,7 @@ public class AetherLakeFeature extends Feature<AetherLakeConfiguration> {
                 }
             }
 
-            BlockState fluidBlockState = aetherLakeConfiguration.fluid().getState(random, blockPos);
+            BlockState fluidBlockState = aetherLakeConfiguration.fluid().getState(level, random, blockPos);
 
             for (int k1 = 0; k1 < 16; ++k1) {
                 for (int k = 0; k < 16; ++k) {
@@ -97,7 +97,7 @@ public class AetherLakeFeature extends Feature<AetherLakeConfiguration> {
                 }
             }
 
-            BlockState topBlockState = aetherLakeConfiguration.top().getState(random, blockPos);
+            BlockState topBlockState = aetherLakeConfiguration.top().getState(level, random, blockPos);
             if (!topBlockState.isAir()) {
                 for (int i2 = 0; i2 < 16; ++i2) {
                     for (int j3 = 0; j3 < 16; ++j3) {
@@ -130,5 +130,9 @@ public class AetherLakeFeature extends Feature<AetherLakeConfiguration> {
 
     private boolean canReplaceBlock(BlockState state) {
         return !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+    }
+
+    private static boolean isDirt(BlockState state) {
+        return state.is(BlockTags.DIRT) || state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL);
     }
 }

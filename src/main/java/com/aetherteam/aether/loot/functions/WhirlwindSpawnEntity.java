@@ -6,13 +6,13 @@ import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.HolderSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +22,7 @@ import java.util.List;
 public class WhirlwindSpawnEntity extends LootItemConditionalFunction {
     public static final MapCodec<WhirlwindSpawnEntity> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance)
             .and(EntityTypePredicate.CODEC.fieldOf("entity").forGetter(whirlwindSpawnEntity -> whirlwindSpawnEntity.entityType))
-            .and(IntProvider.CODEC.fieldOf("count").forGetter(whirlwindSpawnEntity -> whirlwindSpawnEntity.count))
+            .and(IntProviders.CODEC.fieldOf("count").forGetter(whirlwindSpawnEntity -> whirlwindSpawnEntity.count))
             .apply(instance, WhirlwindSpawnEntity::new)
     );
     private final EntityTypePredicate entityType;
@@ -66,7 +66,7 @@ public class WhirlwindSpawnEntity extends LootItemConditionalFunction {
     }
 
     @Override
-    public LootItemFunctionType<WhirlwindSpawnEntity> getType() {
-        return AetherLootFunctions.WHIRLWIND_SPAWN_ENTITY.get();
+    public MapCodec<? extends LootItemConditionalFunction> codec() {
+        return CODEC;
     }
 }

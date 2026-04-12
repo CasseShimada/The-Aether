@@ -52,7 +52,7 @@ public class InebriationEffect extends MobEffect {
             livingEntity.setYRot((float) (livingEntity.getYRot() + this.rotationDirection));
             livingEntity.setXRot((float) (livingEntity.getXRot() + this.rotationDirection));
         }
-        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.PURPLE_DYE.getDefaultInstance()),
+        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.PURPLE_DYE),
                 livingEntity.getX(), livingEntity.getY() + livingEntity.getBbHeight() * 0.8, livingEntity.getZ(),
                 1, 0.0, 0.0, 0.0, 0.0);
     }

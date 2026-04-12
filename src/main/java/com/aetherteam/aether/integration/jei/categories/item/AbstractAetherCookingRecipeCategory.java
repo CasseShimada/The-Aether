@@ -8,7 +8,7 @@ import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -40,23 +40,23 @@ public abstract class AbstractAetherCookingRecipeCategory<T> extends AbstractRec
         return this.background.getHeight();
     }
 
-    protected void drawExperience(AbstractAetherCookingRecipe recipe, GuiGraphics guiGraphics, int y, IDrawable background) {
+    protected void drawExperience(AbstractAetherCookingRecipe recipe, GuiGraphicsExtractor guiGraphics, int y, IDrawable background) {
         float experience = recipe.experience();
         if (experience > 0) {
             Component experienceString = Component.translatable("gui.jei.category.smelting.experience", experience);
             Font fontRenderer = Minecraft.getInstance().font;
             int stringWidth = fontRenderer.width(experienceString);
-            guiGraphics.drawString(fontRenderer, experienceString, background.getWidth() - stringWidth, y, 0xFF808080, false);
+            guiGraphics.text(fontRenderer, experienceString, background.getWidth() - stringWidth, y, 0xFF808080, false);
         }
     }
 
-    protected void drawCookingTime(GuiGraphics guiGraphics, int y, int time, IDrawable background) {
+    protected void drawCookingTime(GuiGraphicsExtractor guiGraphics, int y, int time, IDrawable background) {
         if (time > 0) {
             int cookTimeSeconds = time / 20;
             Component timeString = Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
             Font fontRenderer = Minecraft.getInstance().font;
             int stringWidth = fontRenderer.width(timeString);
-            guiGraphics.drawString(fontRenderer, timeString, background.getWidth() - stringWidth, y, 0xFF808080, false);
+            guiGraphics.text(fontRenderer, timeString, background.getWidth() - stringWidth, y, 0xFF808080, false);
         }
     }
 }

@@ -118,13 +118,13 @@ public class AetherConfiguredFeatures {
                         new TwoLayersFeatureSize(1, 0, 1)).ignoreVines()
                         .decorators(ImmutableList.of(new HolidayTreeDecorator(new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
                         .build());
-        register(context, GRASS_PATCH_CONFIGURATION, Feature.RANDOM_PATCH, NitrogenConfiguredFeatureBuilders.grassPatch(BlockStateProvider.simple(Blocks.SHORT_GRASS), 32));
-        register(context, TALL_GRASS_PATCH_CONFIGURATION, Feature.RANDOM_PATCH, NitrogenConfiguredFeatureBuilders.tallGrassPatch(BlockStateProvider.simple(Blocks.TALL_GRASS)));
-        register(context, WHITE_FLOWER_PATCH_CONFIGURATION, Feature.FLOWER,
+        register(context, GRASS_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK, NitrogenConfiguredFeatureBuilders.grassPatch(BlockStateProvider.simple(Blocks.SHORT_GRASS), 32));
+        register(context, TALL_GRASS_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK, NitrogenConfiguredFeatureBuilders.tallGrassPatch(BlockStateProvider.simple(Blocks.TALL_GRASS)));
+        register(context, WHITE_FLOWER_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK,
                 NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.WHITE_FLOWER, 1)), 64));
-        register(context, PURPLE_FLOWER_PATCH_CONFIGURATION, Feature.FLOWER,
+        register(context, PURPLE_FLOWER_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK,
                 NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.PURPLE_FLOWER, 1)), 64));
-        register(context, BERRY_BUSH_PATCH_CONFIGURATION, Feature.RANDOM_PATCH,
+        register(context, BERRY_BUSH_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK,
                 NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.BERRY_BUSH, 1)), 32));
         register(context, QUICKSOIL_SHELF_CONFIGURATION, AetherFeatures.SHELF.get(),
                 new ShelfConfiguration(

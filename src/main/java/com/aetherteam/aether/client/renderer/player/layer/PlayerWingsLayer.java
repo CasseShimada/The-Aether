@@ -42,7 +42,7 @@ public class PlayerWingsLayer extends RenderLayer<AvatarRenderState, PlayerModel
         this.setupWingRotation(player, Mth.lerp(renderState.ageScale, data.getWingRotationO(), data.getWingRotation()));
 
         int overlay = LivingEntityRenderer.getOverlayCoords(renderState, 0.0F);
-        collector.order(0).submitModel(this.wingsModel, renderState, poseStack, RenderTypes.entityCutoutNoCull(VALKYRIE_TEXTURE), packedLight, overlay, -1, null, -1, null);
+        collector.order(0).submitModel(this.wingsModel, renderState, poseStack, RenderTypes.entityCutout(VALKYRIE_TEXTURE), packedLight, overlay, -1, null, -1, null);
     }
 
     private void setupWingRotation(LivingEntity livingEntity, float sinage) {

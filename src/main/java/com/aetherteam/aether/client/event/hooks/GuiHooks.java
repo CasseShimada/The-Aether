@@ -19,8 +19,8 @@ import com.aetherteam.nitrogen.api.users.UserData;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.client.gui.components.Tooltip;
@@ -174,10 +174,10 @@ public class GuiHooks {
      * Generates and draws the Aether's trivia lines in various loading screens.
      *
      * @param screen      The current {@link Screen}.
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiDraw(ScreenEvent.Render.Post)
      */
-    public static void drawTrivia(Screen screen, GuiGraphics guiGraphics) {
+    public static void drawTrivia(Screen screen, GuiGraphicsExtractor guiGraphics) {
         generateTrivia(screen);
         if (screen instanceof GenericMessageScreen || screen instanceof LevelLoadingScreen) {
             Component triviaLine = Aether.TRIVIA_READER.getTriviaLine(); // Get the current trivia line to display.
@@ -185,7 +185,7 @@ public class GuiHooks {
                 Font font = Minecraft.getInstance().font;
                 int y = (screen.height - 7) - font.wordWrapHeight(triviaLine, screen.width);
                 for (FormattedCharSequence sequence : font.split(triviaLine, screen.width)) {
-                    guiGraphics.drawCenteredString(font, sequence, screen.width / 2, y, 16777113);
+                    guiGraphics.centeredText(font, sequence, screen.width / 2, y, 16777113);
                     y += 9;
                 }
             }
@@ -226,17 +226,17 @@ public class GuiHooks {
      * Checks for when to display different text are handled by {@link DimensionHooks}.
      *
      * @param screen      The current {@link Screen}.
-     * @param guiGraphics The rendering {@link GuiGraphics}.
+     * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
      * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiDraw(ScreenEvent.Render.Post)
      */
-    public static void drawAetherTravelMessage(Screen screen, GuiGraphics guiGraphics) {
+    public static void drawAetherTravelMessage(Screen screen, GuiGraphicsExtractor guiGraphics) {
         if (screen instanceof LevelLoadingScreen || screen instanceof ProgressScreen) {
             if (Minecraft.getInstance().player != null) {
                 if (DimensionHooks.displayAetherTravel) {
                     if (DimensionHooks.playerLeavingAether) {
-                        guiGraphics.drawCenteredString(Minecraft.getInstance().font, Component.translatable("gui.aether.descending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
+                        guiGraphics.centeredText(Minecraft.getInstance().font, Component.translatable("gui.aether.descending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
                     } else {
-                        guiGraphics.drawCenteredString(Minecraft.getInstance().font, Component.translatable("gui.aether.ascending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
+                        guiGraphics.centeredText(Minecraft.getInstance().font, Component.translatable("gui.aether.ascending"), screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
                     }
                 }
             }
@@ -295,12 +295,12 @@ public class GuiHooks {
     }
 
     /**
-     * [CODE COPY] - {@link net.minecraft.client.gui.components.BossHealthOverlay#render(GuiGraphics)}
+     * [CODE COPY] - {@link net.minecraft.client.gui.components.BossHealthOverlay#render(GuiGraphicsExtractor)}
      * Modified to draw the Aether's custom boss health bars.
      *
      * @see com.aetherteam.aether.client.event.listeners.GuiListener#onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress)
      */
-    public static void drawBossHealthBar(GuiGraphics guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
+    public static void drawBossHealthBar(GuiGraphicsExtractor guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
         int entityID = BOSS_EVENTS.get(bossEvent.getId());
         if (Minecraft.getInstance().level != null && Minecraft.getInstance().level.getEntity(entityID) instanceof AetherBossMob<?> aetherBossMob) {
             drawBar(guiGraphics, x + 2, y + 2, bossEvent, aetherBossMob);
@@ -308,15 +308,15 @@ public class GuiHooks {
             int nameLength = Minecraft.getInstance().font.width(component);
             int nameX = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - nameLength / 2;
             int nameY = y - 9;
-            guiGraphics.drawString(Minecraft.getInstance().font, component, nameX, nameY, 16777215);
+            guiGraphics.text(Minecraft.getInstance().font, component, nameX, nameY, 16777215);
         }
     }
 
     /**
-     * [CODE COPY] - {@link net.minecraft.client.gui.components.BossHealthOverlay#drawBar(GuiGraphics, int, int, BossEvent)}
+     * [CODE COPY] - {@link net.minecraft.client.gui.components.BossHealthOverlay#drawBar(GuiGraphicsExtractor, int, int, BossEvent)}
      * This version of the method doesn't account for other types of boss bars because the Aether only has one.
      */
-    public static void drawBar(GuiGraphics guiGraphics, int x, int y, BossEvent bossEvent, AetherBossMob<?> aetherBossMob) {
+    public static void drawBar(GuiGraphicsExtractor guiGraphics, int x, int y, BossEvent bossEvent, AetherBossMob<?> aetherBossMob) {
         if (aetherBossMob.getBossBarBackgroundTexture() != null && aetherBossMob.getBossBarTexture() != null) {
             x -= 37; // The default boss health bar is offset by -91. We need -128.
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, aetherBossMob.getBossBarBackgroundTexture(), 256, 16, 0, 0, x, y, 256, 16);

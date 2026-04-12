@@ -105,7 +105,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
 
     public ValkyrieQueen(EntityType<? extends ValkyrieQueen> type, Level level) {
         super(type, level);
-        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
+        this.bossFight = (ServerBossEvent) new ServerBossEvent(this.getUUID(), this.getBossName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setPlayBossMusic(true);
         this.setBossFight(false);
         this.xpReward = XP_REWARD_BOSS;
         this.setPersistenceRequired();
@@ -388,7 +388,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.sendSystemMessage(formattedMessage);
         } else {
-            player.displayClientMessage(formattedMessage, false);
+            com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, formattedMessage, false);
         }
         if (sound) {
             this.playSound(this.getInteractSound(), 1.0F, this.getVoicePitch());

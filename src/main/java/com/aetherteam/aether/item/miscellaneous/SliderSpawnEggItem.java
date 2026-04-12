@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -44,7 +45,7 @@ public class SliderSpawnEggItem extends AetherSpawnEggItem {
             if (blockState.is(Blocks.SPAWNER)) {
                 BlockEntity blockEntity = level.getBlockEntity(blockPos);
                 if (blockEntity instanceof SpawnerBlockEntity spawnerBlockEntity) {
-                    EntityType<?> entityType = this.getType(itemStack);
+                    EntityType<?> entityType = SpawnEggItem.getType(itemStack);
                     spawnerBlockEntity.setEntityId(entityType, level.getRandom());
                     blockEntity.setChanged();
                     level.sendBlockUpdated(blockPos, blockState, blockState, 3);
@@ -63,7 +64,7 @@ public class SliderSpawnEggItem extends AetherSpawnEggItem {
             Vec3 clickLoc = context.getClickLocation();
             BlockPos roundedPos = new BlockPos((int) Math.round(clickLoc.x()), relativePos.getY(), (int) Math.round(clickLoc.z()));
 
-            EntityType<?> entityType = this.getType(itemStack);
+            EntityType<?> entityType = SpawnEggItem.getType(itemStack);
             if (entityType.spawn((ServerLevel) level, itemStack, context.getPlayer(), roundedPos, EntitySpawnReason.SPAWN_ITEM_USE, false, !Objects.equals(blockPos, relativePos) && direction == Direction.UP) != null) {
                 itemStack.shrink(1);
                 level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);

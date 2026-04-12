@@ -1,6 +1,7 @@
 package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
+import com.aetherteam.aether.util.LevelTimeUtil;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -27,7 +28,7 @@ public class AetherTimeCommand {
                                 .then(Commands.argument("time", TimeArgument.time()).executes((context) -> addTime(context.getSource(), IntegerArgumentType.getInteger(context, "time"))))
                         ).then(Commands.literal("query")
                                 .then(Commands.literal("daytime").executes((context) -> queryTime(context.getSource(), getDayTime(context.getSource().getLevel()))))
-                                .then(Commands.literal("day").executes((context) -> queryTime(context.getSource(), (int) (context.getSource().getLevel().getDayTime() / (AetherTimeAttachment.getTicksPerDay()) % (long) Integer.MAX_VALUE))))
+                                .then(Commands.literal("day").executes((context) -> queryTime(context.getSource(), (int) (LevelTimeUtil.getTime(context.getSource().getLevel()) / (AetherTimeAttachment.getTicksPerDay()) % (long) Integer.MAX_VALUE))))
                         )
                 )
         );
@@ -37,7 +38,7 @@ public class AetherTimeCommand {
      * Returns the day time (time wrapped within a day)
      */
     private static int getDayTime(ServerLevel level) {
-        return (int) level.getDayTime();
+        return (int) LevelTimeUtil.getTime(level);
     }
 
     private static int queryTime(CommandSourceStack source, int time) {
@@ -47,14 +48,14 @@ public class AetherTimeCommand {
 
     private static int setTime(CommandSourceStack source, int time) {
         ServerLevel level = source.getLevel();
-        level.setDayTime(time);
+        LevelTimeUtil.setTime(level, time);
         source.sendSuccess(() -> Component.translatable("commands.time.set", time), true);
         return getDayTime(source.getLevel());
     }
 
     private static int addTime(CommandSourceStack source, int amount) {
         ServerLevel level = source.getLevel();
-        level.setDayTime(level.getDayTime() + amount);
+        LevelTimeUtil.setTime(level, LevelTimeUtil.getTime(level) + amount);
         int i = getDayTime(source.getLevel());
         source.sendSuccess(() -> Component.translatable("commands.time.set", i), true);
         return i;

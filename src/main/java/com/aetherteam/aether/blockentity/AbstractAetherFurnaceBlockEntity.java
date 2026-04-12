@@ -63,7 +63,7 @@ public abstract class AbstractAetherFurnaceBlockEntity extends AbstractFurnaceBl
                 abstractFurnaceBlockEntityAccessor.aether$setLitTotalTime(abstractFurnaceBlockEntityAccessor.aether$getLitTimeRemaining());
                 if (abstractFurnaceBlockEntityAccessor.aether$getLitTimeRemaining() > 0) {
                     flag1 = true;
-                    ItemStack remainder = itemstack.getItem().getCraftingRemainder();
+                    ItemStack remainder = itemstack.getItem().getCraftingRemainder().create();
                     if (!remainder.isEmpty()) {
                         blockEntity.items.set(1, remainder.copy());
                     } else if (flag3) {
@@ -118,11 +118,11 @@ public abstract class AbstractAetherFurnaceBlockEntity extends AbstractFurnaceBl
     private boolean burn(RegistryAccess registryAccess, @Nullable RecipeHolder<?> recipe, NonNullList<ItemStack> stacks, int stackSize) {
         if (recipe != null && canBurn(registryAccess, recipe, new SingleRecipeInput(this.items.getFirst()), stacks, stackSize)) {
             ItemStack inputSlotStack = stacks.get(0);
-            ItemStack resultStack = ((Recipe<SingleRecipeInput>) recipe.value()).assemble(new SingleRecipeInput(this.items.getFirst()), registryAccess);
+            ItemStack resultStack = ((Recipe<SingleRecipeInput>) recipe.value()).assemble(new SingleRecipeInput(this.items.getFirst()));
             ItemStack resultSlotStack = stacks.get(2);
 
             if (inputSlotStack.is(resultStack.getItem()) || resultStack.is(AetherTags.Items.SAVE_NBT_IN_RECIPE)) {
-                resultStack = new ItemStack(resultStack.getItemHolder(), 1, inputSlotStack.getComponentsPatch());
+                resultStack = new ItemStack(resultStack.typeHolder(), 1, inputSlotStack.getComponentsPatch());
             }
             if (inputSlotStack.is(resultStack.getItem())) {
                 resultStack.setDamageValue(0);
@@ -134,8 +134,8 @@ public abstract class AbstractAetherFurnaceBlockEntity extends AbstractFurnaceBl
                 resultSlotStack.grow(resultStack.getCount());
             }
 
-            ItemStack inputRemainder = inputSlotStack.getItem().getCraftingRemainder();
-            ItemStack resultRemainder = resultStack.getItem().getCraftingRemainder();
+            ItemStack inputRemainder = inputSlotStack.getItem().getCraftingRemainder().create();
+            ItemStack resultRemainder = resultStack.getItem().getCraftingRemainder().create();
             if (!inputRemainder.isEmpty() && !inputRemainder.is(resultRemainder.getItem())) {
                 stacks.set(0, inputRemainder.copy());
             } else {
@@ -182,7 +182,7 @@ public abstract class AbstractAetherFurnaceBlockEntity extends AbstractFurnaceBl
             && abstractFurnaceBlockEntityAccessor.aether$getQuickCheck().getRecipeFor(new SingleRecipeInput(this.items.getFirst()), serverLevel).isPresent();
         if (this.remainderItem.isEmpty()) {
             if (hasRecipe) {
-                this.remainderItem = stack.getItem().getCraftingRemainder(); // Stores the correlating crafting remainder item.
+                this.remainderItem = stack.getItem().getCraftingRemainder().create(); // Stores the correlating crafting remainder item.
             }
         }
         if (direction == Direction.DOWN && index == 0) {
@@ -214,7 +214,7 @@ public abstract class AbstractAetherFurnaceBlockEntity extends AbstractFurnaceBl
             return false;
         }
         @SuppressWarnings("unchecked")
-        ItemStack result = ((Recipe<SingleRecipeInput>) recipe.value()).assemble(input, registryAccess);
+        ItemStack result = ((Recipe<SingleRecipeInput>) recipe.value()).assemble(input);
         if (result.isEmpty()) {
             return false;
         }

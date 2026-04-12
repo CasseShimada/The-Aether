@@ -62,7 +62,7 @@ public interface BossMob<T extends Mob & BossMob<T>> {
     }
 
     default void displayTooFarMessage(Player player) {
-        player.displayClientMessage(Component.literal("I am too far away to damage this boss."), true);
+        com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.literal("I am too far away to damage this boss."), true);
     }
 
     default void addBossSaveData(CompoundTag tag, HolderLookup.Provider provider) {

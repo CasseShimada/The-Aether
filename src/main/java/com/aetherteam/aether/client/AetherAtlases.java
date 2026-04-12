@@ -2,13 +2,13 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.resources.Identifier;
 
 public class AetherAtlases {
-    public static Material TREASURE_CHEST_MATERIAL;
-    public static Material TREASURE_CHEST_LEFT_MATERIAL;
-    public static Material TREASURE_CHEST_RIGHT_MATERIAL;
+    public static SpriteId TREASURE_CHEST_MATERIAL;
+    public static SpriteId TREASURE_CHEST_LEFT_MATERIAL;
+    public static SpriteId TREASURE_CHEST_RIGHT_MATERIAL;
 
     /**
      * Need to register these static values during client setup,
@@ -24,7 +24,7 @@ public class AetherAtlases {
         // WoodType atlas entries are initialized from the global wood type registry in 1.21.11.
     }
 
-    public static Material getChestMaterial(String chestName) {
-        return new Material(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath(Aether.MODID, "entity/tiles/chest/" + chestName));
+    public static SpriteId getChestMaterial(String chestName) {
+        return new SpriteId(Sheets.CHEST_SHEET, Identifier.fromNamespaceAndPath(Aether.MODID, "entity/tiles/chest/" + chestName));
     }
 }

@@ -7,11 +7,16 @@ import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.serializer.AetherCookingSerializer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class EnchantingRecipe extends AbstractAetherCookingRecipe {
     public EnchantingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStack result, float experience, int enchantingTime) {
+        super(AetherRecipeTypes.ENCHANTING.get(), group, category, ingredient, result, experience, enchantingTime);
+    }
+
+    public EnchantingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStackTemplate result, float experience, int enchantingTime) {
         super(AetherRecipeTypes.ENCHANTING.get(), group, category, ingredient, result, experience, enchantingTime);
     }
 
@@ -25,9 +30,12 @@ public class EnchantingRecipe extends AbstractAetherCookingRecipe {
         return AetherRecipeSerializers.ENCHANTING.get();
     }
 
-    public static class Serializer extends AetherCookingSerializer<EnchantingRecipe> {
-        public Serializer() {
-            super(EnchantingRecipe::new, 250);
+    public static final class Serializer {
+        private Serializer() {
+        }
+
+        public static RecipeSerializer<EnchantingRecipe> create() {
+            return AetherCookingSerializer.create(EnchantingRecipe::new, 250);
         }
     }
 }

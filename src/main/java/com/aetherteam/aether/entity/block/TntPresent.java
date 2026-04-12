@@ -63,7 +63,7 @@ public class TntPresent extends Entity implements TraceableEntity {
                 this.level().explode(this, Explosion.getDefaultDamageSource(this.level(), this), null, this.getX(), this.getY(0.0625), this.getZ(), 1.0F, false, Level.ExplosionInteraction.TNT);
             }
         } else {
-            this.updateInWaterStateAndDoFluidPushing();
+            this.updateFluidInteraction();
             if (this.level().isClientSide()) {
                 this.level().addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5, this.getZ(), 0.0, 0.0, 0.0);
             }

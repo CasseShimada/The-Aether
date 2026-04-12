@@ -45,6 +45,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
@@ -71,7 +72,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.storage.WorldData;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -492,7 +492,7 @@ public class EntityHooks {
      */
     public static boolean preventEntityHooked(Entity projectileEntity, HitResult rayTraceResult) {
         if (rayTraceResult instanceof EntityHitResult entityHitResult) {
-            return entityHitResult.getEntity().getType().is(AetherTags.Entities.UNHOOKABLE) && projectileEntity instanceof FishingHook;
+            return entityHitResult.getEntity().getType().builtInRegistryHolder().is(AetherTags.Entities.UNHOOKABLE) && projectileEntity instanceof FishingHook;
         }
         return false;
     }
@@ -633,8 +633,7 @@ public class EntityHooks {
      * @param player The player whose loaded save data should be inspected for legacy Curios entries.
      */
     public static void loadLegacyCuriosData(ServerPlayer player) {
-        WorldData worldData = player.level().getServer().getWorldData();
-        CompoundTag playerTag = worldData.getLoadedPlayerTag();
+        CompoundTag playerTag = player.level().getServer().getPlayerList().loadPlayerData(new NameAndId(player.getGameProfile())).orElse(null);
         if (playerTag == null) {
             return;
         }
@@ -756,7 +755,7 @@ public class EntityHooks {
      * @see com.aetherteam.aether.event.listeners.EntityListener#onEntitySplit(MobSplitEvent)
      */
     public static boolean preventSplit(Mob mob) {
-        return mob.getType().is(AetherTags.Entities.SWETS);
+        return mob.getType().builtInRegistryHolder().is(AetherTags.Entities.SWETS);
     }
 
     /**

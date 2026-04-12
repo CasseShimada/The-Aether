@@ -48,9 +48,12 @@ public class IcestoneFreezableRecipe extends AbstractBlockStateRecipe {
         return (RecipeType<? extends Recipe<BlockStateRecipeInput>>) super.getType();
     }
 
-    public static class Serializer extends BlockStateRecipeSerializer<IcestoneFreezableRecipe> {
-        public Serializer() {
-            super(IcestoneFreezableRecipe::new);
+    public static final class Serializer {
+        private Serializer() {
+        }
+
+        public static RecipeSerializer<IcestoneFreezableRecipe> create() {
+            return BlockStateRecipeSerializer.create(IcestoneFreezableRecipe::new);
         }
     }
 }

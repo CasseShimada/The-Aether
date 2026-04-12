@@ -10,7 +10,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -52,14 +52,14 @@ public abstract class AbstractFuelCategory implements IRecipeCategory<FuelRecipe
     }
 
     @Override
-    public void draw(FuelRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(FuelRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         int burnTimeSeconds = recipe.burnTime() / 20;
         Component burnTime = Component.translatable("gui.jei.category.smelting.time.seconds", burnTimeSeconds);
         Component station = Component.literal(recipe.station().getName().getString());
         var font = Minecraft.getInstance().font;
 
-        guiGraphics.drawString(font, station, 20, 1, 0xFF808080, false);
-        guiGraphics.drawString(font, burnTime, 20, 40, 0xFF808080, false);
+        guiGraphics.text(font, station, 20, 1, 0xFF808080, false);
+        guiGraphics.text(font, burnTime, 20, 40, 0xFF808080, false);
     }
 
     protected List<String> getStationNames() {

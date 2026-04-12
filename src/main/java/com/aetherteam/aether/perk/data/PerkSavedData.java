@@ -1,14 +1,16 @@
 package com.aetherteam.aether.perk.data;
 
+import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.UUID;
 public class PerkSavedData extends SavedData {
     public static final String FILE_NAME = "perks";
     private static final SavedDataType<PerkSavedData> TYPE = new SavedDataType<>(
-            FILE_NAME,
+            Identifier.fromNamespaceAndPath(Aether.MODID, FILE_NAME),
             PerkSavedData::new,
             CompoundTag.CODEC.xmap(PerkSavedData::load, PerkSavedData::saveTag),
             null
@@ -121,7 +123,7 @@ public class PerkSavedData extends SavedData {
      * @param dataStorage The {@link DimensionDataStorage} of the world.
      * @return The {@link PerkSavedData} corresponding to the data file.
      */
-    public static PerkSavedData compute(DimensionDataStorage dataStorage) {
+    public static PerkSavedData compute(SavedDataStorage dataStorage) {
         return dataStorage.computeIfAbsent(TYPE);
     }
 

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'java-library'
     id 'eclipse'
     id 'idea'
@@ -18,12 +18,18 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
 }
 
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
+}
+
+sourceSets.main.java {
+    exclude 'com/aetherteam/aether/integration/rei/**'
 }
 
 processResources {
@@ -71,30 +77,24 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    modImplementation "com.aetherteam.nitrogen:nitrogen_internals:${project.nitrogen_version}"
-    modImplementation "gg.essential:partner-mod-integration-1.21.1-fabric:${project.essential_partner_integration_version}"
+    implementation "gg.essential:partner-mod-integration-1.21.1-fabric:${project.essential_partner_integration_version}"
 
-    runtimeOnly "io.github.flemmli97:debugutils:1.21-${project.debugutils_version}-fabric"
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
-    modCompileOnly "mezz.jei:jei-1.21.11-common-api:${project.jei_version}"
-    modCompileOnly "mezz.jei:jei-1.21.11-fabric-api:${project.jei_version}"
+    compileOnly "mezz.jei:jei-26.1.2-common-api:${project.jei_version}"
+    compileOnly "mezz.jei:jei-26.1.2-fabric-api:${project.jei_version}"
 
-    modCompileOnly "curse.maven:jade-324717:${project.jade_version}"
-    modCompileOnly "curse.maven:lootr-361276:${project.lootr_version}"
+    compileOnly "curse.maven:jade-324717:${project.jade_version}"
 
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-    modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
-    modCompileOnly "dev.architectury:architectury-fabric:${architectury_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.release = 25
     options.compilerArgs << '-Xmaxerrs' << '400'
 }
 

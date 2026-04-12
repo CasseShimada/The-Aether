@@ -29,7 +29,7 @@ public interface ShieldOfRepulsionAccessory {
     static boolean deflectProjectile(HitResult hitResult, Projectile projectile) {
         if (hitResult.getType() == HitResult.Type.ENTITY && hitResult instanceof EntityHitResult entityHitResult) {
             if (entityHitResult.getEntity() instanceof LivingEntity impactedLiving) {
-                if (projectile.getType().is(AetherTags.Entities.DEFLECTABLE_PROJECTILES)) {
+                if (projectile.getType().builtInRegistryHolder().is(AetherTags.Entities.DEFLECTABLE_PROJECTILES)) {
                     SlotEntryReference slotResult = EquipmentUtil.getAccessory(impactedLiving, AetherItems.SHIELD_OF_REPULSION.get());
                     if (slotResult != null) {
                         Vec3 motion = impactedLiving.getDeltaMovement();

@@ -3,7 +3,6 @@ package com.aetherteam.aether.recipe.recipes.ban;
 import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
@@ -80,13 +79,23 @@ public abstract class AbstractPlacementBanRecipe<T, S extends Predicate<T>, R ex
     }
 
     @Override
-    public ItemStack assemble(R container, HolderLookup.Provider provider) {
+    public ItemStack assemble(R container) {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public String group() {
+        return "";
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.CRAFTING_MISC;
+    }
+
+    @Override
+    public boolean showNotification() {
+        return false;
     }
 
     @Override

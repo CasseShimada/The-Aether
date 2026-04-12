@@ -10,7 +10,7 @@ import java.util.Optional;
 public record MoaType(ItemStack egg, int maxJumps, float speed, int spawnChance, Identifier moaTexture, Identifier saddleTexture, Optional<Identifier> jumpsTexture) {
     public static final Codec<MoaType> CODEC =
         RecordCodecBuilder.create(in -> in.group(
-            ItemStack.SINGLE_ITEM_CODEC.fieldOf("egg").forGetter(MoaType::egg),
+            ItemStack.CODEC.fieldOf("egg").forGetter(MoaType::egg),
             Codec.INT.fieldOf("max_jumps").forGetter(MoaType::maxJumps),
             Codec.FLOAT.fieldOf("speed").forGetter(MoaType::speed),
             Codec.INT.fieldOf("spawn_chance").forGetter(MoaType::spawnChance),

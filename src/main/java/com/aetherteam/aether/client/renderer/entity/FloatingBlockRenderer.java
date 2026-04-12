@@ -2,12 +2,13 @@ package com.aetherteam.aether.client.renderer.entity;
 
 import com.aetherteam.aether.entity.block.FloatingBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,8 +31,11 @@ public class FloatingBlockRenderer extends EntityRenderer<FloatingBlockEntity, F
         reusedState.movingBlockRenderState.randomSeedPos = entity.getStartPos();
         reusedState.movingBlockRenderState.blockPos = blockpos;
         reusedState.movingBlockRenderState.blockState = entity.getBlockState();
-        reusedState.movingBlockRenderState.biome = entity.level().getBiome(blockpos);
-        reusedState.movingBlockRenderState.level = entity.level();
+        if (entity.level() instanceof ClientLevel clientLevel) {
+            reusedState.movingBlockRenderState.biome = clientLevel.getBiome(blockpos);
+            reusedState.movingBlockRenderState.cardinalLighting = clientLevel.cardinalLighting();
+            reusedState.movingBlockRenderState.lightEngine = clientLevel.getLightEngine();
+        }
     }
 
     @Override

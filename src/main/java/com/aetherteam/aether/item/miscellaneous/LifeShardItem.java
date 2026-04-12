@@ -38,7 +38,7 @@ public class LifeShardItem extends Item implements ConsumableItem {
                     return InteractionResult.SUCCESS;
                 }
             } else if (aetherPlayer.getLifeShardCount() >= aetherPlayer.getLifeShardLimit()) {
-                player.displayClientMessage(Component.translatable("aether.life_shard_limit", aetherPlayer.getLifeShardLimit()), true);
+                com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.translatable("aether.life_shard_limit", aetherPlayer.getLifeShardLimit()), true);
             }
         }
 

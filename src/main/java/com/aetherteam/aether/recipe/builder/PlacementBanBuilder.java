@@ -35,7 +35,6 @@ public abstract class PlacementBanBuilder implements RecipeBuilder {
         return this.biome;
     }
 
-    @Override
     public Item getResult() {
         return Items.AIR;
     }
@@ -43,5 +42,10 @@ public abstract class PlacementBanBuilder implements RecipeBuilder {
     @Override
     public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
         return this;
+    }
+
+    @Override
+    public ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.getResult().getDefaultInstance());
     }
 }

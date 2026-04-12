@@ -13,6 +13,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -21,6 +22,8 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.timeline.Timeline;
+
+import java.util.Optional;
 
 public class AetherDimensions {
     private final static Identifier AETHER_LEVEL_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "the_aether");
@@ -46,6 +49,7 @@ public class AetherDimensions {
                 false,
                 true,
                 false,
+                false,
                 1.0,
                 0,
                 256,
@@ -54,9 +58,10 @@ public class AetherDimensions {
                 0.0F,
                 new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
                 DimensionType.Skybox.OVERWORLD,
-                DimensionType.CardinalLightType.DEFAULT,
+                CardinalLighting.Type.DEFAULT,
                 attributes,
-                timelines.getOrThrow(OVERWORLD_TIMELINES)));
+                timelines.getOrThrow(OVERWORLD_TIMELINES),
+                Optional.empty()));
     }
 
     public static void bootstrapLevelStem(BootstrapContext<LevelStem> context) {

@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public class HolidayLeavesParticle extends PortalParticle {
     public HolidayLeavesParticle(ClientLevel level, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, SpriteSet spriteSet) {
-        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.random));
+        super(level, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, spriteSet.get(level.getRandom()));
         this.rCol = 1.0F;
         this.gCol = 1.0F;
         this.bCol = 1.0F;

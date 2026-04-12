@@ -136,8 +136,8 @@ public class Swet extends Slime implements MountableMob {
      * @return Whether the blocks were found in the radius, as a {@link Boolean}.
      */
     private static boolean inRadiusOfBanner(LevelAccessor level, BlockPos pos, int radius) {
-        for (ChunkPos chunk : ChunkPos.rangeClosed(new ChunkPos(pos), radius).toList()) {
-            ChunkAccess chunkAccess = level.getChunk(chunk.x, chunk.z, ChunkStatus.FULL, false);
+        for (ChunkPos chunk : ChunkPos.rangeClosed(ChunkPos.containing(pos), radius).toList()) {
+            ChunkAccess chunkAccess = level.getChunk(chunk.x(), chunk.z(), ChunkStatus.FULL, false);
             if (chunkAccess != null) {
                 for (BlockPos blockEntityPos : chunkAccess.getBlockEntitiesPos()) {
                     if (blockEntityPos.distSqr(pos) <= radius * radius) {

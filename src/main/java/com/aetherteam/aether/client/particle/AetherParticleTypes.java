@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.particle;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.AetherClient;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.minecraft.client.particle.SnowflakeParticle;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -24,7 +24,7 @@ public class AetherParticleTypes {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ZEPHYR_SNOWFLAKE = PARTICLES.register("zephyr_snowflake", () -> new PublicSimpleParticleType(false));
 
     public static void registerParticleFactories() {
-        ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
+        ParticleProviderRegistry registry = ParticleProviderRegistry.getInstance();
         registry.register(AETHER_PORTAL.get(), AetherPortalParticle.Factory::new);
         registry.register(CRYSTAL_LEAVES.get(), CrystalLeavesParticle.Factory::new);
         registry.register(BOSS_DOORWAY_BLOCK.get(), DungeonBlockOverlayParticle.Factory::new);
