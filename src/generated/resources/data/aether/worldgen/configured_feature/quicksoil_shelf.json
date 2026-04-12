@@ -13,6 +13,7 @@
     "radius": 3.4641016,
     "valid_blocks": "aether:aether_grass_block",
     "y_range": {
+      "type": "minecraft:uniform",
       "max_inclusive": 48,
       "min_inclusive": 0
     }

@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -27,9 +26,9 @@ public class AetherMoaTypes {
     }
 
     public static void bootstrap(BootstrapContext<MoaType> context) {
-        context.register(BLUE, new MoaType(new ItemStack(AetherItems.BLUE_MOA_EGG.get()), 3, 0.155F, 100, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/blue_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/moa_saddle.png"), Optional.empty()));
-        context.register(WHITE, new MoaType(new ItemStack(AetherItems.WHITE_MOA_EGG.get()), 4, 0.155F, 50, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/white_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/moa_saddle.png"), Optional.empty()));
-        context.register(BLACK, new MoaType(new ItemStack(AetherItems.BLACK_MOA_EGG.get()), 8, 0.155F, 25, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/black_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/black_moa_saddle.png"), Optional.empty()));
+        context.register(BLUE, new MoaType(AetherItems.BLUE_MOA_EGG.get(), 3, 0.155F, 100, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/blue_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/moa_saddle.png"), Optional.empty()));
+        context.register(WHITE, new MoaType(AetherItems.WHITE_MOA_EGG.get(), 4, 0.155F, 50, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/white_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/moa_saddle.png"), Optional.empty()));
+        context.register(BLACK, new MoaType(AetherItems.BLACK_MOA_EGG.get(), 8, 0.155F, 25, Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/black_moa.png"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/entity/mobs/moa/black_moa_saddle.png"), Optional.empty()));
     }
 
     @Nullable

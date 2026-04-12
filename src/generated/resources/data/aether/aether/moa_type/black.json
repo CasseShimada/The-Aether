@@ -1,7 +1,5 @@
 {
-  "egg": {
-    "id": "aether:black_moa_egg"
-  },
+  "egg": "aether:black_moa_egg",
   "max_jumps": 8,
   "moa_texture": "aether:textures/entity/mobs/moa/black_moa.png",
   "saddle_texture": "aether:textures/entity/mobs/moa/black_moa_saddle.png",
