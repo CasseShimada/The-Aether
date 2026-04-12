@@ -11,16 +11,18 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
+    private static final ItemStackTemplate PLACEHOLDER_RESULT = new ItemStackTemplate(AetherBlocks.ALTAR.get().asItem());
     public final Ingredient ingredient;
 
     public AltarRepairRecipe(String group, Ingredient ingredient, int repairTime) {
-        super(AetherRecipeTypes.ENCHANTING.get(), group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, firstIngredientItem(ingredient), 0.0F, repairTime);
+        super(AetherRecipeTypes.ENCHANTING.get(), group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, PLACEHOLDER_RESULT, 0.0F, repairTime);
         this.ingredient = ingredient;
     }
 
@@ -34,6 +36,11 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
      */
     @Override
     public ItemStack assemble(SingleRecipeInput inventory) {
+        return firstIngredientItem(this.ingredient);
+    }
+
+    @Override
+    public ItemStack getResult() {
         return firstIngredientItem(this.ingredient);
     }
 
