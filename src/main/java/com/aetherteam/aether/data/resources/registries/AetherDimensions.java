@@ -21,6 +21,8 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.clock.WorldClock;
+import net.minecraft.world.clock.WorldClocks;
 import net.minecraft.world.timeline.Timeline;
 
 import java.util.Optional;
@@ -38,6 +40,7 @@ public class AetherDimensions {
 
     public static void bootstrapDimensionType(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+        HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
                 .set(EnvironmentAttributes.FOG_COLOR, 0xC0D8FF)
                 .set(EnvironmentAttributes.SKY_COLOR, 0x78A7FF)
@@ -61,7 +64,7 @@ public class AetherDimensions {
                 CardinalLighting.Type.DEFAULT,
                 attributes,
                 timelines.getOrThrow(OVERWORLD_TIMELINES),
-                Optional.empty()));
+                Optional.of(clocks.getOrThrow(WorldClocks.OVERWORLD))));
     }
 
     public static void bootstrapLevelStem(BootstrapContext<LevelStem> context) {
