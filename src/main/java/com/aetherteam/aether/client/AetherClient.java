@@ -23,6 +23,7 @@ import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -65,7 +66,6 @@ public class AetherClient {
         registerTooltipOverrides();
         registerLoreOverrides();
         AetherMenuTypes.registerMenuScreens();
-        AetherColorResolvers.registerBlockColor();
         AetherColorResolvers.registerItemColor();
         AetherKeys.registerKeyMappings();
         AetherRecipeCategories.registerRecipeCategories();
@@ -122,6 +122,9 @@ public class AetherClient {
     }
 
     private static void registerClientCallbacks() {
+        ClientLifecycleEvents.CLIENT_STARTED.register(client ->
+            AetherColorResolvers.registerBlockColor(client.getBlockColors()));
+
         ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
                 ItemHooks.addDungeonTooltips(components, stack, tooltipType));
 

@@ -2,7 +2,9 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
+import com.aetherteam.aether.Aether;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
@@ -16,6 +18,14 @@ public class AetherColorResolvers {
     private static final int ENCHANTED_GRASS_COLOR = 0xFCEA64;
 
     public static void registerBlockColor() {
+        registerBlockColor(Minecraft.getInstance().getBlockColors());
+    }
+
+    public static void registerBlockColor(BlockColors blockColors) {
+        if (blockColors == null) {
+            Aether.LOGGER.warn("Skipping block color registration because BlockColors is not ready yet.");
+            return;
+        }
         BlockTintSource tintedPlantColor = new BlockTintSource() {
             @Override
             public int color(net.minecraft.world.level.block.state.BlockState state) {
@@ -34,7 +44,7 @@ public class AetherColorResolvers {
                 return BiomeColors.getAverageGrassColor(level, newPos);
             }
         };
-        Minecraft.getInstance().getBlockColors().register(java.util.List.of(tintedPlantColor), Blocks.SHORT_GRASS, Blocks.FERN, Blocks.TALL_GRASS, Blocks.LARGE_FERN);
+        blockColors.register(java.util.List.of(tintedPlantColor), Blocks.SHORT_GRASS, Blocks.FERN, Blocks.TALL_GRASS, Blocks.LARGE_FERN);
     }
 
     public static void registerItemColor() {
