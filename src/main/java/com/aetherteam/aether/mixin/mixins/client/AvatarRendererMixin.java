@@ -15,7 +15,6 @@ import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.aetherteam.nitrogen.ConstantsUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -41,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AvatarRenderer.class)
 public abstract class AvatarRendererMixin {
     @Shadow
-    protected EntityModel model;
+    public abstract PlayerModel getModel();
 
     @Unique
     private GlovesModel aether$glovesFirstPersonModel;
@@ -108,7 +107,7 @@ public abstract class AvatarRendererMixin {
             return;
         }
 
-        PlayerModel playerModel = (PlayerModel) this.model;
+        PlayerModel playerModel = this.getModel();
         boolean rightArm = arm == playerModel.rightArm;
         boolean slim = ((PlayerModelAccessor) playerModel).aether$getSlim();
 
