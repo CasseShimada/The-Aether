@@ -31,7 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,9 +38,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AvatarRenderer.class)
 public abstract class AvatarRendererMixin {
-    @Shadow
-    public abstract PlayerModel getModel();
-
     @Unique
     private GlovesModel aether$glovesFirstPersonModel;
 
@@ -107,7 +103,7 @@ public abstract class AvatarRendererMixin {
             return;
         }
 
-        PlayerModel playerModel = this.getModel();
+        PlayerModel playerModel = (PlayerModel) ((LivingEntityRendererAccessor) this).aether$getModel();
         boolean rightArm = arm == playerModel.rightArm;
         boolean slim = ((PlayerModelAccessor) playerModel).aether$getSlim();
 
