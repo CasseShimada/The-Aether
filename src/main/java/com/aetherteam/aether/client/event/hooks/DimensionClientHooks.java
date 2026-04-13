@@ -4,7 +4,6 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.aether.mixin.mixins.client.accessor.ClientLevelAccessor;
 import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -157,10 +156,8 @@ public class DimensionClientHooks {
         if (level != null && !Minecraft.getInstance().isPaused() && level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
             AetherTimeAttachment data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
             if (!data.isTimeSynced()) {
-                if (((ClientLevelAccessor) level).aether$isTickDayTime()) {
-                    long dayTime = data.tickTime(level) - 1; // The client always increments time by 1 every tick.
-                    LevelTimeUtil.setTime(level, dayTime);
-                }
+                long dayTime = data.tickTime(level) - 1; // ClientLevel now always advances gameTime locally each tick.
+                LevelTimeUtil.setTime(level, dayTime);
             }
         }
     }
