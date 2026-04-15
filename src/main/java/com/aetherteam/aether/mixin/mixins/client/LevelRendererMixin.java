@@ -19,7 +19,7 @@ public abstract class LevelRendererMixin {
     private ClientLevel level;
 
     @Inject(method = "addCloudsPass", at = @At("HEAD"), cancellable = true)
-    private void aether$cancelAetherCloudPass(FrameGraphBuilder frameGraphBuilder, CloudStatus cloudStatus, Vec3 cloudColor, long gameTime, float partialTick, int packedCloudColor, float cloudHeight, CallbackInfo ci) {
+    private void aether$cancelAetherCloudPass(FrameGraphBuilder frameGraphBuilder, CloudStatus cloudStatus, Vec3 cloudColor, long gameTime, float partialTick, int packedCloudColor, float cloudHeight, int cloudRenderDistance, CallbackInfo ci) {
         if (this.level != null
                 && this.level.dimension().equals(AetherDimensions.AETHER_LEVEL)
                 && AetherConfig.CLIENT.disable_clouds.get()) {
