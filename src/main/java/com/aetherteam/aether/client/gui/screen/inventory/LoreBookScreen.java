@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,7 +23,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
     private static final Identifier TEXTURE_LORE_BACKING = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/lore_backing.png");
     private static final Identifier TEXTURE_LORE_BOOK = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/lore_book.png");
 
-    private final Map<Integer, List<FormattedCharSequence>> pages = new HashMap<>();
+    private final Map<Integer, List<String>> pages = new HashMap<>();
 
     private LorePageButton previousButton, nextButton;
     private int currentPageNumber;
@@ -138,7 +137,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         int titleX = 136;
         int titleY = 10;
         int bodyY = 32;
-        List<FormattedCharSequence> currentPage = this.pages.get(this.currentPageNumber);
+        List<String> currentPage = this.pages.get(this.currentPageNumber);
         int lineCount = currentPage != null ? currentPage.size() : 0;
         String renderState = LoreBookMenu.describeStack(this.currentLoreStack) + "|page=" + this.currentPageNumber + "|pages=" + this.pages.size() + "|lines=" + lineCount + "|x=" + titleX + "|titleY=" + titleY + "|bodyY=" + bodyY;
         if (!renderState.equals(this.lastLoggedRenderState)) {
@@ -148,8 +147,7 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         }
 
         if (this.currentPageNumber == 0) {
-            Component title = this.currentLoreStack.getHoverName().plainCopy();
-            this.createText(guiGraphics, this.font.split(title, 98), titleX, titleY);
+            this.createText(guiGraphics, wrapText(this.currentLoreStack.getHoverName().getString(), 98), titleX, titleY);
             this.createText(guiGraphics, this.pages.get(0), titleX, bodyY);
         } else {
             this.createText(guiGraphics, this.pages.get(this.currentPageNumber), titleX, titleY);
@@ -162,8 +160,8 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
      * @param loreEntry The raw {@link Component} for a lore entry.
      */
     private void createPages(Component loreEntry) {
-        List<FormattedCharSequence> formattedText = new ArrayList<>(this.font.split(loreEntry, 98)); // Split entry text into lines that break at a width of 98.
-        List<FormattedCharSequence> firstPage;
+        List<String> formattedText = wrapText(loreEntry.getString(), 98); // Split entry text into lines that break at a width of 98.
+        List<String> firstPage;
         if (formattedText.size() < 6) { // Check if there are less than 6 lines; there can only be 6 lines of text on the first page.
             firstPage = formattedText.subList(0, formattedText.size());
             this.pages.put(0, firstPage); // Set up the first page with text.
@@ -171,9 +169,9 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
             firstPage = formattedText.subList(0, 6); // 6 lines for the first page.
             this.pages.put(0, firstPage); // Set up the first page with text.
 
-            List<FormattedCharSequence> remainingPages = formattedText.subList(6, formattedText.size()); // Gets the text for the remaining pages.
+            List<String> remainingPages = formattedText.subList(6, formattedText.size()); // Gets the text for the remaining pages.
 
-            final List<List<FormattedCharSequence>> list = Lists.partition(remainingPages, 8); // Splits up the text for the remaining pages to have 8 lines per page.
+            final List<List<String>> list = Lists.partition(remainingPages, 8); // Splits up the text for the remaining pages to have 8 lines per page.
 
             for (int i = 1; i < list.size() + 1; i++) {
                 this.pages.put(i, list.get(i - 1)); // Sets up the remaining pages with text.
@@ -185,13 +183,13 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
      * Draws the given lines of text on a book page.
      *
      * @param guiGraphics          The rendering {@link GuiGraphicsExtractor}.
-     * @param reorderingProcessors The {@link List} of {@link FormattedCharSequence} to render text with.
+     * @param lines                The wrapped lines to render.
      * @param x                    The {@link Integer} for the text x-position.
      * @param y                    The {@link Integer} for the text y-position.
      */
-    private void createText(GuiGraphicsExtractor guiGraphics, List<FormattedCharSequence> reorderingProcessors, int x, int y) {
+    private void createText(GuiGraphicsExtractor guiGraphics, List<String> lines, int x, int y) {
         int length = 0;
-        for (FormattedCharSequence line : reorderingProcessors) {
+        for (String line : lines) {
             this.drawBookText(guiGraphics, this.font, line, x, y + (length * 10));
             length++;
         }
@@ -206,22 +204,41 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
     }
 
     private void drawNormalBookText(GuiGraphicsExtractor guiGraphics, Font fontRenderer, Component component, int x, int y) {
-        FormattedCharSequence sequence = component.getVisualOrderText();
-        this.drawBookText(guiGraphics, fontRenderer, sequence, x, y);
+        this.drawBookText(guiGraphics, fontRenderer, component.getString(), x, y);
     }
 
     private void drawRightBookText(GuiGraphicsExtractor guiGraphics, Font fontRenderer, Component component, int x, int y) {
-        FormattedCharSequence sequence = component.getVisualOrderText();
-        this.drawBookText(guiGraphics, fontRenderer, sequence, x - fontRenderer.width(sequence), y);
+        String text = component.getString();
+        this.drawBookText(guiGraphics, fontRenderer, text, x - fontRenderer.width(text), y);
     }
 
     private void drawCenteredBookText(GuiGraphicsExtractor guiGraphics, Font fontRenderer, Component component, int x, int y) {
-        FormattedCharSequence sequence = component.getVisualOrderText();
-        this.drawBookText(guiGraphics, fontRenderer, sequence, x - fontRenderer.width(sequence) / 2, y);
+        String text = component.getString();
+        this.drawBookText(guiGraphics, fontRenderer, text, x - fontRenderer.width(text) / 2, y);
     }
 
-    private void drawBookText(GuiGraphicsExtractor guiGraphics, Font fontRenderer, FormattedCharSequence sequence, int x, int y) {
-        guiGraphics.text(fontRenderer, sequence, x, y, 4210752, false);
+    private void drawBookText(GuiGraphicsExtractor guiGraphics, Font fontRenderer, String text, int x, int y) {
+        guiGraphics.text(fontRenderer, text, x, y, 4210752, false);
+    }
+
+    private List<String> wrapText(String text, int width) {
+        List<String> lines = new ArrayList<>();
+        for (String paragraph : text.split("\\n", -1)) {
+            String remaining = paragraph;
+            if (remaining.isEmpty()) {
+                lines.add("");
+                continue;
+            }
+            while (!remaining.isEmpty()) {
+                String line = this.font.plainSubstrByWidth(remaining, width);
+                if (line.isEmpty()) {
+                    break;
+                }
+                lines.add(line);
+                remaining = remaining.substring(line.length());
+            }
+        }
+        return lines;
     }
 
     private void logLoreState(ItemStack itemStack, String entryKey, boolean exists, String resolvedText) {
