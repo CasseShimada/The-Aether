@@ -61,6 +61,11 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.updateLoreContent();
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+        guiGraphics.nextStratum();
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(this.leftPos, this.topPos);
+        this.renderLoreContent(guiGraphics);
+        guiGraphics.pose().popMatrix();
     }
 
     @Override
@@ -80,8 +85,6 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
         // Draws "Item:" text.
         Component item = Component.translatable("gui.aether.book_of_lore.item");
         this.drawRightBookText(guiGraphics, this.font, item, 78, 67);
-
-        this.renderLoreContent(guiGraphics);
 
         // Determines when the page switching buttons can be clicked.
         this.previousButton.active = this.currentPageNumber > 0;
