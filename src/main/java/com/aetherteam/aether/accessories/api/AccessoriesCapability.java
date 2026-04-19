@@ -66,7 +66,7 @@ public class AccessoriesCapability {
         CAPABILITIES.remove(entity);
     }
 
-    public AccessoriesContainer getContainer(SlotTypeReference slotTypeReference) {
+    public synchronized AccessoriesContainer getContainer(SlotTypeReference slotTypeReference) {
         if (slotTypeReference == null) {
             return null;
         }
@@ -75,12 +75,12 @@ public class AccessoriesCapability {
     }
 
     @Nullable
-    public Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot) {
+    public synchronized Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot) {
         return this.canEquipAccessory(stack, requireEmptySlot, reference -> true);
     }
 
     @Nullable
-    public Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter) {
+    public synchronized Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter) {
         List<SlotType> validSlots = AccessoriesAPI.getValidSlotTypes(this.entity, stack);
         for (SlotType slotType : validSlots) {
             AccessoriesContainer container = this.getOrCreateContainer(slotType.name(), slotType.size());
@@ -100,7 +100,7 @@ public class AccessoriesCapability {
         return null;
     }
 
-    public List<SlotEntryReference> getEquipped(Item item) {
+    public synchronized List<SlotEntryReference> getEquipped(Item item) {
         List<SlotEntryReference> equipped = new ArrayList<>();
         for (SlotEntryReference reference : this.getAllEquipped()) {
             if (reference.stack().is(item)) {
@@ -110,7 +110,7 @@ public class AccessoriesCapability {
         return equipped;
     }
 
-    public SlotEntryReference getFirstEquipped(Predicate<ItemStack> predicate) {
+    public synchronized SlotEntryReference getFirstEquipped(Predicate<ItemStack> predicate) {
         for (SlotEntryReference reference : this.getAllEquipped()) {
             if (predicate.test(reference.stack())) {
                 return reference;
@@ -119,7 +119,7 @@ public class AccessoriesCapability {
         return null;
     }
 
-    public List<SlotEntryReference> getAllEquipped() {
+    public synchronized List<SlotEntryReference> getAllEquipped() {
         this.ensureContainers();
         List<SlotEntryReference> references = new ArrayList<>();
         for (Map.Entry<String, AccessoriesContainer> entry : this.containers.entrySet()) {
@@ -134,7 +134,7 @@ public class AccessoriesCapability {
         return references;
     }
 
-    public void clearAccessories(boolean clearCosmeticAccessories) {
+    public synchronized void clearAccessories(boolean clearCosmeticAccessories) {
         for (SlotEntryReference reference : List.copyOf(this.getAllEquipped())) {
             AccessoriesAPI.breakStack(reference.reference());
         }
@@ -158,7 +158,7 @@ public class AccessoriesCapability {
         }
     }
 
-    public void process(boolean runAccessoryTick) {
+    public synchronized void process(boolean runAccessoryTick) {
         if (this.processing) {
             return;
         }
@@ -215,7 +215,7 @@ public class AccessoriesCapability {
         }
     }
 
-    public void onContainerChanged(String slotName) {
+    public synchronized void onContainerChanged(String slotName) {
         this.ensureContainers();
         this.persistToAttachment();
         if (this.isServerSide()) {
@@ -223,13 +223,13 @@ public class AccessoriesCapability {
         }
     }
 
-    public boolean consumeSyncDirty() {
+    public synchronized boolean consumeSyncDirty() {
         boolean dirty = this.syncDirty;
         this.syncDirty = false;
         return dirty;
     }
 
-    public AccessorySyncPacket createSyncPacket() {
+    public synchronized AccessorySyncPacket createSyncPacket() {
         this.ensureContainers();
         List<AccessorySyncPacket.SlotData> data = new ArrayList<>();
         for (Map.Entry<String, AccessoriesContainer> entry : this.containers.entrySet()) {
@@ -244,7 +244,7 @@ public class AccessoriesCapability {
         return new AccessorySyncPacket(this.entity.getId(), data);
     }
 
-    public void applyClientSync(AccessorySyncPacket packet) {
+    public synchronized void applyClientSync(AccessorySyncPacket packet) {
         this.processing = true;
         try {
             for (AccessorySyncPacket.SlotData slotData : packet.slots()) {
@@ -259,7 +259,7 @@ public class AccessoriesCapability {
         }
     }
 
-    public void clearRuntimeState(boolean invokeUnequipCallbacks) {
+    public synchronized void clearRuntimeState(boolean invokeUnequipCallbacks) {
         if (invokeUnequipCallbacks) {
             for (Map.Entry<String, ItemStack> entry : this.previousEquipped.entrySet()) {
                 ItemStack stack = entry.getValue();
@@ -273,7 +273,7 @@ public class AccessoriesCapability {
         this.syncDirty = false;
     }
 
-    public void handleImmediateUnequip(SlotReference reference) {
+    public synchronized void handleImmediateUnequip(SlotReference reference) {
         String key = slotKey(reference.slotName(), reference.slot());
         this.previousEquipped.remove(key);
         this.removeDynamicModifiersForSlot(key);
@@ -283,7 +283,7 @@ public class AccessoriesCapability {
         }
     }
 
-    private void ensureContainers() {
+    private synchronized void ensureContainers() {
         for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
             this.containers.computeIfAbsent(definition.type().name(), key -> new AccessoriesContainer(this, definition.type()));
         }
@@ -303,7 +303,7 @@ public class AccessoriesCapability {
         }
     }
 
-    private AccessoriesContainer getOrCreateContainer(String slotName, int fallbackSize) {
+    private synchronized AccessoriesContainer getOrCreateContainer(String slotName, int fallbackSize) {
         AccessoriesContainer container = this.containers.get(slotName);
         if (container != null) {
             return container;
