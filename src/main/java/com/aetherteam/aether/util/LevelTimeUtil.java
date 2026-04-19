@@ -3,7 +3,6 @@ package com.aetherteam.aether.util;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.ServerLevelAccessor;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -35,12 +34,6 @@ public final class LevelTimeUtil {
             return;
         }
         ((ServerLevelAccessor) level).aether$getServerLevelData().setGameTime(time);
-    }
-
-    public static void setTime(ClientLevel level, long time) {
-        if (!usesDefaultClock(level)) {
-            level.getLevelData().setGameTime(time);
-        }
     }
 
     private static boolean usesDefaultClock(Level level) {

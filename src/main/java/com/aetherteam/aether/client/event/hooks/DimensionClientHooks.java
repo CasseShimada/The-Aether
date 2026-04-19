@@ -157,7 +157,7 @@ public class DimensionClientHooks {
             AetherTimeAttachment data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
             if (!data.isTimeSynced()) {
                 long dayTime = data.tickTime(level) - 1; // ClientLevel now always advances gameTime locally each tick.
-                LevelTimeUtil.setTime(level, dayTime);
+                level.getLevelData().setGameTime(dayTime);
             }
         }
     }
