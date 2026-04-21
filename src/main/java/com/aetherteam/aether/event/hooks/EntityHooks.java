@@ -1,6 +1,5 @@
 package com.aetherteam.aether.event.hooks;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
@@ -8,7 +7,6 @@ import com.aetherteam.aether.accessories.compat.AccessorySlotResolver;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.effect.AetherEffects;
-import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.entity.monster.Swet;
@@ -40,16 +38,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.NameAndId;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -71,7 +65,6 @@ import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -633,118 +626,7 @@ public class EntityHooks {
      * @param player The player whose loaded save data should be inspected for legacy Curios entries.
      */
     public static void loadLegacyCuriosData(ServerPlayer player) {
-        CompoundTag playerTag = player.level().getServer().getPlayerList().loadPlayerData(new NameAndId(player.getGameProfile())).orElse(null);
-        if (playerTag == null) {
-            return;
-        }
-
-        var capsTag = tryGetLegacyCapsTag(playerTag);
-        if (capsTag.isEmpty()) {
-            return;
-        }
-
-        CompoundTag curiosInventoryTag = capsTag.get().getCompound("curios:inventory").orElse(null);
-        if (curiosInventoryTag == null) {
-            return;
-        }
-
-        if (curiosInventoryTag.getBoolean("AccessoriesEncoded").orElse(false) || !curiosInventoryTag.contains("Curios")) {
-            return;
-        }
-
-        Tag curiosTag = curiosInventoryTag.get("Curios");
-        if (!(curiosTag instanceof ListTag curiosListTag)) {
-            return;
-        }
-
-        AccessoriesCapability accessories = AccessoriesCapability.get(player);
-        if (accessories == null) {
-            return;
-        }
-
-        for (Tag tag : curiosListTag) {
-            if (!(tag instanceof CompoundTag compoundTag) || !compoundTag.contains("StacksHandler")) {
-                continue;
-            }
-
-            CompoundTag stacksHandlerTag = compoundTag.getCompound("StacksHandler").orElse(null);
-            if (stacksHandlerTag == null || !stacksHandlerTag.contains("Stacks")) {
-                continue;
-            }
-
-            CompoundTag stacksTag = stacksHandlerTag.getCompound("Stacks").orElse(null);
-            if (stacksTag == null || !stacksTag.contains("Items")) {
-                continue;
-            }
-
-            Tag itemsTag = stacksTag.get("Items");
-            if (!(itemsTag instanceof ListTag listTag)) {
-                continue;
-            }
-
-            for (Tag itemTag : listTag) {
-                if (!(itemTag instanceof CompoundTag itemCompoundTag) || !itemCompoundTag.contains("id")) {
-                    continue;
-                }
-
-                String itemIdString = itemCompoundTag.getString("id").orElse("");
-                if (itemIdString.isEmpty()) {
-                    continue;
-                }
-
-                Identifier itemId;
-                try {
-                    itemId = Identifier.parse(itemIdString);
-                } catch (IllegalArgumentException ignored) {
-                    continue;
-                }
-
-                if (!Aether.MODID.equals(itemId.getNamespace())) {
-                    continue;
-                }
-
-                Item item = BuiltInRegistries.ITEM.get(itemId)
-                        .map(reference -> reference.value())
-                        .orElse(Items.AIR);
-                if (item == Items.AIR) {
-                    continue;
-                }
-
-                ItemStack stack = new ItemStack(item);
-                Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(stack);
-                var equipReference = accessories.canEquipAccessory(stack, true);
-                if (equipReference == null) {
-                    continue;
-                }
-
-                if (accessory.canEquip(stack, equipReference.first())) {
-                    equipReference.second().equipStack(stack.copy());
-                }
-            }
-        }
-    }
-
-    private static Optional<CompoundTag> tryGetLegacyCapsTag(CompoundTag playerTag) {
-        if (playerTag == null) {
-            return Optional.empty();
-        }
-
-        CompoundTag capsTag;
-        if (playerTag.contains("ForgeCaps")) {
-            capsTag = playerTag.getCompound("ForgeCaps").orElse(null);
-        } else if (playerTag.contains("neoforge:attachments")) {
-            capsTag = playerTag.getCompound("neoforge:attachments").orElse(null);
-        } else {
-            return Optional.empty();
-        }
-
-        if (capsTag == null) {
-            return Optional.empty();
-        }
-
-        return capsTag.contains("curios:inventory")
-                ? Optional.of(capsTag)
-                : Optional.empty();
+        EntityLegacyCuriosHooks.loadLegacyCuriosData(player);
     }
 
     /**
@@ -763,62 +645,6 @@ public class EntityHooks {
      * for Aether sky mobs that should remain present around active players.
      */
     public static void tickAetherSkySpawns(ServerLevel level) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL || level.getGameTime() % 80L != 0L) {
-            return;
-        }
-
-        for (ServerPlayer player : level.players()) {
-            if (player.isSpectator()) {
-                continue;
-            }
-
-            // NeoForge used dedicated mob categories for these groups (sky monster cap 4, aerwhale cap 1).
-            // Fabric lacks those enum extensions, so we reproduce the cadence explicitly per active player.
-            trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 4, 20);
-            if (level.getGameTime() % 240L == 0L) {
-                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 20);
-            }
-        }
-    }
-
-    private static <T extends Mob> void trySpawnNearPlayer(ServerLevel level, ServerPlayer player, EntityType<T> entityType, double radius, int maxNearby, int attempts) {
-        int nearby = level.getEntities((Entity) null, player.getBoundingBox().inflate(radius), entity -> entity.getType() == entityType).size();
-        if (nearby >= maxNearby) {
-            return;
-        }
-
-        RandomSource random = level.getRandom();
-        BlockPos origin = player.blockPosition();
-        for (int i = 0; i < attempts; i++) {
-            int x = origin.getX() + random.nextInt((int) radius * 2 + 1) - (int) radius;
-            int z = origin.getZ() + random.nextInt((int) radius * 2 + 1) - (int) radius;
-            int horizontalDistance = Math.abs(x - origin.getX()) + Math.abs(z - origin.getZ());
-            if (horizontalDistance < 24) {
-                continue;
-            }
-
-            int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-            BlockPos spawnPos = new BlockPos(x, y, z);
-            if (!level.hasChunkAt(spawnPos) || !SpawnPlacements.checkSpawnRules(entityType, level, EntitySpawnReason.NATURAL, spawnPos, random)) {
-                continue;
-            }
-
-            T mob = entityType.create(level, EntitySpawnReason.NATURAL);
-            if (mob == null) {
-                continue;
-            }
-
-            mob.setPos(x + 0.5, y, z + 0.5);
-            mob.setYRot(random.nextFloat() * 360.0F);
-            mob.setXRot(0.0F);
-            if (!mob.checkSpawnObstruction(level)) {
-                mob.discard();
-                continue;
-            }
-
-            mob.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.NATURAL, null);
-            level.addFreshEntityWithPassengers(mob);
-            return;
-        }
+        EntitySkySpawnHooks.tickAetherSkySpawns(level);
     }
 }
