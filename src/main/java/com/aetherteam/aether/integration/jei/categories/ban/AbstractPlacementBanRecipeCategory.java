@@ -15,7 +15,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -39,7 +39,7 @@ public abstract class AbstractPlacementBanRecipeCategory<T, S extends Predicate<
     protected final IPlatformFluidHelper<?> fluidHelper;
     private final IDrawable slot;
 
-    public AbstractPlacementBanRecipeCategory(IGuiHelper guiHelper, String id, Identifier uid, IDrawable background, IDrawable icon, RecipeType<R> recipeType, IPlatformFluidHelper<?> fluidHelper) {
+    public AbstractPlacementBanRecipeCategory(IGuiHelper guiHelper, String id, Identifier uid, IDrawable background, IDrawable icon, IRecipeType<R> recipeType, IPlatformFluidHelper<?> fluidHelper) {
         super(id, uid, background, icon, recipeType);
         this.fluidHelper = fluidHelper;
         this.slot = guiHelper.getSlotDrawable();

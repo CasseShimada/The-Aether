@@ -6,14 +6,14 @@ import com.aetherteam.aether.recipe.recipes.block.SwetBallRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class SwetBallRecipeCategory extends AbstractBiomeParameterRecipeCategory<SwetBallRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "swet_ball_conversion");
     public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/jei_render.png");
-    public static final RecipeType<SwetBallRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "swet_ball_conversion", SwetBallRecipe.class);
+    public static final IRecipeType<SwetBallRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "swet_ball_conversion", SwetBallRecipe.class);
 
     public SwetBallRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("swet_ball_conversion", UID,

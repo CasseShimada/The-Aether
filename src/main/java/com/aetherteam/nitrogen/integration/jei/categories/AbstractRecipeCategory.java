@@ -4,7 +4,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
@@ -14,9 +14,9 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     protected final Identifier uid;
     protected final IDrawable background;
     protected final @Nullable IDrawable icon;
-    protected final RecipeType<T> recipeType;
+    protected final IRecipeType<T> recipeType;
 
-    protected AbstractRecipeCategory(String id, Identifier uid, IDrawable background, @Nullable IDrawable icon, RecipeType<T> recipeType) {
+    protected AbstractRecipeCategory(String id, Identifier uid, IDrawable background, @Nullable IDrawable icon, IRecipeType<T> recipeType) {
         this.id = id;
         this.uid = uid;
         this.background = background;
@@ -25,7 +25,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     }
 
     @Override
-    public RecipeType<T> getRecipeType() {
+    public IRecipeType<T> getRecipeType() {
         return this.recipeType;
     }
 

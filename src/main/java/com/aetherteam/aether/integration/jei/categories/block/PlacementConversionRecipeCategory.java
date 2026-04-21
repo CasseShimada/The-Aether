@@ -6,14 +6,14 @@ import com.aetherteam.aether.recipe.recipes.block.PlacementConversionRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class PlacementConversionRecipeCategory extends AbstractBiomeParameterRecipeCategory<PlacementConversionRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "placement_conversion");
     public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/jei_render.png");
-    public static final RecipeType<PlacementConversionRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "placement_conversion", PlacementConversionRecipe.class);
+    public static final IRecipeType<PlacementConversionRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "placement_conversion", PlacementConversionRecipe.class);
 
     public PlacementConversionRecipeCategory(IGuiHelper helper, IPlatformFluidHelper<?> fluidHelper) {
         super("placement_conversion", UID,

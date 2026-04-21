@@ -10,7 +10,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 public class FreezingRecipeCategory extends AbstractAetherCookingRecipeCategory<FreezingRecipe> implements IRecipeCategory<FreezingRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "freezing");
     public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/freezer.png");
-    public static final RecipeType<FreezingRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "freezing", FreezingRecipe.class);
+    public static final IRecipeType<FreezingRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "freezing", FreezingRecipe.class);
 
 
     public FreezingRecipeCategory(IGuiHelper guiHelper) {

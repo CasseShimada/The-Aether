@@ -4,7 +4,7 @@ import com.aetherteam.aether.integration.jei.categories.BiomeTooltip;
 import com.aetherteam.aether.recipe.recipes.block.AbstractBiomeParameterRecipe;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -12,7 +12,7 @@ import net.minecraft.resources.Identifier;
 import java.util.List;
 
 public abstract class AbstractBiomeParameterRecipeCategory<T extends AbstractBiomeParameterRecipe> extends AbstractAetherBlockStateRecipeCategory<T> implements BiomeTooltip {
-    public AbstractBiomeParameterRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, RecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
+    public AbstractBiomeParameterRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, IRecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
         super(id, uid, background, icon, recipeType, fluidHelper);
     }
 

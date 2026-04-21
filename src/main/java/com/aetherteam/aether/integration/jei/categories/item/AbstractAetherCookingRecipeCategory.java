@@ -5,7 +5,7 @@ import com.aetherteam.aether.recipe.recipes.item.AbstractAetherCookingRecipe;
 import com.aetherteam.nitrogen.integration.jei.categories.AbstractRecipeCategory;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -19,7 +19,7 @@ public abstract class AbstractAetherCookingRecipeCategory<T> extends AbstractRec
     protected final IDrawable fuelIndicator;
     protected final IDrawableAnimated animatedProgressArrow;
 
-    public AbstractAetherCookingRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, IDrawable fuelIndicator, IDrawableAnimated animatedProgressArrow, RecipeType<T> recipeType) {
+    public AbstractAetherCookingRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, IDrawable fuelIndicator, IDrawableAnimated animatedProgressArrow, IRecipeType<T> recipeType) {
         super(id, uid, background, icon, recipeType);
         this.fuelIndicator = fuelIndicator;
         this.animatedProgressArrow = animatedProgressArrow;

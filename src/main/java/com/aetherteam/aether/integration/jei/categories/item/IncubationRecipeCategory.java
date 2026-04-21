@@ -10,7 +10,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.NonNullList;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 public class IncubationRecipeCategory extends AbstractAetherCookingRecipeCategory<IncubationRecipe> implements IRecipeCategory<IncubationRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "incubation");
     public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/incubator.png");
-    public static final RecipeType<IncubationRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "incubation", IncubationRecipe.class);
+    public static final IRecipeType<IncubationRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "incubation", IncubationRecipe.class);
 
     public IncubationRecipeCategory(IGuiHelper guiHelper) {
         super("incubating", UID,
@@ -36,7 +36,7 @@ public class IncubationRecipeCategory extends AbstractAetherCookingRecipeCategor
     public void setRecipe(IRecipeLayoutBuilder builder, IncubationRecipe recipe, IFocusGroup focusGroup) {
         NonNullList<Ingredient> recipeIngredients = recipe.getIngredients();
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipeIngredients.getFirst());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(recipeIngredients.getFirst());
     }
 
     @Override

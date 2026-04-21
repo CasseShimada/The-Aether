@@ -191,23 +191,45 @@ public class AetherJEIPlugin implements IModPlugin {
     }
 
     private static void registerItemCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.ALTAR.get()), EnchantingRecipeCategory.RECIPE_TYPE, AltarRepairRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.FREEZER.get()), FreezingRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.INCUBATOR.get()), IncubationRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
+        ItemStack altar = new ItemStack(AetherBlocks.ALTAR.get());
+        addItemCatalyst(registration, altar, EnchantingRecipeCategory.RECIPE_TYPE, AltarRepairRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
+
+        ItemStack freezer = new ItemStack(AetherBlocks.FREEZER.get());
+        addItemCatalyst(registration, freezer, FreezingRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
+
+        ItemStack incubator = new ItemStack(AetherBlocks.INCUBATOR.get());
+        addItemCatalyst(registration, incubator, IncubationRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
     }
 
     private static void registerBlockCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(AetherItems.AMBROSIUM_SHARD.get()), AmbrosiumRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherItems.SWET_BALL.get()), SwetBallRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.ICESTONE.get()), IcestoneFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.ICESTONE_SLAB.get()), IcestoneFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.ICESTONE_STAIRS.get()), IcestoneFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherBlocks.ICESTONE_WALL.get()), IcestoneFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherItems.ICE_RING.get()), AccessoryFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherItems.ICE_PENDANT.get()), AccessoryFreezableRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()), PlacementConversionRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL), ItemBanRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Blocks.TORCH), BlockBanRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.AMBROSIUM_SHARD.get()), AmbrosiumRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.SWET_BALL.get()), SwetBallRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherBlocks.ICESTONE.get()),
+                IcestoneFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherBlocks.ICESTONE_SLAB.get()),
+                IcestoneFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherBlocks.ICESTONE_STAIRS.get()),
+                IcestoneFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherBlocks.ICESTONE_WALL.get()),
+                IcestoneFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherItems.ICE_RING.get()),
+                AccessoryFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration,
+                new ItemStack(AetherItems.ICE_PENDANT.get()),
+                AccessoryFreezableRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()), PlacementConversionRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(Items.FLINT_AND_STEEL), ItemBanRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(Blocks.TORCH), BlockBanRecipeCategory.RECIPE_TYPE);
+    }
+
+    @SafeVarargs
+    private static void addItemCatalyst(IRecipeCatalystRegistration registration, ItemStack stack, mezz.jei.api.recipe.types.IRecipeType<?>... recipeTypes) {
+        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, stack, recipeTypes);
     }
 
     private static List<ItemStack> getAllAetherItemStacks() {

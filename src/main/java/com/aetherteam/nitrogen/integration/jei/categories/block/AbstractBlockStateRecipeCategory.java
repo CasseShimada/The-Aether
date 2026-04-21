@@ -10,7 +10,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class AbstractBlockStateRecipeCategory<T extends AbstractBlockStateRecipe> extends AbstractRecipeCategory<T> {
     protected final IPlatformFluidHelper<?> fluidHelper;
 
-    protected AbstractBlockStateRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, RecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
+    protected AbstractBlockStateRecipeCategory(String id, Identifier uid, IDrawable background, IDrawable icon, IRecipeType<T> recipeType, IPlatformFluidHelper<?> fluidHelper) {
         super(id, uid, background, icon, recipeType);
         this.fluidHelper = fluidHelper;
     }

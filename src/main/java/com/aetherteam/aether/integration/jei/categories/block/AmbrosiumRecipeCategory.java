@@ -6,14 +6,14 @@ import com.aetherteam.aether.recipe.recipes.block.AmbrosiumRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class AmbrosiumRecipeCategory extends AbstractAetherBlockStateRecipeCategory<AmbrosiumRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "ambrosium_enchanting");
     public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/jei_render.png");
-    public static final RecipeType<AmbrosiumRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "ambrosium_enchanting", AmbrosiumRecipe.class);
+    public static final IRecipeType<AmbrosiumRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "ambrosium_enchanting", AmbrosiumRecipe.class);
 
     public AmbrosiumRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("ambrosium_enchanting", UID,

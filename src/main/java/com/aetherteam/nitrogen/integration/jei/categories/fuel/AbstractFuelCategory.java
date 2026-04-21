@@ -48,7 +48,7 @@ public abstract class AbstractFuelCategory implements IRecipeCategory<FuelRecipe
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 19)
                 .addIngredients(VanillaTypes.ITEM_STACK, recipe.ingredients());
         builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 61, 19)
-                .addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(recipe.station()));
+                .add(new ItemStack(recipe.station()));
     }
 
     @Override

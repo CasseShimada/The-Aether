@@ -11,7 +11,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class BlockBanRecipeCategory extends AbstractPlacementBanRecipeCategory<BlockState, BlockStateIngredient, BlockStateRecipeInput, BlockBanRecipe> {
     public static final Identifier UID = Identifier.fromNamespaceAndPath(Aether.MODID, "block_placement_ban");
-    public static final RecipeType<BlockBanRecipe> RECIPE_TYPE = RecipeType.create(Aether.MODID, "block_placement_ban", BlockBanRecipe.class);
+    public static final IRecipeType<BlockBanRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "block_placement_ban", BlockBanRecipe.class);
 
     public BlockBanRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super(guiHelper, "block_placement_ban", UID,
