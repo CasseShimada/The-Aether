@@ -30,6 +30,14 @@ public final class AetherFabricEvents {
     }
 
     public static void register() {
+        registerPlayerEvents();
+        registerEntityEvents();
+        registerLevelEvents();
+        registerTrackingEvents();
+        registerInteractionEvents();
+    }
+
+    private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(player -> {
             EntityHooks.loadLegacyCuriosData(player);
             CapabilityHooks.AetherPlayerHooks.login(player);
@@ -41,7 +49,6 @@ public final class AetherFabricEvents {
             DimensionHooks.startInAether(player);
             AccessoryRuntime.forceSync(player);
         });
-
         ServerPlayerEvents.LEAVE.register(player -> {
             CapabilityHooks.AetherPlayerHooks.logout(player);
             AccessoryRuntime.clear(player);
@@ -51,7 +58,17 @@ public final class AetherFabricEvents {
             CapabilityHooks.AetherTimeHooks.respawn(newPlayer);
             AccessoryRuntime.forceSync(newPlayer);
         });
+        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
+            DimensionHooks.remountPlayerAerbunny(player);
+            CapabilityHooks.AetherPlayerHooks.changeDimension(player);
+            CapabilityHooks.AetherTimeHooks.changeDimension(player);
+            AccessoryRuntime.forceSync(player);
+        });
+        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
+                DimensionHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
+    }
 
+    private static void registerEntityEvents() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             EntityHooks.addGoals(entity);
             CapabilityHooks.AetherPlayerHooks.joinLevel(entity);
@@ -60,54 +77,31 @@ public final class AetherFabricEvents {
             }
         });
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> AccessoryRuntime.clear(entity));
+        ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
+                !EntityHooks.preventInebriation(entity, effectInstance));
+    }
 
+    private static void registerLevelEvents() {
         ServerLevelEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
         ServerTickEvents.END_LEVEL_TICK.register(world -> {
             DimensionHooks.tickTime(world);
             DimensionHooks.checkEternalDayConfig(world);
         });
+    }
 
-        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
-            DimensionHooks.remountPlayerAerbunny(player);
-            CapabilityHooks.AetherPlayerHooks.changeDimension(player);
-            CapabilityHooks.AetherTimeHooks.changeDimension(player);
-            AccessoryRuntime.forceSync(player);
-        });
-
+    private static void registerTrackingEvents() {
         EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
+    }
 
-        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
-                DimensionHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
-
-        ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
-                !EntityHooks.preventInebriation(entity, effectInstance));
-
+    private static void registerInteractionEvents() {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
             if (player == null || hitResult == null) {
                 return InteractionResult.PASS;
             }
 
-            ItemStack inHand = player.getItemInHand(hand);
-            ItemStack interactionStack = inHand;
-            if (interactionStack.isEmpty()) {
-                interactionStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND
-                        ? InteractionHand.OFF_HAND
-                        : InteractionHand.MAIN_HAND);
-            }
-
-            if (RecipeHooks.checkInteractionBanned(
-                    player,
-                    level,
-                    hitResult.getBlockPos(),
-                    hitResult.getDirection(),
-                    interactionStack,
-                    level.getBlockState(hitResult.getBlockPos()),
-                    !inHand.isEmpty()
-            )) {
-                return InteractionResult.FAIL;
-            }
-
-            return InteractionResult.PASS;
+            return isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())
+                    ? InteractionResult.FAIL
+                    : InteractionResult.PASS;
         });
 
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
@@ -130,5 +124,27 @@ public final class AetherFabricEvents {
 
             return InteractionResult.PASS;
         });
+    }
+
+    private static boolean isBlockedInteraction(Player player, net.minecraft.world.level.Level level, InteractionHand hand, net.minecraft.core.BlockPos blockPos, net.minecraft.core.Direction direction) {
+        ItemStack inHand = player.getItemInHand(hand);
+        ItemStack interactionStack = getInteractionStack(player, hand, inHand);
+        return RecipeHooks.checkInteractionBanned(
+                player,
+                level,
+                blockPos,
+                direction,
+                interactionStack,
+                level.getBlockState(blockPos),
+                !inHand.isEmpty()
+        );
+    }
+
+    private static ItemStack getInteractionStack(Player player, InteractionHand hand, ItemStack inHand) {
+        if (!inHand.isEmpty()) {
+            return inHand;
+        }
+        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        return player.getItemInHand(otherHand);
     }
 }

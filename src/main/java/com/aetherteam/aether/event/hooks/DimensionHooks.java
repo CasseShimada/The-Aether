@@ -126,38 +126,19 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onInteractWithPortalFrame(PlayerInteractEvent.RightClickBlock)
      */
     public static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
-        if (!level.isClientSide()) {
-            if (!FabricLoader.getInstance().isModLoaded("immersive_portals_core") || !AetherConfig.COMMON.enable_immersive_portals_compatibility.get()) {
-                if (direction != null) {
-                    BlockPos relativePos = pos.relative(direction);
-                    if (stack.is(AetherTags.Items.AETHER_PORTAL_ACTIVATION_ITEMS)) { // Checks if the item can activate the portal.
-                        // Checks whether the dimension can have a portal created in it, and that the portal isn't disabled.
-                        if ((level.dimension() == LevelUtil.returnDimension() || level.dimension() == LevelUtil.destinationDimension())) {
-                            Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, relativePos, Direction.Axis.X);
-                            if (optional.isPresent()) {
-                                PacketDistributor.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
-                                optional.get().createPortalBlocks();
-                                if (!player.isCreative()) {
-                                    ItemStack craftingRemainder = stack.getItem().getCraftingRemainder().create();
-                                    if (stack.getCount() > 1) {
-                                        stack.shrink(1);
-                                        if (!craftingRemainder.isEmpty()) {
-                                            player.addItem(craftingRemainder);
-                                        }
-                                    } else if (stack.isDamageableItem()) {
-                                        stack.hurtAndBreak(1, player, hand);
-                                    } else {
-                                        player.setItemInHand(hand, craftingRemainder.isEmpty() ? ItemStack.EMPTY : craftingRemainder);
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
+        if (level.isClientSide() || shouldDeferToImmersivePortals() || direction == null || !canCreatePortal(level, stack)) {
+            return false;
         }
-        return false;
+
+        Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, pos.relative(direction), Direction.Axis.X);
+        if (optional.isEmpty()) {
+            return false;
+        }
+
+        PacketDistributor.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
+        optional.get().createPortalBlocks();
+        consumePortalActivationItem(player, stack, hand);
+        return true;
     }
 
     /**
@@ -171,22 +152,26 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onWaterExistsInsidePortalFrame(BlockEvent.NeighborNotifyEvent)
      */
     public static boolean detectWaterInFrame(LevelAccessor levelAccessor, BlockPos pos, BlockState blockState, FluidState fluidState) {
-        if (levelAccessor instanceof Level level) {
-            if (!level.isClientSide()) {
-                if (!FabricLoader.getInstance().isModLoaded("immersive_portals_core") || !AetherConfig.COMMON.enable_immersive_portals_compatibility.get()) {
-                    if (fluidState.is(Fluids.WATER) && fluidState.createLegacyBlock().getBlock() == blockState.getBlock()) {
-                        if ((level.dimension() == LevelUtil.returnDimension() || level.dimension() == LevelUtil.destinationDimension()) && !AetherConfig.SERVER.disable_aether_portal.get()) {
-                            Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, pos, Direction.Axis.X);
-                            if (optional.isPresent()) {
-                                optional.get().createPortalBlocks();
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
+        if (!(levelAccessor instanceof Level level)) {
+            return false;
         }
-        return false;
+        if (level.isClientSide() || shouldDeferToImmersivePortals()) {
+            return false;
+        }
+        if (!fluidState.is(Fluids.WATER) || fluidState.createLegacyBlock().getBlock() != blockState.getBlock()) {
+            return false;
+        }
+        if (!isPortalDimension(level) || AetherConfig.SERVER.disable_aether_portal.get()) {
+            return false;
+        }
+
+        Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, pos, Direction.Axis.X);
+        if (optional.isEmpty()) {
+            return false;
+        }
+
+        optional.get().createPortalBlocks();
+        return true;
     }
 
     /**
@@ -232,29 +217,28 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onEntityTravelToDimension(EntityTravelToDimensionEvent)
      */
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
-        if (entity instanceof Player player) {
-            if (!player.level().isClientSide()) {
-                var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                if (!AetherConfig.SERVER.spawn_in_aether.get() || !aetherPlayer.canSpawnInAether()) {
-                    if (entity.level().getBiome(entity.blockPosition()).is(AetherTags.Biomes.DISPLAY_TRAVEL_TEXT)) {
-                        if (entity.level().dimension() == LevelUtil.destinationDimension() && dimension == LevelUtil.returnDimension()) { // We display the Descending GUI text to the player if they're about to return to the Overworld.
-                            displayAetherTravel = true;
-                            playerLeavingAether = true;
-                            PacketDistributor.sendToAllPlayers(new AetherTravelPacket(true));
-                            PacketDistributor.sendToAllPlayers(new LeavingAetherPacket(true));
-                        } else if (entity.level().dimension() == LevelUtil.returnDimension() && dimension == LevelUtil.destinationDimension()) { // We display the Ascending GUI text to the player if they're about to enter the Aether.
-                            displayAetherTravel = true;
-                            playerLeavingAether = false;
-                            PacketDistributor.sendToAllPlayers(new AetherTravelPacket(true));
-                            PacketDistributor.sendToAllPlayers(new LeavingAetherPacket(false));
-                        } else { // Don't display any text if not travelling between the Aether and Overworld or vice-versa.
-                            displayAetherTravel = false;
-                            PacketDistributor.sendToAllPlayers(new AetherTravelPacket(false));
-                        }
-                    }
-                }
-            }
+        if (!(entity instanceof Player player) || player.level().isClientSide()) {
+            return;
         }
+
+        var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
+        if (AetherConfig.SERVER.spawn_in_aether.get() && aetherPlayer.canSpawnInAether()) {
+            return;
+        }
+        if (!entity.level().getBiome(entity.blockPosition()).is(AetherTags.Biomes.DISPLAY_TRAVEL_TEXT)) {
+            return;
+        }
+
+        if (entity.level().dimension() == LevelUtil.destinationDimension() && dimension == LevelUtil.returnDimension()) {
+            updateTravelDisplay(true, true);
+            return;
+        }
+        if (entity.level().dimension() == LevelUtil.returnDimension() && dimension == LevelUtil.destinationDimension()) {
+            updateTravelDisplay(true, false);
+            return;
+        }
+
+        updateTravelDisplay(false, playerLeavingAether);
     }
 
     /**
@@ -345,5 +329,50 @@ public class DimensionHooks {
             return player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
         }
         return false;
+    }
+
+    private static boolean shouldDeferToImmersivePortals() {
+        return FabricLoader.getInstance().isModLoaded("immersive_portals_core")
+                && AetherConfig.COMMON.enable_immersive_portals_compatibility.get();
+    }
+
+    private static boolean canCreatePortal(Level level, ItemStack stack) {
+        return stack.is(AetherTags.Items.AETHER_PORTAL_ACTIVATION_ITEMS) && isPortalDimension(level);
+    }
+
+    private static boolean isPortalDimension(Level level) {
+        return level.dimension() == LevelUtil.returnDimension() || level.dimension() == LevelUtil.destinationDimension();
+    }
+
+    private static void consumePortalActivationItem(Player player, ItemStack stack, InteractionHand hand) {
+        if (player.isCreative()) {
+            return;
+        }
+
+        ItemStack craftingRemainder = stack.getItem().getCraftingRemainder().create();
+        if (stack.getCount() > 1) {
+            stack.shrink(1);
+            if (!craftingRemainder.isEmpty()) {
+                player.addItem(craftingRemainder);
+            }
+            return;
+        }
+        if (stack.isDamageableItem()) {
+            stack.hurtAndBreak(1, player, hand);
+            return;
+        }
+
+        player.setItemInHand(hand, craftingRemainder.isEmpty() ? ItemStack.EMPTY : craftingRemainder);
+    }
+
+    private static void updateTravelDisplay(boolean visible, boolean leavingAether) {
+        displayAetherTravel = visible;
+        if (visible) {
+            playerLeavingAether = leavingAether;
+        }
+        PacketDistributor.sendToAllPlayers(new AetherTravelPacket(visible));
+        if (visible) {
+            PacketDistributor.sendToAllPlayers(new LeavingAetherPacket(leavingAether));
+        }
     }
 }
