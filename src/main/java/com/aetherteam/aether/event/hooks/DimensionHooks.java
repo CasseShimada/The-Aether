@@ -4,16 +4,7 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
-import com.aetherteam.aether.attachment.AetherTimeAttachment;
-import com.aetherteam.aether.block.portal.AetherPortalShape;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
-import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListenerImplAccessor;
-import com.aetherteam.aether.mixin.mixins.common.accessor.ServerLevelAccessor;
-import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
-import com.aetherteam.aether.network.packet.clientbound.LeavingAetherPacket;
-import com.aetherteam.aether.network.packet.clientbound.PortalInteractPacket;
-import com.aetherteam.aether.util.LevelTimeUtil;
-import com.aetherteam.aether.world.AetherLevelData;
 import com.aetherteam.aether.world.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,27 +12,20 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.loader.api.FabricLoader;
-import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.Set;
 
 public class DimensionHooks {
@@ -126,19 +110,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onInteractWithPortalFrame(PlayerInteractEvent.RightClickBlock)
      */
     public static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
-        if (level.isClientSide() || shouldDeferToImmersivePortals() || direction == null || !canCreatePortal(level, stack)) {
-            return false;
-        }
-
-        Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, pos.relative(direction), Direction.Axis.X);
-        if (optional.isEmpty()) {
-            return false;
-        }
-
-        PacketDistributor.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
-        optional.get().createPortalBlocks();
-        consumePortalActivationItem(player, stack, hand);
-        return true;
+        return DimensionPortalHooks.createPortal(player, level, pos, direction, stack, hand);
     }
 
     /**
@@ -152,26 +124,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onWaterExistsInsidePortalFrame(BlockEvent.NeighborNotifyEvent)
      */
     public static boolean detectWaterInFrame(LevelAccessor levelAccessor, BlockPos pos, BlockState blockState, FluidState fluidState) {
-        if (!(levelAccessor instanceof Level level)) {
-            return false;
-        }
-        if (level.isClientSide() || shouldDeferToImmersivePortals()) {
-            return false;
-        }
-        if (!fluidState.is(Fluids.WATER) || fluidState.createLegacyBlock().getBlock() != blockState.getBlock()) {
-            return false;
-        }
-        if (!isPortalDimension(level) || AetherConfig.SERVER.disable_aether_portal.get()) {
-            return false;
-        }
-
-        Optional<AetherPortalShape> optional = AetherPortalShape.findEmptyAetherPortalShape(level, pos, Direction.Axis.X);
-        if (optional.isEmpty()) {
-            return false;
-        }
-
-        optional.get().createPortalBlocks();
-        return true;
+        return DimensionPortalHooks.detectWaterInFrame(levelAccessor, pos, blockState, fluidState);
     }
 
     /**
@@ -181,17 +134,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onWorldTick(LevelTickEvent.Post)
      */
     public static void tickTime(Level level) {
-        if (level.dimension().equals(AetherDimensions.AETHER_LEVEL) && level instanceof ServerLevel serverLevel) {
-            ServerLevelAccessor serverLevelAccessor = (ServerLevelAccessor) serverLevel;
-            com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor levelAccessor = (com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor) level;
-            long i = levelAccessor.aether$getLevelData().getGameTime() + 1L;
-            serverLevelAccessor.aether$getServerLevelData().setGameTime(i);
-            if (serverLevel.getGameRules().get(GameRules.ADVANCE_TIME)) {
-                LevelTimeUtil.setTime(serverLevel, serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
-            }
-
-            EntityHooks.tickAetherSkySpawns(serverLevel);
-        }
+        DimensionTimeHooks.tickTime(level);
     }
 
     /**
@@ -201,14 +144,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onWorldTick(LevelTickEvent.Post)
      */
     public static void checkEternalDayConfig(Level level) {
-        if (!level.isClientSide() && level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
-            var aetherTime = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
-            boolean eternalDay = aetherTime.isEternalDay();
-            if (AetherConfig.SERVER.disable_eternal_day.get() && eternalDay) {
-                aetherTime.setEternalDay(false);
-                aetherTime.updateEternalDay(level);
-            }
-        }
+        DimensionTimeHooks.checkEternalDayConfig(level);
     }
 
     /**
@@ -217,28 +153,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onEntityTravelToDimension(EntityTravelToDimensionEvent)
      */
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
-        if (!(entity instanceof Player player) || player.level().isClientSide()) {
-            return;
-        }
-
-        var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-        if (AetherConfig.SERVER.spawn_in_aether.get() && aetherPlayer.canSpawnInAether()) {
-            return;
-        }
-        if (!entity.level().getBiome(entity.blockPosition()).is(AetherTags.Biomes.DISPLAY_TRAVEL_TEXT)) {
-            return;
-        }
-
-        if (entity.level().dimension() == LevelUtil.destinationDimension() && dimension == LevelUtil.returnDimension()) {
-            updateTravelDisplay(true, true);
-            return;
-        }
-        if (entity.level().dimension() == LevelUtil.returnDimension() && dimension == LevelUtil.destinationDimension()) {
-            updateTravelDisplay(true, false);
-            return;
-        }
-
-        updateTravelDisplay(false, playerLeavingAether);
+        DimensionTravelHooks.dimensionTravel(entity, dimension);
     }
 
     /**
@@ -246,9 +161,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onEntityTravelToDimension(EntityTravelToDimensionEvent)
      */
     public static void removePlayerAerbunny(Entity entity) {
-        if (entity instanceof Player player) {
-            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).removeAerbunny();
-        }
+        DimensionTravelHooks.removePlayerAerbunny(entity);
     }
 
     /**
@@ -256,7 +169,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent)
      */
     public static void remountPlayerAerbunny(Player player) {
-        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
+        DimensionTravelHooks.remountPlayerAerbunny(player);
     }
 
     /**
@@ -266,17 +179,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerTraveling(PlayerTickEvent.Post)
      */
     public static void travelling(Player player) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            if (teleportationTimer > 0) { // Prevents the player from being kicked for flying.
-                ServerGamePacketListenerImplAccessor serverGamePacketListenerImplAccessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;
-                serverGamePacketListenerImplAccessor.aether$setAboveGroundTickCount(0);
-                serverGamePacketListenerImplAccessor.aether$setAboveGroundVehicleTickCount(0);
-                teleportationTimer--;
-            }
-            if (teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
-                teleportationTimer = 0;
-            }
-        }
+        DimensionTravelHooks.travelling(player);
     }
 
     /**
@@ -287,13 +190,7 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerTraveling(PlayerTickEvent.Post)
      */
     public static void initializeLevelData(LevelAccessor level) {
-        if (level instanceof ServerLevel serverLevel && serverLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            AetherLevelData levelData = new AetherLevelData(serverLevel, serverLevel.getServer().getWorldData(), serverLevel.getServer().getWorldData().overworldData(), serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).getDayTime());
-            ServerLevelAccessor serverLevelAccessor = (ServerLevelAccessor) serverLevel;
-            com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor levelAccessor = (com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor) level;
-            serverLevelAccessor.aether$setServerLevelData(levelData);
-            levelAccessor.aether$setLevelData(levelData);
-        }
+        DimensionTimeHooks.initializeLevelData(level);
     }
 
     /**
@@ -305,16 +202,7 @@ public class DimensionHooks {
      */
     @Nullable
     public static Long finishSleep(LevelAccessor level, long newTime) {
-        if (level instanceof ServerLevel serverLevel && serverLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            serverLevel.getWeatherData().setRainTime(0);
-            serverLevel.getWeatherData().setRaining(false);
-            serverLevel.getWeatherData().setThunderTime(0);
-            serverLevel.getWeatherData().setThundering(false);
-
-            long time = newTime + (24000L * AetherTimeAttachment.getTicksPerDayMultiplier());
-            return time - time % (long) AetherTimeAttachment.getTicksPerDay();
-        }
-        return null;
+        return DimensionTimeHooks.finishSleep(level, newTime);
     }
 
     /**
@@ -325,54 +213,6 @@ public class DimensionHooks {
      * @see com.aetherteam.aether.event.listeners.DimensionListener#onTriedToSleep(CanPlayerSleepEvent)
      */
     public static boolean isEternalDay(Player player) {
-        if (player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            return player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
-        }
-        return false;
-    }
-
-    private static boolean shouldDeferToImmersivePortals() {
-        return FabricLoader.getInstance().isModLoaded("immersive_portals_core")
-                && AetherConfig.COMMON.enable_immersive_portals_compatibility.get();
-    }
-
-    private static boolean canCreatePortal(Level level, ItemStack stack) {
-        return stack.is(AetherTags.Items.AETHER_PORTAL_ACTIVATION_ITEMS) && isPortalDimension(level);
-    }
-
-    private static boolean isPortalDimension(Level level) {
-        return level.dimension() == LevelUtil.returnDimension() || level.dimension() == LevelUtil.destinationDimension();
-    }
-
-    private static void consumePortalActivationItem(Player player, ItemStack stack, InteractionHand hand) {
-        if (player.isCreative()) {
-            return;
-        }
-
-        ItemStack craftingRemainder = stack.getItem().getCraftingRemainder().create();
-        if (stack.getCount() > 1) {
-            stack.shrink(1);
-            if (!craftingRemainder.isEmpty()) {
-                player.addItem(craftingRemainder);
-            }
-            return;
-        }
-        if (stack.isDamageableItem()) {
-            stack.hurtAndBreak(1, player, hand);
-            return;
-        }
-
-        player.setItemInHand(hand, craftingRemainder.isEmpty() ? ItemStack.EMPTY : craftingRemainder);
-    }
-
-    private static void updateTravelDisplay(boolean visible, boolean leavingAether) {
-        displayAetherTravel = visible;
-        if (visible) {
-            playerLeavingAether = leavingAether;
-        }
-        PacketDistributor.sendToAllPlayers(new AetherTravelPacket(visible));
-        if (visible) {
-            PacketDistributor.sendToAllPlayers(new LeavingAetherPacket(leavingAether));
-        }
+        return DimensionTimeHooks.isEternalDay(player);
     }
 }
