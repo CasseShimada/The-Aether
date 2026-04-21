@@ -30,11 +30,9 @@ import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
-import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -350,129 +348,7 @@ public class EntityHooks {
      * @see com.aetherteam.aether.event.listeners.EntityListener#onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific)
      */
     public static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {
-        if (target instanceof ArmorStand armorStand) {
-            if (armorStand.level().isClientSide()) {
-                return Optional.of(InteractionResult.SUCCESS);
-            }
-            if (!stack.isEmpty()) { // Equip behavior.
-                SlotTypeReference identifier = null;
-                if (stack.is(AetherTags.Items.ACCESSORIES) && stack.getItem() instanceof SlotIdentifierHolder slotIdentifierHolder) {
-                    identifier = slotIdentifierHolder.getIdentifier();
-                }
-                if (identifier == null) {
-                    identifier = AccessorySlotResolver.resolveSlotType(stack);
-                }
-                if (identifier != null) {
-                        AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
-                        if (accessories != null) {
-                            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
-                            if (accessoriesContainer != null) {
-                                ItemStack itemStack = accessoriesContainer.getAccessories().getItem(0);
-                                SlotReference slotContext = SlotReference.of(armorStand, identifier.slotName(), 0);
-                                accessoriesContainer.getAccessories().setItem(0, stack.copy());
-                                if (stack.getItem() instanceof AccessoryItem accessoryItem) {
-                                    if (accessoryItem instanceof GlovesItem glovesItem) {
-                                        armorStand.level().playSound(null, armorStand.blockPosition(), glovesItem.getEquipSound(stack, slotContext).event().value(), armorStand.getSoundSource(), 1, 1);
-                                    } else if (accessoryItem instanceof PendantItem pendantItem) {
-                                        armorStand.level().playSound(null, armorStand.blockPosition(), pendantItem.getEquipSound(stack, slotContext).event().value(), armorStand.getSoundSource(), 1, 1);
-                                    } else {
-                                        armorStand.level().playSound(null, armorStand.blockPosition(), SoundEvents.ARMOR_EQUIP_GENERIC.value(), armorStand.getSoundSource(), 1, 1);
-                                    }
-                                } else {
-                                    armorStand.level().playSound(null, armorStand.blockPosition(), SoundEvents.ARMOR_EQUIP_GENERIC.value(), armorStand.getSoundSource(), 1, 1);
-                                }
-                                if (identifier.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
-                                    armorStand.setShowArms(true);
-                                }
-                                if (!player.isCreative()) {
-                                    int count = stack.getCount();
-                                    stack.shrink(count);
-                                }
-                                if (!itemStack.isEmpty()) {
-                                    player.setItemInHand(hand, itemStack);
-                                }
-                                return Optional.of(InteractionResult.SUCCESS);
-                            }
-                        }
-                    }
-            } else { // Unequip behavior.
-                SlotTypeReference identifier = slotToUnequip(armorStand, pos);
-                if (identifier != null) {
-                    AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
-                    if (accessories != null) {
-                        AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
-                        if (accessoriesContainer != null) {
-                            ItemStack itemStack = accessoriesContainer.getAccessories().getItem(0);
-                            if (!itemStack.isEmpty()) {
-                                player.setItemInHand(hand, itemStack);
-                                accessoriesContainer.getAccessories().setItem(0, ItemStack.EMPTY);
-                                return Optional.of(InteractionResult.SUCCESS);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * What accessory slot of the armor stand to unequip from, based on where the armor stand is right-clicked.
-     *
-     * @param armorStand The {@link ArmorStand} to unequip from.
-     * @param pos        The right-click {@link Vec3} position.
-     * @return The {@link String} for the slot identifier.
-     * @see EntityHooks#interactWithArmorStand(Entity, Player, ItemStack, Vec3, InteractionHand)
-     */
-    private static SlotTypeReference slotToUnequip(ArmorStand armorStand, Vec3 pos) {
-        boolean isSmall = armorStand.isSmall();
-        Direction.Axis axis = armorStand.getDirection().getAxis();
-        double x = isSmall ? pos.x * 2.0 : pos.x;
-        double z = isSmall ? pos.z * 2.0 : pos.z;
-        double front = axis == Direction.Axis.X ? z : x;
-        double vertical = isSmall ? pos.y * 2.0 : pos.y;
-        SlotTypeReference glovesIdentifier = GlovesItem.getStaticIdentifier();
-        SlotTypeReference pendantIdentifier = PendantItem.getStaticIdentifier();
-        SlotTypeReference capeIdentifier = CapeItem.getStaticIdentifier();
-        SlotTypeReference shieldIdentifier = ShieldOfRepulsionItem.getStaticIdentifier();
-        if (!getItemByIdentifier(armorStand, glovesIdentifier).isEmpty()
-                && Math.abs(front) >= (isSmall ? 0.15 : 0.2)
-                && vertical >= (isSmall ? 0.65 : 0.75)
-                && vertical < 1.15) {
-            return glovesIdentifier;
-        } else if (!getItemByIdentifier(armorStand, pendantIdentifier).isEmpty()
-                && vertical >= (isSmall ? 1.2 : 1.3)
-                && vertical < 0.9 + (isSmall ? 0.8 : 0.6)) {
-            return pendantIdentifier;
-        } else if (!getItemByIdentifier(armorStand, capeIdentifier).isEmpty()
-                && vertical >= (isSmall ? 1.0 : 1.1)
-                && vertical < (isSmall ? 1.7 : 1.4)) {
-            return capeIdentifier;
-        } else if (!getItemByIdentifier(armorStand, shieldIdentifier).isEmpty()
-                && vertical >= (isSmall ? 0.9 : 1.0)
-                && vertical < (isSmall ? 1.5 : 1.2)) {
-            return shieldIdentifier;
-        }
-        return null;
-    }
-
-    /**
-     * Gets an accessory from an armor stand.
-     *
-     * @param armorStand The {@link ArmorStand} to get the accessory from.
-     * @param identifier The {@link String} for the slot identifier.
-     * @return The accessory {@link ItemStack} gotten from the entity.
-     * @see EntityHooks#slotToUnequip(ArmorStand, Vec3)
-     */
-    private static ItemStack getItemByIdentifier(ArmorStand armorStand, SlotTypeReference identifier) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
-        if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
-            if (accessoriesContainer != null) {
-                return accessoriesContainer.getAccessories().getItem(0);
-            }
-        }
-        return ItemStack.EMPTY;
+        return EntityArmorStandHooks.interactWithArmorStand(target, player, stack, pos, hand);
     }
 
     /**
