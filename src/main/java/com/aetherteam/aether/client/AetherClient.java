@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.fabricmc.loader.api.FabricLoader;
 import com.google.common.reflect.Reflection;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
@@ -62,29 +63,8 @@ public class AetherClient {
             return;
         }
         initialized = true;
-        jeiLoaded = FabricLoader.getInstance().isModLoaded("jei");
-        tipsModLoaded = FabricLoader.getInstance().isModLoaded("tipsmod");
-
-        Reflection.initialize(CustomizationsOptions.class);
-        AetherRenderers.registerAccessoryRenderers();
-        AetherAtlases.registerTreasureChestAtlases();
-        AetherAtlases.registerWoodTypeAtlases();
-        registerItemModelProperties();
-        registerTooltipOverrides();
-        registerLoreOverrides();
-        AetherMenuTypes.registerMenuScreens();
-        AetherColorResolvers.registerItemColor();
-        AetherKeys.registerKeyMappings();
-        AetherRecipeCategories.registerRecipeCategories();
-        AetherParticleTypes.registerParticleFactories();
-        AetherOverlays.registerOverlays();
-        AetherRenderers.registerEntityRenderers();
-        AetherRenderers.registerLayerDefinitions();
-        AetherBlockRenderLayers.register();
-        AetherRenderers.addEntityLayers();
-        AetherRenderers.bakeModels();
-        AetherRenderEffects.registerRenderEffects();
-
+        captureLoadedClientMods();
+        registerClientContent();
         registerClientCallbacks();
     }
 
@@ -96,27 +76,26 @@ public class AetherClient {
 
     public static void registerTooltipOverrides() {
         TooltipListeners.onTooltipCreationLowPriority();
+        registerHealingGummySwetOverride(AetherItems.BLUE_GUMMY_SWET.get().builtInRegistryHolder());
+        registerHealingGummySwetOverride(AetherItems.GOLDEN_GUMMY_SWET.get().builtInRegistryHolder());
+        registerLifeShardOverride();
+    }
 
-        TooltipListeners.PREDICATES.put(AetherItems.BLUE_GUMMY_SWET.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
+    private static void registerHealingGummySwetOverride(net.minecraft.core.Holder.Reference<net.minecraft.world.item.Item> itemHolder) {
+        TooltipListeners.PREDICATES.put(itemHolder, (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
-            } else {
-                return component;
             }
+            return component;
         });
-        TooltipListeners.PREDICATES.put(AetherItems.GOLDEN_GUMMY_SWET.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
-            if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
-                return Component.translatable(contents.getKey() + ".health");
-            } else {
-                return component;
-            }
-        });
+    }
+
+    private static void registerLifeShardOverride() {
         TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey(), AetherConfig.SERVER.maximum_life_shards.get());
-            } else {
-                return component;
             }
+            return component;
         });
     }
 
@@ -128,58 +107,125 @@ public class AetherClient {
         LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> ItemStack.isSameItemSameComponents(stack, AetherItems.createSwetBannerItemStack(registryAccess.lookupOrThrow(Registries.BANNER_PATTERN))), "lore.item.aether.swet_banner");
     }
 
+    private static void captureLoadedClientMods() {
+        jeiLoaded = FabricLoader.getInstance().isModLoaded("jei");
+        tipsModLoaded = FabricLoader.getInstance().isModLoaded("tipsmod");
+    }
+
+    private static void registerClientContent() {
+        Reflection.initialize(CustomizationsOptions.class);
+        registerVisualContent();
+        registerMenuAndInputContent();
+        registerTooltipOverrides();
+        registerLoreOverrides();
+    }
+
+    private static void registerVisualContent() {
+        AetherRenderers.registerAccessoryRenderers();
+        AetherAtlases.registerTreasureChestAtlases();
+        AetherAtlases.registerWoodTypeAtlases();
+        registerItemModelProperties();
+        AetherColorResolvers.registerItemColor();
+        AetherParticleTypes.registerParticleFactories();
+        AetherOverlays.registerOverlays();
+        AetherRenderers.registerEntityRenderers();
+        AetherRenderers.registerLayerDefinitions();
+        AetherBlockRenderLayers.register();
+        AetherRenderers.addEntityLayers();
+        AetherRenderers.bakeModels();
+        AetherRenderEffects.registerRenderEffects();
+    }
+
+    private static void registerMenuAndInputContent() {
+        AetherMenuTypes.registerMenuScreens();
+        AetherKeys.registerKeyMappings();
+        AetherRecipeCategories.registerRecipeCategories();
+    }
+
     private static void registerClientCallbacks() {
+        registerLifecycleCallbacks();
+        registerScreenCallbacks();
+        registerTickCallbacks();
+        registerConnectionCallbacks();
+        registerLevelRenderCallbacks();
+    }
+
+    private static void registerLifecycleCallbacks() {
         ClientLifecycleEvents.CLIENT_STARTED.register(client ->
-            AetherColorResolvers.registerBlockColor(client.getBlockColors()));
+                AetherColorResolvers.registerBlockColor(client.getBlockColors()));
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
                 ItemHooks.addDungeonTooltips(components, stack, tooltipType));
+    }
 
+    private static void registerScreenCallbacks() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             configureScreen(screen);
-            ScreenEvents.afterExtract(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
-                Screens.getWidgets(currentScreen).forEach(widget -> {
-                    if (widget instanceof AccessoryButton accessoryButton) {
-                        accessoryButton.updateButtonState();
-                    }
-                });
-                logJeiOverlayState(currentScreen);
-                if (!tipsModLoaded) {
-                    GuiHooks.drawTrivia(currentScreen, guiGraphics);
-                }
-                GuiHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
-            });
+            ScreenEvents.afterExtract(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) ->
+                    renderScreenOverlay(currentScreen, guiGraphics));
         });
+    }
 
+    private static void registerTickCallbacks() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             AudioHooks.tick();
             DimensionClientHooks.tickTime();
             GuiHooks.handlePatreonRefreshRebound();
-
-            if (client.player != null) {
-                CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
-                CapabilityClientHooks.AetherPlayerHooks.tickInput(client.player);
-                EntityHooks.launchMount(client.player);
-            }
-
-            if (client.screen instanceof AbstractContainerScreen<?> containerScreen
-                && !AetherConfig.CLIENT.disable_accessory_button.get()
-                && AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
-                containerScreen.onClose();
-            }
-
+            tickPlayerState(client);
+            handleAccessoryHotkey(client);
             GuiHooks.openAccessoryMenu();
         });
+    }
 
+    private static void registerConnectionCallbacks() {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             AudioHooks.stop();
             AbilityHooks.ToolHooks.resetDebuffToolsState();
         });
+    }
 
+    private static void registerLevelRenderCallbacks() {
         LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
             Minecraft minecraft = Minecraft.getInstance();
             LevelClientHooks.renderDungeonBlockOverlays(context.poseStack(), minecraft.gameRenderer.getMainCamera(), null, minecraft);
         });
+    }
+
+    private static void renderScreenOverlay(Screen currentScreen, GuiGraphicsExtractor guiGraphics) {
+        updateAccessoryButtons(currentScreen);
+        logJeiOverlayState(currentScreen);
+        if (!tipsModLoaded) {
+            GuiHooks.drawTrivia(currentScreen, guiGraphics);
+        }
+        GuiHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
+    }
+
+    private static void updateAccessoryButtons(Screen currentScreen) {
+        Screens.getWidgets(currentScreen).forEach(widget -> {
+            if (widget instanceof AccessoryButton accessoryButton) {
+                accessoryButton.updateButtonState();
+            }
+        });
+    }
+
+    private static void tickPlayerState(Minecraft client) {
+        if (client.player == null) {
+            return;
+        }
+
+        CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
+        CapabilityClientHooks.AetherPlayerHooks.tickInput(client.player);
+        EntityHooks.launchMount(client.player);
+    }
+
+    private static void handleAccessoryHotkey(Minecraft client) {
+        if (!(client.screen instanceof AbstractContainerScreen<?> containerScreen)) {
+            return;
+        }
+        if (AetherConfig.CLIENT.disable_accessory_button.get() || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
+            return;
+        }
+        containerScreen.onClose();
     }
 
     private static void configureScreen(Screen screen) {
@@ -195,12 +241,16 @@ public class AetherClient {
 
         GridLayout layout = GuiHooks.setupPerksButtons(screen);
         if (layout != null && !GuiHooks.isAccessoryButtonEnabled()) {
-            layout.visitWidgets(widget -> {
-                if (widget instanceof AbstractWidget abstractWidget) {
-                    Screens.getWidgets(screen).add(abstractWidget);
-                }
-            });
+            addPerkWidgets(screen, layout);
         }
+    }
+
+    private static void addPerkWidgets(Screen screen, GridLayout layout) {
+        layout.visitWidgets(widget -> {
+            if (widget instanceof AbstractWidget abstractWidget) {
+                Screens.getWidgets(screen).add(abstractWidget);
+            }
+        });
     }
 
     private static void logJeiOverlayState(Screen screen) {
