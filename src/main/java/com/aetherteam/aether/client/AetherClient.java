@@ -47,16 +47,23 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.lang.reflect.Method;
 
 public class AetherClient {
     public static Map<Predicate<ItemStack>, Identifier> CAPE_SECRETS = new HashMap<>();
     private static boolean initialized;
+    private static boolean jeiLoaded;
+    private static boolean tipsModLoaded;
+    private static boolean jeiOverlayLoggerResolved;
+    private static Method jeiOverlayLogger;
 
     public static void init() {
         if (initialized) {
             return;
         }
         initialized = true;
+        jeiLoaded = FabricLoader.getInstance().isModLoaded("jei");
+        tipsModLoaded = FabricLoader.getInstance().isModLoaded("tipsmod");
 
         Reflection.initialize(CustomizationsOptions.class);
         AetherRenderers.registerAccessoryRenderers();
@@ -137,7 +144,7 @@ public class AetherClient {
                     }
                 });
                 logJeiOverlayState(currentScreen);
-                if (!FabricLoader.getInstance().isModLoaded("tipsmod")) {
+                if (!tipsModLoaded) {
                     GuiHooks.drawTrivia(currentScreen, guiGraphics);
                 }
                 GuiHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
@@ -197,12 +204,27 @@ public class AetherClient {
     }
 
     private static void logJeiOverlayState(Screen screen) {
-        if (!FabricLoader.getInstance().isModLoaded("jei")) {
+        if (!jeiLoaded) {
             return;
         }
+
+        if (!jeiOverlayLoggerResolved) {
+            jeiOverlayLoggerResolved = true;
+            try {
+                Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
+                jeiOverlayLogger = pluginClass.getMethod("logVisibleOverlayState", Screen.class);
+            } catch (ReflectiveOperationException exception) {
+                Aether.LOGGER.debug("Failed to resolve JEI overlay logger", exception);
+                jeiOverlayLogger = null;
+            }
+        }
+
+        if (jeiOverlayLogger == null) {
+            return;
+        }
+
         try {
-            Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
-            pluginClass.getMethod("logVisibleOverlayState", Screen.class).invoke(null, screen);
+            jeiOverlayLogger.invoke(null, screen);
         } catch (ReflectiveOperationException exception) {
             Aether.LOGGER.debug("Failed to query JEI overlay state", exception);
         }

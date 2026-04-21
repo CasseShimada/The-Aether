@@ -3,13 +3,13 @@ package com.aetherteam.aether.accessories.impl;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
+import com.aetherteam.aether.util.ClientReflection;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -18,8 +18,6 @@ import java.util.UUID;
  * Central accessory runtime loop for lifecycle diffing, ticking, modifier closure and state sync.
  */
 public final class AccessoryRuntime {
-    private static Field minecraftPlayerField;
-
     private AccessoryRuntime() {
     }
 
@@ -92,16 +90,6 @@ public final class AccessoryRuntime {
         if (!(entity instanceof Player player)) {
             return false;
         }
-
-        try {
-            Object minecraft = Class.forName("net.minecraft.client.Minecraft").getMethod("getInstance").invoke(null);
-            if (minecraftPlayerField == null) {
-                minecraftPlayerField = minecraft.getClass().getField("player");
-            }
-            Object localPlayer = minecraftPlayerField.get(minecraft);
-            return player == localPlayer;
-        } catch (ReflectiveOperationException | LinkageError ignored) {
-            return false;
-        }
+        return ClientReflection.isLocalPlayer(player);
     }
 }

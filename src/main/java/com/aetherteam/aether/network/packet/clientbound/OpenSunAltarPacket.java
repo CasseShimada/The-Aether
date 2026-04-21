@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
+import com.aetherteam.aether.util.ClientReflection;
 
 /**
  * Opens {@link SunAltarScreen} from {@link com.aetherteam.aether.block.utility.SunAltarBlock}.
@@ -35,10 +36,6 @@ public record OpenSunAltarPacket(Component name, int timeScale) implements Custo
     }
 
     private static void invokeClientScreen(Component name, int timeScale) {
-        try {
-            Class<?> clientClass = Class.forName("com.aetherteam.aether.client.AetherClient");
-            clientClass.getMethod("setToSunAltarScreen", Component.class, int.class).invoke(null, name, timeScale);
-        } catch (ReflectiveOperationException ignored) {
-        }
+        ClientReflection.openSunAltarScreen(name, timeScale);
     }
 }
