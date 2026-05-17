@@ -263,7 +263,7 @@ public class AetherClient {
             try {
                 Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
                 jeiOverlayLogger = pluginClass.getMethod("logVisibleOverlayState", Screen.class);
-            } catch (ReflectiveOperationException exception) {
+            } catch (ReflectiveOperationException | LinkageError exception) {
                 Aether.LOGGER.debug("Failed to resolve JEI overlay logger", exception);
                 jeiOverlayLogger = null;
             }

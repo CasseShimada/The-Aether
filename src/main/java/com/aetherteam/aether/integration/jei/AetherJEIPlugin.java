@@ -46,19 +46,20 @@ import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 @JeiPlugin
 public class AetherJEIPlugin implements IModPlugin {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<String> AETHER_SEARCH_ALIASES = List.of("aether", "the aether", "天境");
-    private static final List<ItemStack> EXTRA_INGREDIENTS = List.of(
-            new ItemStack(AetherItems.GOLDEN_FEATHER.get()),
-            new ItemStack(AetherItems.MUSIC_DISC_CHINCHILLA.get()),
-            new ItemStack(AetherItems.MUSIC_DISC_HIGH.get()),
-            new ItemStack(AetherItems.MUSIC_DISC_KLEPTO.get()),
-            new ItemStack(AetherItems.VALKYRIE_QUEEN_SPAWN_EGG.get()),
-            new ItemStack(AetherItems.SLIDER_SPAWN_EGG.get()),
-            new ItemStack(AetherItems.SUN_SPIRIT_SPAWN_EGG.get())
+    private static final List<Supplier<ItemStack>> EXTRA_INGREDIENTS = List.of(
+            () -> new ItemStack(AetherItems.GOLDEN_FEATHER.get()),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_CHINCHILLA.get()),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_HIGH.get()),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_KLEPTO.get()),
+            () -> new ItemStack(AetherItems.VALKYRIE_QUEEN_SPAWN_EGG.get()),
+            () -> new ItemStack(AetherItems.SLIDER_SPAWN_EGG.get()),
+            () -> new ItemStack(AetherItems.SUN_SPIRIT_SPAWN_EGG.get())
     );
     private static IJeiRuntime runtime;
     private static String lastOverlayLogState;
@@ -89,7 +90,7 @@ public class AetherJEIPlugin implements IModPlugin {
 
     @Override
     public void registerExtraIngredients(IExtraIngredientRegistration registration) {
-        registration.addExtraItemStacks(EXTRA_INGREDIENTS);
+        registration.addExtraItemStacks(EXTRA_INGREDIENTS.stream().map(Supplier::get).toList());
     }
 
     @Override
