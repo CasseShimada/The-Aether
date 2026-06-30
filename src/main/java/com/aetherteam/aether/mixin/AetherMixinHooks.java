@@ -1,6 +1,7 @@
 package com.aetherteam.aether.mixin;
 
 import com.aetherteam.aether.client.AetherClient;
+import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.accessories.Accessories;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
@@ -16,7 +17,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
@@ -105,7 +106,7 @@ public class AetherMixinHooks {
      * @see com.aetherteam.aether.mixin.mixins.common.DirectoryLockMixin
      */
     public static boolean canUnlockLevel(Path basePath) {
-        if (Minecraft.getInstance().screen != null && Minecraft.getInstance().screen instanceof SelectWorldScreen && Minecraft.getInstance().getSingleplayerServer() != null) {
+        if (ClientCompat.screen(Minecraft.getInstance()) instanceof SelectWorldScreen && Minecraft.getInstance().getSingleplayerServer() != null) {
             return basePath.getFileName().toString().equals(((MinecraftServerAccessor) Minecraft.getInstance().getSingleplayerServer()).aether$getStorageSource().getLevelId());
         }
         return false;
@@ -154,7 +155,7 @@ public class AetherMixinHooks {
     public static SlotTypeReference getIdentifierForItem(LivingEntity livingEntity, ItemStack stack) {
         if (stack.getItem() instanceof GlovesItem glovesItem) {
             return glovesItem.getIdentifier();
-        } else if (stack.getItem() instanceof PendantItem pendantItem && (livingEntity.getType() == EntityType.PIGLIN || livingEntity.getType() == EntityType.ZOMBIFIED_PIGLIN)) {
+        } else if (stack.getItem() instanceof PendantItem pendantItem && (livingEntity.getType() == EntityTypes.PIGLIN || livingEntity.getType() == EntityTypes.ZOMBIFIED_PIGLIN)) {
             return pendantItem.getIdentifier();
         }
         return null;

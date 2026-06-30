@@ -194,9 +194,10 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                     BlockState state = this.level().getBlockState(pos);
                     if (this.isBreakable(state)
                         && (state.getShape(this.level(), pos).equals(Shapes.block()) || !state.getCollisionShape(this.level(), pos).isEmpty())
-                        && (this.getDungeon() == null || this.getDungeon().roomBounds().contains(pos.getCenter()))) {
+                        && (this.getDungeon() == null || this.getDungeon().roomBounds().contains(Vec3.atCenterOf(pos)))) {
                         this.level().destroyBlock(pos, true, this);
-                        serverLevel.sendParticles(ParticleTypes.FLAME, pos.getCenter().x(), pos.getCenter().y(), pos.getCenter().z(), 5,
+                        Vec3 center = Vec3.atCenterOf(pos);
+                        serverLevel.sendParticles(ParticleTypes.FLAME, center.x(), center.y(), center.z(), 5,
                             (this.random.nextDouble() / 2) - this.random.nextDouble(),
                             (this.random.nextDouble() / 2) - this.random.nextDouble(),
                             (this.random.nextDouble() / 2) - this.random.nextDouble(),
@@ -423,7 +424,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      * @param z        The {@link Double} for knockback z-direction.
      */
     @Override
-    public void knockback(double strength, double x, double z) {
+    public void knockback(double strength, double x, double z, DamageSource source, float knockbackResistance) {
     }
 
     /**

@@ -404,7 +404,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * @param z        The {@link Double} for knockback z-direction.
      */
     @Override
-    public void knockback(double strength, double x, double z) {
+    public void knockback(double strength, double x, double z, DamageSource source, float knockbackResistance) {
     }
 
     /**

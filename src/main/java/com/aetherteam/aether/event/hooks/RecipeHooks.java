@@ -70,7 +70,7 @@ public class RecipeHooks {
                     if (level.getBlockState(blockpos).is(BlockTags.BEDS) && level.getBlockState(blockpos).getBlock() != AetherBlocks.SKYROOT_BED.get()) {
                         level.removeBlock(blockpos, false);
                     }
-                    Vec3 vec3 = pos.getCenter();
+                    Vec3 vec3 = Vec3.atCenterOf(pos);
                     level.explode(null, level.damageSources().badRespawnPointExplosion(vec3), null, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, 5.0F, true, Level.ExplosionInteraction.BLOCK);
                 }
                 player.swing(InteractionHand.MAIN_HAND);

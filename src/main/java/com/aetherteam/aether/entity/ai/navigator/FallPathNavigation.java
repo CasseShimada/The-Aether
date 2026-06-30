@@ -28,7 +28,7 @@ public class FallPathNavigation extends GroundPathNavigation {
         double d1 = Math.abs(this.mob.getY() - (double) vec3i.getY());
         double d2 = Math.abs(this.mob.getZ() - ((double) vec3i.getZ() + (this.mob.getBbWidth() + 1) / 2D));
 
-        // Keep the airborne-pathing threshold behavior aligned with the 1.21.1 baseline.
+        // Keep the airborne-pathing threshold behavior aligned with vanilla fall-distance handling.
         float fallDistance = this.mob.getMaxFallDistance();
         boolean flag = d0 <= (double) this.maxDistanceToWaypoint && d2 <= (double) this.maxDistanceToWaypoint && d1 < fallDistance;
         if (flag || this.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vec3)) {

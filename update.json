@@ -1,7 +1,7 @@
 {
   "homepage": "https://modrinth.com/mod/aether",
   "promos": {
-    "1.21.11-recommended": "1.21.11-1.5.10-fabric",
-    "1.21.11-latest": "1.21.11-1.5.10-fabric"
+    "26.2-recommended": "26.2-1.0.0-beta-fabric",
+    "26.2-latest": "26.2-1.0.0-beta-fabric"
   }
 }

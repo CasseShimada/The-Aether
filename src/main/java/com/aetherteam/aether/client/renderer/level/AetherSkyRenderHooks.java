@@ -36,7 +36,7 @@ public final class AetherSkyRenderHooks {
         // Aether never uses vanilla's lower-half dark disc.
         renderState.shouldRenderDarkDisc = false;
 
-        // Enforce overworld skybox rendering path for Aether sky states on 1.21.11.
+        // Enforce the overworld skybox rendering path for Aether sky states.
         renderState.skybox = DimensionType.Skybox.OVERWORLD;
 
         if (!isCustomSkyEnabled(level)) {

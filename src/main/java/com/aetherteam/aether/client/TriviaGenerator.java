@@ -2,7 +2,6 @@ package com.aetherteam.aether.client;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
@@ -25,7 +24,7 @@ public class TriviaGenerator {
         this.getTrivia().clear();
         for (int i = 0; i < 512; i++) {
             String key = "aether.pro_tips.line." + i;
-            if (I18n.exists(key)) {
+            if (ClientCompat.hasTranslation(key)) {
                 this.getTrivia().add(Component.translatable(key));
             }
         }

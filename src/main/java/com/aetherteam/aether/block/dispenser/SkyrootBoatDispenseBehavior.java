@@ -39,7 +39,7 @@ public class SkyrootBoatDispenseBehavior extends DefaultDispenseItemBehavior {
         double d3 = vec3.z() + (double) direction.getStepZ() * d0;
         BlockPos blockpos = source.pos().relative(direction);
         AbstractBoat boat = this.isChestBoat ? new SkyrootChestBoat(serverLevel, d1, d2, d3) : new SkyrootBoat(serverLevel, d1, d2, d3);
-        EntityType.createDefaultStackConfig(serverLevel, stack, null).accept(boat);
+        EntityType.createDefaultStackConfig(serverLevel, stack, null).apply(boat);
         boat.setYRot(direction.toYRot());
         double d4;
         if (serverLevel.getFluidState(blockpos).is(FluidTags.WATER)) {

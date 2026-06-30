@@ -11,7 +11,6 @@ import com.aetherteam.aether.block.natural.*;
 import com.aetherteam.aether.block.portal.AetherPortalBlock;
 import com.aetherteam.aether.block.utility.*;
 import com.aetherteam.aether.blockentity.ChestMimicBlockEntity;
-import com.aetherteam.aether.blockentity.SkyrootBedBlockEntity;
 import com.aetherteam.aether.blockentity.TreasureChestBlockEntity;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.effect.AetherEffects;
@@ -26,6 +25,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -225,13 +225,13 @@ public class AetherBlocks {
 
     public static final DeferredBlock<Block> SKYROOT_BOOKSHELF = register("skyroot_bookshelf", () -> new BookshelfBlock(Block.Properties.ofFullCopy(Blocks.BOOKSHELF)));
 
-    public static final DeferredBlock<BedBlock> SKYROOT_BED = register("skyroot_bed", () -> new SkyrootBedBlock(Block.Properties.ofFullCopy(Blocks.CYAN_BED)));
+    public static final DeferredBlock<BedBlock> SKYROOT_BED = register("skyroot_bed", () -> new SkyrootBedBlock(Block.Properties.ofFullCopy(Blocks.BED.pick(DyeColor.CYAN))));
 
-    public static final DeferredBlock<Block> FROSTED_ICE = BLOCKS.register("frosted_ice", () -> new AetherFrostedIceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.ICE).friction(0.98F).randomTicks().strength(0.5F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, entityType) -> entityType == EntityType.POLAR_BEAR).isRedstoneConductor(AetherBlocks::never)));
+    public static final DeferredBlock<Block> FROSTED_ICE = BLOCKS.register("frosted_ice", () -> new AetherFrostedIceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.ICE).friction(0.98F).randomTicks().strength(0.5F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, entityType) -> entityType == EntityTypes.POLAR_BEAR).isRedstoneConductor(AetherBlocks::never)));
     public static final DeferredBlock<Block> UNSTABLE_OBSIDIAN = BLOCKS.register("unstable_obsidian", () -> new UnstableObsidianBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).randomTicks().requiresCorrectToolForDrops().strength(50.0F, 1200.0F)));
 
     public static void registerPots() {
-        // 1.21.11 registers potted contents via FlowerPotBlock constructor.
+        // Potted contents are registered via FlowerPotBlock construction.
     }
 
     public static void registerFlammability() {
@@ -266,7 +266,7 @@ public class AetherBlocks {
     }
 
     public static void registerWoodTypes() {
-        // WoodType registration is handled internally by the constructor in 1.21.11.
+        // WoodType registration is handled internally by construction.
     }
 
     private static <T extends Block> DeferredBlock<T> baseRegister(String name, Supplier<? extends T> block, Function<DeferredBlock<T>, Supplier<? extends Item>> item) {
@@ -327,7 +327,7 @@ public class AetherBlocks {
     }
 
     private static boolean ocelotOrParrot(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> type) {
-        return type == EntityType.OCELOT || type == EntityType.PARROT;
+        return type == EntityTypes.OCELOT || type == EntityTypes.PARROT;
     }
 
     private static int lightLevel11(BlockState state) {

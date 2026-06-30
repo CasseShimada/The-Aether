@@ -8,6 +8,7 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -40,8 +41,9 @@ final class AetherOverlayLifeShardHooks {
     }
 
     static void renderSilverLifeShardHearts(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, Gui gui, LocalPlayer player) {
-        GuiAccessor guiAccessor = (GuiAccessor) gui;
-        if (!AetherConfig.CLIENT.enable_silver_hearts.get() || !minecraft.gameMode.canHurtPlayer() || minecraft.options.hideGui) {
+        Hud hud = gui.hud;
+        GuiAccessor guiAccessor = (GuiAccessor) hud;
+        if (!AetherConfig.CLIENT.enable_silver_hearts.get() || !minecraft.gameMode.canHurtPlayer() || hud.isHidden()) {
             return;
         }
 
@@ -65,14 +67,14 @@ final class AetherOverlayLifeShardHooks {
                 ? Mth.clamp(currentOverallHealth - 20, 0, maxLifeShardHealth)
                 : Math.min(player.getHealth(), currentOverallHealth - maxDefaultHealth));
 
-        boolean highlight = guiAccessor.aether$getHealthBlinkTime() > (long) gui.getGuiTicks()
-                && (guiAccessor.aether$getHealthBlinkTime() - (long) gui.getGuiTicks()) / 3L % 2L == 1L;
+        boolean highlight = guiAccessor.aether$getHealthBlinkTime() > (long) hud.getGuiTicks()
+                && (guiAccessor.aether$getHealthBlinkTime() - (long) hud.getGuiTicks()) / 3L % 2L == 1L;
         if (Util.getMillis() - guiAccessor.aether$getLastHealthTime() > 1000L) {
             lastOverallHealth = currentOverallHealth;
             lastLifeShardHealth = currentLifeShardHealth;
         }
 
-        guiAccessor.aether$getRandom().setSeed(gui.getGuiTicks() * 312871L);
+        guiAccessor.aether$getRandom().setSeed(hud.getGuiTicks() * 312871L);
 
         float displayOverallHealth = Math.max((float) overallHealth, Math.max(lastOverallHealth, currentOverallHealth));
         float displayLifeShardHealth = Math.max((float) maxLifeShardHealth, Math.max(lastLifeShardHealth, currentLifeShardHealth));
@@ -82,14 +84,14 @@ final class AetherOverlayLifeShardHooks {
         int left = window.getGuiScaledWidth() / 2 - 91;
         int top = window.getGuiScaledHeight() - 39;
         int regen = player.hasEffect(MobEffects.REGENERATION)
-                ? gui.getGuiTicks() % Mth.ceil(displayOverallHealth + 5.0F)
+                ? hud.getGuiTicks() % Mth.ceil(displayOverallHealth + 5.0F)
                 : Integer.MIN_VALUE;
 
-        renderHearts(guiGraphics, player, gui, left, top, regen, displayOverallHealth, displayLifeShardHealth, maxDefaultHealth, currentLifeShardHealth, rowHeight, absorption, highlight);
+        renderHearts(guiGraphics, player, hud, left, top, regen, displayOverallHealth, displayLifeShardHealth, maxDefaultHealth, currentLifeShardHealth, rowHeight, absorption, highlight);
     }
 
-    private static void renderHearts(GuiGraphicsExtractor guiGraphics, Player player, Gui gui, int left, int top, int regen, float displayOverallHealth, float displayLifeShardHealth, int maxDefaultHealth, int lifeShardHealth, int rowHeight, int absorption, boolean highlight) {
-        GuiAccessor guiAccessor = (GuiAccessor) gui;
+    private static void renderHearts(GuiGraphicsExtractor guiGraphics, Player player, Hud hud, int left, int top, int regen, float displayOverallHealth, float displayLifeShardHealth, int maxDefaultHealth, int lifeShardHealth, int rowHeight, int absorption, boolean highlight) {
+        GuiAccessor guiAccessor = (GuiAccessor) hud;
         HeartType heartType = HeartType.forPlayer(player);
         int overallHearts = Mth.ceil((double) displayOverallHealth / 2.0);
         int lifeShardHearts = Mth.ceil((double) displayLifeShardHealth / 2.0);

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,7 +40,7 @@ public class BerryBushStemBlock extends AetherBushBlock implements BonemealableB
      */
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (AetherConfig.SERVER.berry_bush_consistency.get()) {
-            if (entity instanceof LivingEntity && entity.getType() != EntityType.FOX && entity.getType() != EntityType.BEE) {
+            if (entity instanceof LivingEntity && entity.getType() != EntityTypes.FOX && entity.getType() != EntityTypes.BEE) {
                 entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75D, 0.8F));
             }
         }

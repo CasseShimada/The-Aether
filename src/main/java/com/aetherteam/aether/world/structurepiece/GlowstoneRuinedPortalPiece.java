@@ -17,6 +17,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.Identifier;
@@ -93,7 +94,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
                 .addProcessor(new SurfaceRuleProcessor())
                 .addProcessor(new GlowstonePortalAgeProcessor(properties.mossiness))
                 .addProcessor(new DoubleDropsProcessor())
-                .addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE));
+                .addProcessor(new ProtectedBlockProcessor(BuiltInRegistries.BLOCK.getOrThrow(BlockTags.FEATURES_CANNOT_REPLACE)));
         if (properties.replaceWithHolystone) {
             structurePlaceSettings.addProcessor(HolystoneReplaceProcessor.INSTANCE);
         }

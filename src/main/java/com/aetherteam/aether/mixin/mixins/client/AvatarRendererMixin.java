@@ -129,18 +129,18 @@ public abstract class AvatarRendererMixin {
         ModelPart gloveArm = rightArm ? glovesModel.rightArm : glovesModel.leftArm;
         gloveArm.loadPose(arm.storePose());
         gloveArm.xRot = 0.0F;
-        submitNodeCollector.submitModelPart(gloveArm, poseStack, RenderTypes.armorCutoutNoCull(glovesItem.getGlovesTexture()), packedLight, OverlayTexture.NO_OVERLAY, null, false, false, DyedItemColor.getOrDefault(stack, -1), null, 0);
+        submitNodeCollector.submitModelPart(gloveArm, poseStack, RenderTypes.armorCutoutNoCull(glovesItem.getGlovesTexture()), packedLight, OverlayTexture.NO_OVERLAY, null, DyedItemColor.getOrDefault(stack, -1), null);
 
         TextureAtlasSprite trimSprite = AetherMixinHooks.getHumanoidArmorTrimSprite(stack, glovesItem);
         if (trimSprite != null) {
             ModelPart gloveTrimArm = rightArm ? glovesTrimModel.rightArm : glovesTrimModel.leftArm;
             gloveTrimArm.loadPose(arm.storePose());
             gloveTrimArm.xRot = 0.0F;
-            submitNodeCollector.order(1).submitModelPart(gloveTrimArm, poseStack, AetherMixinHooks.getArmorTrimRenderType(stack), packedLight, OverlayTexture.NO_OVERLAY, trimSprite, false, false, -1, null, 0);
+            submitNodeCollector.order(1).submitModelPart(gloveTrimArm, poseStack, AetherMixinHooks.getArmorTrimRenderType(stack), packedLight, OverlayTexture.NO_OVERLAY, trimSprite);
         }
 
         if (stack.hasFoil()) {
-            submitNodeCollector.order(trimSprite != null ? 2 : 1).submitModelPart(gloveArm, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, null, false, false, -1, null, 0);
+            submitNodeCollector.order(trimSprite != null ? 2 : 1).submitModelPart(gloveArm, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, null);
         }
     }
 

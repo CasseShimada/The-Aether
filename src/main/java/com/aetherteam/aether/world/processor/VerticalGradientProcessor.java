@@ -11,7 +11,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,21 +18,21 @@ import org.jetbrains.annotations.Nullable;
  * This processor is used to randomly place extra dirt near the top of the gold dungeon. It runs on any holystone block
  * that is right below aether dirt.
  */
-public class VerticalGradientProcessor extends StructureProcessor {
+public class VerticalGradientProcessor implements StructureProcessor {
     public static final VerticalGradientProcessor INSTANCE = new VerticalGradientProcessor();
 
     public static final MapCodec<VerticalGradientProcessor> CODEC = MapCodec.unit(VerticalGradientProcessor.INSTANCE);
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, BlockPos blockPos, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
         if (level instanceof WorldGenLevel worldGenLevel) {
             // If the processor is running outside the center chunk, return immediately.
-            if (worldGenLevel instanceof WorldGenRegion region && BlockLogicUtil.isOutOfBounds(modifiedBlockInfo.pos(), region.getCenter())) {
-                return modifiedBlockInfo;
+            if (worldGenLevel instanceof WorldGenRegion region && BlockLogicUtil.isOutOfBounds(blockInfo.pos(), region.getCenter())) {
+                return blockInfo;
             }
-            if (modifiedBlockInfo.state().is(AetherBlocks.AETHER_DIRT.get())) {
-                BlockPos below = modifiedBlockInfo.pos().below();
+            if (blockInfo.state().is(AetherBlocks.AETHER_DIRT.get())) {
+                BlockPos below = blockInfo.pos().below();
                 if (worldGenLevel.getBlockState(below).is(AetherTags.Blocks.HOLYSTONE)) {
                     RandomSource random = settings.getRandom(below);
                     if (random.nextBoolean()) {
@@ -42,11 +41,11 @@ public class VerticalGradientProcessor extends StructureProcessor {
                 }
             }
         }
-        return modifiedBlockInfo;
+        return blockInfo;
     }
 
     @Override
-    protected StructureProcessorType<?> getType() {
+    public MapCodec<VerticalGradientProcessor> codec() {
         return AetherStructureProcessors.VERTICAL_GRADIENT.get();
     }
 }

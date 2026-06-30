@@ -5,8 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderBuffers;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -24,29 +23,25 @@ final class DungeonOverlayRenderHooks {
     private DungeonOverlayRenderHooks() {
     }
 
-    static void renderOverlays(List<BlockPos> positions, net.minecraft.client.multiplayer.ClientLevel level, PoseStack poseStack, RenderBuffers renderBuffers, Camera camera, @Nullable Frustum frustum, int type) {
+    static void renderOverlays(List<BlockPos> positions, net.minecraft.client.multiplayer.ClientLevel level, PoseStack poseStack, SubmitNodeCollector collector, Camera camera, @Nullable Frustum frustum, int type) {
         for (BlockPos blockPos : positions) {
             if ((frustum == null || frustum.isVisible(new AABB(blockPos))) && level.getBlockState(blockPos).getRenderShape() != RenderShape.INVISIBLE) {
-                drawSurfaces(renderBuffers.bufferSource(), poseStack.last(), blockPos, camera,
-                        (float) (blockPos.getX() - camera.position().x()) - 0.001F,
-                        (float) (blockPos.getZ() - camera.position().z()) - 0.001F,
-                        (float) (blockPos.getX() - camera.position().x()) + 1.001F,
-                        (float) (blockPos.getZ() - camera.position().z()) + 1.001F,
-                        (float) (blockPos.getY() - camera.position().y()) - 0.001F,
-                        (float) (blockPos.getY() - camera.position().y()) + 1.001F,
-                        type);
+                TextureAtlasSprite sprite = spriteForId(type);
+                if (sprite != null) {
+                    collector.submitCustomGeometry(poseStack, RenderTypes.cutoutMovingBlock(), (pose, builder) ->
+                            drawSurfaces(builder, pose, sprite, blockPos, camera,
+                                    (float) (blockPos.getX() - camera.position().x()) - 0.001F,
+                                    (float) (blockPos.getZ() - camera.position().z()) - 0.001F,
+                                    (float) (blockPos.getX() - camera.position().x()) + 1.001F,
+                                    (float) (blockPos.getZ() - camera.position().z()) + 1.001F,
+                                    (float) (blockPos.getY() - camera.position().y()) - 0.001F,
+                                    (float) (blockPos.getY() - camera.position().y()) + 1.001F));
+                }
             }
         }
-        renderBuffers.bufferSource().endBatch();
     }
 
-    private static void drawSurfaces(MultiBufferSource buffer, PoseStack.Pose pose, BlockPos blockPos, Camera camera, float startX, float startZ, float endX, float endZ, float botY, float topY, int type) {
-        VertexConsumer builder = buffer.getBuffer(RenderTypes.cutoutMovingBlock());
-        TextureAtlasSprite sprite = spriteForId(type);
-        if (sprite == null) {
-            return;
-        }
-
+    private static void drawSurfaces(VertexConsumer builder, PoseStack.Pose pose, TextureAtlasSprite sprite, BlockPos blockPos, Camera camera, float startX, float startZ, float endX, float endZ, float botY, float topY) {
         float minU = sprite.getU1();
         float maxU = sprite.getU0();
         float minV = sprite.getV1();

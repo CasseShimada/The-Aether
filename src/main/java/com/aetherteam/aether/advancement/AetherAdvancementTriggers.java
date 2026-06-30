@@ -1,7 +1,7 @@
 package com.aetherteam.aether.advancement;
 
 import com.aetherteam.aether.Aether;
-import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 import com.aetherteam.aether.registry.DeferredHolder;
 import com.aetherteam.aether.registry.DeferredRegister;

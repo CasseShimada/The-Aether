@@ -6,7 +6,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderBuffers;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -20,11 +20,10 @@ public class LevelClientHooks {
      *
      * @see com.aetherteam.aether.client.event.listeners.LevelClientListener#onRenderLevelLast(RenderLevelStageEvent)
      */
-    public static void renderDungeonBlockOverlays(PoseStack poseStack, Camera camera, @Nullable Frustum frustum, Minecraft minecraft) {
+    public static void renderDungeonBlockOverlays(PoseStack poseStack, SubmitNodeCollector collector, Camera camera, @Nullable Frustum frustum, Minecraft minecraft) {
         if (minecraft.level != null) {
             LocalPlayer player = minecraft.player;
             ClientLevel level = minecraft.level;
-            RenderBuffers renderBuffers = minecraft.renderBuffers();
             int range = 32; // Range for how far the overlays can be rendered at.
             if (player != null && player.isCreative()) {
                 BlockPos playerPos = player.blockPosition();
@@ -34,7 +33,7 @@ public class LevelClientHooks {
                     DungeonOverlayStateHooks.updateTrackedPositions(playerPos, level, stack, range, type, false); // Check to add overlays to the map.
                 }
                 for (int i = 0; i < DungeonOverlayStateHooks.trackedTypeCount(); i++) {
-                    DungeonOverlayRenderHooks.renderOverlays(DungeonOverlayStateHooks.positionsForType(i), level, poseStack, renderBuffers, camera, frustum, i); // Render any overlays at positions in the map.
+                    DungeonOverlayRenderHooks.renderOverlays(DungeonOverlayStateHooks.positionsForType(i), level, poseStack, collector, camera, frustum, i); // Render any overlays at positions in the map.
                     DungeonOverlayStateHooks.updateTrackedPositions(playerPos, level, stack, range, i, true); // Check to remove overlays from the map.
                 }
             }

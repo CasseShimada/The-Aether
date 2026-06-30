@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
@@ -46,12 +47,12 @@ final class EntityAccessorySpawnHooks {
     static boolean canMobSpawnWithAccessories(Entity entity) {
         EntityType<?> entityType = entity.getType();
         return entity instanceof Mob
-                && (entityType == EntityType.ZOMBIE
-                || entityType == EntityType.ZOMBIE_VILLAGER
-                || entityType == EntityType.HUSK
-                || entityType == EntityType.SKELETON
-                || entityType == EntityType.STRAY
-                || entityType == EntityType.PIGLIN);
+                && (entityType == EntityTypes.ZOMBIE
+                || entityType == EntityTypes.ZOMBIE_VILLAGER
+                || entityType == EntityTypes.HUSK
+                || entityType == EntityTypes.SKELETON
+                || entityType == EntityTypes.STRAY
+                || entityType == EntityTypes.PIGLIN);
     }
 
     static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
@@ -60,7 +61,7 @@ final class EntityAccessorySpawnHooks {
         }
 
         RandomSource random = mob.getRandom();
-        if (mob.getType() == EntityType.PIGLIN) {
+        if (mob.getType() == EntityTypes.PIGLIN) {
             equipPiglinAccessories(mob, random);
         } else {
             equipArmoredMobAccessories(mob, random);

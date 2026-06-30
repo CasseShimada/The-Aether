@@ -1,6 +1,11 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/template_bed_head",
   "textures": {
-    "all": "aether:block/construction/skyroot_planks"
+    "particle": "aether:block/construction/skyroot_planks",
+    "north": "aether:block/skyroot_bed_head_up",
+    "east": "aether:block/skyroot_bed_head_east",
+    "west": "aether:block/skyroot_bed_head_west",
+    "up": "aether:block/skyroot_bed_head_up",
+    "down": "aether:block/construction/skyroot_planks"
   }
 }

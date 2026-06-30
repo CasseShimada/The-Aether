@@ -69,22 +69,9 @@ public class Sheepuff extends AetherAnimal implements Shearable {
     private static final EntityDataAccessor<Boolean> DATA_PUFFED_ID = SynchedEntityData.defineId(Sheepuff.class, EntityDataSerializers.BOOLEAN);
 
     private static final Map<DyeColor, ItemLike> ITEM_BY_DYE = Util.make(new EnumMap<>(DyeColor.class), (map) -> {
-        map.put(DyeColor.WHITE, Blocks.WHITE_WOOL);
-        map.put(DyeColor.ORANGE, Blocks.ORANGE_WOOL);
-        map.put(DyeColor.MAGENTA, Blocks.MAGENTA_WOOL);
-        map.put(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_WOOL);
-        map.put(DyeColor.YELLOW, Blocks.YELLOW_WOOL);
-        map.put(DyeColor.LIME, Blocks.LIME_WOOL);
-        map.put(DyeColor.PINK, Blocks.PINK_WOOL);
-        map.put(DyeColor.GRAY, Blocks.GRAY_WOOL);
-        map.put(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_WOOL);
-        map.put(DyeColor.CYAN, Blocks.CYAN_WOOL);
-        map.put(DyeColor.PURPLE, Blocks.PURPLE_WOOL);
-        map.put(DyeColor.BLUE, Blocks.BLUE_WOOL);
-        map.put(DyeColor.BROWN, Blocks.BROWN_WOOL);
-        map.put(DyeColor.GREEN, Blocks.GREEN_WOOL);
-        map.put(DyeColor.RED, Blocks.RED_WOOL);
-        map.put(DyeColor.BLACK, Blocks.BLACK_WOOL);
+        for (DyeColor color : DyeColor.values()) {
+            map.put(color, Blocks.WOOL.pick(color));
+        }
     });
     private static final Map<DyeColor, Integer> COLOR_BY_DYE = Maps.<DyeColor, Integer>newEnumMap( // Do not remove these explicit type arguments even if your dev environment says they can be removed.
         Arrays.stream(DyeColor.values()).collect(Collectors.toMap(p_29868_ -> p_29868_, Sheepuff::createSheepColor))

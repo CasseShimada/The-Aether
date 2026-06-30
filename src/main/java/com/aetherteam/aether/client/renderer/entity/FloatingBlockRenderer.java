@@ -49,7 +49,7 @@ public class FloatingBlockRenderer extends EntityRenderer<FloatingBlockEntity, F
         if (blockstate.getRenderShape() == RenderShape.MODEL) {
             poseStack.pushPose();
             poseStack.translate(-0.5, 0.0, -0.5);
-            collector.order(0).submitMovingBlock(poseStack, renderState.movingBlockRenderState);
+            collector.order(0).submitMovingBlock(poseStack, renderState.movingBlockRenderState, -1);
             poseStack.popPose();
             super.submit(renderState, poseStack, collector, cameraRenderState);
         }

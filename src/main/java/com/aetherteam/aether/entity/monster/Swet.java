@@ -28,8 +28,9 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.cubemob.Slime;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -142,7 +143,7 @@ public class Swet extends Slime implements MountableMob {
                 for (BlockPos blockEntityPos : chunkAccess.getBlockEntitiesPos()) {
                     if (blockEntityPos.distSqr(pos) <= radius * radius) {
                         BlockEntity blockEntity = level.getBlockEntity(blockEntityPos);
-                        if (blockEntity instanceof BannerBlockEntity bannerBlockEntity && blockEntity.getBlockState().is(Blocks.BLACK_BANNER)) {
+                        if (blockEntity instanceof BannerBlockEntity bannerBlockEntity && blockEntity.getBlockState().is(Blocks.BANNER.pick(DyeColor.BLACK))) {
                             if (ItemStack.matches(bannerBlockEntity.getItem(), AetherItems.createSwetBannerItemStack(level.holderLookup(Registries.BANNER_PATTERN)))) {
                                 return true;
                             }
@@ -163,7 +164,7 @@ public class Swet extends Slime implements MountableMob {
      * @return Whether the entity was found in the radius, as a {@link Boolean}.
      */
     private static boolean inRadiusOfSwetCape(LevelAccessor level, BlockPos pos, int radius) {
-        return !level.getEntities(EntityTypeTest.forClass(ArmorStand.class), AABB.ofSize(pos.getCenter(), radius * 2, radius * 2, radius * 2), EquipmentUtil::hasSwetCape).isEmpty();
+        return !level.getEntities(EntityTypeTest.forClass(ArmorStand.class), AABB.ofSize(Vec3.atCenterOf(pos), radius * 2, radius * 2, radius * 2), EquipmentUtil::hasSwetCape).isEmpty();
     }
 
     /**

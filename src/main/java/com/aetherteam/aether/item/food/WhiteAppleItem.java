@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.food;
 
 import com.aetherteam.aether.effect.AetherEffects;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;

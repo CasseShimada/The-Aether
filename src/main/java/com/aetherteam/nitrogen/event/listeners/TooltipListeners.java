@@ -1,8 +1,8 @@
 package com.aetherteam.nitrogen.event.listeners;
 
+import com.aetherteam.aether.client.ClientCompat;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public class TooltipListeners {
     public static void addAbilityTooltips(Player player, ItemStack stack, List<Component> components, Item.TooltipContext context) {
         for (int i = 1; i <= 5; i++) {
             String key = stack.getItem().getDescriptionId() + "." + NITROGEN_MOD_ID + ".ability.tooltip." + i;
-            if (I18n.exists(key)) {
+            if (ClientCompat.hasTranslation(key)) {
                 Component component = Component.translatable(key);
                 TooltipPredicate predicate = PREDICATES.get(stack.getItem().builtInRegistryHolder());
                 if (predicate != null) {

@@ -27,7 +27,7 @@ final class AetherOverlayVignetteHooks {
     }
 
     static void renderAetherPortalOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, AetherPlayerAttachment handler, DeltaTracker partialTicks) {
-        if (minecraft.options.hideGui) {
+        if (minecraft.gui.hud.isHidden()) {
             return;
         }
 
@@ -48,7 +48,7 @@ final class AetherOverlayVignetteHooks {
     }
 
     static void renderInebriationOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, Player player) {
-        if (minecraft.options.hideGui) {
+        if (minecraft.gui.hud.isHidden()) {
             return;
         }
 
@@ -61,7 +61,7 @@ final class AetherOverlayVignetteHooks {
     }
 
     static void renderRemedyOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, Player player) {
-        if (minecraft.options.hideGui) {
+        if (minecraft.gui.hud.isHidden()) {
             return;
         }
 
@@ -79,7 +79,7 @@ final class AetherOverlayVignetteHooks {
     }
 
     static void renderRepulsionOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, Player player) {
-        if (minecraft.options.hideGui) {
+        if (minecraft.gui.hud.isHidden()) {
             return;
         }
 

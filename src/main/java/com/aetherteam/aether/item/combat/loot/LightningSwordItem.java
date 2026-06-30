@@ -6,7 +6,7 @@ import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -30,7 +30,7 @@ public class LightningSwordItem extends SwordItem {
     @Override
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker)) {
-            LightningBolt lightningBolt = attacker.level() instanceof ServerLevel serverLevel ? EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.TRIGGERED) : null;
+            LightningBolt lightningBolt = attacker.level() instanceof ServerLevel serverLevel ? EntityTypes.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.TRIGGERED) : null;
             if (lightningBolt != null) {
                 lightningBolt.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).setOwner(attacker);
                 lightningBolt.setPos(target.getX(), target.getY(), target.getZ());

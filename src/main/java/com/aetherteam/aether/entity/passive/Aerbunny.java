@@ -95,7 +95,7 @@ public class Aerbunny extends AetherAnimal {
         super.tick();
         boolean ridingPlayer = this.getVehicle() instanceof Player;
         if (ridingPlayer) {
-            // The player's passenger attachment controls mounted Aerbunnies in 1.21.11.
+            // The player's passenger attachment controls mounted Aerbunnies.
             // Letting the bunny keep its own fall motion here causes visible jitter on the player's head.
             this.setDeltaMovement(Vec3.ZERO);
         } else if (!this.isFastFalling()) { // Handle slow-falling unless the Aerbunny is set to fall fast.

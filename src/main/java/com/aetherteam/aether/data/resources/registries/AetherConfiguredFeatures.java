@@ -92,7 +92,8 @@ public class AetherConfiguredFeatures {
                         new StraightTrunkPlacer(4, 2, 0),
                         BlockStateProvider.simple(AetherFeatureStates.SKYROOT_LEAVES),
                         new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-                        new TwoLayersFeatureSize(1, 0, 1)
+                        new TwoLayersFeatureSize(1, 0, 1),
+                        BlockStateProvider.simple(AetherFeatureStates.AETHER_DIRT)
                 ).ignoreVines().build());
         register(context, GOLDEN_OAK_TREE_CONFIGURATION, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
@@ -100,7 +101,8 @@ public class AetherConfiguredFeatures {
                         new GoldenOakTrunkPlacer(10, 0, 0),
                         BlockStateProvider.simple(AetherFeatureStates.GOLDEN_OAK_LEAVES),
                         new GoldenOakFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), ConstantInt.of(7)),
-                        new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(10))
+                        new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(10)),
+                        BlockStateProvider.simple(AetherFeatureStates.AETHER_DIRT)
                 ).ignoreVines().build());
         register(context, CRYSTAL_TREE_CONFIGURATION, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
@@ -108,14 +110,16 @@ public class AetherConfiguredFeatures {
                         new CrystalTreeTrunkPlacer(7, 0, 0),
                         new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.CRYSTAL_LEAVES, 4).add(AetherFeatureStates.CRYSTAL_FRUIT_LEAVES, 1).build()),
                         new CrystalFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), ConstantInt.of(6)),
-                        new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build());
+                        new TwoLayersFeatureSize(1, 0, 1),
+                        BlockStateProvider.simple(AetherFeatureStates.AETHER_DIRT)).ignoreVines().build());
         register(context, HOLIDAY_TREE_CONFIGURATION, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(AetherFeatureStates.SKYROOT_LOG),
                         new StraightTrunkPlacer(9, 0, 0),
                         new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.HOLIDAY_LEAVES, 4).add(AetherFeatureStates.DECORATED_HOLIDAY_LEAVES, 1).build()),
                         new HolidayFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), ConstantInt.of(8)),
-                        new TwoLayersFeatureSize(1, 0, 1)).ignoreVines()
+                        new TwoLayersFeatureSize(1, 0, 1),
+                        BlockStateProvider.simple(AetherFeatureStates.AETHER_DIRT)).ignoreVines()
                         .decorators(ImmutableList.of(new HolidayTreeDecorator(new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
                         .build());
         register(context, GRASS_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK, NitrogenConfiguredFeatureBuilders.grassPatch(BlockStateProvider.simple(Blocks.SHORT_GRASS), 32));

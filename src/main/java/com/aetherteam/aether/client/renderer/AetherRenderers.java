@@ -9,7 +9,6 @@ import com.aetherteam.aether.client.renderer.accessory.model.CapeModel;
 import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.client.renderer.blockentity.ChestMimicRenderer;
-import com.aetherteam.aether.client.renderer.blockentity.SkyrootBedRenderer;
 import com.aetherteam.aether.client.renderer.blockentity.TreasureChestRenderer;
 import com.aetherteam.aether.client.renderer.entity.*;
 import com.aetherteam.aether.client.renderer.entity.model.*;
@@ -25,7 +24,6 @@ import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.model.object.chest.ChestModel;
 import net.minecraft.client.model.player.PlayerModel;
-import net.minecraft.client.renderer.blockentity.BedRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
@@ -34,7 +32,6 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 
 public class AetherRenderers {
     public static void registerEntityRenderers() {
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_BED.get(), SkyrootBedRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_SIGN.get(), (BlockEntityRendererProvider) StandingSignRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_HANGING_SIGN.get(), (BlockEntityRendererProvider) HangingSignRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.CHEST_MIMIC.get(), ChestMimicRenderer::new);
@@ -86,8 +83,6 @@ public class AetherRenderers {
     }
 
     public static void registerLayerDefinitions() {
-        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_FOOT, BedRenderer::createFootLayer);
-        ModelLayerRegistry.registerModelLayer(AetherModelLayers.SKYROOT_BED_HEAD, BedRenderer::createHeadLayer);
         ModelLayerRegistry.registerModelLayer(AetherModelLayers.CHEST_MIMIC, ChestModel::createSingleBodyLayer);
 
         ModelLayerRegistry.registerModelLayer(AetherModelLayers.PHYG, () -> LegacyPigModel.createBodyLayer(CubeDeformation.NONE));

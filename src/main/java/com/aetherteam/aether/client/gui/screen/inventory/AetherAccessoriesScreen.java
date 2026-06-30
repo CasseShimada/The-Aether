@@ -2,7 +2,9 @@ package com.aetherteam.aether.client.gui.screen.inventory;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.client.AetherKeys;
+import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
 import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
@@ -36,7 +38,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerInput;
@@ -147,7 +148,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      */
     private ImageButton createSkinsButton() {
         ImageButton skinsButton = new ImageButton(this.leftPos - 22, this.topPos + 2, 20, 20, SKINS_BUTTON,
-                (pressed) -> this.minecraft.setScreen(new MoaSkinsScreen(this)),
+                (pressed) -> ClientCompat.setScreen(this.minecraft, new MoaSkinsScreen(this)),
                 Component.translatable("gui.aether.accessories.skins_button"));
         skinsButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.skins_button")));
         return skinsButton;
@@ -160,7 +161,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      */
     private ImageButton createCustomizationButton() {
         ImageButton customizationButton = new ImageButton(this.leftPos - 22, this.topPos + 24, 20, 20, CUSTOMIZATION_BUTTON,
-                (pressed) -> this.minecraft.setScreen(new AetherCustomizationsScreen(this)),
+                (pressed) -> ClientCompat.setScreen(this.minecraft, new AetherCustomizationsScreen(this)),
                 Component.translatable("gui.aether.accessories.customization_button"));
         customizationButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.customization_button")));
         return customizationButton;
@@ -372,9 +373,9 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      * Offsets the accessories screen button based on what screen is currently open.
      *
      * @param screen The current {@link Screen}.
-     * @return A {@link Tuple} containing the x and y {@link Integer}s.
+     * @return A {@link ScreenOffset} containing the x and y offsets.
      */
-    public static Tuple<Integer, Integer> getButtonOffset(Screen screen) {
+    public static ScreenOffset getButtonOffset(Screen screen) {
         int x = 0;
         int y = 0;
         if (screen instanceof InventoryScreen || screen instanceof AccessoriesScreen) {
@@ -389,6 +390,6 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
             x = AetherConfig.CLIENT.button_accessories_x.get();
             y = AetherConfig.CLIENT.button_accessories_y.get();
         }
-        return new Tuple<>(x, y);
+        return new ScreenOffset(x, y);
     }
 }

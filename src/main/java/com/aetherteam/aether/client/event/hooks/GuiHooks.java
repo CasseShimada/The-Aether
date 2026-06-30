@@ -2,12 +2,12 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
+import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
 import com.aetherteam.aether.entity.AetherBossMob;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.BossEvent;
 
 import javax.annotation.Nullable;
@@ -34,12 +34,12 @@ public class GuiHooks {
      * Creates an {@link AccessoryButton} if one can be created for the screen according to {@link GuiHooks#canCreateAccessoryButtonForScreen(Screen)}.
      *
      * @param screen  The parent {@link Screen}.
-     * @param offsets A {@link Tuple} containing the x and y offset {@link Integer}s.
+     * @param offsets A {@link ScreenOffset} containing the x and y offsets.
      * @return The {@link AccessoryButton}.
      * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiInitialize(ScreenEvent.Init.Post)
      */
     @Nullable
-    public static AccessoryButton setupAccessoryButton(Screen screen, Tuple<Integer, Integer> offsets) {
+    public static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
         return GuiAccessoryMenuHooks.setupAccessoryButton(screen, offsets);
     }
 

@@ -31,7 +31,7 @@ final class AetherOverlayStatusHudHooks {
     }
 
     static void renderHammerCooldownOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, LocalPlayer player) {
-        if (!AetherConfig.CLIENT.enable_hammer_cooldown_overlay.get() || minecraft.options.hideGui) {
+        if (!AetherConfig.CLIENT.enable_hammer_cooldown_overlay.get() || minecraft.gui.hud.isHidden()) {
             return;
         }
 
@@ -61,7 +61,7 @@ final class AetherOverlayStatusHudHooks {
     }
 
     static void renderMoaJumps(GuiGraphicsExtractor guiGraphics, Window window, LocalPlayer player) {
-        if (!(player.getVehicle() instanceof Moa moa) || Minecraft.getInstance().options.hideGui) {
+        if (!(player.getVehicle() instanceof Moa moa) || Minecraft.getInstance().gui.hud.isHidden()) {
             return;
         }
 

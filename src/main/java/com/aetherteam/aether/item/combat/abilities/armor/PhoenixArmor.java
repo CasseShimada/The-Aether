@@ -6,7 +6,7 @@ import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;

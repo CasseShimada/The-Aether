@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import javax.annotation.Nullable;
@@ -17,7 +16,7 @@ import javax.annotation.Nullable;
 /**
  * This processor replaces Cobblestone blocks with Mossy Cobblestone blocks.
  */
-public class GlowstonePortalAgeProcessor extends StructureProcessor {
+public class GlowstonePortalAgeProcessor implements StructureProcessor {
     public static final MapCodec<GlowstonePortalAgeProcessor> CODEC = Codec.FLOAT.fieldOf("mossiness").xmap(GlowstonePortalAgeProcessor::new, (codec) -> codec.mossiness);
     private final float mossiness;
 
@@ -27,24 +26,24 @@ public class GlowstonePortalAgeProcessor extends StructureProcessor {
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos otherPos, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
-        RandomSource random = settings.getRandom(relativeBlockInfo.pos());
-        BlockState originalState = relativeBlockInfo.state();
-        BlockPos blockPos = relativeBlockInfo.pos();
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos otherPos, BlockPos pos, BlockPos blockPos, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
+        RandomSource random = settings.getRandom(blockInfo.pos());
+        BlockState originalState = blockInfo.state();
+        BlockPos infoPos = blockInfo.pos();
         BlockState newState = null;
         if (!originalState.is(Blocks.COBBLESTONE)) {
             if (originalState.is(Blocks.COBBLESTONE_STAIRS)) {
-                newState = this.maybeReplaceStairs(random, relativeBlockInfo.state());
+                newState = this.maybeReplaceStairs(random, blockInfo.state());
             } else if (originalState.is(Blocks.COBBLESTONE_SLAB)) {
-                newState = this.maybeReplaceSlab(random, relativeBlockInfo.state());
+                newState = this.maybeReplaceSlab(random, blockInfo.state());
             } else if (originalState.is(Blocks.COBBLESTONE_WALL)) {
-                newState = this.maybeReplaceWall(random, relativeBlockInfo.state());
+                newState = this.maybeReplaceWall(random, blockInfo.state());
             }
         } else {
             newState = this.maybeReplaceFullStoneBlock(random);
         }
 
-        return newState != null ? new StructureTemplate.StructureBlockInfo(blockPos, newState, relativeBlockInfo.nbt()) : relativeBlockInfo;
+        return newState != null ? new StructureTemplate.StructureBlockInfo(infoPos, newState, blockInfo.nbt()) : blockInfo;
     }
 
     @Nullable
@@ -68,7 +67,7 @@ public class GlowstonePortalAgeProcessor extends StructureProcessor {
     }
 
     @Override
-    protected StructureProcessorType<?> getType() {
+    public MapCodec<GlowstonePortalAgeProcessor> codec() {
         return AetherStructureProcessors.GLOWSTONE_PORTAL_AGE.get();
     }
 }

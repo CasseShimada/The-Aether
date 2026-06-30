@@ -48,6 +48,6 @@ public class AetherColorResolvers {
     }
 
     public static void registerItemColor() {
-        // 1.21.11 item tinting is data-driven via assets/*/items/*.json.
+        // Item tinting is data-driven via assets/*/items/*.json.
     }
 }

@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +28,7 @@ import java.util.function.Function;
 /**
  * This processor is used to replace grass blocks in the Aether with blocks determined by the biome's surface rules.
  */
-public class SurfaceRuleProcessor extends StructureProcessor {
+public class SurfaceRuleProcessor implements StructureProcessor {
     public static final SurfaceRuleProcessor INSTANCE = new SurfaceRuleProcessor();
 
     public static final MapCodec<SurfaceRuleProcessor> CODEC = MapCodec.unit(SurfaceRuleProcessor.INSTANCE);
@@ -40,35 +39,35 @@ public class SurfaceRuleProcessor extends StructureProcessor {
     @Nullable
     @Override
     @SuppressWarnings("deprecation")
-    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, BlockPos blockPos, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
         if (level instanceof WorldGenLevel worldGenLevel) {
             // If the processor is running outside the center chunk, return immediately.
-            if (worldGenLevel instanceof WorldGenRegion region && BlockLogicUtil.isOutOfBounds(modifiedBlockInfo.pos(), region.getCenter())) {
-                return modifiedBlockInfo;
+            if (worldGenLevel instanceof WorldGenRegion region && BlockLogicUtil.isOutOfBounds(blockInfo.pos(), region.getCenter())) {
+                return blockInfo;
             }
             if (worldGenLevel.getChunkSource() instanceof ServerChunkCache serverChunkCache) {
                 if (serverChunkCache.getGenerator() instanceof NoiseBasedChunkGenerator noiseBasedChunkGenerator) {
                     NoiseGeneratorSettings settingsHolder = noiseBasedChunkGenerator.generatorSettings().value();
                     SurfaceRules.RuleSource surfaceRule = settingsHolder.surfaceRule();
-                    ChunkAccess chunkAccess = worldGenLevel.getChunk(modifiedBlockInfo.pos());
+                    ChunkAccess chunkAccess = worldGenLevel.getChunk(blockInfo.pos());
                     NoiseChunk noisechunk = ((ChunkAccessAccessor) chunkAccess).aether$getNoiseChunk();
                     if (noisechunk != null) {
                         CarvingContext carvingcontext = new CarvingContext(noiseBasedChunkGenerator, worldGenLevel.registryAccess(), chunkAccess.getHeightAccessorForGeneration(), noisechunk, serverChunkCache.randomState(), surfaceRule);
-                        Optional<BlockState> state = carvingcontext.topMaterial(worldGenLevel.getBiomeManager()::getNoiseBiomeAtPosition, chunkAccess, modifiedBlockInfo.pos(), false);
+                        Optional<BlockState> state = carvingcontext.topMaterial(worldGenLevel.getBiomeManager()::getNoiseBiomeAtPosition, chunkAccess, blockInfo.pos(), false);
                         if (state.isPresent()) {
-                            if (modifiedBlockInfo.state().is(AetherTags.Blocks.AETHER_DIRT) && !modifiedBlockInfo.state().is(AetherBlocks.AETHER_DIRT.get()) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
-                                return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), state.get(), null);
+                            if (blockInfo.state().is(AetherTags.Blocks.AETHER_DIRT) && !blockInfo.state().is(AetherBlocks.AETHER_DIRT.get()) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
+                                return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), state.get(), null);
                             }
                         }
                     }
                 }
             }
         }
-        return modifiedBlockInfo;
+        return blockInfo;
     }
 
     @Override
-    protected StructureProcessorType<?> getType() {
+    public MapCodec<SurfaceRuleProcessor> codec() {
         return AetherStructureProcessors.SURFACE_RULE.get();
     }
 }

@@ -8,7 +8,7 @@ import com.aetherteam.aether.accessories.api.slot.SlotBasedPredicate;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.accessories.api.slot.UniqueSlotHandling;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 import javax.annotation.Nullable;
 
@@ -49,31 +49,31 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
     public void registerSlots(UniqueSlotHandling.UniqueSlotBuilderFactory factory) {
         if (!AetherConfig.COMMON.use_default_accessories_menu.get()) {
             GLOVES_SLOT = factory.create(GLOVES_SLOT_LOCATION, 1).slotPredicates(GLOVES_PREDICATE).validTypes(
-                EntityType.PLAYER,
-                EntityType.ARMOR_STAND,
-                EntityType.ZOMBIE,
-                EntityType.ZOMBIE_VILLAGER,
-                EntityType.HUSK,
-                EntityType.SKELETON,
-                EntityType.STRAY,
-                EntityType.PIGLIN,
-                EntityType.ZOMBIFIED_PIGLIN
+                EntityTypes.PLAYER,
+                EntityTypes.ARMOR_STAND,
+                EntityTypes.ZOMBIE,
+                EntityTypes.ZOMBIE_VILLAGER,
+                EntityTypes.HUSK,
+                EntityTypes.SKELETON,
+                EntityTypes.STRAY,
+                EntityTypes.PIGLIN,
+                EntityTypes.ZOMBIFIED_PIGLIN
             ).allowEquipFromUse(true).build();
-            RING_SLOT = factory.create(RING_SLOT_LOCATION, 2).slotPredicates(RING_PREDICATE).validTypes(EntityType.PLAYER).allowEquipFromUse(true).build();
+            RING_SLOT = factory.create(RING_SLOT_LOCATION, 2).slotPredicates(RING_PREDICATE).validTypes(EntityTypes.PLAYER).allowEquipFromUse(true).build();
             PENDANT_SLOT = factory.create(PENDANT_SLOT_LOCATION, 1).slotPredicates(PENDANT_PREDICATE).validTypes(
-                EntityType.PLAYER,
-                EntityType.ARMOR_STAND,
-                EntityType.ZOMBIE,
-                EntityType.ZOMBIE_VILLAGER,
-                EntityType.HUSK,
-                EntityType.SKELETON,
-                EntityType.STRAY,
-                EntityType.PIGLIN,
-                EntityType.ZOMBIFIED_PIGLIN
+                EntityTypes.PLAYER,
+                EntityTypes.ARMOR_STAND,
+                EntityTypes.ZOMBIE,
+                EntityTypes.ZOMBIE_VILLAGER,
+                EntityTypes.HUSK,
+                EntityTypes.SKELETON,
+                EntityTypes.STRAY,
+                EntityTypes.PIGLIN,
+                EntityTypes.ZOMBIFIED_PIGLIN
             ).allowEquipFromUse(true).build();
-            CAPE_SLOT = factory.create(CAPE_SLOT_LOCATION, 1).slotPredicates(CAPE_PREDICATE).validTypes(EntityType.PLAYER, EntityType.ARMOR_STAND).allowEquipFromUse(true).build();
-            SHIELD_SLOT = factory.create(SHIELD_SLOT_LOCATION, 1).slotPredicates(SHIELD_PREDICATE).validTypes(EntityType.PLAYER, EntityType.ARMOR_STAND).allowEquipFromUse(true).build();
-            ACCESSORY_SLOT = factory.create(ACCESSORY_SLOT_LOCATION, 2).slotPredicates(ACCESSORY_PREDICATE).validTypes(EntityType.PLAYER, EntityType.ARMOR_STAND).allowEquipFromUse(true).build();
+            CAPE_SLOT = factory.create(CAPE_SLOT_LOCATION, 1).slotPredicates(CAPE_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
+            SHIELD_SLOT = factory.create(SHIELD_SLOT_LOCATION, 1).slotPredicates(SHIELD_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
+            ACCESSORY_SLOT = factory.create(ACCESSORY_SLOT_LOCATION, 2).slotPredicates(ACCESSORY_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
         }
     }
 

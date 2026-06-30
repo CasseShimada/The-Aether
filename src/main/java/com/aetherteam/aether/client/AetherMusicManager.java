@@ -149,7 +149,7 @@ public class AetherMusicManager {
      */
     @Nullable
     public static <T extends LivingEntity & AetherBossMob<?>> Music getSituationalMusic() {
-        if (!(minecraft.screen instanceof WinScreen)) {
+        if (!(ClientCompat.screen(minecraft) instanceof WinScreen)) {
             if (minecraft.player != null) { // Otherwise replace creative music with biome music in the Aether.
                 if (isAetherBossMusicActive()) {
                     T boss = getBossFromFight();
@@ -179,11 +179,11 @@ public class AetherMusicManager {
     }
 
     public static boolean isAetherBossMusicActive() {
-        return !AetherConfig.CLIENT.disable_aether_boss_music.get() && !getAetherBossFights().isEmpty() && minecraft.gui.getBossOverlay().shouldPlayMusic();
+        return !AetherConfig.CLIENT.disable_aether_boss_music.get() && !getAetherBossFights().isEmpty() && minecraft.gui.hud.getBossOverlay().shouldPlayMusic();
     }
 
     public static Map<UUID, LerpingBossEvent> getAetherBossFights() {
-        return ((BossHealthOverlayAccessor) minecraft.gui.getBossOverlay()).getEvents().entrySet().stream().filter((entry) -> GuiHooks.isAetherBossBar(entry.getKey())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return ((BossHealthOverlayAccessor) minecraft.gui.hud.getBossOverlay()).getEvents().entrySet().stream().filter((entry) -> GuiHooks.isAetherBossBar(entry.getKey())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static <T extends LivingEntity & AetherBossMob<?>> T getBossFromFight() {

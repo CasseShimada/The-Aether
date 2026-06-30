@@ -38,7 +38,7 @@ public class CrushGoal extends Goal {
         if (EventHooks.canEntityGrief(this.slider.level(), this.slider)) {
             AABB crushBox = this.slider.getBoundingBox().inflate(0.2);
             for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(crushBox.minX), Mth.floor(crushBox.minY), Mth.floor(crushBox.minZ), Mth.floor(crushBox.maxX), Mth.floor(crushBox.maxY), Mth.floor(crushBox.maxZ))) {
-                if (this.slider.getDungeon() == null || this.slider.getDungeon().roomBounds().contains(pos.getCenter())) {
+                if (this.slider.getDungeon() == null || this.slider.getDungeon().roomBounds().contains(Vec3.atCenterOf(pos))) {
                     BlockState blockState = this.slider.level().getBlockState(pos);
                     if (this.isBreakable(blockState)) {
                         crushed = this.slider.level().destroyBlock(pos, true, this.slider) || crushed;

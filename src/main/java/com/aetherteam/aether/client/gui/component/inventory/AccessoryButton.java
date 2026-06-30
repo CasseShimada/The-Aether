@@ -1,5 +1,6 @@
 package com.aetherteam.aether.client.gui.component.inventory;
 
+import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.mixin.mixins.client.accessor.AbstractContainerScreenAccessor;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.aetherteam.aether.network.PacketDistributor;
@@ -32,7 +32,7 @@ public class AccessoryButton extends ImageButton {
 
                         if (parentScreen instanceof AetherAccessoriesScreen) {
                             InventoryScreen inventory = new InventoryScreen(player);
-                            minecraft.setScreen(inventory);
+                            ClientCompat.setScreen(minecraft, inventory);
                             player.inventoryMenu.setCarried(stack);
                             PacketDistributor.sendToServer(new OpenInventoryPacket(stack));
                         } else {
@@ -45,9 +45,9 @@ public class AccessoryButton extends ImageButton {
 
     public void updateButtonState() {
         AbstractContainerScreenAccessor accessor = (AbstractContainerScreenAccessor) this.parentScreen;
-        Tuple<Integer, Integer> offsets = AetherAccessoriesScreen.getButtonOffset(this.parentScreen);
-        this.setX(accessor.aether$getLeftPos() + offsets.getA());
-        this.setY(accessor.aether$getTopPos() + offsets.getB());
+        ScreenOffset offsets = AetherAccessoriesScreen.getButtonOffset(this.parentScreen);
+        this.setX(accessor.aether$getLeftPos() + offsets.x());
+        this.setY(accessor.aether$getTopPos() + offsets.y());
         if (this.parentScreen instanceof CreativeModeInventoryScreen screen) {
             boolean isInventoryTab = screen.isInventoryOpen();
             this.active = isInventoryTab;

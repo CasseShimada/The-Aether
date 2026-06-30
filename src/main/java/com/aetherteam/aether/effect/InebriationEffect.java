@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 
 public class InebriationEffect extends MobEffect {
@@ -52,7 +53,7 @@ public class InebriationEffect extends MobEffect {
             livingEntity.setYRot((float) (livingEntity.getYRot() + this.rotationDirection));
             livingEntity.setXRot((float) (livingEntity.getXRot() + this.rotationDirection));
         }
-        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.PURPLE_DYE),
+        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.DYE.pick(DyeColor.PURPLE)),
                 livingEntity.getX(), livingEntity.getY() + livingEntity.getBbHeight() * 0.8, livingEntity.getZ(),
                 1, 0.0, 0.0, 0.0, 0.0);
     }

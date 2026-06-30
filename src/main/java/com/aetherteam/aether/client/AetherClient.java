@@ -69,7 +69,7 @@ public class AetherClient {
     }
 
     public static void registerItemModelProperties() {
-        // 1.21.11 item model properties are data-driven; keep custom cape predicates active.
+        // Item model properties are data-driven; keep custom cape predicates active.
 
         CAPE_SECRETS.put((stack) -> stack.getHoverName().getString().equalsIgnoreCase("swuff_'s cape"), Identifier.fromNamespaceAndPath(Aether.MODID, "textures/models/accessory/capes/swuff_accessory.png"));
     }
@@ -185,9 +185,9 @@ public class AetherClient {
     }
 
     private static void registerLevelRenderCallbacks() {
-        LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
+        LevelRenderEvents.COLLECT_SUBMITS.register(context -> {
             Minecraft minecraft = Minecraft.getInstance();
-            LevelClientHooks.renderDungeonBlockOverlays(context.poseStack(), minecraft.gameRenderer.getMainCamera(), null, minecraft);
+            LevelClientHooks.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
         });
     }
 
@@ -219,7 +219,7 @@ public class AetherClient {
     }
 
     private static void handleAccessoryHotkey(Minecraft client) {
-        if (!(client.screen instanceof AbstractContainerScreen<?> containerScreen)) {
+        if (!(ClientCompat.screen(client) instanceof AbstractContainerScreen<?> containerScreen)) {
             return;
         }
         if (AetherConfig.CLIENT.disable_accessory_button.get() || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
@@ -284,6 +284,6 @@ public class AetherClient {
      * Used to work around a classloading crash on the server.
      */
     public static void setToSunAltarScreen(Component name, int timeScale) {
-        Minecraft.getInstance().setScreen(new SunAltarScreen(name, timeScale));
+        ClientCompat.setScreen(Minecraft.getInstance(), new SunAltarScreen(name, timeScale));
     }
 }

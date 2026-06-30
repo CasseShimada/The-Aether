@@ -21,7 +21,7 @@ public class AetherAtlases {
     }
 
     public static void registerWoodTypeAtlases() {
-        // WoodType atlas entries are initialized from the global wood type registry in 1.21.11.
+        // WoodType atlas entries are initialized from the global wood type registry.
     }
 
     public static SpriteId getChestMaterial(String chestName) {

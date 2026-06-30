@@ -13,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -134,7 +135,7 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
         private static IncubationRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             String group = buffer.readUtf();
             Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            EntityType<?> entityType = EntityType.byString(buffer.readUtf()).orElseThrow(() -> new JsonSyntaxException("Entity type cannot be found"));
+            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.parse(buffer.readUtf())).orElseThrow(() -> new JsonSyntaxException("Entity type cannot be found"));
             Optional<CompoundTag> tag = buffer.readOptional(RegistryFriendlyByteBuf::readNbt);
             int incubationTime = buffer.readVarInt();
             return new IncubationRecipe(group, ingredient, entityType, tag, incubationTime);

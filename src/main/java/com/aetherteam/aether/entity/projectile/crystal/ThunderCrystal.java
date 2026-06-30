@@ -49,9 +49,10 @@ public class ThunderCrystal extends AbstractCrystal {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (this.level() instanceof ServerLevel serverLevel && result.getEntity() instanceof LivingEntity livingTarget && livingTarget != this.getOwner()) {
-            livingTarget.hurtServer(serverLevel, AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.THUNDER_CRYSTAL, this, this.getOwner()), 5.0F);
+            DamageSource damageSource = AetherDamageTypes.indirectEntityDamageSource(this.level(), AetherDamageTypes.THUNDER_CRYSTAL, this, this.getOwner());
+            livingTarget.hurtServer(serverLevel, damageSource, 5.0F);
             this.knockback(0.1, this.position().subtract(livingTarget.position())); // Apply knockback to the projectile from the distance difference between the projectile and hit entity.
-            livingTarget.knockback(0.25, this.getX() - livingTarget.getX(), this.getZ() - livingTarget.getZ());
+            livingTarget.knockback(0.25, this.getX() - livingTarget.getX(), this.getZ() - livingTarget.getZ(), damageSource, 0.0F);
         }
     }
 

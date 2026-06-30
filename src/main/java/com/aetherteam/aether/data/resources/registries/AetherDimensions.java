@@ -2,7 +2,6 @@ package com.aetherteam.aether.data.resources.registries;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.data.resources.builders.AetherBiomeBuilders;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -41,6 +40,7 @@ public class AetherDimensions {
     public static void bootstrapDimensionType(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
         HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
+        HolderGetter<net.minecraft.world.level.block.Block> blocks = context.lookup(Registries.BLOCK);
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
                 .set(EnvironmentAttributes.FOG_COLOR, 0xC0D8FF)
                 .set(EnvironmentAttributes.SKY_COLOR, 0x78A7FF)
@@ -57,7 +57,7 @@ public class AetherDimensions {
                 0,
                 256,
                 256,
-                BlockTags.INFINIBURN_OVERWORLD,
+                blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD),
                 0.0F,
                 new DimensionType.MonsterSettings(UniformInt.of(0, 7), 0),
                 DimensionType.Skybox.OVERWORLD,

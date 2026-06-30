@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.PostSpawnProcessor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +36,6 @@ import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class MoaEggItem extends Item {
     private static final Map<ResourceKey<MoaType>, MoaEggItem> BY_ID = new IdentityHashMap<>();
@@ -147,7 +147,7 @@ public class MoaEggItem extends Item {
      * @param isPlayerGrown @{link Boolean} for if the Moa was spawned as grown by a player.
      * @return The {@link ItemStack} with the applied tags.
      */
-    public Consumer<Moa> getStackWithTags(ServerLevel serverLevel, ItemStack stack, Player player, boolean isBaby, ResourceKey<MoaType> moaType, boolean isHungry, boolean isPlayerGrown) {
+    public PostSpawnProcessor<Moa> getStackWithTags(ServerLevel serverLevel, ItemStack stack, Player player, boolean isBaby, ResourceKey<MoaType> moaType, boolean isHungry, boolean isPlayerGrown) {
         ItemStack itemStack = stack.copy();
         return EntityType.appendDefaultStackConfig(consumerEntity -> {
             consumerEntity.setBaby(isBaby);

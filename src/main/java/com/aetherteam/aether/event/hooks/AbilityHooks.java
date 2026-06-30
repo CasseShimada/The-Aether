@@ -412,7 +412,7 @@ public class AbilityHooks {
         public static void phoenixArrowHit(HitResult result, Projectile projectile) {
             if (result instanceof EntityHitResult entityHitResult && projectile instanceof AbstractArrow abstractArrow) {
                 Entity impactedEntity = entityHitResult.getEntity();
-                if (impactedEntity.getType() == EntityType.ENDERMAN) {
+                if (impactedEntity.getType() == EntityTypes.ENDERMAN) {
                     return;
                 }
                 if (abstractArrow.hasAttached(AetherDataAttachments.PHOENIX_ARROW)) {

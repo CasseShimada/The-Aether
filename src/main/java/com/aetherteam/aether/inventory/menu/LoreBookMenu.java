@@ -1,6 +1,7 @@
 package com.aetherteam.aether.inventory.menu;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.inventory.container.LoreInventory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -182,7 +183,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
     @Environment(EnvType.CLIENT)
     private boolean hasLoreEntryTranslation(String key) {
-        return I18n.exists(key) || getKnownLoreKeys().contains(key);
+        return ClientCompat.hasTranslation(key) || getKnownLoreKeys().contains(key);
     }
 
     @Environment(EnvType.CLIENT)
@@ -200,7 +201,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
 
     @Environment(EnvType.CLIENT)
     public String resolveLoreEntryText(String key) {
-        if (I18n.exists(key)) {
+        if (ClientCompat.hasTranslation(key)) {
             return I18n.get(key);
         }
         return getKnownLoreEntryTexts().getOrDefault(key, key);

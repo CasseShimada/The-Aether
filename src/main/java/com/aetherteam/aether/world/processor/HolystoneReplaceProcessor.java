@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +21,7 @@ import java.util.Map;
 /**
  * This processor replaces Cobblestone blocks Holystone Brick blocks.
  */
-public class HolystoneReplaceProcessor extends StructureProcessor {
+public class HolystoneReplaceProcessor implements StructureProcessor {
     public static final MapCodec<HolystoneReplaceProcessor> CODEC = MapCodec.unit(() -> HolystoneReplaceProcessor.INSTANCE);
     public static final HolystoneReplaceProcessor INSTANCE = new HolystoneReplaceProcessor();
     private final Map<Block, Block> replacements = Util.make(Maps.newHashMap(), (map) -> {
@@ -40,12 +39,12 @@ public class HolystoneReplaceProcessor extends StructureProcessor {
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos otherPos, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
-        Block block = this.replacements.get(relativeBlockInfo.state().getBlock());
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos otherPos, BlockPos pos, BlockPos blockPos, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
+        Block block = this.replacements.get(blockInfo.state().getBlock());
         if (block == null) {
-            return relativeBlockInfo;
+            return blockInfo;
         } else {
-            BlockState originalState = relativeBlockInfo.state();
+            BlockState originalState = blockInfo.state();
             BlockState newState = block.defaultBlockState();
             if (originalState.hasProperty(StairBlock.FACING)) {
                 newState = newState.setValue(StairBlock.FACING, originalState.getValue(StairBlock.FACING));
@@ -56,11 +55,12 @@ public class HolystoneReplaceProcessor extends StructureProcessor {
             if (originalState.hasProperty(SlabBlock.TYPE)) {
                 newState = newState.setValue(SlabBlock.TYPE, originalState.getValue(SlabBlock.TYPE));
             }
-            return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), newState, relativeBlockInfo.nbt());
+            return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), newState, blockInfo.nbt());
         }
     }
 
-    protected StructureProcessorType<?> getType() {
+    @Override
+    public MapCodec<HolystoneReplaceProcessor> codec() {
         return AetherStructureProcessors.HOLYSTONE_REPLACE.get();
     }
 }

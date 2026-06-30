@@ -49,7 +49,7 @@ final class DimensionSpawnHooks {
         }
 
         BlockPos spawnPos = findInitialSpawn(aetherLevel, serverPlayer.blockPosition());
-        TeleportTransition transition = new TeleportTransition(aetherLevel, spawnPos.getCenter(), Vec3.ZERO, serverPlayer.getYRot(), serverPlayer.getXRot(), Set.of(), TeleportTransition.DO_NOTHING);
+        TeleportTransition transition = new TeleportTransition(aetherLevel, Vec3.atCenterOf(spawnPos), Vec3.ZERO, serverPlayer.getYRot(), serverPlayer.getXRot(), Set.of(), TeleportTransition.DO_NOTHING);
         if (serverPlayer.teleport(transition) != null) {
             serverPlayer.setRespawnPosition(new ServerPlayer.RespawnConfig(LevelData.RespawnData.of(AetherDimensions.AETHER_LEVEL, serverPlayer.blockPosition(), serverPlayer.getYRot(), serverPlayer.getXRot()), true), false);
             aetherPlayer.setCanSpawnInAether(false);

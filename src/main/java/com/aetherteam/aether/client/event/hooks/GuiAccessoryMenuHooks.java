@@ -2,8 +2,10 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
+import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
+import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
 import com.aetherteam.aether.mixin.mixins.client.accessor.AbstractContainerScreenAccessor;
@@ -16,7 +18,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -27,19 +28,19 @@ final class GuiAccessoryMenuHooks {
     private GuiAccessoryMenuHooks() {
     }
 
-    static AccessoryButton setupAccessoryButton(Screen screen, Tuple<Integer, Integer> offsets) {
+    static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
         AbstractContainerScreen<?> containerScreen = canCreateAccessoryButtonForScreen(screen);
         if (containerScreen == null) {
             return null;
         }
 
         AbstractContainerScreenAccessor accessor = (AbstractContainerScreenAccessor) containerScreen;
-        return new AccessoryButton(containerScreen, accessor.aether$getLeftPos() + offsets.getA(), accessor.aether$getTopPos() + offsets.getB(), AetherAccessoriesScreen.ACCESSORIES_BUTTON);
+        return new AccessoryButton(containerScreen, accessor.aether$getLeftPos() + offsets.x(), accessor.aether$getTopPos() + offsets.y(), AetherAccessoriesScreen.ACCESSORIES_BUTTON);
     }
 
     static void openAccessoryMenu() {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player == null || minecraft.getOverlay() != null || minecraft.screen != null) {
+        if (minecraft.player == null || ClientCompat.overlay(minecraft) != null || ClientCompat.screen(minecraft) != null) {
             return;
         }
 
@@ -58,7 +59,7 @@ final class GuiAccessoryMenuHooks {
 
     static void closeContainerMenu(int key, int action) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(minecraft.screen instanceof AbstractContainerScreen<?> abstractContainerScreen)) {
+        if (!(ClientCompat.screen(minecraft) instanceof AbstractContainerScreen<?> abstractContainerScreen)) {
             return;
         }
 
