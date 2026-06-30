@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 /**
- * 1.21.11 cow variants use 64x64 textures; Aether Flying Cow textures are still authored against the legacy 64x32 UV layout.
+ * Modern cow variants use 64x64 textures; Aether Flying Cow textures are still authored against the legacy 64x32 UV layout.
  */
 public class LegacyCowModel extends CowModel {
     public LegacyCowModel(ModelPart root) {

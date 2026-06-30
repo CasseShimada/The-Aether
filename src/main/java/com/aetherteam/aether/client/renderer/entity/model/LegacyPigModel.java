@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 /**
- * 1.21.11 pig variants use 64x64 textures; Aether Phyg textures are still authored against the legacy 64x32 UV layout.
+ * Modern pig variants use 64x64 textures; Aether Phyg textures are still authored against the legacy 64x32 UV layout.
  */
 public class LegacyPigModel extends PigModel {
     public LegacyPigModel(ModelPart root) {
