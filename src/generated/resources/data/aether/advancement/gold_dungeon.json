@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "aether:sun_spirit"
+              "minecraft:entity_type": "aether:sun_spirit"
             }
           }
         ]

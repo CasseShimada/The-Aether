@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "aether:valkyrie_queen"
+              "minecraft:entity_type": "aether:valkyrie_queen"
             }
           }
         ]

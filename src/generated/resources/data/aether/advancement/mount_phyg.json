@@ -8,8 +8,8 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "vehicle": {
-                "type": "aether:phyg"
+              "minecraft:vehicle": {
+                "minecraft:entity_type": "aether:phyg"
               }
             }
           }

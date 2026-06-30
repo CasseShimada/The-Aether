@@ -8,9 +8,9 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "vehicle": {
-                "type": "aether:moa",
-                "nbt": "{MoaType:\"aether:black\"}"
+              "minecraft:vehicle": {
+                "minecraft:entity_type": "aether:moa",
+                "minecraft:nbt": "{MoaType:\"aether:black\"}"
               }
             }
           }

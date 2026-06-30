@@ -8,13 +8,13 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "aether:zephyr"
+              "minecraft:entity_type": "aether:zephyr"
             }
           }
         ],
         "killing_blow": {
           "direct_entity": {
-            "type": "aether:hammer_projectile"
+            "minecraft:entity_type": "aether:hammer_projectile"
           },
           "tags": [
             {
