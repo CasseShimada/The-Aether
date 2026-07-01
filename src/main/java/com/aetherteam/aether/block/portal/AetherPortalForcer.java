@@ -44,7 +44,7 @@ public class AetherPortalForcer {
         PoiManager poimanager = this.level.getPoiManager();
         int i = 128;
         poimanager.ensureLoadedAndValid(this.level, pExitPos, i);
-        return poimanager.getInSquare(poiType -> poiType.value() == AetherPoi.AETHER_PORTAL.get(), pExitPos, i, PoiManager.Occupancy.ANY)
+        return poimanager.getInSquare(poiType -> poiType.value() == AetherPoi.AETHER_PORTAL, pExitPos, i, PoiManager.Occupancy.ANY)
             .map(PoiRecord::getPos)
             .filter(pWorldBorder::isWithinBounds)
             .filter(p_352047_ -> this.level.getBlockState(p_352047_).hasProperty(BlockStateProperties.HORIZONTAL_AXIS))
