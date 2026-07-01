@@ -74,6 +74,7 @@ public final class Aether {
         Reflection.initialize(AetherRecipeBookCategories.class);
         Reflection.initialize(AetherRecipeTypes.class);
         Reflection.initialize(AetherRecipeSerializers.class);
+        Reflection.initialize(AetherAttributes.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -104,7 +105,6 @@ public final class Aether {
                 AetherEntityTypes.ENTITY_TYPES,
                 AetherSoundEvents.SOUNDS,
                 AetherItems.ITEMS,
-                AetherAttributes.ATTRIBUTES,
                 AetherBlockEntityTypes.BLOCK_ENTITY_TYPES,
                 AetherMenuTypes.MENU_TYPES,
                 AetherParticleTypes.PARTICLES,

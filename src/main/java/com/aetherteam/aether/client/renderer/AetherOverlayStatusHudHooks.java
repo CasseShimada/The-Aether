@@ -89,7 +89,7 @@ final class AetherOverlayStatusHudHooks {
     }
 
     private static Identifier getMoaJumpTexture(Moa moa, double count) {
-        AttributeInstance instance = moa.getAttribute(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AetherAttributes.MOA_MAX_JUMPS.get()));
+        AttributeInstance instance = moa.getAttribute(BuiltInRegistries.ATTRIBUTE.wrapAsHolder(AetherAttributes.MOA_MAX_JUMPS));
         if (instance != null) {
             if (count < instance.getBaseValue()) {
                 return getDefaultJumpsTexture(moa.getMoaType());
