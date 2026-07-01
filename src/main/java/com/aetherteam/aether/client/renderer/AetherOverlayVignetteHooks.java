@@ -52,7 +52,7 @@ final class AetherOverlayVignetteHooks {
             return;
         }
 
-        MobEffectInstance inebriation = player.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION.get()));
+        MobEffectInstance inebriation = player.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION));
         if (inebriation != null) {
             float inebriationDuration = (float) (inebriation.getDuration() % 50) / 50;
             float alpha = (inebriationDuration * inebriationDuration) / 5.0F + 0.4F;
@@ -65,7 +65,7 @@ final class AetherOverlayVignetteHooks {
             return;
         }
 
-        MobEffectInstance remedy = player.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY.get()));
+        MobEffectInstance remedy = player.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY));
         if (remedy == null) {
             return;
         }

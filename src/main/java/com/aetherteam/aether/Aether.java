@@ -75,6 +75,7 @@ public final class Aether {
         Reflection.initialize(AetherRecipeTypes.class);
         Reflection.initialize(AetherRecipeSerializers.class);
         Reflection.initialize(AetherAttributes.class);
+        Reflection.initialize(AetherEffects.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -100,7 +101,6 @@ public final class Aether {
 
     private static void registerContent() {
         DeferredRegister<?>[] registers = {
-                AetherEffects.EFFECTS,
                 AetherBlocks.BLOCKS,
                 AetherEntityTypes.ENTITY_TYPES,
                 AetherSoundEvents.SOUNDS,

@@ -399,7 +399,7 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
     @SuppressWarnings("deprecation")
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        return effect.getEffect().value() != AetherEffects.INEBRIATION.get() && super.canBeAffected(effect);
+        return effect.getEffect().value() != AetherEffects.INEBRIATION && super.canBeAffected(effect);
     }
 
     @Override

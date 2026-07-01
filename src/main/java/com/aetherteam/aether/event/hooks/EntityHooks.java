@@ -273,7 +273,7 @@ public class EntityHooks {
      * @see com.aetherteam.aether.event.listeners.EntityListener#onEffectApply(MobEffectEvent.Applicable)
      */
     public static boolean preventInebriation(LivingEntity livingEntity, MobEffectInstance appliedInstance) {
-        return livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY.get())) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION.get();
+        return livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY)) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION;
     }
 
     /**

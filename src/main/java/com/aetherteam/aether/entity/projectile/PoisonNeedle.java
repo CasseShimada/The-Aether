@@ -32,7 +32,7 @@ public class PoisonNeedle extends AbstractDart {
     @Override
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        living.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION.get()), 500, 0, false, false, true));
+        living.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION), 500, 0, false, false, true));
     }
 
     @Override

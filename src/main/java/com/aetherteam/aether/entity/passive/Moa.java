@@ -797,7 +797,7 @@ public class Moa extends MountableAnimal implements WingedBird {
     @SuppressWarnings("deprecation")
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        return (effect.getEffect().value() != AetherEffects.INEBRIATION.get() || !this.isPlayerGrown()) && super.canBeAffected(effect);
+        return (effect.getEffect().value() != AetherEffects.INEBRIATION || !this.isPlayerGrown()) && super.canBeAffected(effect);
     }
 
     /**

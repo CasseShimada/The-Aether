@@ -36,7 +36,7 @@ public class PoisonDart extends AbstractDart {
     @Override
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        living.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION.get()), 200, 0));
+        living.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION), 200, 0));
     }
 
     @Override
