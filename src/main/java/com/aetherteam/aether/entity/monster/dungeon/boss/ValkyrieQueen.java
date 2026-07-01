@@ -486,7 +486,12 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
      */
     @Override
     public void tearDownRoom() {
-        for (BlockPos pos : BlockPos.betweenClosed((int) this.dungeonBounds.minX, (int) this.dungeonBounds.minY, (int) this.dungeonBounds.minZ, (int) this.dungeonBounds.maxX, (int) this.dungeonBounds.maxY, (int) this.dungeonBounds.maxZ)) {
+        AABB bounds = this.dungeonBounds;
+        if (bounds == null) {
+            AetherBossMob.super.tearDownRoom();
+            return;
+        }
+        for (BlockPos pos : BlockPos.betweenClosed((int) bounds.minX, (int) bounds.minY, (int) bounds.minZ, (int) Math.floor(Math.nextDown(bounds.maxX)), (int) Math.floor(Math.nextDown(bounds.maxY)), (int) Math.floor(Math.nextDown(bounds.maxZ)))) {
             BlockState state = this.level().getBlockState(pos);
             BlockState newState = this.convertBlock(state);
             if (newState != null) {
@@ -627,7 +632,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     public void setDungeon(@Nullable BossRoomTracker<ValkyrieQueen> dungeon) {
         this.dungeon = dungeon;
-        if (this.dungeonBounds == null) {
+        if (dungeon != null && this.dungeonBounds == null) {
             this.dungeonBounds = dungeon.roomBounds();
         }
     }
@@ -773,6 +778,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
+        input.read("Dungeon", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
         input.child("DungeonBounds").ifPresent(bounds -> this.dungeonBounds = new AABB(
                 bounds.getDoubleOr("MinX", 0.0),
                 bounds.getDoubleOr("MinY", 0.0),
@@ -781,6 +787,17 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
                 bounds.getDoubleOr("MaxY", 0.0),
                 bounds.getDoubleOr("MaxZ", 0.0)
         ));
+        double oldDungeonMinX = input.getDoubleOr("DungeonBoundsMinX", Double.NaN);
+        if (!Double.isNaN(oldDungeonMinX)) {
+            this.dungeonBounds = new AABB(
+                    oldDungeonMinX,
+                    input.getDoubleOr("DungeonBoundsMinY", 0.0),
+                    input.getDoubleOr("DungeonBoundsMinZ", 0.0),
+                    input.getDoubleOr("DungeonBoundsMaxX", 0.0),
+                    input.getDoubleOr("DungeonBoundsMaxY", 0.0),
+                    input.getDoubleOr("DungeonBoundsMaxZ", 0.0)
+            );
+        }
         this.setReady(input.getBooleanOr("Ready", this.isReady()));
     }
 

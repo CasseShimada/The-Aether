@@ -45,8 +45,12 @@ public class BossRoomTracker<T extends Mob & BossMob<T>> {
         return this.roomBounds;
     }
 
+    public boolean isBossWithinRoom() {
+        return this.roomBounds.contains(this.boss.position());
+    }
+
     public boolean isPlayerWithinRoomInterior(Entity entity) {
-        return entity != null && this.roomBounds.contains(entity.position());
+        return entity != null && this.roomBounds.deflate(1.0, 1.0, 1.0).contains(entity.position());
     }
 
     public boolean isPlayerTracked(Player player) {
@@ -58,7 +62,7 @@ public class BossRoomTracker<T extends Mob & BossMob<T>> {
             return;
         }
         BlockPos min = BlockPos.containing(this.roomBounds.minX, this.roomBounds.minY, this.roomBounds.minZ);
-        BlockPos max = BlockPos.containing(this.roomBounds.maxX, this.roomBounds.maxY, this.roomBounds.maxZ);
+        BlockPos max = BlockPos.containing(Math.nextDown(this.roomBounds.maxX), Math.nextDown(this.roomBounds.maxY), Math.nextDown(this.roomBounds.maxZ));
         for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
             BlockState oldState = level.getBlockState(pos);
             BlockState newState = converter.apply(oldState);
@@ -100,7 +104,7 @@ public class BossRoomTracker<T extends Mob & BossMob<T>> {
         }
         Set<UUID> currentlyInside = new HashSet<>();
         for (ServerPlayer player : level.players()) {
-            if (this.isPlayerWithinRoomInterior(player)) {
+            if (player.isAlive() && this.isPlayerWithinRoomInterior(player)) {
                 UUID playerId = player.getUUID();
                 currentlyInside.add(playerId);
                 if (this.trackedPlayers.add(playerId)) {

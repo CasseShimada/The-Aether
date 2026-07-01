@@ -2,6 +2,7 @@ package com.aetherteam.aether.world.structure;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
+import com.aetherteam.aether.entity.monster.dungeon.boss.SunSpirit;
 import com.aetherteam.aether.world.BlockLogicUtil;
 import com.aetherteam.aether.world.structurepiece.golddungeon.*;
 import com.mojang.serialization.Codec;
@@ -223,6 +224,8 @@ public class GoldDungeonStructure extends Structure {
                 GoldDungeonStructure.placeGoldenOaks(level, generator, random, island.getBoundingBox(), chunkBox, this.islandFoliage);
             } else if (piece instanceof GoldStub stub) {
                 GoldDungeonStructure.placeGoldenOaks(level, generator, random, stub.getBoundingBox(), chunkBox, this.stubFoliage);
+            } else if (piece instanceof GoldBossRoom) {
+                BossRoomBinding.bindBossRoom(level, chunkBox, piece.getBoundingBox(), SunSpirit.class);
             }
         }
     }

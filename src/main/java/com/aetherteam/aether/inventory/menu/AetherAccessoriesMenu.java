@@ -2,9 +2,9 @@ package com.aetherteam.aether.inventory.menu;
 
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
 import com.aetherteam.aether.mixin.mixins.common.accessor.AbstractContainerMenuAccessor;
 import com.aetherteam.aether.mixin.mixins.common.accessor.CraftingMenuAccessor;
-import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesSlotGenerator;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 
 public class AetherAccessoriesMenu extends InventoryMenu {
+    private static final int RESULT_SLOT = 0;
+    private static final int CRAFTING_SLOT_START = 1;
+    private static final int CRAFTING_SLOT_END = CRAFTING_SLOT_START + 4;
+    private static final int ACCESSORY_LEFT_X = 77;
+    private static final int ACCESSORY_TOP_Y = 8;
+    public static final int ACCESSORY_SLOT_BACKGROUND_X = ACCESSORY_LEFT_X;
+    public static final int ACCESSORY_SLOT_BACKGROUND_Y = ACCESSORY_TOP_Y + 54;
+    public static final int BACK_SLOT_X = 134;
+    public static final int BACK_SLOT_Y = ACCESSORY_SLOT_BACKGROUND_Y;
+
     private static final Map<EquipmentSlot, Identifier> TEXTURE_EMPTY_SLOTS = Map.of(
         EquipmentSlot.FEET,
         InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS,
@@ -32,6 +42,14 @@ public class AetherAccessoriesMenu extends InventoryMenu {
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 2, 2);
     private final ResultContainer resultSlots = new ResultContainer();
     private final Player owner;
+    private final int accessoryStart;
+    private final int accessoryEnd;
+    private final int armorStart;
+    private final int armorEnd;
+    private final int inventoryStart;
+    private final int hotbarStart;
+    private final int hotbarEnd;
+    private final int offhandSlot;
 
     public final boolean hasButton;
 
@@ -59,14 +77,18 @@ public class AetherAccessoriesMenu extends InventoryMenu {
             }
         }
 
-        int x = 77, y = 8; // Adjust these values
+        int x = ACCESSORY_LEFT_X, y = ACCESSORY_TOP_Y;
 
+        this.accessoryStart = this.slots.size();
         AccessoriesSlotGenerator.of(this::addSlot, x, y, this.owner, AetherAccessorySlots.getPendantSlotType(), AetherAccessorySlots.getCapeSlotType(), AetherAccessorySlots.getShieldSlotType()).column();
         AccessoriesSlotGenerator.of(this::addSlot, x + 18, y, this.owner, AetherAccessorySlots.getRingSlotType(), AetherAccessorySlots.getGlovesSlotType()).column();
-        AccessoriesSlotGenerator.of(this::addSlot, x, y + (3 * 18), this.owner, AetherAccessorySlots.getAccessorySlotType()).row();
+        AccessoriesSlotGenerator.of(this::addSlot, ACCESSORY_SLOT_BACKGROUND_X, ACCESSORY_SLOT_BACKGROUND_Y, this.owner, AetherAccessorySlots.getAccessorySlotType()).row();
+        AccessoriesSlotGenerator.of(this::addSlot, BACK_SLOT_X, BACK_SLOT_Y, this.owner, AetherAccessorySlots.getBackSlotType()).row();
+        this.accessoryEnd = this.slots.size();
 
         this.hasButton = hasButton;
 
+        this.armorStart = this.slots.size();
         for (int k = 0; k < 4; k++) {
             EquipmentSlot equipmentslot = SLOT_IDS[k];
             Identifier resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
@@ -93,17 +115,22 @@ public class AetherAccessoriesMenu extends InventoryMenu {
                 }
             });
         }
+        this.armorEnd = this.slots.size();
 
+        this.inventoryStart = this.slots.size();
         for (int l = 0; l < 3; l++) {
             for (int j1 = 0; j1 < 9; j1++) {
                 this.addSlot(new Slot(playerInventory, j1 + (l + 1) * 9, 8 + j1 * 18, 84 + l * 18));
             }
         }
 
+        this.hotbarStart = this.slots.size();
         for (int i1 = 0; i1 < 9; i1++) {
             this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 142));
         }
+        this.hotbarEnd = this.slots.size();
 
+        this.offhandSlot = this.slots.size();
         this.addSlot(new Slot(playerInventory, 40, 116, 62) {
             @Override
             public void setByPlayer(ItemStack p_270969_, ItemStack p_299918_) {
@@ -154,47 +181,51 @@ public class AetherAccessoriesMenu extends InventoryMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
+        if (index < 0 || index >= this.slots.size()) {
+            return itemStack;
+        }
+
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
             ItemStack itemStack1 = slot.getItem();
             itemStack = itemStack1.copy();
             EquipmentSlot equipmentSlot = player.getEquipmentSlotForItem(itemStack);
-            if (index == 0) {
-                if (!this.moveItemStackTo(itemStack1, 17, 53, true)) {
+            if (index == RESULT_SLOT) {
+                if (!this.moveItemStackToInventory(itemStack1, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemStack1, itemStack);
-            } else if (index < 5) {
-                if (!this.moveItemStackTo(itemStack1, 17, 53, false)) {
+            } else if (this.isCraftingSlot(index) || this.isAccessorySlot(index) || this.isArmorSlot(index) || index == this.offhandSlot) {
+                if (!this.moveItemStackToInventory(itemStack1, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index < 17) {
-                if (!this.moveItemStackTo(itemStack1, 17, 53, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && !this.slots.get(16 - equipmentSlot.getIndex()).hasItem()) {
-                int i = 16 - equipmentSlot.getIndex();
-                if (!this.moveItemStackTo(itemStack1, i, i + 1, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (index < 53) {
+            } else if (this.isPlayerInventorySlot(index)) {
                 int accessorySlotIndex = this.getFirstEmptyAccessorySlot(player, itemStack1);
-                if (accessorySlotIndex >= 0 && !this.moveItemStackTo(itemStack1, accessorySlotIndex, accessorySlotIndex + 1, false)) {
+                if (accessorySlotIndex >= 0) {
+                    if (!this.moveItemStackTo(itemStack1, accessorySlotIndex, accessorySlotIndex + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && this.canMoveToArmorSlot(equipmentSlot)) {
+                    int armorSlotIndex = this.getArmorSlotIndex(equipmentSlot);
+                    if (!this.moveItemStackTo(itemStack1, armorSlotIndex, armorSlotIndex + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (equipmentSlot == EquipmentSlot.OFFHAND && !this.slots.get(this.offhandSlot).hasItem()) {
+                    if (!this.moveItemStackTo(itemStack1, this.offhandSlot, this.offhandSlot + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (this.isMainInventorySlot(index)) {
+                    if (!this.moveItemStackTo(itemStack1, this.hotbarStart, this.hotbarEnd, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (this.isMenuHotbarSlot(index)) {
+                    if (!this.moveItemStackTo(itemStack1, this.inventoryStart, this.hotbarStart, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
                     return ItemStack.EMPTY;
                 }
-            } else if (equipmentSlot == EquipmentSlot.OFFHAND && !(this.slots.get(53)).hasItem()) {
-                if (!this.moveItemStackTo(itemStack1, 53, 54, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (index < 44) {
-                if (!this.moveItemStackTo(itemStack1, 44, 53, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (index < 53) {
-                if (!this.moveItemStackTo(itemStack1, 17, 44, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.moveItemStackTo(itemStack1, 17, 53, false)) {
+            } else if (!this.moveItemStackToInventory(itemStack1, false)) {
                 return ItemStack.EMPTY;
             }
             if (itemStack1.isEmpty()) {
@@ -213,9 +244,51 @@ public class AetherAccessoriesMenu extends InventoryMenu {
         return itemStack;
     }
 
+    private boolean moveItemStackToInventory(ItemStack stack, boolean reverseDirection) {
+        return this.moveItemStackTo(stack, this.inventoryStart, this.hotbarEnd, reverseDirection);
+    }
+
+    private boolean isCraftingSlot(int index) {
+        return index >= CRAFTING_SLOT_START && index < CRAFTING_SLOT_END;
+    }
+
+    private boolean isAccessorySlot(int index) {
+        return index >= this.accessoryStart && index < this.accessoryEnd;
+    }
+
+    private boolean isArmorSlot(int index) {
+        return index >= this.armorStart && index < this.armorEnd;
+    }
+
+    private boolean isPlayerInventorySlot(int index) {
+        return index >= this.inventoryStart && index < this.hotbarEnd;
+    }
+
+    private boolean isMainInventorySlot(int index) {
+        return index >= this.inventoryStart && index < this.hotbarStart;
+    }
+
+    private boolean isMenuHotbarSlot(int index) {
+        return index >= this.hotbarStart && index < this.hotbarEnd;
+    }
+
+    private boolean canMoveToArmorSlot(EquipmentSlot equipmentSlot) {
+        int armorSlotIndex = this.getArmorSlotIndex(equipmentSlot);
+        return armorSlotIndex >= 0 && !this.slots.get(armorSlotIndex).hasItem();
+    }
+
+    private int getArmorSlotIndex(EquipmentSlot equipmentSlot) {
+        for (int i = 0; i < SLOT_IDS.length; i++) {
+            if (SLOT_IDS[i] == equipmentSlot) {
+                return this.armorStart + i;
+            }
+        }
+        return -1;
+    }
+
     private int getFirstEmptyAccessorySlot(Player player, ItemStack stack) {
         AccessoriesCapability capability = AccessoriesCapability.get(player);
-        if (capability == null || AccessoriesAPI.getValidSlotTypes(player, stack).isEmpty()) {
+        if (capability == null) {
             return -1;
         }
 
@@ -224,15 +297,19 @@ public class AetherAccessoriesMenu extends InventoryMenu {
             return -1;
         }
 
-        return switch (equipReference.first().slotName()) {
-            case "aether:pendant_slot" -> 5 + equipReference.first().slot();
-            case "aether:cape_slot" -> 6 + equipReference.first().slot();
-            case "aether:shield_slot" -> 7 + equipReference.first().slot();
-            case "aether:ring_slot" -> 8 + equipReference.first().slot();
-            case "aether:gloves_slot" -> 10 + equipReference.first().slot();
-            case "aether:accessory_slot" -> 11 + equipReference.first().slot();
-            default -> -1;
-        };
+        return this.getMenuIndexForAccessorySlot(equipReference.first().slotName(), equipReference.first().slot());
+    }
+
+    private int getMenuIndexForAccessorySlot(String slotName, int slotIndex) {
+        for (int i = this.accessoryStart; i < this.accessoryEnd; i++) {
+            Slot slot = this.slots.get(i);
+            if (slot instanceof AccessoriesBasedSlot accessorySlot
+                    && accessorySlot.slotName().equals(slotName)
+                    && accessorySlot.slotIndex() == slotIndex) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

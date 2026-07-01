@@ -1,5 +1,6 @@
 package com.aetherteam.aether.event.hooks;
 
+import com.aetherteam.aether.data.resources.AetherMobCategory;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,10 +28,10 @@ final class EntitySkySpawnHooks {
                 continue;
             }
 
-            // NeoForge used dedicated mob categories for these groups (sky monster cap 4, aerwhale cap 1).
-            // Fabric lacks those enum extensions, so we reproduce the cadence explicitly per active player.
-            trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 4, 20);
-            if (level.getGameTime() % 240L == 0L) {
+            if (!AetherMobCategory.hasCustomSkyMonsterCategory()) {
+                trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 4, 20);
+            }
+            if (!AetherMobCategory.hasCustomAerwhaleCategory() && level.getGameTime() % 240L == 0L) {
                 trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 20);
             }
         }
@@ -52,9 +53,13 @@ final class EntitySkySpawnHooks {
                 continue;
             }
 
+            if (!level.hasChunkAt(new BlockPos(x, origin.getY(), z))) {
+                continue;
+            }
+
             int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
             BlockPos spawnPos = new BlockPos(x, y, z);
-            if (!level.hasChunkAt(spawnPos) || !SpawnPlacements.checkSpawnRules(entityType, level, EntitySpawnReason.NATURAL, spawnPos, random)) {
+            if (!SpawnPlacements.checkSpawnRules(entityType, level, EntitySpawnReason.NATURAL, spawnPos, random)) {
                 continue;
             }
 

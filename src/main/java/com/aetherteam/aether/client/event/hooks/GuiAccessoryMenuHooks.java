@@ -44,7 +44,9 @@ final class GuiAccessoryMenuHooks {
             return;
         }
 
-        if (AetherConfig.CLIENT.disable_accessory_button.get() || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
+        if (AetherConfig.COMMON.use_default_accessories_menu.get()
+                || AetherConfig.CLIENT.disable_accessory_button.get()
+                || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
             return;
         }
 
@@ -63,7 +65,8 @@ final class GuiAccessoryMenuHooks {
             return;
         }
 
-        if (!AetherConfig.CLIENT.disable_accessory_button.get()
+        if (!AetherConfig.COMMON.use_default_accessories_menu.get()
+                && !AetherConfig.CLIENT.disable_accessory_button.get()
                 && AetherKeys.OPEN_ACCESSORY_INVENTORY.matches(new KeyEvent(key, 0, 0))
                 && (action == InputConstants.PRESS || action == InputConstants.REPEAT)) {
             abstractContainerScreen.onClose();

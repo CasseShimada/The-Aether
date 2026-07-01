@@ -5,6 +5,7 @@ import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.accessories.Accessories;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
+import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
@@ -43,8 +44,17 @@ public class AetherMixinHooks {
     }
 
     public static ItemStack getVisibleWingsAccessory(LivingEntity livingEntity) {
-        ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
-        return stack.is(Items.ELYTRA) ? stack : ItemStack.EMPTY;
+        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        if (accessories != null) {
+            for (SlotEntryReference reference : accessories.getAllEquipped()) {
+                AccessoriesContainer accessoriesContainer = accessories.getContainer(reference.reference().type());
+                ItemStack stack = getVisibleAccessory(accessoriesContainer, reference.reference().slot());
+                if (stack.is(Items.ELYTRA)) {
+                    return stack;
+                }
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -85,15 +95,19 @@ public class AetherMixinHooks {
         AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+            return getVisibleAccessory(accessoriesContainer, slotIndex);
+        }
+        return ItemStack.EMPTY;
+    }
 
-            if (accessoriesContainer != null && accessoriesContainer.shouldRender(slotIndex)) {
-                ItemStack stack = accessoriesContainer.getAccessories().getItem(slotIndex);
-                ItemStack cosmeticStack = accessoriesContainer.getCosmeticAccessories().getItem(slotIndex);
-                if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
-                    stack = cosmeticStack;
-                }
-                return stack;
+    private static ItemStack getVisibleAccessory(AccessoriesContainer accessoriesContainer, int slotIndex) {
+        if (accessoriesContainer != null && accessoriesContainer.shouldRender(slotIndex)) {
+            ItemStack stack = accessoriesContainer.getAccessories().getItem(slotIndex);
+            ItemStack cosmeticStack = accessoriesContainer.getCosmeticAccessories().getItem(slotIndex);
+            if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
+                stack = cosmeticStack;
             }
+            return stack;
         }
         return ItemStack.EMPTY;
     }

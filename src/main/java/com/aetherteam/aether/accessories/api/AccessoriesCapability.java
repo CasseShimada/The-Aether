@@ -283,6 +283,20 @@ public class AccessoriesCapability {
         }
     }
 
+    public synchronized void handleImmediateStackMutation(SlotReference reference) {
+        String key = slotKey(reference.slotName(), reference.slot());
+        ItemStack current = reference.getStack();
+        if (current.isEmpty()) {
+            this.previousEquipped.remove(key);
+        } else {
+            this.previousEquipped.put(key, current.copy());
+        }
+        this.persistToAttachment();
+        if (this.isServerSide()) {
+            this.syncDirty = true;
+        }
+    }
+
     private synchronized void ensureContainers() {
         for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
             this.containers.computeIfAbsent(definition.type().name(), key -> new AccessoriesContainer(this, definition.type()));

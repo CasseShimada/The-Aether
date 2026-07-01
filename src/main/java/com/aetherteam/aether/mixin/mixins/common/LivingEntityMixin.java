@@ -9,14 +9,19 @@ import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
 import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,6 +52,12 @@ import java.util.function.Predicate;
 public abstract class LivingEntityMixin {
     @Unique
     private boolean aether$trackingDeathDrops;
+    @Unique
+    private ItemStack aether$breakingAccessoryEquipmentStack = ItemStack.EMPTY;
+    @Unique
+    private EquipmentSlot aether$breakingAccessoryEquipmentSlot;
+    @Unique
+    private boolean aether$checkingAccessoryDeathProtection;
 
     /**
      * Handles vertical swimming for Phoenix Armor in lava without being affected by the upwards speed debuff from lava.
@@ -190,6 +202,36 @@ public abstract class LivingEntityMixin {
         return AccessoryEffectBridge.isHoldingEquivalent((LivingEntity) (Object) this, predicate);
     }
 
+    @Inject(method = "checkTotemDeathProtection(Lnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("RETURN"), cancellable = true)
+    private void aether$checkAccessoryDeathProtection(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValueZ() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || this.aether$checkingAccessoryDeathProtection) {
+            return;
+        }
+
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        this.aether$checkingAccessoryDeathProtection = true;
+        try {
+            AccessoryEffectBridge.DeathProtectionResult result = AccessoryEffectBridge.consumeDeathProtection(livingEntity);
+            if (result == null) {
+                return;
+            }
+
+            ItemStack usedStack = result.usedStack();
+            if (livingEntity instanceof ServerPlayer serverPlayer) {
+                serverPlayer.awardStat(Stats.ITEM_USED.get(usedStack.getItem()));
+                CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, usedStack);
+                usedStack.causeUseVibration(livingEntity, GameEvent.ITEM_INTERACT_FINISH);
+            }
+
+            livingEntity.setHealth(1.0F);
+            result.deathProtection().applyEffects(usedStack, livingEntity);
+            livingEntity.level().broadcastEntityEvent(livingEntity, (byte) 35);
+            cir.setReturnValue(true);
+        } finally {
+            this.aether$checkingAccessoryDeathProtection = false;
+        }
+    }
+
     @WrapOperation(method = {"canGlide()Z", "updateFallFlying()V", "onEquippedItemBroken(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/entity/EquipmentSlot;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack aether$useAccessoryElytraForVanillaFlightChecks(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         ItemStack stack = original.call(instance, slot);
@@ -197,8 +239,12 @@ public abstract class LivingEntityMixin {
             return stack;
         }
 
-        ItemStack accessoryStack = AccessoryEffectBridge.findFirstByEquipmentSlot(instance, EquipmentSlot.CHEST);
-        return accessoryStack.is(Items.ELYTRA) ? accessoryStack : stack;
+        if (this.aether$breakingAccessoryEquipmentSlot == slot && !this.aether$breakingAccessoryEquipmentStack.isEmpty()) {
+            return this.aether$breakingAccessoryEquipmentStack;
+        }
+
+        SlotEntryReference accessoryReference = AccessoryEffectBridge.findFirstElytraReference(instance);
+        return accessoryReference != null ? accessoryReference.stack() : stack;
     }
 
     @WrapOperation(method = "updateFallFlying()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getRandom(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/lang/Object;"))
@@ -209,13 +255,43 @@ public abstract class LivingEntityMixin {
 
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)
-                && AccessoryEffectBridge.findFirstByEquipmentSlot(livingEntity, EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+                && AccessoryEffectBridge.findFirstElytraReference(livingEntity) != null) {
             @SuppressWarnings("unchecked")
             T chestSlot = (T) EquipmentSlot.CHEST;
             return chestSlot;
         }
 
         return original.call(candidates, random);
+    }
+
+    @WrapOperation(method = "updateFallFlying()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V"))
+    private void aether$syncAccessoryElytraDamage(ItemStack stack, int amount, LivingEntity entity, EquipmentSlot slot, Operation<Void> original) {
+        SlotEntryReference accessoryReference = null;
+        if (slot == EquipmentSlot.CHEST) {
+            accessoryReference = AccessoryEffectBridge.findFirstElytraReference(entity);
+            if (accessoryReference != null && accessoryReference.stack() != stack) {
+                accessoryReference = null;
+            }
+        }
+
+        ItemStack previousStack = stack.copy();
+        if (accessoryReference != null) {
+            this.aether$breakingAccessoryEquipmentStack = previousStack;
+            this.aether$breakingAccessoryEquipmentSlot = slot;
+        }
+
+        try {
+            original.call(stack, amount, entity, slot);
+        } finally {
+            if (accessoryReference != null) {
+                this.aether$breakingAccessoryEquipmentStack = ItemStack.EMPTY;
+                this.aether$breakingAccessoryEquipmentSlot = null;
+            }
+        }
+
+        if (accessoryReference != null) {
+            AccessoryEffectBridge.syncAccessorySlotMutation(entity, accessoryReference, previousStack);
+        }
     }
 
 }

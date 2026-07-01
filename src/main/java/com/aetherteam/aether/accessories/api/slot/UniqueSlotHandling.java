@@ -81,7 +81,7 @@ public final class UniqueSlotHandling {
         @Override
         public SlotTypeReference build() {
             String slotName = this.id.toString();
-            String translation = "slot." + this.id.getNamespace() + "." + this.id.getPath();
+            String translation = "accessories.slot." + this.id.getNamespace() + "." + this.id.getPath();
             SlotType slotType = new SlotType(slotName, this.size, translation);
             AccessoriesState.registerSlot(new AccessoriesState.SlotDefinition(slotType, List.copyOf(this.predicates), Set.copyOf(this.validTypes), this.allowEquipFromUse));
             return SlotTypeReference.of(slotName);

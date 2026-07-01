@@ -1,6 +1,7 @@
 package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
 import com.aetherteam.aether.network.packet.clientbound.ClientGrabItemPacket;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,6 +31,9 @@ public record OpenAccessoriesPacket(ItemStack carryStack) implements CustomPacke
 
     public static void execute(OpenAccessoriesPacket payload, AetherPayloadContext context) {
         Player playerEntity = context.player();
+        if (AetherConfig.COMMON.use_default_accessories_menu.get()) {
+            return;
+        }
         if (playerEntity.level().getServer() != null && playerEntity instanceof ServerPlayer serverPlayer) {
             ItemStack itemStack = serverPlayer.isCreative() ? payload.carryStack() : serverPlayer.containerMenu.getCarried();
             serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);

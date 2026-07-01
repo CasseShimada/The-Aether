@@ -32,6 +32,37 @@ public class AetherBiomeBuilders {
     }
 
     public static Biome makeDefaultBiome(BiomeGenerationSettings.Builder builder) {
+        MobSpawnSettings.Builder spawnSettings = new MobSpawnSettings.Builder()
+                .addMobCharge(AetherEntityTypes.COCKATRICE.get(), 0.5, 0.15)
+                .addMobCharge(AetherEntityTypes.AECHOR_PLANT.get(), 0.4, 0.11)
+                .addMobCharge(AetherEntityTypes.BLUE_SWET.get(), 0.5, 0.1)
+                .addMobCharge(AetherEntityTypes.GOLDEN_SWET.get(), 0.5, 0.1)
+                .addMobCharge(AetherEntityTypes.WHIRLWIND.get(), 0.4, 0.1)
+                .addMobCharge(AetherEntityTypes.EVIL_WHIRLWIND.get(), 0.4, 0.1)
+
+                .addSpawn(AetherMobCategory.AETHER_DARKNESS_MONSTER, 8, new MobSpawnSettings.SpawnerData(AetherEntityTypes.COCKATRICE.get(), 1, 1))
+                .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 7, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AECHOR_PLANT.get(), 1, 1))
+                .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 6, new MobSpawnSettings.SpawnerData(AetherEntityTypes.BLUE_SWET.get(), 1, 1))
+                .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 6, new MobSpawnSettings.SpawnerData(AetherEntityTypes.GOLDEN_SWET.get(), 1, 1))
+                .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 3, new MobSpawnSettings.SpawnerData(AetherEntityTypes.WHIRLWIND.get(), 1, 1))
+                .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 1, new MobSpawnSettings.SpawnerData(AetherEntityTypes.EVIL_WHIRLWIND.get(), 1, 1))
+
+                .creatureGenerationProbability(0.25F)
+                .addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(AetherEntityTypes.PHYG.get(), 3, 4))
+                .addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(AetherEntityTypes.SHEEPUFF.get(), 3, 4))
+                .addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(AetherEntityTypes.FLYING_COW.get(), 2, 5))
+                .addSpawn(MobCategory.CREATURE, 11, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AERBUNNY.get(), 3, 3))
+                .addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(AetherEntityTypes.MOA.get(), 1, 3));
+
+        if (AetherMobCategory.hasCustomSkyMonsterCategory()) {
+            spawnSettings.addMobCharge(AetherEntityTypes.ZEPHYR.get(), 0.6, 0.16)
+                    .addSpawn(AetherMobCategory.AETHER_SKY_MONSTER, 20, new MobSpawnSettings.SpawnerData(AetherEntityTypes.ZEPHYR.get(), 1, 1));
+        }
+        if (AetherMobCategory.hasCustomAerwhaleCategory()) {
+            spawnSettings.addMobCharge(AetherEntityTypes.AERWHALE.get(), 0.5, 0.11)
+                    .addSpawn(AetherMobCategory.AETHER_AERWHALE, 10, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AERWHALE.get(), 1, 1));
+        }
+
         return fullDefinition(
                 false,
                 0.8F,
@@ -42,32 +73,7 @@ public class AetherBiomeBuilders {
                         .foliageColorOverride(0xb1_ff_cb)
                         .grassColorModifier(BiomeSpecialEffects.GrassColorModifier.NONE)
                         .build(),
-                new MobSpawnSettings.Builder()
-                        .addMobCharge(AetherEntityTypes.COCKATRICE.get(), 0.5, 0.15)
-                        .addMobCharge(AetherEntityTypes.ZEPHYR.get(), 0.6, 0.16)
-                        .addMobCharge(AetherEntityTypes.AECHOR_PLANT.get(), 0.4, 0.11)
-                        .addMobCharge(AetherEntityTypes.BLUE_SWET.get(), 0.5, 0.1)
-                        .addMobCharge(AetherEntityTypes.GOLDEN_SWET.get(), 0.5, 0.1)
-                        .addMobCharge(AetherEntityTypes.WHIRLWIND.get(), 0.4, 0.1)
-                        .addMobCharge(AetherEntityTypes.EVIL_WHIRLWIND.get(), 0.4, 0.1)
-                        .addMobCharge(AetherEntityTypes.AERWHALE.get(), 0.5, 0.11)
-
-                        .addSpawn(AetherMobCategory.AETHER_DARKNESS_MONSTER, 8, new MobSpawnSettings.SpawnerData(AetherEntityTypes.COCKATRICE.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SKY_MONSTER, 20, new MobSpawnSettings.SpawnerData(AetherEntityTypes.ZEPHYR.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 7, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AECHOR_PLANT.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 6, new MobSpawnSettings.SpawnerData(AetherEntityTypes.BLUE_SWET.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 6, new MobSpawnSettings.SpawnerData(AetherEntityTypes.GOLDEN_SWET.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 3, new MobSpawnSettings.SpawnerData(AetherEntityTypes.WHIRLWIND.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_SURFACE_MONSTER, 1, new MobSpawnSettings.SpawnerData(AetherEntityTypes.EVIL_WHIRLWIND.get(), 1, 1))
-                        .addSpawn(AetherMobCategory.AETHER_AERWHALE, 10, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AERWHALE.get(), 1, 1))
-
-                        .creatureGenerationProbability(0.25F)
-                        .addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(AetherEntityTypes.PHYG.get(), 3, 4))
-                        .addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(AetherEntityTypes.SHEEPUFF.get(), 3, 4))
-                        .addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(AetherEntityTypes.FLYING_COW.get(), 2, 5))
-                        .addSpawn(MobCategory.CREATURE, 11, new MobSpawnSettings.SpawnerData(AetherEntityTypes.AERBUNNY.get(), 3, 3))
-                        .addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(AetherEntityTypes.MOA.get(), 1, 3))
-                        .build(),
+                spawnSettings.build(),
                 builder
                         .addFeature(GenerationStep.Decoration.RAW_GENERATION, AetherPlacedFeatures.QUICKSOIL_SHELF_PLACEMENT)
                         .addFeature(GenerationStep.Decoration.LAKES, AetherPlacedFeatures.WATER_LAKE_PLACEMENT)

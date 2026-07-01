@@ -21,7 +21,6 @@ import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -275,15 +274,6 @@ public class EntityHooks {
      */
     public static boolean preventInebriation(LivingEntity livingEntity, MobEffectInstance appliedInstance) {
         return livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY.get())) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION.get();
-    }
-
-    /**
-     * Migrates legacy Curios slot data from pre-Fabric player data into Aether's in-mod accessories slots.
-     *
-     * @param player The player whose loaded save data should be inspected for legacy Curios entries.
-     */
-    public static void loadLegacyCuriosData(ServerPlayer player) {
-        EntityLegacyCuriosHooks.loadLegacyCuriosData(player);
     }
 
     /**

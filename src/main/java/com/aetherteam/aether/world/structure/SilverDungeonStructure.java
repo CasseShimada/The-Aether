@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -225,12 +226,12 @@ public class SilverDungeonStructure extends Structure {
      */
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox chunkBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        AABB chunkBounds = new AABB(chunkBox.minX(), chunkBox.minY(), chunkBox.minZ(), chunkBox.maxX(), chunkBox.maxY(), chunkBox.maxZ());
-        level.getEntitiesOfClass(ValkyrieQueen.class, chunkBounds).forEach(queen -> {
-            BoundingBox box = pieces.calculateBoundingBox();
-            AABB dungeonBounds = new AABB(box.minX(), box.minY(), box.minZ(), box.maxX() + 1, box.maxY() + 1, box.maxZ() + 1);
-            queen.setDungeonBounds(dungeonBounds);
-        });
+        AABB dungeonBounds = BossRoomBinding.toAabb(pieces.calculateBoundingBox());
+        for (StructurePiece piece : pieces.pieces()) {
+            if (piece instanceof SilverBossRoom) {
+                BossRoomBinding.bindBossRoom(level, chunkBox, piece.getBoundingBox(), ValkyrieQueen.class, queen -> queen.setDungeonBounds(dungeonBounds));
+            }
+        }
     }
 
     @Override

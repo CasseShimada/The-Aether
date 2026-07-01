@@ -2,7 +2,9 @@ package com.aetherteam.aether.world.structure;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
+import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.world.structurepiece.bronzedungeon.BronzeDungeonBuilder;
+import com.aetherteam.aether.world.structurepiece.bronzedungeon.BronzeBossRoom;
 import com.aetherteam.aether.world.structurepiece.bronzedungeon.BronzeProcessorSettings;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -13,11 +15,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -174,6 +180,15 @@ public class BronzeDungeonStructure extends Structure {
     @Override
     public BoundingBox adjustBoundingBox(BoundingBox box) {
         return box;
+    }
+
+    @Override
+    public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox chunkBox, ChunkPos chunkPos, PiecesContainer pieces) {
+        for (StructurePiece piece : pieces.pieces()) {
+            if (piece instanceof BronzeBossRoom) {
+                BossRoomBinding.bindBossRoom(level, chunkBox, piece.getBoundingBox(), Slider.class);
+            }
+        }
     }
 
     @Override

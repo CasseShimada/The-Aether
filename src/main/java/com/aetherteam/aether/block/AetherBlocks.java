@@ -260,11 +260,6 @@ public class AetherBlocks {
         fireBlockAccessor.callSetFlammable(AetherBlocks.SKYROOT_BOOKSHELF.get(), 30, 20);
     }
 
-    public static void registerFluidInteractions() {
-        // Loader-specific fluid interaction hooks are unavailable on Fabric.
-        // This behavior will be reintroduced with Fabric fluid/block callbacks.
-    }
-
     public static void registerWoodTypes() {
         // WoodType registration is handled internally by construction.
     }

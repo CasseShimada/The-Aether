@@ -1,4 +1,11 @@
 {
+  "accessories.slot.back": "Back",
+  "accessories.slot.cape": "Cape",
+  "accessories.slot.charm": "Charm",
+  "accessories.slot.hand": "Hand",
+  "accessories.slot.head": "Head",
+  "accessories.slot.necklace": "Necklace",
+  "accessories.slot.ring": "Ring",
   "advancement.aether.blue_aercloud": "Bouncey bouncey!!!",
   "advancement.aether.blue_aercloud.desc": "Bounce on a Bleu vloud",
   "advancement.aether.bronze_dungeon": "That was.. a bit too easy",

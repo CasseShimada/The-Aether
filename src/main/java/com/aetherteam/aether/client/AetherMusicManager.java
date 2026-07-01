@@ -189,7 +189,10 @@ public class AetherMusicManager {
     public static <T extends LivingEntity & AetherBossMob<?>> T getBossFromFight() {
         for (Map.Entry<UUID, LerpingBossEvent> event : getAetherBossFights().entrySet()) {
             UUID eventUUID = event.getKey();
-            int entityId = GuiHooks.BOSS_EVENTS.get(eventUUID);
+            Integer entityId = GuiHooks.BOSS_EVENTS.get(eventUUID);
+            if (entityId == null) {
+                continue;
+            }
             Entity entity = minecraft.player.level().getEntity(entityId);
             if (entity instanceof LivingEntity && entity instanceof AetherBossMob<?>) {
                 return (T) entity;

@@ -239,7 +239,9 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
         if (this.minecraft.player != null) {
             int i = this.leftPos;
             int j = this.topPos;
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.minecraft.player.isCreative() ? ACCESSORIES_INVENTORY_CREATIVE : ACCESSORIES_INVENTORY, i, j, 0.0F, 0.0F, this.backgroundWidth(), this.imageHeight, 256, 256);
+            Identifier background = this.minecraft.player.isCreative() ? ACCESSORIES_INVENTORY_CREATIVE : ACCESSORIES_INVENTORY;
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, background, i, j, 0.0F, 0.0F, this.backgroundWidth(), this.imageHeight, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, background, i + AetherAccessoriesMenu.BACK_SLOT_X, j + AetherAccessoriesMenu.BACK_SLOT_Y, AetherAccessoriesMenu.ACCESSORY_SLOT_BACKGROUND_X, AetherAccessoriesMenu.ACCESSORY_SLOT_BACKGROUND_Y, 18, 18, 256, 256);
             InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, i + 9, j + 8, i + 58, j + 78, 30, 0.1575F, mouseX, mouseY, this.minecraft.player);
         }
     }

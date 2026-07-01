@@ -52,6 +52,9 @@ public interface BossMob<T extends Mob & BossMob<T>> {
             this.setDungeon(dungeon);
         }
         dungeon.updateTrackedPlayers(this::onDungeonPlayerAdded, this::onDungeonPlayerRemoved);
+        if (this.isBossFight() && (dungeon.dungeonPlayers().isEmpty() || !dungeon.isBossWithinRoom())) {
+            this.reset();
+        }
     }
 
     default void tearDownRoom() {
@@ -86,6 +89,7 @@ public interface BossMob<T extends Mob & BossMob<T>> {
         if (!(this instanceof Mob)) {
             return;
         }
+        CompoundTag dungeonTag = tag.getCompound("Dungeon").orElse(tag);
         if (tag.getDouble("DungeonOriginX").isPresent()) {
             net.minecraft.world.phys.Vec3 origin = new net.minecraft.world.phys.Vec3(
                     tag.getDouble("DungeonOriginX").orElse(0.0),
@@ -101,8 +105,23 @@ public interface BossMob<T extends Mob & BossMob<T>> {
                     tag.getDouble("DungeonMaxZ").orElse(0.0)
             );
             this.setDungeon(new BossRoomTracker<>((T) this, origin, bounds));
+        } else if (dungeonTag.getDouble("OriginX").isPresent()) {
+            net.minecraft.world.phys.Vec3 origin = new net.minecraft.world.phys.Vec3(
+                    dungeonTag.getDouble("OriginX").orElse(0.0),
+                    dungeonTag.getDouble("OriginY").orElse(0.0),
+                    dungeonTag.getDouble("OriginZ").orElse(0.0)
+            );
+            AABB bounds = new AABB(
+                    dungeonTag.getDouble("RoomBoundsMinX").orElse(0.0),
+                    dungeonTag.getDouble("RoomBoundsMinY").orElse(0.0),
+                    dungeonTag.getDouble("RoomBoundsMinZ").orElse(0.0),
+                    dungeonTag.getDouble("RoomBoundsMaxX").orElse(0.0),
+                    dungeonTag.getDouble("RoomBoundsMaxY").orElse(0.0),
+                    dungeonTag.getDouble("RoomBoundsMaxZ").orElse(0.0)
+            );
+            this.setDungeon(new BossRoomTracker<>((T) this, origin, bounds));
         }
-        this.setBossFight(tag.getBoolean("BossFight").orElse(false));
+        tag.getBoolean("BossFight").ifPresent(this::setBossFight);
     }
 
     @SuppressWarnings("unchecked")

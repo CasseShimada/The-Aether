@@ -1,4 +1,4 @@
 {
   "parent": "nitrogen_internals:block/template_translucent_wall_side",
-  "render_type": "translucent"
+  "render_type": "minecraft:translucent"
 }

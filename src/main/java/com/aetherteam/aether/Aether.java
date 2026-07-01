@@ -80,7 +80,6 @@ public final class Aether {
 
         AetherBlocks.registerPots();
         AetherBlocks.registerFlammability();
-        AetherBlocks.registerFluidInteractions();
 
         AetherItems.registerAccessories();
         AetherItems.setupBucketReplacements();

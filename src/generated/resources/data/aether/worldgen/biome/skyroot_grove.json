@@ -61,10 +61,6 @@
       "charge": 0.4,
       "energy_budget": 0.11
     },
-    "aether:aerwhale": {
-      "charge": 0.5,
-      "energy_budget": 0.11
-    },
     "aether:blue_swet": {
       "charge": 0.5,
       "energy_budget": 0.1
@@ -84,10 +80,6 @@
     "aether:whirlwind": {
       "charge": 0.4,
       "energy_budget": 0.1
-    },
-    "aether:zephyr": {
-      "charge": 0.6,
-      "energy_budget": 0.16
     }
   },
   "spawners": {
@@ -123,12 +115,6 @@
         "maxCount": 3,
         "minCount": 1,
         "weight": 8
-      },
-      {
-        "type": "aether:aerwhale",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
       }
     ],
     "misc": [],
@@ -138,12 +124,6 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 8
-      },
-      {
-        "type": "aether:zephyr",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 20
       },
       {
         "type": "aether:aechor_plant",

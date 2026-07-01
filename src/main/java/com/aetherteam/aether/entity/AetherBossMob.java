@@ -29,7 +29,11 @@ public interface AetherBossMob<T extends Mob & AetherBossMob<T>> extends BossMob
      * Handles behavior when closing the boss room, like closing the doors.
      */
     default void closeRoom() {
-        this.getDungeon().modifyRoom(state -> {
+        var dungeon = this.getDungeon();
+        if (dungeon == null) {
+            return;
+        }
+        dungeon.modifyRoom(state -> {
             if (state.getBlock() instanceof DoorwayBlock) {
                 return state.setValue(DoorwayBlock.INVISIBLE, false);
             } else {
@@ -42,7 +46,11 @@ public interface AetherBossMob<T extends Mob & AetherBossMob<T>> extends BossMob
      * Handles behavior when opening the boss room, like opening the doors.
      */
     default void openRoom() {
-        this.getDungeon().modifyRoom(state -> {
+        var dungeon = this.getDungeon();
+        if (dungeon == null) {
+            return;
+        }
+        dungeon.modifyRoom(state -> {
             if (state.getBlock() instanceof DoorwayBlock) {
                 return state.setValue(DoorwayBlock.INVISIBLE, true);
             } else {

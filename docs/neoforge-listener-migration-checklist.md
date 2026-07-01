@@ -6,6 +6,7 @@ Status legend:
 - `DONE`: Fabric equivalent is wired and active.
 - `PARTIAL`: Some behavior is wired, but coverage is incomplete.
 - `MISSING`: No Fabric-side hook yet.
+- `REMOVED`: Intentionally not carried forward in Fabric.
 
 ## Common Listeners
 | NeoForge listener point | Fabric equivalent / bridge | Status | Notes |
@@ -32,8 +33,8 @@ Status legend:
 | `EntityListener#onDropExperience` | `LivingEntityMixin#getExperienceReward` return rewrite -> `EntityHooks.modifyExperience` | DONE | Experience drop modifier parity restored for accessory-equipped mobs. |
 | `EntityListener#onEffectApply` | `ServerMobEffectEvents.ALLOW_ADD` -> `EntityHooks.preventInebriation` | DONE | Effect-application guard restored. |
 | `EntityListener#onEntitySplit` | `SlimeMixin#remove` split-spawn `addFreshEntity` guard -> `EntityHooks.preventSplit` | DONE | Swet split cancellation restored without altering base removal flow. |
-| `EntityListener#onLoadPlayerFile` | `ServerPlayerEvents.JOIN` -> `EntityHooks.loadLegacyCuriosData` using `WorldData#getLoadedPlayerTag` | DONE | Legacy `ForgeCaps`/`neoforge:attachments` Curios payload now migrates into Aether accessory slots on player join. |
-| `ItemListener#onTooltipAdd` | Nitrogen tooltip listener bridge in `AetherClient` | PARTIAL | Tooltip predicate chain exists; full parity needs audit. |
+| `EntityListener#onLoadPlayerFile` | Not ported | REMOVED | Legacy `ForgeCaps`/`neoforge:attachments` Curios save migration was intentionally removed; current Fabric attachment storage remains supported. |
+| `ItemListener#onTooltipAdd` | Fabric `ItemTooltipCallback` + Nitrogen tooltip override bridge in `AetherClient` | DONE | Dungeon tooltips and Aether tooltip override predicates are registered from the client bootstrap. |
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |
 | `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + `AetherEventDispatch` recipe freeze/convert/ban bridges | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |
 
@@ -54,4 +55,4 @@ Status legend:
 | NeoForge listener group | Fabric equivalent / bridge | Status | Notes |
 |---|---|---|---|
 | `abilities/*` listeners | scattered item/mixin direct calls | DONE | Accessory/armor/tool/weapon hooks are bridged by `BlockMixin`, `PlayerMixin`, `LivingEntityMixin`, `ProjectileMixin`, and item-tool mixins. |
-| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks + `FogRendererMixin` + `SoundEngineMixin` + `AvatarRendererMixin` | PARTIAL | Core callbacks, play-sound interception, and invisibility-cloak player/arm render suppression are wired; remaining status is in-world validation for rendering/AI behavior. |
+| `client/event/listeners/*` | `AetherClient.registerClientCallbacks` + renderer hooks + `FogRendererMixin` + `SoundEngineMixin` + `AvatarRendererMixin` | PARTIAL | Core callbacks, tooltip interception, play-sound interception, and invisibility-cloak player/arm render suppression are wired; remaining status is in-world validation for sky rendering and AI behavior. |

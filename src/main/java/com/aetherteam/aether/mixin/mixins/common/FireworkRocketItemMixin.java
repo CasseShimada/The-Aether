@@ -29,7 +29,7 @@ public abstract class FireworkRocketItemMixin {
         if (player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
             return;
         }
-        if (!AccessoryEffectBridge.findFirstByEquipmentSlot(player, EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+        if (AccessoryEffectBridge.findFirstElytraReference(player) == null) {
             return;
         }
 

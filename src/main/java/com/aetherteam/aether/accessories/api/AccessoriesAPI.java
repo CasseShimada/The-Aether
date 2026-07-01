@@ -46,7 +46,6 @@ public final class AccessoriesAPI {
 
     public static List<SlotType> getValidSlotTypes(LivingEntity entity, ItemStack stack) {
         List<SlotType> validTypes = new ArrayList<>();
-        Item item = stack.getItem();
         EntityType<?> entityType = entity.getType();
         for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
             if (!supportsEntity(definition.validTypes(), entityType)) {
@@ -56,7 +55,7 @@ public final class AccessoriesAPI {
             boolean predicateMatch = false;
             for (Identifier predicateId : definition.predicateIds()) {
                 SlotBasedPredicate predicate = AccessoriesState.PREDICATES.get(predicateId);
-                if (predicate != null && predicate.test(item)) {
+                if (predicate != null && predicate.test(stack)) {
                     predicateMatch = true;
                     break;
                 }

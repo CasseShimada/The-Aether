@@ -1,4 +1,11 @@
 {
+  "accessories.slot.back": "Back",
+  "accessories.slot.cape": "Cape",
+  "accessories.slot.charm": "Charm",
+  "accessories.slot.hand": "Hand",
+  "accessories.slot.head": "Head",
+  "accessories.slot.necklace": "Necklace",
+  "accessories.slot.ring": "Ring",
   "advancement.aether.aether_sleep": "Giấc Ngủ Đáng Giá",
   "advancement.aether.aether_sleep.desc": "Cuối cùng cũng ngủ được trong Aether",
   "advancement.aether.black_moa": "Cùng Bay Nào!",
