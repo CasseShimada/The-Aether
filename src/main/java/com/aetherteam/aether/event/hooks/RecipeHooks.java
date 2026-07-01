@@ -191,7 +191,7 @@ public class RecipeHooks {
             BlockState oldBlockState = level.getBlockState(pos);
             FreezingBlock.cacheRecipes(level);
             if (FreezingBlock.matchesCache(oldBlockState.getBlock(), oldBlockState) != null) {
-                level.gameEvent(BuiltInRegistries.GAME_EVENT.wrapAsHolder(AetherGameEvents.ICESTONE_FREEZABLE_UPDATE.get()), pos, GameEvent.Context.of(oldBlockState));
+                level.gameEvent(BuiltInRegistries.GAME_EVENT.wrapAsHolder(AetherGameEvents.ICESTONE_FREEZABLE_UPDATE), pos, GameEvent.Context.of(oldBlockState));
             }
         }
     }

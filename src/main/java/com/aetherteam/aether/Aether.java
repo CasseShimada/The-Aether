@@ -116,7 +116,6 @@ public final class Aether {
                 AetherRecipeSerializers.RECIPE_SERIALIZERS,
                 AetherLootFunctions.LOOT_FUNCTION_TYPES,
                 AetherLootConditions.LOOT_CONDITION_TYPES,
-                AetherGameEvents.GAME_EVENTS,
                 AetherCreativeTabs.CREATIVE_MODE_TABS,
                 AetherAdvancementTriggers.TRIGGERS
         };
