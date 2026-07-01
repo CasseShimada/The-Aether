@@ -27,12 +27,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class SilverDungeonRoom extends SilverDungeonPiece {
     public SilverDungeonRoom(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM.get(), manager, name, SilverDungeonRoom.makeSettings(manager, rotation, Identifier.fromNamespaceAndPath(Aether.MODID, "silver_dungeon/" + name)), pos, processors);
+        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM, manager, name, SilverDungeonRoom.makeSettings(manager, rotation, Identifier.fromNamespaceAndPath(Aether.MODID, "silver_dungeon/" + name)), pos, processors);
         this.setOrientation(rotation.rotate(Direction.SOUTH));
     }
 
     public SilverDungeonRoom(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), id -> SilverDungeonRoom.makeSettings(context.structureTemplateManager(), id));
+        super(AetherStructurePieceTypes.SILVER_DUNGEON_ROOM, context.registryAccess(), tag, context.structureTemplateManager(), id -> SilverDungeonRoom.makeSettings(context.structureTemplateManager(), id));
     }
 
     private static StructurePlaceSettings makeSettings(StructureTemplateManager manager, Rotation rotation, Identifier id) {

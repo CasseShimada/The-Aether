@@ -31,11 +31,11 @@ import java.util.function.Function;
  */
 public class BronzeBossRoom extends BronzeDungeonPiece {
     public BronzeBossRoom(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        this(AetherStructurePieceTypes.BRONZE_BOSS_ROOM.get(), manager, name, AetherTemplateStructurePiece.makeSettingsWithPivot(makeSettings(), manager, BronzeDungeonPiece.makeLocation(name), rotation), pos, processors);
+        this(AetherStructurePieceTypes.BRONZE_BOSS_ROOM, manager, name, AetherTemplateStructurePiece.makeSettingsWithPivot(makeSettings(), manager, BronzeDungeonPiece.makeLocation(name), rotation), pos, processors);
     }
 
     public BronzeBossRoom(StructurePieceSerializationContext context, CompoundTag tag) {
-        this(AetherStructurePieceTypes.BRONZE_BOSS_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> BronzeBossRoom.makeSettings());
+        this(AetherStructurePieceTypes.BRONZE_BOSS_ROOM, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> BronzeBossRoom.makeSettings());
     }
 
     public BronzeBossRoom(StructurePieceType type, StructureTemplateManager manager, String name, StructurePlaceSettings settings, BlockPos pos, Holder<StructureProcessorList> processors) {

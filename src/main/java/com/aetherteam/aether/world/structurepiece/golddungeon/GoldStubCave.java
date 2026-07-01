@@ -22,11 +22,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
  */
 public class GoldStubCave extends StructurePiece {
     public GoldStubCave(BoundingBox box) {
-        super(AetherStructurePieceTypes.GUMDROP_CAVE.get(), 0, box);
+        super(AetherStructurePieceTypes.GUMDROP_CAVE, 0, box);
     }
 
     public GoldStubCave(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.GUMDROP_CAVE.get(), tag);
+        super(AetherStructurePieceTypes.GUMDROP_CAVE, tag);
     }
 
     @Override

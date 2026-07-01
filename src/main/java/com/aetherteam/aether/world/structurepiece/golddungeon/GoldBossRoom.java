@@ -27,11 +27,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class GoldBossRoom extends GoldDungeonPiece {
     public GoldBossRoom(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.GOLD_BOSS_ROOM.get(), manager, name, AetherTemplateStructurePiece.makeSettingsWithPivot(GoldBossRoom.makeSettings(), manager, GoldDungeonPiece.makeLocation(name), rotation), pos, processors);
+        super(AetherStructurePieceTypes.GOLD_BOSS_ROOM, manager, name, AetherTemplateStructurePiece.makeSettingsWithPivot(GoldBossRoom.makeSettings(), manager, GoldDungeonPiece.makeLocation(name), rotation), pos, processors);
     }
 
     public GoldBossRoom(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.GOLD_BOSS_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> GoldBossRoom.makeSettings());
+        super(AetherStructurePieceTypes.GOLD_BOSS_ROOM, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> GoldBossRoom.makeSettings());
     }
 
     private static StructurePlaceSettings makeSettings() {

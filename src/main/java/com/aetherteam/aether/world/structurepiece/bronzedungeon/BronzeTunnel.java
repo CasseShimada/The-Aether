@@ -18,11 +18,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class BronzeTunnel extends BronzeDungeonPiece {
     public BronzeTunnel(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.BRONZE_TUNNEL.get(), manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
+        super(AetherStructurePieceTypes.BRONZE_TUNNEL, manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
     }
 
     public BronzeTunnel(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.BRONZE_TUNNEL.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.BRONZE_TUNNEL, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 
     @Override

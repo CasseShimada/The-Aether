@@ -53,13 +53,13 @@ public class BronzeDungeonSurfaceRuins extends StructurePiece {
     ), 24));
 
     public BronzeDungeonSurfaceRuins(BoundingBox horizontalBounds) {
-        super(AetherStructurePieceTypes.BRONZE_SURFACE_RUINS.value(), 0, horizontalBounds);
+        super(AetherStructurePieceTypes.BRONZE_SURFACE_RUINS, 0, horizontalBounds);
 
         this.setOrientation(Direction.SOUTH);
     }
 
     public BronzeDungeonSurfaceRuins(StructurePieceSerializationContext context, CompoundTag nbt) {
-        super(AetherStructurePieceTypes.BRONZE_SURFACE_RUINS.value(), nbt);
+        super(AetherStructurePieceTypes.BRONZE_SURFACE_RUINS, nbt);
 
         this.setOrientation(Direction.SOUTH);
     }

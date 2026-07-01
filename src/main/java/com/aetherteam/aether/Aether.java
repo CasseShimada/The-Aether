@@ -83,6 +83,7 @@ public final class Aether {
         Reflection.initialize(AetherPlacementModifiers.class);
         Reflection.initialize(AetherStructureProcessors.class);
         Reflection.initialize(AetherStructureTypes.class);
+        Reflection.initialize(AetherStructurePieceTypes.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -116,7 +117,6 @@ public final class Aether {
                 AetherMenuTypes.MENU_TYPES,
                 AetherFeatures.FEATURES,
                 AetherPoi.POI,
-                AetherStructurePieceTypes.STRUCTURE_PIECE_TYPES,
                 AetherCreativeTabs.CREATIVE_MODE_TABS
         };
 

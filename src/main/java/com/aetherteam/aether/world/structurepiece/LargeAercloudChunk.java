@@ -28,14 +28,14 @@ public class LargeAercloudChunk extends StructurePiece {
     private final BlockStateProvider blocks;
 
     public LargeAercloudChunk(Set<BlockPos> positions, BlockStateProvider blocks, BoundingBox bounds, Direction direction) {
-        super(AetherStructurePieceTypes.LARGE_AERCLOUD.get(), 0, bounds);
+        super(AetherStructurePieceTypes.LARGE_AERCLOUD, 0, bounds);
         this.setOrientation(direction);
         this.positions.addAll(positions);
         this.blocks = blocks;
     }
 
     public LargeAercloudChunk(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.LARGE_AERCLOUD.get(), tag);
+        super(AetherStructurePieceTypes.LARGE_AERCLOUD, tag);
 
         ListTag positions = tag.getListOrEmpty("Positions");
         for (Tag value : positions) {

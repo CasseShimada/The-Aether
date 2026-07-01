@@ -47,13 +47,13 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
     private final Properties properties;
 
     public GlowstoneRuinedPortalPiece(StructureTemplateManager structureTemplateManager, BlockPos templatePosition, VerticalPlacement verticalPlacement, Properties properties, Identifier location, Rotation rotation, Mirror mirror, BlockPos pivotPos) {
-        super(AetherStructurePieceTypes.RUINED_PORTAL.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(mirror, rotation, pivotPos, properties), templatePosition);
+        super(AetherStructurePieceTypes.RUINED_PORTAL, 0, structureTemplateManager, location, location.toString(), makeSettings(mirror, rotation, pivotPos, properties), templatePosition);
         this.verticalPlacement = verticalPlacement;
         this.properties = properties;
     }
 
     public GlowstoneRuinedPortalPiece(StructureTemplateManager structureTemplateManager, CompoundTag tag) {
-        super(AetherStructurePieceTypes.RUINED_PORTAL.get(), tag, structureTemplateManager, (location) -> makeSettings(structureTemplateManager, tag, location));
+        super(AetherStructurePieceTypes.RUINED_PORTAL, tag, structureTemplateManager, (location) -> makeSettings(structureTemplateManager, tag, location));
         this.verticalPlacement = VerticalPlacement.byName(tag.getString("VerticalPlacement").orElse(VerticalPlacement.ON_LAND_SURFACE.getName()));
         this.properties = Properties.CODEC.codec().parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("Properties"))).getPartialOrThrow();
     }

@@ -16,10 +16,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class GoldTunnel extends GoldDungeonPiece {
     public GoldTunnel(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.GOLD_TUNNEL.get(), manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
+        super(AetherStructurePieceTypes.GOLD_TUNNEL, manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
     }
 
     public GoldTunnel(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.GOLD_TUNNEL.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.GOLD_TUNNEL, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 }

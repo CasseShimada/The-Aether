@@ -24,10 +24,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class GoldStub extends GoldDungeonPiece {
     public GoldStub(StructureTemplateManager manager, String name, BlockPos pos, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.GOLD_STUB.get(), manager, name, new StructurePlaceSettings(), pos, processors);
+        super(AetherStructurePieceTypes.GOLD_STUB, manager, name, new StructurePlaceSettings(), pos, processors);
     }
 
     public GoldStub(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.GOLD_STUB.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.GOLD_STUB, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 }

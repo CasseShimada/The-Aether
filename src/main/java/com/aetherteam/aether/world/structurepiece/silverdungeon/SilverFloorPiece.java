@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class SilverFloorPiece extends SilverDungeonPiece {
     public SilverFloorPiece(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.SILVER_FLOOR_PIECE.get(), manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
+        super(AetherStructurePieceTypes.SILVER_FLOOR_PIECE, manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
         this.setOrientation(rotation.rotate(Direction.SOUTH));
     }
 
     public SilverFloorPiece(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.SILVER_FLOOR_PIECE.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.SILVER_FLOOR_PIECE, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 }

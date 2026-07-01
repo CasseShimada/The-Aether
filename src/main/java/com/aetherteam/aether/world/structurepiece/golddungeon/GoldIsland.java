@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class GoldIsland extends GoldDungeonPiece {
     public GoldIsland(StructureTemplateManager manager, String name, BlockPos pos, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.GOLD_ISLAND.get(), manager, name, new StructurePlaceSettings(), pos, processors);
+        super(AetherStructurePieceTypes.GOLD_ISLAND, manager, name, new StructurePlaceSettings(), pos, processors);
     }
 
     public GoldIsland(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.GOLD_ISLAND.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.GOLD_ISLAND, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 }

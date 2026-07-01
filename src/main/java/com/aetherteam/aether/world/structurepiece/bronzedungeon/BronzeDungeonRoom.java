@@ -22,11 +22,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 public class BronzeDungeonRoom extends BronzeDungeonPiece {
     public BronzeDungeonRoom(StructureTemplateManager manager, String name, BlockPos pos, Rotation rotation, Holder<StructureProcessorList> processors) {
-        super(AetherStructurePieceTypes.BRONZE_DUNGEON_ROOM.get(), manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
+        super(AetherStructurePieceTypes.BRONZE_DUNGEON_ROOM, manager, name, new StructurePlaceSettings().setRotation(rotation), pos, processors);
     }
 
     public BronzeDungeonRoom(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(AetherStructurePieceTypes.BRONZE_DUNGEON_ROOM.get(), context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
+        super(AetherStructurePieceTypes.BRONZE_DUNGEON_ROOM, context.registryAccess(), tag, context.structureTemplateManager(), resourceLocation -> new StructurePlaceSettings());
     }
 
     @Override
