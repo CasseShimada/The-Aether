@@ -23,7 +23,7 @@ public class GoldenOakTrunkPlacer extends TrunkPlacer {
     }
 
     protected TrunkPlacerType<?> type() {
-        return AetherTrunkPlacerTypes.GOLDEN_OAK_TRUNK_PLACER.get();
+        return AetherTrunkPlacerTypes.GOLDEN_OAK_TRUNK_PLACER;
     }
 
     /**

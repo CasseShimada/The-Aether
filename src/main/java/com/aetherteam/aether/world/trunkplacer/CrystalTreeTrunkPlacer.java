@@ -25,7 +25,7 @@ public class CrystalTreeTrunkPlacer extends StraightTrunkPlacer {
     }
 
     protected TrunkPlacerType<?> type() {
-        return AetherTrunkPlacerTypes.CRYSTAL_TREE_TRUNK_PLACER.get();
+        return AetherTrunkPlacerTypes.CRYSTAL_TREE_TRUNK_PLACER;
     }
 
     /**

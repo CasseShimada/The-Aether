@@ -1,14 +1,16 @@
 package com.aetherteam.aether.world.trunkplacer;
 
 import com.aetherteam.aether.Aether;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import com.aetherteam.aether.registry.DeferredHolder;
-import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherTrunkPlacerTypes {
-    public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACERS = DeferredRegister.create(Registries.TRUNK_PLACER_TYPE, Aether.MODID);
+    public static final TrunkPlacerType<GoldenOakTrunkPlacer> GOLDEN_OAK_TRUNK_PLACER = register("golden_oak_trunk_placer", new TrunkPlacerType<>(GoldenOakTrunkPlacer.CODEC));
+    public static final TrunkPlacerType<CrystalTreeTrunkPlacer> CRYSTAL_TREE_TRUNK_PLACER = register("crystal_tree_trunk_placer", new TrunkPlacerType<>(CrystalTreeTrunkPlacer.CODEC));
 
-    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<GoldenOakTrunkPlacer>> GOLDEN_OAK_TRUNK_PLACER = TRUNK_PLACERS.register("golden_oak_trunk_placer", () -> new TrunkPlacerType<>(GoldenOakTrunkPlacer.CODEC));
-    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<CrystalTreeTrunkPlacer>> CRYSTAL_TREE_TRUNK_PLACER = TRUNK_PLACERS.register("crystal_tree_trunk_placer", () -> new TrunkPlacerType<>(CrystalTreeTrunkPlacer.CODEC));
+    private static <T extends TrunkPlacerType<?>> T register(String name, T type) {
+        return Registry.register(BuiltInRegistries.TRUNK_PLACER_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
 }
