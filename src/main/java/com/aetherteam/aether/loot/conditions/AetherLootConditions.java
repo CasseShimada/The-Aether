@@ -2,13 +2,15 @@ package com.aetherteam.aether.loot.conditions;
 
 import com.aetherteam.aether.Aether;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import com.aetherteam.aether.registry.DeferredHolder;
-import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherLootConditions {
-    public static final DeferredRegister<MapCodec<? extends LootItemCondition>> LOOT_CONDITION_TYPES = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, Aether.MODID);
+    public static final MapCodec<ConfigEnabled> CONFIG_ENABLED = register("config_enabled", ConfigEnabled.CODEC);
 
-    public static final DeferredHolder<MapCodec<? extends LootItemCondition>, MapCodec<ConfigEnabled>> CONFIG_ENABLED = LOOT_CONDITION_TYPES.register("config_enabled", () -> ConfigEnabled.CODEC);
+    private static <T extends LootItemCondition> MapCodec<T> register(String name, MapCodec<T> codec) {
+        return Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), codec);
+    }
 }

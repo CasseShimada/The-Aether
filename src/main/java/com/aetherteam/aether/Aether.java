@@ -67,6 +67,9 @@ public final class Aether {
         DIRECTORY.toFile().mkdirs();
 
         Reflection.initialize(AetherDataAttachments.class);
+        Reflection.initialize(AetherGameEvents.class);
+        Reflection.initialize(AetherLootFunctions.class);
+        Reflection.initialize(AetherLootConditions.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -114,8 +117,6 @@ public final class Aether {
                 AetherStructureProcessors.STRUCTURE_PROCESSOR_TYPES,
                 AetherRecipeTypes.RECIPE_TYPES,
                 AetherRecipeSerializers.RECIPE_SERIALIZERS,
-                AetherLootFunctions.LOOT_FUNCTION_TYPES,
-                AetherLootConditions.LOOT_CONDITION_TYPES,
                 AetherCreativeTabs.CREATIVE_MODE_TABS,
                 AetherAdvancementTriggers.TRIGGERS
         };
