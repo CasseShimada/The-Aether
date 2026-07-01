@@ -33,6 +33,7 @@ import com.aetherteam.aether.world.AetherPoi;
 import com.aetherteam.aether.world.feature.AetherFeatures;
 import com.aetherteam.aether.world.foliageplacer.AetherFoliagePlacerTypes;
 import com.aetherteam.aether.world.placementmodifier.AetherPlacementModifiers;
+import com.aetherteam.aether.world.processor.AetherPosRuleTests;
 import com.aetherteam.aether.world.processor.AetherStructureProcessors;
 import com.aetherteam.aether.world.structure.AetherStructureTypes;
 import com.aetherteam.aether.world.structurepiece.AetherStructurePieceTypes;
@@ -81,6 +82,7 @@ public final class Aether {
         Reflection.initialize(AetherTrunkPlacerTypes.class);
         Reflection.initialize(AetherFoliagePlacerTypes.class);
         Reflection.initialize(AetherPlacementModifiers.class);
+        Reflection.initialize(AetherPosRuleTests.class);
         Reflection.initialize(AetherStructureProcessors.class);
         Reflection.initialize(AetherStructureTypes.class);
         Reflection.initialize(AetherStructurePieceTypes.class);

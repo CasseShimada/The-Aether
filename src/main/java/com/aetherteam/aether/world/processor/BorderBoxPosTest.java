@@ -56,6 +56,6 @@ public class BorderBoxPosTest extends PosRuleTest {
 
     @Override
     protected PosRuleTestType<?> getType() {
-        return AetherPosRuleTests.BORDER_BOX.get();
+        return AetherPosRuleTests.BORDER_BOX;
     }
 }
