@@ -61,6 +61,6 @@ public class HolystoneReplaceProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<HolystoneReplaceProcessor> codec() {
-        return AetherStructureProcessors.HOLYSTONE_REPLACE.get();
+        return AetherStructureProcessors.HOLYSTONE_REPLACE;
     }
 }

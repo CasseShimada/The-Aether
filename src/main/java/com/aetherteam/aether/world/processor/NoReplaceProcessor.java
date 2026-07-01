@@ -42,6 +42,6 @@ public class NoReplaceProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<NoReplaceProcessor> codec() {
-        return AetherStructureProcessors.NO_REPLACE.get();
+        return AetherStructureProcessors.NO_REPLACE;
     }
 }

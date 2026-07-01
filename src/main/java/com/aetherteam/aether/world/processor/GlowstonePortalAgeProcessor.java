@@ -68,6 +68,6 @@ public class GlowstonePortalAgeProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<GlowstonePortalAgeProcessor> codec() {
-        return AetherStructureProcessors.GLOWSTONE_PORTAL_AGE.get();
+        return AetherStructureProcessors.GLOWSTONE_PORTAL_AGE;
     }
 }

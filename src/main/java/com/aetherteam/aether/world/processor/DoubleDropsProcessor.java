@@ -28,6 +28,6 @@ public class DoubleDropsProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<DoubleDropsProcessor> codec() {
-        return AetherStructureProcessors.DOUBLE_DROPS.get();
+        return AetherStructureProcessors.DOUBLE_DROPS;
     }
 }

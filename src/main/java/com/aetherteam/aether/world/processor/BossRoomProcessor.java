@@ -14,6 +14,6 @@ public class BossRoomProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<BossRoomProcessor> codec() {
-        return AetherStructureProcessors.BOSS_ROOM.get();
+        return AetherStructureProcessors.BOSS_ROOM;
     }
 }

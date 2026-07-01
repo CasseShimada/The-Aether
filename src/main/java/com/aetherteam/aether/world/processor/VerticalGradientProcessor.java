@@ -46,6 +46,6 @@ public class VerticalGradientProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<VerticalGradientProcessor> codec() {
-        return AetherStructureProcessors.VERTICAL_GRADIENT.get();
+        return AetherStructureProcessors.VERTICAL_GRADIENT;
     }
 }

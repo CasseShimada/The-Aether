@@ -68,6 +68,6 @@ public class SurfaceRuleProcessor implements StructureProcessor {
 
     @Override
     public MapCodec<SurfaceRuleProcessor> codec() {
-        return AetherStructureProcessors.SURFACE_RULE.get();
+        return AetherStructureProcessors.SURFACE_RULE;
     }
 }
