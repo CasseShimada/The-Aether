@@ -28,7 +28,7 @@ public class GoldenOakFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return AetherFoliagePlacerTypes.GOLDEN_OAK_FOLIAGE_PLACER.get();
+        return AetherFoliagePlacerTypes.GOLDEN_OAK_FOLIAGE_PLACER;
     }
 
     /**

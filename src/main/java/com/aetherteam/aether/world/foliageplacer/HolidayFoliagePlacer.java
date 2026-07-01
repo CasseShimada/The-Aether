@@ -27,7 +27,7 @@ public class HolidayFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return AetherFoliagePlacerTypes.HOLIDAY_FOLIAGE_PLACER.get();
+        return AetherFoliagePlacerTypes.HOLIDAY_FOLIAGE_PLACER;
     }
 
     /**

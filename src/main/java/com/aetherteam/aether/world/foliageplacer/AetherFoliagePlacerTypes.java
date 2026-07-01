@@ -1,15 +1,17 @@
 package com.aetherteam.aether.world.foliageplacer;
 
 import com.aetherteam.aether.Aether;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
-import com.aetherteam.aether.registry.DeferredHolder;
-import com.aetherteam.aether.registry.DeferredRegister;
 
 public class AetherFoliagePlacerTypes {
-    public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACERS = DeferredRegister.create(BuiltInRegistries.FOLIAGE_PLACER_TYPE, Aether.MODID);
+    public static final FoliagePlacerType<CrystalFoliagePlacer> CRYSTAL_FOLIAGE_PLACER = register("crystal_foliage_placer", new FoliagePlacerType<>(CrystalFoliagePlacer.CODEC));
+    public static final FoliagePlacerType<HolidayFoliagePlacer> HOLIDAY_FOLIAGE_PLACER = register("holiday_foliage_placer", new FoliagePlacerType<>(HolidayFoliagePlacer.CODEC));
+    public static final FoliagePlacerType<GoldenOakFoliagePlacer> GOLDEN_OAK_FOLIAGE_PLACER = register("golden_oak_foliage_placer", new FoliagePlacerType<>(GoldenOakFoliagePlacer.CODEC));
 
-    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<CrystalFoliagePlacer>> CRYSTAL_FOLIAGE_PLACER = FOLIAGE_PLACERS.register("crystal_foliage_placer", () -> new FoliagePlacerType<>(CrystalFoliagePlacer.CODEC));
-    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<HolidayFoliagePlacer>> HOLIDAY_FOLIAGE_PLACER = FOLIAGE_PLACERS.register("holiday_foliage_placer", () -> new FoliagePlacerType<>(HolidayFoliagePlacer.CODEC));
-    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GoldenOakFoliagePlacer>> GOLDEN_OAK_FOLIAGE_PLACER = FOLIAGE_PLACERS.register("golden_oak_foliage_placer", () -> new FoliagePlacerType<>(GoldenOakFoliagePlacer.CODEC));
+    private static <T extends FoliagePlacerType<?>> T register(String name, T type) {
+        return Registry.register(BuiltInRegistries.FOLIAGE_PLACER_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
 }

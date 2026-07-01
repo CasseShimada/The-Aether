@@ -27,7 +27,7 @@ public class CrystalFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return AetherFoliagePlacerTypes.CRYSTAL_FOLIAGE_PLACER.get();
+        return AetherFoliagePlacerTypes.CRYSTAL_FOLIAGE_PLACER;
     }
 
     /**
