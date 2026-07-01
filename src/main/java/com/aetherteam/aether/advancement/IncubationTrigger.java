@@ -32,7 +32,7 @@ public class IncubationTrigger extends SimpleCriterionTrigger<IncubationTrigger.
                 .apply(instance, IncubationTrigger.Instance::new));
 
         public static Criterion<Instance> forItem(ItemPredicate item) {
-            return AetherAdvancementTriggers.INCUBATION_TRIGGER.get().createCriterion(new IncubationTrigger.Instance(Optional.empty(), Optional.of(item)));
+            return AetherAdvancementTriggers.INCUBATION_TRIGGER.createCriterion(new IncubationTrigger.Instance(Optional.empty(), Optional.of(item)));
         }
 
         public boolean test(ItemStack stack) {

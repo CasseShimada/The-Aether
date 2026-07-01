@@ -36,7 +36,7 @@ public class LoreTrigger extends SimpleCriterionTrigger<LoreTrigger.Instance> {
                 .apply(instance, LoreTrigger.Instance::new));
 
         public static Criterion<Instance> forItem(ItemPredicate item) {
-            return AetherAdvancementTriggers.LORE_ENTRY.get().createCriterion(new LoreTrigger.Instance(Optional.empty(), Optional.of(item)));
+            return AetherAdvancementTriggers.LORE_ENTRY.createCriterion(new LoreTrigger.Instance(Optional.empty(), Optional.of(item)));
         }
 
         public static Criterion<Instance> forItem(ItemLike item) {
@@ -47,7 +47,7 @@ public class LoreTrigger extends SimpleCriterionTrigger<LoreTrigger.Instance> {
         }
 
         public static Criterion<Instance> forAny() {
-            return AetherAdvancementTriggers.LORE_ENTRY.get().createCriterion(new LoreTrigger.Instance(Optional.empty(), Optional.empty()));
+            return AetherAdvancementTriggers.LORE_ENTRY.createCriterion(new LoreTrigger.Instance(Optional.empty(), Optional.empty()));
         }
 
         public boolean test(ItemStack stack) {

@@ -117,8 +117,7 @@ public final class Aether {
                 AetherStructureTypes.STRUCTURE_TYPES,
                 AetherStructurePieceTypes.STRUCTURE_PIECE_TYPES,
                 AetherStructureProcessors.STRUCTURE_PROCESSOR_TYPES,
-                AetherCreativeTabs.CREATIVE_MODE_TABS,
-                AetherAdvancementTriggers.TRIGGERS
+                AetherCreativeTabs.CREATIVE_MODE_TABS
         };
 
         for (DeferredRegister<?> register : registers) {

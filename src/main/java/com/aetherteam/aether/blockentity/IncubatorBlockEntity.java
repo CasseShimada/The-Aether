@@ -219,7 +219,7 @@ public class IncubatorBlockEntity extends BaseContainerBlockEntity implements Wo
                 if (entity != null) {
                     entity.setCustomName(customName);
                     if (this.player != null) {
-                        AetherAdvancementTriggers.INCUBATION_TRIGGER.get().trigger(this.player, itemStack);
+                        AetherAdvancementTriggers.INCUBATION_TRIGGER.trigger(this.player, itemStack);
                     }
                 }
             }

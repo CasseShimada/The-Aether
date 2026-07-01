@@ -38,7 +38,7 @@ public class LoreInventory extends SimpleContainer {
                     PacketDistributor.sendToServer(new LoreExistsPacket(this.player.getId(), stack, this.menu.loreEntryKeyExists(stack)));
                 }
             } else if (this.player instanceof ServerPlayer serverPlayer && this.menu != null && this.menu.getLoreEntryExists()) {
-                AetherAdvancementTriggers.LORE_ENTRY.get().trigger(serverPlayer, stack);
+                AetherAdvancementTriggers.LORE_ENTRY.trigger(serverPlayer, stack);
             }
         }
         super.setItem(index, stack);
