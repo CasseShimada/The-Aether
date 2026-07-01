@@ -42,12 +42,12 @@ public abstract class AbstractAetherCookingRecipe extends AbstractCookingRecipe 
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return switch (this.category) {
-            case ENCHANTING_FOOD -> AetherRecipeBookCategories.ENCHANTING_FOOD.get();
-            case ENCHANTING_BLOCKS -> AetherRecipeBookCategories.ENCHANTING_BLOCKS.get();
-            case ENCHANTING_MISC -> AetherRecipeBookCategories.ENCHANTING_MISC.get();
-            case ENCHANTING_REPAIR -> AetherRecipeBookCategories.ENCHANTING_REPAIR.get();
-            case FREEZABLE_BLOCKS -> AetherRecipeBookCategories.FREEZABLE_BLOCKS.get();
-            case FREEZABLE_MISC -> AetherRecipeBookCategories.FREEZABLE_MISC.get();
+            case ENCHANTING_FOOD -> AetherRecipeBookCategories.ENCHANTING_FOOD;
+            case ENCHANTING_BLOCKS -> AetherRecipeBookCategories.ENCHANTING_BLOCKS;
+            case ENCHANTING_MISC -> AetherRecipeBookCategories.ENCHANTING_MISC;
+            case ENCHANTING_REPAIR -> AetherRecipeBookCategories.ENCHANTING_REPAIR;
+            case FREEZABLE_BLOCKS -> AetherRecipeBookCategories.FREEZABLE_BLOCKS;
+            case FREEZABLE_MISC -> AetherRecipeBookCategories.FREEZABLE_MISC;
             default -> RecipeBookCategories.CRAFTING_MISC;
         };
     }

@@ -102,7 +102,7 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return AetherRecipeBookCategories.INCUBATION_MISC.get();
+        return AetherRecipeBookCategories.INCUBATION_MISC;
     }
 
     @Override
