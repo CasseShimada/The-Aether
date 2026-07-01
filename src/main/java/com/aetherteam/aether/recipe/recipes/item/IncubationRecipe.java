@@ -92,7 +92,7 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeSerializer<IncubationRecipe> getSerializer() {
-        return AetherRecipeSerializers.INCUBATION.get();
+        return AetherRecipeSerializers.INCUBATION;
     }
 
     @Override

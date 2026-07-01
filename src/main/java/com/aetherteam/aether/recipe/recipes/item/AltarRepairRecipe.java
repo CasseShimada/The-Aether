@@ -58,7 +58,7 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     public RecipeSerializer<AltarRepairRecipe> getSerializer() {
-        return AetherRecipeSerializers.REPAIRING.get();
+        return AetherRecipeSerializers.REPAIRING;
     }
 
     public static final class Serializer {

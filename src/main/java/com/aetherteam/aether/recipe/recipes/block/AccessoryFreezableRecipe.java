@@ -24,7 +24,7 @@ public class AccessoryFreezableRecipe extends AbstractBlockStateRecipe {
 
     @Override
     public RecipeSerializer<AccessoryFreezableRecipe> getSerializer() {
-        return AetherRecipeSerializers.ACCESSORY_FREEZABLE.get();
+        return AetherRecipeSerializers.ACCESSORY_FREEZABLE;
     }
 
     @Override

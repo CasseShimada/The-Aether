@@ -24,7 +24,7 @@ public class IcestoneFreezableRecipe extends AbstractBlockStateRecipe {
 
     @Override
     public RecipeSerializer<IcestoneFreezableRecipe> getSerializer() {
-        return AetherRecipeSerializers.ICESTONE_FREEZABLE.get();
+        return AetherRecipeSerializers.ICESTONE_FREEZABLE;
     }
 
     @Override

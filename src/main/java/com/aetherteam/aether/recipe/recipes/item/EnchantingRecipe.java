@@ -27,7 +27,7 @@ public class EnchantingRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     public RecipeSerializer<EnchantingRecipe> getSerializer() {
-        return AetherRecipeSerializers.ENCHANTING.get();
+        return AetherRecipeSerializers.ENCHANTING;
     }
 
     public static final class Serializer {

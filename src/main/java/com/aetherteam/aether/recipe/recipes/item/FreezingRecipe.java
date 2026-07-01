@@ -27,7 +27,7 @@ public class FreezingRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     public RecipeSerializer<FreezingRecipe> getSerializer() {
-        return AetherRecipeSerializers.FREEZING.get();
+        return AetherRecipeSerializers.FREEZING;
     }
 
     public static final class Serializer {

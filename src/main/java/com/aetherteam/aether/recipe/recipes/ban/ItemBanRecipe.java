@@ -61,7 +61,7 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
 
     @Override
     public RecipeSerializer<ItemBanRecipe> getSerializer() {
-        return AetherRecipeSerializers.ITEM_PLACEMENT_BAN.get();
+        return AetherRecipeSerializers.ITEM_PLACEMENT_BAN;
     }
 
     public static final class Serializer {

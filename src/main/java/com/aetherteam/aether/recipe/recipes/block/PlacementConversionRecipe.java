@@ -50,7 +50,7 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
 
     @Override
     public RecipeSerializer<PlacementConversionRecipe> getSerializer() {
-        return AetherRecipeSerializers.PLACEMENT_CONVERSION.get();
+        return AetherRecipeSerializers.PLACEMENT_CONVERSION;
     }
 
     public static final class Serializer {

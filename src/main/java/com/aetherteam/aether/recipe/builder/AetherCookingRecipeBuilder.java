@@ -91,16 +91,16 @@ public class AetherCookingRecipeBuilder implements RecipeBuilder {
 
     private static AetherBookCategory determineRecipeCategory(RecipeSerializer<? extends AbstractCookingRecipe> serializer, RecipeCategory category) {
         AetherBookCategory bookCategory;
-        if (serializer == AetherRecipeSerializers.ENCHANTING.get()) {
+        if (serializer == AetherRecipeSerializers.ENCHANTING) {
             switch (category) {
                 case BUILDING_BLOCKS, DECORATIONS -> bookCategory = AetherBookCategory.ENCHANTING_BLOCKS;
                 case FOOD -> bookCategory = AetherBookCategory.ENCHANTING_FOOD;
                 default -> bookCategory = AetherBookCategory.ENCHANTING_MISC;
             }
             return bookCategory;
-        } else if (serializer == AetherRecipeSerializers.REPAIRING.get()) {
+        } else if (serializer == AetherRecipeSerializers.REPAIRING) {
             return AetherBookCategory.ENCHANTING_REPAIR;
-        } else if (serializer == AetherRecipeSerializers.FREEZING.get()) {
+        } else if (serializer == AetherRecipeSerializers.FREEZING) {
             switch (category) {
                 case BUILDING_BLOCKS, DECORATIONS -> bookCategory = AetherBookCategory.FREEZABLE_BLOCKS;
                 default -> bookCategory = AetherBookCategory.FREEZABLE_MISC;

@@ -56,7 +56,7 @@ public class BlockBanRecipe extends AbstractPlacementBanRecipe<BlockState, Block
 
     @Override
     public RecipeSerializer<BlockBanRecipe> getSerializer() {
-        return AetherRecipeSerializers.BLOCK_PLACEMENT_BAN.get();
+        return AetherRecipeSerializers.BLOCK_PLACEMENT_BAN;
     }
 
     public static final class Serializer {

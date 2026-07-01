@@ -37,7 +37,7 @@ public class SwetBallRecipe extends AbstractBiomeParameterRecipe implements Matc
 
     @Override
     public RecipeSerializer<SwetBallRecipe> getSerializer() {
-        return AetherRecipeSerializers.SWET_BALL_CONVERSION.get();
+        return AetherRecipeSerializers.SWET_BALL_CONVERSION;
     }
 
     public static final class Serializer {
