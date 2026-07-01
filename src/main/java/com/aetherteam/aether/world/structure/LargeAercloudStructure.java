@@ -93,6 +93,6 @@ public class LargeAercloudStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return AetherStructureTypes.LARGE_AERCLOUD.get();
+        return AetherStructureTypes.LARGE_AERCLOUD;
     }
 }

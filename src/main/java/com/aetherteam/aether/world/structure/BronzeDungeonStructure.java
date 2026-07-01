@@ -193,6 +193,6 @@ public class BronzeDungeonStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return AetherStructureTypes.BRONZE_DUNGEON.get();
+        return AetherStructureTypes.BRONZE_DUNGEON;
     }
 }

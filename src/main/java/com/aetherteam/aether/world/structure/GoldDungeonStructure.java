@@ -283,6 +283,6 @@ public class GoldDungeonStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return AetherStructureTypes.GOLD_DUNGEON.get();
+        return AetherStructureTypes.GOLD_DUNGEON;
     }
 }

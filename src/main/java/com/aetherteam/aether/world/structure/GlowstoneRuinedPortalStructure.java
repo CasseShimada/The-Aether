@@ -191,7 +191,7 @@ public class GlowstoneRuinedPortalStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return AetherStructureTypes.RUINED_PORTAL.get();
+        return AetherStructureTypes.RUINED_PORTAL;
     }
 
     public record Setup(GlowstoneRuinedPortalPiece.VerticalPlacement placement, float airPocketProbability, float mossiness, boolean overgrown, boolean vines, boolean replaceWithHolystone, float weight) {

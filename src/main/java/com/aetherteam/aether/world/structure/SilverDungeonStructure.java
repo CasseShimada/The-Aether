@@ -236,6 +236,6 @@ public class SilverDungeonStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return AetherStructureTypes.SILVER_DUNGEON.get();
+        return AetherStructureTypes.SILVER_DUNGEON;
     }
 }
