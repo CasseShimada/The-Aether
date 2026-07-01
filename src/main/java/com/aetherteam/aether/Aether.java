@@ -80,6 +80,7 @@ public final class Aether {
         Reflection.initialize(AetherTreeDecoratorTypes.class);
         Reflection.initialize(AetherTrunkPlacerTypes.class);
         Reflection.initialize(AetherFoliagePlacerTypes.class);
+        Reflection.initialize(AetherPlacementModifiers.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -112,7 +113,6 @@ public final class Aether {
                 AetherBlockEntityTypes.BLOCK_ENTITY_TYPES,
                 AetherMenuTypes.MENU_TYPES,
                 AetherFeatures.FEATURES,
-                AetherPlacementModifiers.PLACEMENT_MODIFIERS,
                 AetherPoi.POI,
                 AetherStructureTypes.STRUCTURE_TYPES,
                 AetherStructurePieceTypes.STRUCTURE_PIECE_TYPES,

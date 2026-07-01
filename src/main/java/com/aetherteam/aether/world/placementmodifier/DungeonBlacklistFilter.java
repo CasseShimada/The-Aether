@@ -37,6 +37,6 @@ public class DungeonBlacklistFilter extends PlacementFilter {
 
     @Override
     public PlacementModifierType<?> type() {
-        return AetherPlacementModifiers.DUNGEON_BLACKLIST_FILTER.get();
+        return AetherPlacementModifiers.DUNGEON_BLACKLIST_FILTER;
     }
 }
