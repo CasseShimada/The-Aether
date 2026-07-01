@@ -93,7 +93,7 @@ public class RecipeHooks {
     public static boolean isItemPlacementBanned(Level level, BlockPos pos, Direction face, ItemStack stack, boolean spawnParticles) {
         if (level.recipeAccess() instanceof RecipeManager recipeManager) {
             for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
-                if (recipe.value().getType() == AetherRecipeTypes.ITEM_PLACEMENT_BAN.get() && ((ItemBanRecipe) recipe.value()).banItem(level, pos, face, stack, spawnParticles)) {
+                if (recipe.value().getType() == AetherRecipeTypes.ITEM_PLACEMENT_BAN && ((ItemBanRecipe) recipe.value()).banItem(level, pos, face, stack, spawnParticles)) {
                     return true;
                 }
             }
@@ -133,7 +133,7 @@ public class RecipeHooks {
     private static boolean isBlockPlacementBanned(Level level, BlockPos pos, BlockState state) {
         if (!level.isClientSide() && level.recipeAccess() instanceof RecipeManager recipeManager) {
             for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
-                if (recipe.value().getType() == AetherRecipeTypes.BLOCK_PLACEMENT_BAN.get() && ((BlockBanRecipe) recipe.value()).banBlock(level, pos, state)) {
+                if (recipe.value().getType() == AetherRecipeTypes.BLOCK_PLACEMENT_BAN && ((BlockBanRecipe) recipe.value()).banBlock(level, pos, state)) {
                     return true;
                 }
             }
@@ -151,7 +151,7 @@ public class RecipeHooks {
     private static void isBlockPlacementConvertable(Level level, BlockPos pos, BlockState state) {
         if (!level.isClientSide() && level.recipeAccess() instanceof RecipeManager recipeManager) {
             for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
-                if (recipe.value().getType() == AetherRecipeTypes.PLACEMENT_CONVERSION.get() && ((PlacementConversionRecipe) recipe.value()).convert(level, pos, state)) {
+                if (recipe.value().getType() == AetherRecipeTypes.PLACEMENT_CONVERSION && ((PlacementConversionRecipe) recipe.value()).convert(level, pos, state)) {
                     return;
                 }
             }

@@ -97,7 +97,7 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeType<IncubationRecipe> getType() {
-        return AetherRecipeTypes.INCUBATION.get();
+        return AetherRecipeTypes.INCUBATION;
     }
 
     @Override

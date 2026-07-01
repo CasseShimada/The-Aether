@@ -71,7 +71,7 @@ public interface FreezingAccessory extends FreezingBehavior<ItemStack> {
                 return 0;
             }
             for (RecipeHolder<?> recipe : recipeManager.getRecipes()) {
-                if (recipe.value().getType() != AetherRecipeTypes.ACCESSORY_FREEZABLE.get()) {
+                if (recipe.value().getType() != AetherRecipeTypes.ACCESSORY_FREEZABLE) {
                     continue;
                 }
                 AccessoryFreezableRecipe freezableRecipe = (AccessoryFreezableRecipe) recipe.value();

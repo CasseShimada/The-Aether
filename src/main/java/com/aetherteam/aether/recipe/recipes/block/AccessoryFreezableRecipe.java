@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class AccessoryFreezableRecipe extends AbstractBlockStateRecipe {
     public AccessoryFreezableRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
-        super(AetherRecipeTypes.ACCESSORY_FREEZABLE.get(), ingredient, result, function);
+        super(AetherRecipeTypes.ACCESSORY_FREEZABLE, ingredient, result, function);
     }
 
     @Override

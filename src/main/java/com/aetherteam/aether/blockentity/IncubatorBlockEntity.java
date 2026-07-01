@@ -104,7 +104,7 @@ public class IncubatorBlockEntity extends BaseContainerBlockEntity implements Wo
     private final RecipeManager.CachedCheck<SingleRecipeInput, IncubationRecipe> quickCheck;
 
     public IncubatorBlockEntity(BlockPos pos, BlockState state) {
-        this(pos, state, AetherRecipeTypes.INCUBATION.get());
+        this(pos, state, AetherRecipeTypes.INCUBATION);
     }
 
     public IncubatorBlockEntity(BlockPos pos, BlockState state, RecipeType<IncubationRecipe> recipeType) {

@@ -24,7 +24,7 @@ public class AmbrosiumShardItem extends Item implements ItemUseConversion<Ambros
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        InteractionResult result = this.convertBlock(AetherRecipeTypes.AMBROSIUM_ENCHANTING.get(), context);
+        InteractionResult result = this.convertBlock(AetherRecipeTypes.AMBROSIUM_ENCHANTING, context);
         if (context.getLevel().isClientSide() && result == InteractionResult.SUCCESS) {
             context.getLevel().playSound(context.getPlayer(), context.getClickedPos(), AetherSoundEvents.ITEM_AMBROSIUM_SHARD.get(), SoundSource.BLOCKS, 1.0F, 3.0F + (context.getLevel().getRandom().nextFloat() - context.getLevel().getRandom().nextFloat()) * 0.8F);
         }

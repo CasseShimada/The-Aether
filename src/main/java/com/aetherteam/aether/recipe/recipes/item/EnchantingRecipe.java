@@ -13,11 +13,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class EnchantingRecipe extends AbstractAetherCookingRecipe {
     public EnchantingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStack result, float experience, int enchantingTime) {
-        super(AetherRecipeTypes.ENCHANTING.get(), group, category, ingredient, result, experience, enchantingTime);
+        super(AetherRecipeTypes.ENCHANTING, group, category, ingredient, result, experience, enchantingTime);
     }
 
     public EnchantingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStackTemplate result, float experience, int enchantingTime) {
-        super(AetherRecipeTypes.ENCHANTING.get(), group, category, ingredient, result, experience, enchantingTime);
+        super(AetherRecipeTypes.ENCHANTING, group, category, ingredient, result, experience, enchantingTime);
     }
 
     @Override

@@ -41,7 +41,7 @@ final class AetherJeiRecipeCollector {
     @SuppressWarnings("unchecked")
     private static List<? extends RecipeHolder<? extends AbstractAetherCookingRecipe>> getEnchantingRecipeHolders(List<? extends RecipeHolder<?>> allRecipes) {
         return allRecipes.stream()
-                .filter(holder -> holder.value().getType() == AetherRecipeTypes.ENCHANTING.get())
+                .filter(holder -> holder.value().getType() == AetherRecipeTypes.ENCHANTING)
                 .map(holder -> (RecipeHolder<? extends AbstractAetherCookingRecipe>) holder)
                 .toList();
     }

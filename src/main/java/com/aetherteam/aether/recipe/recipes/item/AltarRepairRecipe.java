@@ -22,7 +22,7 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
     public final Ingredient ingredient;
 
     public AltarRepairRecipe(String group, Ingredient ingredient, int repairTime) {
-        super(AetherRecipeTypes.ENCHANTING.get(), group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, PLACEHOLDER_RESULT, 0.0F, repairTime);
+        super(AetherRecipeTypes.ENCHANTING, group, AetherBookCategory.ENCHANTING_REPAIR, ingredient, PLACEHOLDER_RESULT, 0.0F, repairTime);
         this.ingredient = ingredient;
     }
 

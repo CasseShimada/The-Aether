@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public class SwetBallRecipe extends AbstractBiomeParameterRecipe implements MatchEventRecipe {
     public SwetBallRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
-        super(AetherRecipeTypes.SWET_BALL_CONVERSION.get(), biome, ingredient, result, function);
+        super(AetherRecipeTypes.SWET_BALL_CONVERSION, biome, ingredient, result, function);
     }
 
     public SwetBallRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {

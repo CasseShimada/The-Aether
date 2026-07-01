@@ -11,11 +11,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class FreezerMenu extends AbstractAetherFurnaceMenu {
     public FreezerMenu(int containerId, Inventory playerInventory) {
-        super(AetherMenuTypes.FREEZER.get(), AetherRecipeTypes.FREEZING.get(), AetherRecipePropertySets.FREEZER_INPUT, AetherRecipeBookTypes.FREEZER, containerId, playerInventory);
+        super(AetherMenuTypes.FREEZER.get(), AetherRecipeTypes.FREEZING, AetherRecipePropertySets.FREEZER_INPUT, AetherRecipeBookTypes.FREEZER, containerId, playerInventory);
     }
 
     public FreezerMenu(int containerId, Inventory playerInventory, Container freezerContainer, ContainerData data) {
-        super(AetherMenuTypes.FREEZER.get(), AetherRecipeTypes.FREEZING.get(), AetherRecipePropertySets.FREEZER_INPUT, AetherRecipeBookTypes.FREEZER, containerId, playerInventory, freezerContainer, data);
+        super(AetherMenuTypes.FREEZER.get(), AetherRecipeTypes.FREEZING, AetherRecipePropertySets.FREEZER_INPUT, AetherRecipeBookTypes.FREEZER, containerId, playerInventory, freezerContainer, data);
     }
 
     @Override

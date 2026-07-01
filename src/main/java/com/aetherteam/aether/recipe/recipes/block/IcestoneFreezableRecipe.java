@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class IcestoneFreezableRecipe extends AbstractBlockStateRecipe {
     public IcestoneFreezableRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
-        super(AetherRecipeTypes.ICESTONE_FREEZABLE.get(), ingredient, result, function);
+        super(AetherRecipeTypes.ICESTONE_FREEZABLE, ingredient, result, function);
     }
 
     @Override

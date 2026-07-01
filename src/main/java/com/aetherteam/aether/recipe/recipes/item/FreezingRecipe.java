@@ -13,11 +13,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class FreezingRecipe extends AbstractAetherCookingRecipe {
     public FreezingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStack result, float experience, int freezingTime) {
-        super(AetherRecipeTypes.FREEZING.get(), group, category, ingredient, result, experience, freezingTime);
+        super(AetherRecipeTypes.FREEZING, group, category, ingredient, result, experience, freezingTime);
     }
 
     public FreezingRecipe(String group, AetherBookCategory category, Ingredient ingredient, ItemStackTemplate result, float experience, int freezingTime) {
-        super(AetherRecipeTypes.FREEZING.get(), group, category, ingredient, result, experience, freezingTime);
+        super(AetherRecipeTypes.FREEZING, group, category, ingredient, result, experience, freezingTime);
     }
 
     @Override

@@ -55,15 +55,15 @@ public class AetherREIClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(ItemBanRecipe.class, AetherRecipeTypes.ITEM_PLACEMENT_BAN.get(), recipe -> PlacementBanRecipeDisplay.ofItem(recipe.value()));
-        registry.registerRecipeFiller(BlockBanRecipe.class, AetherRecipeTypes.BLOCK_PLACEMENT_BAN.get(), recipe -> PlacementBanRecipeDisplay.ofBlock(recipe.value()));
+        registry.registerRecipeFiller(ItemBanRecipe.class, AetherRecipeTypes.ITEM_PLACEMENT_BAN, recipe -> PlacementBanRecipeDisplay.ofItem(recipe.value()));
+        registry.registerRecipeFiller(BlockBanRecipe.class, AetherRecipeTypes.BLOCK_PLACEMENT_BAN, recipe -> PlacementBanRecipeDisplay.ofBlock(recipe.value()));
 
-        registry.registerRecipeFiller(AccessoryFreezableRecipe.class, AetherRecipeTypes.ACCESSORY_FREEZABLE.get(), recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.ACCESSORY_FREEZABLE, recipe.value()));
-        registry.registerRecipeFiller(AmbrosiumRecipe.class, AetherRecipeTypes.AMBROSIUM_ENCHANTING.get(), recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.AMBROSIUM_ENCHANTING, recipe.value()));
-        registry.registerRecipeFiller(IcestoneFreezableRecipe.class, AetherRecipeTypes.ICESTONE_FREEZABLE.get(), recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.ICESTONE_FREEZABLE, recipe.value()));
+        registry.registerRecipeFiller(AccessoryFreezableRecipe.class, AetherRecipeTypes.ACCESSORY_FREEZABLE, recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.ACCESSORY_FREEZABLE, recipe.value()));
+        registry.registerRecipeFiller(AmbrosiumRecipe.class, AetherRecipeTypes.AMBROSIUM_ENCHANTING, recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.AMBROSIUM_ENCHANTING, recipe.value()));
+        registry.registerRecipeFiller(IcestoneFreezableRecipe.class, AetherRecipeTypes.ICESTONE_FREEZABLE, recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.ICESTONE_FREEZABLE, recipe.value()));
 
-        registry.registerRecipeFiller(PlacementConversionRecipe.class, AetherRecipeTypes.PLACEMENT_CONVERSION.get(), recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.PLACEMENT_CONVERSION, recipe.value()));
-        registry.registerRecipeFiller(SwetBallRecipe.class, AetherRecipeTypes.SWET_BALL_CONVERSION.get(), recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.SWET_BALL_CONVERSION, recipe.value()));
+        registry.registerRecipeFiller(PlacementConversionRecipe.class, AetherRecipeTypes.PLACEMENT_CONVERSION, recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.PLACEMENT_CONVERSION, recipe.value()));
+        registry.registerRecipeFiller(SwetBallRecipe.class, AetherRecipeTypes.SWET_BALL_CONVERSION, recipe -> new BlockStateRecipeDisplay<>(AetherREIServerPlugin.SWET_BALL_CONVERSION, recipe.value()));
 
         // Fuel
         for (var fuelRecipe : getFuelRecipes()) {

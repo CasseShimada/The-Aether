@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     public PlacementConversionRecipe(Optional<Either<ResourceKey<Biome>, TagKey<Biome>>> biome, BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
-        super(AetherRecipeTypes.PLACEMENT_CONVERSION.get(), biome, ingredient, result, function);
+        super(AetherRecipeTypes.PLACEMENT_CONVERSION, biome, ingredient, result, function);
     }
 
     public PlacementConversionRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {

@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class AmbrosiumRecipe extends AbstractBlockStateRecipe implements MatchEventRecipe {
     public AmbrosiumRecipe(BlockStateIngredient ingredient, BlockPropertyPair result, Optional<Identifier> function) {
-        super(AetherRecipeTypes.AMBROSIUM_ENCHANTING.get(), ingredient, result, function);
+        super(AetherRecipeTypes.AMBROSIUM_ENCHANTING, ingredient, result, function);
     }
 
     @Override

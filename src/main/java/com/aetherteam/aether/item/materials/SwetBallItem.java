@@ -16,7 +16,7 @@ public class SwetBallItem extends Item implements ItemUseConversion<SwetBallReci
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        InteractionResult result = this.convertBlock(AetherRecipeTypes.SWET_BALL_CONVERSION.get(), context);
+        InteractionResult result = this.convertBlock(AetherRecipeTypes.SWET_BALL_CONVERSION, context);
         if (context.getLevel().isClientSide() && result == InteractionResult.SUCCESS) {
             context.getLevel().playSound(context.getPlayer(), context.getClickedPos(), AetherSoundEvents.ITEM_SWET_BALL_USE.get(), SoundSource.BLOCKS, 0.8F, 1.0F + (context.getLevel().getRandom().nextFloat() - context.getLevel().getRandom().nextFloat()) * 0.2F);
         }
