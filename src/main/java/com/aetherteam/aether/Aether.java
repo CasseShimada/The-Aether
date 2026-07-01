@@ -70,6 +70,7 @@ public final class Aether {
         Reflection.initialize(AetherGameEvents.class);
         Reflection.initialize(AetherLootFunctions.class);
         Reflection.initialize(AetherLootConditions.class);
+        Reflection.initialize(AetherDataComponents.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -99,7 +100,6 @@ public final class Aether {
                 AetherBlocks.BLOCKS,
                 AetherEntityTypes.ENTITY_TYPES,
                 AetherSoundEvents.SOUNDS,
-                AetherDataComponents.DATA_COMPONENT_TYPES,
                 AetherItems.ITEMS,
                 AetherAttributes.ATTRIBUTES,
                 AetherBlockEntityTypes.BLOCK_ENTITY_TYPES,

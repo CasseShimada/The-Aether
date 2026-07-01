@@ -238,8 +238,8 @@ public class TreasureChestBlockEntity extends RandomizableContainerBlockEntity i
     @Override
     protected void applyImplicitComponents(DataComponentGetter componentInput) {
         super.applyImplicitComponents(componentInput);
-        this.setLocked(componentInput.getOrDefault(AetherDataComponents.LOCKED.get(), true));
-        DungeonKind kind = componentInput.get(AetherDataComponents.DUNGEON_KIND.get());
+        this.setLocked(componentInput.getOrDefault(AetherDataComponents.LOCKED, true));
+        DungeonKind kind = componentInput.get(AetherDataComponents.DUNGEON_KIND);
         if (kind != null) {
             this.setKind(kind.id());
         } else {
@@ -250,8 +250,8 @@ public class TreasureChestBlockEntity extends RandomizableContainerBlockEntity i
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
-        components.set(AetherDataComponents.LOCKED.get(), this.getLocked());
-        components.set(AetherDataComponents.DUNGEON_KIND.get(), new DungeonKind(this.getKind()));
+        components.set(AetherDataComponents.LOCKED, this.getLocked());
+        components.set(AetherDataComponents.DUNGEON_KIND, new DungeonKind(this.getKind()));
     }
 
     @Override

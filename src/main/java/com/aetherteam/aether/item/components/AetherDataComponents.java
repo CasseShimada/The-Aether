@@ -3,14 +3,16 @@ package com.aetherteam.aether.item.components;
 import com.aetherteam.aether.Aether;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
-import com.aetherteam.aether.registry.DeferredHolder;
-import com.aetherteam.aether.registry.DeferredRegister;
+import net.minecraft.resources.Identifier;
 
 public class AetherDataComponents {
-    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Aether.MODID);
+    public static final DataComponentType<Boolean> LOCKED = register("locked", DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+    public static final DataComponentType<DungeonKind> DUNGEON_KIND = register("dungeon_kind", DataComponentType.<DungeonKind>builder().persistent(DungeonKind.CODEC).networkSynchronized(DungeonKind.STREAM_CODEC).build());
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> LOCKED = DATA_COMPONENT_TYPES.register("locked", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<DungeonKind>> DUNGEON_KIND = DATA_COMPONENT_TYPES.register("dungeon_kind", () -> DataComponentType.<DungeonKind>builder().persistent(DungeonKind.CODEC).networkSynchronized(DungeonKind.STREAM_CODEC).build());
+    private static <T> DataComponentType<T> register(String name, DataComponentType<T> componentType) {
+        return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), componentType);
+    }
 }
