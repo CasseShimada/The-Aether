@@ -28,7 +28,7 @@ public class HolidayTreeDecorator extends TreeDecorator {
     }
 
     protected TreeDecoratorType<?> type() {
-        return AetherTreeDecoratorTypes.HOLIDAY_TREE_DECORATOR.get();
+        return AetherTreeDecoratorTypes.HOLIDAY_TREE_DECORATOR;
     }
 
     @Override
