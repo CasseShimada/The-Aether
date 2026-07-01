@@ -106,7 +106,7 @@ public class DoorwayBlock extends Block {
             Item item = itemStack.getItem();
             if (item instanceof BlockItem blockItem) {
                 if (blockItem.getBlock() == this && state.getValue(INVISIBLE)) {
-                    minecraft.level.addParticle(AetherParticleTypes.BOSS_DOORWAY_BLOCK.get(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+                    minecraft.level.addParticle(AetherParticleTypes.BOSS_DOORWAY_BLOCK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
                 }
             }
         }

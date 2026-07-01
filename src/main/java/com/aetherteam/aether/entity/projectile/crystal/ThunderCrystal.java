@@ -123,7 +123,7 @@ public class ThunderCrystal extends AbstractCrystal {
 
     @Override
     protected ParticleOptions getExplosionParticle() {
-        return AetherParticleTypes.FROZEN.get();
+        return AetherParticleTypes.FROZEN;
     }
 
     @Nullable

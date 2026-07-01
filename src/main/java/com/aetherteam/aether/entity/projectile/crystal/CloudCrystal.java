@@ -61,7 +61,7 @@ public class CloudCrystal extends AbstractCrystal implements WeaknessDamage {
 
     @Override
     protected ParticleOptions getExplosionParticle() {
-        return AetherParticleTypes.FROZEN.get();
+        return AetherParticleTypes.FROZEN;
     }
 
     @Nullable

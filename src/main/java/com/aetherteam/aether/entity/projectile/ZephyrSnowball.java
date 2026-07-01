@@ -125,7 +125,7 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
 
     @Override
     protected ParticleOptions getTrailParticle() {
-        return AetherParticleTypes.ZEPHYR_SNOWFLAKE.get();
+        return AetherParticleTypes.ZEPHYR_SNOWFLAKE;
     }
 
     @Override
