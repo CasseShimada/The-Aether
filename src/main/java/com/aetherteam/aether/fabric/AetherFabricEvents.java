@@ -5,8 +5,8 @@ import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
-import com.aetherteam.aether.event.hooks.EntityGoalHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
+import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.world.entity.player.Player;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -44,16 +43,8 @@ public final class AetherFabricEvents {
     }
 
     private static void registerEntityEvents() {
-        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            EntityGoalHooks.addGoals(entity);
-            if (entity instanceof Player player) {
-                PlayerLifecycleHooks.joinLevel(player);
-            }
-            if (entity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
-                AccessoryRuntime.forceSync(livingEntity);
-            }
-        });
-        ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> AccessoryRuntime.clear(entity));
+        ServerEntityEvents.ENTITY_LOAD.register(EntityLifecycleHooks::load);
+        ServerEntityEvents.ENTITY_UNLOAD.register(EntityLifecycleHooks::unload);
         ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
                 !EntityEffectHooks.preventInebriation(entity, effectInstance));
     }
