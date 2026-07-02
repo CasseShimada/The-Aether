@@ -67,7 +67,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.event.hooks.EntityGriefingRules;
 import com.aetherteam.aether.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -188,7 +188,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
         LivingEntity target = this.getTarget();
         if (!this.level().isClientSide()) {
             if (target != null) {
-                if (EventHooks.canEntityGrief(this.level(), this)) {
+                if (EntityGriefingRules.canEntityGrief(this.level(), this)) {
                     for (int i = 0; i < 2; i++) {
                         Vec3i vector = i == 0 ? this.getMotionDirection().getUnitVec3i() : Vec3i.ZERO;
                         BlockPos upperPosition = BlockPos.containing(this.getEyePosition()).offset(vector);

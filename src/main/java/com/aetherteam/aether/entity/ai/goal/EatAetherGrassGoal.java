@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
-import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.event.hooks.EntityGriefingRules;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
@@ -69,14 +69,14 @@ public class EatAetherGrassGoal extends Goal {
         if (this.eatAnimationTick == this.adjustedTickDelay(4)) {
             BlockPos blockPos = this.mob.blockPosition();
             if (IS_TALL_GRASS.test(this.mob.level().getBlockState(blockPos))) {
-                if (EventHooks.canEntityGrief(this.mob.level(), this.mob)) {
+                if (EntityGriefingRules.canEntityGrief(this.mob.level(), this.mob)) {
                     this.mob.level().destroyBlock(blockPos, false);
                 }
                 this.mob.ate();
             } else {
                 BlockPos blockPos1 = blockPos.below();
                 if (this.mob.level().getBlockState(blockPos1).is(AetherBlocks.AETHER_GRASS_BLOCK)) {
-                    if (EventHooks.canEntityGrief(this.mob.level(), this.mob)) {
+                    if (EntityGriefingRules.canEntityGrief(this.mob.level(), this.mob)) {
                         this.mob.level().levelEvent(2001, blockPos1, Block.getId(AetherBlocks.AETHER_GRASS_BLOCK.defaultBlockState()));
                         this.mob.level().setBlock(blockPos1, AetherBlocks.AETHER_DIRT.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, this.mob.level().getBlockState(blockPos1).getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 2);
                     }

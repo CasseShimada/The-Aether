@@ -59,7 +59,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
-import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.event.hooks.EntityGriefingRules;
 import com.aetherteam.aether.network.PacketDistributor;
 
 import javax.annotation.Nullable;
@@ -188,7 +188,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
      */
     private void breakBlocks() {
         if (this.level() instanceof ServerLevel serverLevel) {
-            if (EventHooks.canEntityGrief(this.level(), this)) {
+            if (EntityGriefingRules.canEntityGrief(this.level(), this)) {
                 BlockPos.betweenClosedStream(this.getBoundingBox().inflate(1, 0, 1)).forEach((pos) -> {
                     BlockState state = this.level().getBlockState(pos);
                     if (this.isBreakable(state)

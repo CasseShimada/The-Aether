@@ -66,7 +66,7 @@ public class EntityHooks {
      *
      * @param entity The {@link Entity} that is spawning.
      * @return Whether the entity can spawn in the world with accessories, as a {@link Boolean}.
-     * @see com.aetherteam.aether.mixin.mixins.common.EventHooksMixin
+     * @see com.aetherteam.aether.mixin.mixins.common.MobMixin
      */
     public static boolean canMobSpawnWithAccessories(Entity entity) {
         return EntityAccessorySpawnHooks.canMobSpawnWithAccessories(entity);
@@ -76,7 +76,7 @@ public class EntityHooks {
      * Equips entities with accessories during spawning.
      *
      * @param entity The {@link Entity} to equip accessories to.
-     * @see com.aetherteam.aether.mixin.mixins.common.EventHooksMixin
+     * @see com.aetherteam.aether.mixin.mixins.common.MobMixin
      */
     public static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
         EntityAccessorySpawnHooks.spawnWithAccessories(entity, difficulty);

@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import com.aetherteam.aether.event.hooks.EventHooks;
+import com.aetherteam.aether.event.hooks.EntityGriefingRules;
 
 /**
  * [CODE COPY] - {@link Fox.FoxEatBerriesGoal}.<br><br>
@@ -60,7 +60,7 @@ public class FoxEatBerryBushGoal extends MoveToBlockGoal {
     }
 
     protected void onReachedTarget() {
-        if (EventHooks.canEntityGrief(this.fox.level(), this.fox)) {
+        if (EntityGriefingRules.canEntityGrief(this.fox.level(), this.fox)) {
             BlockState blockState = this.mob.level().getBlockState(this.blockPos);
             if (blockState.is(AetherBlocks.BERRY_BUSH)) {
                 this.pickBlueBerries();
