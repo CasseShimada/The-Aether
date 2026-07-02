@@ -6,6 +6,7 @@ import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
+import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
@@ -72,7 +73,7 @@ public final class AetherFabricEvents {
             AccessoryRuntime.forceSync(player);
         });
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
-                DimensionHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
+                DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
     }
 
     private static void registerEntityEvents() {
@@ -91,10 +92,10 @@ public final class AetherFabricEvents {
     }
 
     private static void registerLevelEvents() {
-        ServerLevelEvents.LOAD.register((server, world) -> DimensionHooks.initializeLevelData(world));
+        ServerLevelEvents.LOAD.register((server, world) -> DimensionTimeHooks.initializeLevelData(world));
         ServerTickEvents.END_LEVEL_TICK.register(world -> {
-            DimensionHooks.tickTime(world);
-            DimensionHooks.checkEternalDayConfig(world);
+            DimensionTimeHooks.tickTime(world);
+            DimensionTimeHooks.checkEternalDayConfig(world);
         });
     }
 

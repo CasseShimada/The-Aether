@@ -15,11 +15,11 @@ import net.minecraft.world.level.gamerules.GameRules;
 
 import javax.annotation.Nullable;
 
-final class DimensionTimeHooks {
+public final class DimensionTimeHooks {
     private DimensionTimeHooks() {
     }
 
-    static void tickTime(Level level) {
+    public static void tickTime(Level level) {
         if (level.dimension().equals(AetherDimensions.AETHER_LEVEL) && level instanceof ServerLevel serverLevel) {
             ServerLevelAccessor serverLevelAccessor = (ServerLevelAccessor) serverLevel;
             com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor levelAccessor = (com.aetherteam.aether.mixin.mixins.common.accessor.LevelAccessor) level;
@@ -33,7 +33,7 @@ final class DimensionTimeHooks {
         }
     }
 
-    static void checkEternalDayConfig(Level level) {
+    public static void checkEternalDayConfig(Level level) {
         if (!level.isClientSide() && level.hasAttached(AetherDataAttachments.AETHER_TIME)) {
             var aetherTime = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
             boolean eternalDay = aetherTime.isEternalDay();
@@ -44,7 +44,7 @@ final class DimensionTimeHooks {
         }
     }
 
-    static void initializeLevelData(LevelAccessor level) {
+    public static void initializeLevelData(LevelAccessor level) {
         if (level instanceof ServerLevel serverLevel && serverLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
             AetherLevelData levelData = new AetherLevelData(serverLevel, serverLevel.getServer().getWorldData(), serverLevel.getServer().getWorldData().overworldData(), serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).getDayTime());
             ServerLevelAccessor serverLevelAccessor = (ServerLevelAccessor) serverLevel;
@@ -55,7 +55,7 @@ final class DimensionTimeHooks {
     }
 
     @Nullable
-    static Long finishSleep(LevelAccessor level, long newTime) {
+    public static Long finishSleep(LevelAccessor level, long newTime) {
         if (level instanceof ServerLevel serverLevel && serverLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
             serverLevel.getWeatherData().setRainTime(0);
             serverLevel.getWeatherData().setRaining(false);
@@ -68,7 +68,7 @@ final class DimensionTimeHooks {
         return null;
     }
 
-    static boolean isEternalDay(Player player) {
+    public static boolean isEternalDay(Player player) {
         return player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)
                 && player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
     }

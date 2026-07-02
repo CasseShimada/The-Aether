@@ -4,9 +4,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-
-import javax.annotation.Nullable;
 
 public class DimensionHooks {
     public static boolean playerLeavingAether;
@@ -20,24 +17,6 @@ public class DimensionHooks {
      */
     public static void startInAether(Player player) {
         DimensionSpawnHooks.startInAether(player);
-    }
-
-    /**
-     * Ticks time in dimensions with the Aether effects location.
-     *
-     * @param level The {@link Level}
-     */
-    public static void tickTime(Level level) {
-        DimensionTimeHooks.tickTime(level);
-    }
-
-    /**
-     * Checks whether eternal day is configured to be disabled, and disables it in the {@link AetherPlayerAttachment}.
-     *
-     * @param level The {@link Level}
-     */
-    public static void checkEternalDayConfig(Level level) {
-        DimensionTimeHooks.checkEternalDayConfig(level);
     }
 
     /**
@@ -71,34 +50,4 @@ public class DimensionHooks {
         DimensionTravelHooks.travelling(player);
     }
 
-    /**
-     * Initializes the Aether level data for time separate from the overworld.
-     * serverLevelData and levelData are access transformed.
-     *
-     * @param level The {@link LevelAccessor}.
-     */
-    public static void initializeLevelData(LevelAccessor level) {
-        DimensionTimeHooks.initializeLevelData(level);
-    }
-
-    /**
-     * Resets the weather cycle if players finish sleeping in an Aether dimension.<br>
-     * Sets the time in the Aether according to the Aether's day/night cycle.
-     *
-     * @param level The {@link LevelAccessor}.
-     */
-    @Nullable
-    public static Long finishSleep(LevelAccessor level, long newTime) {
-        return DimensionTimeHooks.finishSleep(level, newTime);
-    }
-
-    /**
-     * Checks whether it is eternal day in the Aether.
-     *
-     * @param player The {@link Player}.
-     * @return Whether it is eternal day, as a {@link Boolean}.
-     */
-    public static boolean isEternalDay(Player player) {
-        return DimensionTimeHooks.isEternalDay(player);
-    }
 }

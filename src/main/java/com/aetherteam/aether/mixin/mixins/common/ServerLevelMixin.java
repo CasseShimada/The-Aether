@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.server.level.ServerLevel;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ public class ServerLevelMixin {
     @Inject(method = "wakeUpAllPlayers()V", at = @At("TAIL"))
     private void aether$finishSleep(CallbackInfo ci) {
         ServerLevel level = (ServerLevel) (Object) this;
-        Long time = DimensionHooks.finishSleep(level, LevelTimeUtil.getTime(level));
+        Long time = DimensionTimeHooks.finishSleep(level, LevelTimeUtil.getTime(level));
         if (time != null) {
             LevelTimeUtil.setTime(level, time);
         }
