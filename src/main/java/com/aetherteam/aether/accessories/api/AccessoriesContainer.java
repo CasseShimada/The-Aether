@@ -25,6 +25,10 @@ public class AccessoriesContainer {
         Arrays.fill(this.renderFlags, true);
     }
 
+    public AccessoriesCapability owner() {
+        return this.owner;
+    }
+
     public AccessoriesCapability capability() {
         return this.owner;
     }

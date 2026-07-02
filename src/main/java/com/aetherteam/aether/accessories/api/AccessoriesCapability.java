@@ -37,7 +37,7 @@ import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
 public class AccessoriesCapability {
-    private static final Map<LivingEntity, AccessoriesCapability> CAPABILITIES = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<LivingEntity, AccessoriesCapability> ACCESSORIES_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final LivingEntity entity;
     private final Map<String, AccessoriesContainer> containers = new LinkedHashMap<>();
@@ -57,13 +57,13 @@ public class AccessoriesCapability {
         if (entity == null) {
             return null;
         }
-        AccessoriesCapability accessories = CAPABILITIES.computeIfAbsent(entity, AccessoriesCapability::new);
+        AccessoriesCapability accessories = ACCESSORIES_BY_ENTITY.computeIfAbsent(entity, AccessoriesCapability::new);
         accessories.ensureContainers();
         return accessories;
     }
 
     public static void evict(LivingEntity entity) {
-        CAPABILITIES.remove(entity);
+        ACCESSORIES_BY_ENTITY.remove(entity);
     }
 
     public synchronized AccessoriesContainer getContainer(SlotTypeReference slotTypeReference) {
