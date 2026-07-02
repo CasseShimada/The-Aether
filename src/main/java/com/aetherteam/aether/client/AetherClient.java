@@ -3,6 +3,7 @@ package com.aetherteam.aether.client;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.client.event.hooks.ClientLifecycleHooks;
 import com.aetherteam.aether.client.event.hooks.ClientDimensionTimeHooks;
 import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
@@ -17,7 +18,6 @@ import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
-import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.event.hooks.ItemTooltipHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
@@ -154,8 +154,7 @@ public class AetherClient {
     }
 
     private static void registerLifecycleCallbacks() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(client ->
-                AetherColorResolvers.registerBlockColor(client.getBlockColors()));
+        ClientLifecycleEvents.CLIENT_STARTED.register(ClientLifecycleHooks::started);
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
                 ItemTooltipHooks.addDungeonTooltips(components, stack, tooltipType));
@@ -181,10 +180,7 @@ public class AetherClient {
     }
 
     private static void registerConnectionCallbacks() {
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            ClientMusicHooks.stop();
-            ToolAbilityHooks.resetDebuffToolsState();
-        });
+        ClientPlayConnectionEvents.DISCONNECT.register(ClientLifecycleHooks::disconnect);
     }
 
     private static void registerLevelRenderCallbacks() {
