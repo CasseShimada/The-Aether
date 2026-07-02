@@ -3,10 +3,10 @@ package com.aetherteam.aether.fabric;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
-import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
+import com.aetherteam.aether.event.hooks.LevelLifecycleHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
@@ -50,11 +50,8 @@ public final class AetherFabricEvents {
     }
 
     private static void registerLevelEvents() {
-        ServerLevelEvents.LOAD.register((server, world) -> DimensionTimeHooks.initializeLevelData(world));
-        ServerTickEvents.END_LEVEL_TICK.register(world -> {
-            DimensionTimeHooks.tickTime(world);
-            DimensionTimeHooks.checkEternalDayConfig(world);
-        });
+        ServerLevelEvents.LOAD.register(LevelLifecycleHooks::load);
+        ServerTickEvents.END_LEVEL_TICK.register(LevelLifecycleHooks::endTick);
     }
 
     private static void registerTrackingEvents() {
