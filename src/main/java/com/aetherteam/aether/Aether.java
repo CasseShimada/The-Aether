@@ -124,14 +124,4 @@ public final class Aether {
     private static void registerCauldronInteractions() {
         AetherCauldronInteractions.registerCauldronInteractions();
     }
-
-    private static void initializeClasses(Class<?>... classes) {
-        for (Class<?> type : classes) {
-            try {
-                Class.forName(type.getName(), true, type.getClassLoader());
-            } catch (ClassNotFoundException exception) {
-                throw new IllegalStateException("Unable to initialize " + type.getName(), exception);
-            }
-        }
-    }
 }
