@@ -26,19 +26,15 @@ import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
 public class AccessoriesCapability implements AccessoriesContainerOwner {
-    private static final Map<LivingEntity, AccessoriesCapability> ACCESSORIES_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
-
     private final LivingEntity entity;
     private final Map<String, AccessoriesContainer> containers = new LinkedHashMap<>();
     private final Map<String, ItemStack> previousEquipped = new HashMap<>();
@@ -48,7 +44,7 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
     private boolean syncDirty;
     private boolean processing;
 
-    private AccessoriesCapability(LivingEntity entity) {
+    AccessoriesCapability(LivingEntity entity) {
         this.entity = entity;
     }
 
@@ -58,12 +54,7 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
     @Nullable
     @Deprecated(forRemoval = false)
     public static AccessoriesCapability get(LivingEntity entity) {
-        if (entity == null) {
-            return null;
-        }
-        AccessoriesCapability accessories = ACCESSORIES_BY_ENTITY.computeIfAbsent(entity, AccessoriesCapability::new);
-        accessories.ensureContainers();
-        return accessories;
+        return EntityAccessories.getCapability(entity);
     }
 
     /**
@@ -71,7 +62,11 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
      */
     @Deprecated(forRemoval = false)
     public static void evict(LivingEntity entity) {
-        ACCESSORIES_BY_ENTITY.remove(entity);
+        EntityAccessories.evict(entity);
+    }
+
+    synchronized void ensureReady() {
+        this.ensureContainers();
     }
 
     public synchronized AccessoriesContainer getContainer(SlotTypeReference slotTypeReference) {

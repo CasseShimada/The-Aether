@@ -21,11 +21,11 @@ public final class AccessoriesAPI {
     }
 
     public static AccessoriesStorage getAccessories(LivingEntity entity) {
-        return AccessoriesCapability.get(entity);
+        return EntityAccessories.get(entity);
     }
 
     public static void evictAccessories(LivingEntity entity) {
-        AccessoriesCapability.evict(entity);
+        EntityAccessories.evict(entity);
     }
 
     public static void registerPredicate(Identifier id, SlotBasedPredicate predicate) {
