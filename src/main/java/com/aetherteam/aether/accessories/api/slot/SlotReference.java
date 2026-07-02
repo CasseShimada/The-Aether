@@ -1,6 +1,6 @@
 package com.aetherteam.aether.accessories.api.slot;
 
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -51,7 +51,7 @@ public interface SlotReference {
 
         @Override
         public ItemStack getStack() {
-            AccessoriesCapability accessories = AccessoriesCapability.get(this.entity);
+            var accessories = AccessoriesAPI.getAccessories(this.entity);
             if (accessories == null) {
                 return ItemStack.EMPTY;
             }
@@ -64,7 +64,7 @@ public interface SlotReference {
 
         @Override
         public void setStack(ItemStack stack) {
-            AccessoriesCapability accessories = AccessoriesCapability.get(this.entity);
+            var accessories = AccessoriesAPI.getAccessories(this.entity);
             if (accessories == null) {
                 return;
             }

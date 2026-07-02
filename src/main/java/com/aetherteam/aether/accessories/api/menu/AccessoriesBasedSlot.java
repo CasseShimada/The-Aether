@@ -1,7 +1,6 @@
 package com.aetherteam.aether.accessories.api.menu;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
@@ -47,7 +46,7 @@ public class AccessoriesBasedSlot extends Slot {
             return false;
         }
 
-        AccessoriesCapability accessories = this.container.owner();
+        var accessories = this.container.owner();
         SlotReference reference = SlotReference.of(this.owner, this.slotType.name(), this.slotIndex);
         return accessories.canEquipAccessory(stack, true, slot -> slot.slotName().equals(this.slotType.name()) && slot.slot() == this.slotIndex) != null
                 && AccessoriesAPI.getOrDefaultAccessory(stack).canEquip(stack, reference);
@@ -83,7 +82,7 @@ public class AccessoriesBasedSlot extends Slot {
             return;
         }
 
-        AccessoriesCapability accessories = this.container.owner();
+        var accessories = this.container.owner();
         SlotReference reference = SlotReference.of(this.owner, this.slotType.name(), this.slotIndex);
         if (!oldStack.isEmpty()) {
             AccessoriesAPI.getOrDefaultAccessory(oldStack).onUnequip(oldStack.copy(), reference);

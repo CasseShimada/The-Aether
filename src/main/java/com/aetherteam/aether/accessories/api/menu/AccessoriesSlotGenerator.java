@@ -1,6 +1,6 @@
 package com.aetherteam.aether.accessories.api.menu;
 
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +28,7 @@ public final class AccessoriesSlotGenerator {
     }
 
     public void column() {
-        AccessoriesCapability accessories = AccessoriesCapability.get(this.owner);
+        var accessories = AccessoriesAPI.getAccessories(this.owner);
         if (accessories == null) {
             return;
         }
@@ -50,7 +50,7 @@ public final class AccessoriesSlotGenerator {
     }
 
     public void row() {
-        AccessoriesCapability accessories = AccessoriesCapability.get(this.owner);
+        var accessories = AccessoriesAPI.getAccessories(this.owner);
         if (accessories == null) {
             return;
         }
