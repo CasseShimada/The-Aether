@@ -9,16 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 public class AetherMixinPlugin implements IMixinConfigPlugin {
-    private boolean isOptiFineInstalled = false;
     private boolean isTwilightForestInstalled = false;
 
     @Override
     public void onLoad(String mixinPackage) {
-        try {
-            Class.forName("optifine.Installer", false, getClass().getClassLoader());
-            isOptiFineInstalled = true;
-        } catch (ClassNotFoundException ignored) {
-        }
         this.isTwilightForestInstalled = FabricLoader.getInstance().isModLoaded("twilightforest");
     }
 
@@ -33,12 +27,7 @@ public class AetherMixinPlugin implements IMixinConfigPlugin {
             return false;
         }
 
-        if (this.isOptiFineInstalled) {
-            if (mixinClassName.equals("com.aetherteam.aether.mixin.mixins.client.BossHealthOverlayMixin")) return false;
-            if (mixinClassName.equals("com.aetherteam.aether.mixin.mixins.client.optifine.BossHealthOverlayMixin")) return true;
-        }
-
-        return !mixinClassName.equals("com.aetherteam.aether.mixin.mixins.client.optifine.BossHealthOverlayMixin");
+        return true;
     }
 
     @Override
