@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
-public class AccessoriesCapability implements AccessoriesStorage {
+public class AccessoriesCapability implements AccessoriesContainerOwner {
     private static final Map<LivingEntity, AccessoriesCapability> ACCESSORIES_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final LivingEntity entity;
@@ -307,7 +307,7 @@ public class AccessoriesCapability implements AccessoriesStorage {
 
     private synchronized void ensureContainers() {
         for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
-            this.containers.computeIfAbsent(definition.type().name(), key -> new AccessoriesContainer(this, definition.type()));
+            this.containers.computeIfAbsent(definition.type().name(), key -> AccessoriesContainer.create(this, definition.type()));
         }
 
         if (!this.initializedFromAttachment) {
@@ -340,7 +340,7 @@ public class AccessoriesCapability implements AccessoriesStorage {
             slotType = new SlotType(slotName, Math.max(1, fallbackSize), "slot." + normalized);
         }
 
-        AccessoriesContainer created = new AccessoriesContainer(this, slotType);
+        AccessoriesContainer created = AccessoriesContainer.create(this, slotType);
         this.containers.put(slotName, created);
         return created;
     }

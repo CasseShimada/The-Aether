@@ -9,14 +9,26 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AccessoriesContainer {
-    private final AccessoriesCapability owner;
+    private final AccessoriesContainerOwner owner;
     private final SlotType slotType;
     private final TrackedSimpleContainer accessories;
     private final TrackedSimpleContainer cosmeticAccessories;
     private final boolean[] renderFlags;
     private boolean suppressUpdates;
 
+    /**
+     * @deprecated Containers are created by the current accessory storage implementation.
+     */
+    @Deprecated(forRemoval = false)
     public AccessoriesContainer(AccessoriesCapability owner, SlotType slotType) {
+        this((AccessoriesContainerOwner) owner, slotType);
+    }
+
+    static AccessoriesContainer create(AccessoriesContainerOwner owner, SlotType slotType) {
+        return new AccessoriesContainer(owner, slotType);
+    }
+
+    private AccessoriesContainer(AccessoriesContainerOwner owner, SlotType slotType) {
         this.owner = owner;
         this.slotType = slotType;
         this.accessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
@@ -34,7 +46,7 @@ public class AccessoriesContainer {
      */
     @Deprecated(forRemoval = false)
     public AccessoriesCapability capability() {
-        return this.owner;
+        return (AccessoriesCapability) this.owner;
     }
 
     public SlotType slotType() {
