@@ -7,7 +7,6 @@ import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.block.FreezingBlock;
 import com.aetherteam.aether.blockentity.IcestoneBlockEntity;
 import com.aetherteam.aether.event.FreezeEvent;
-import com.aetherteam.aether.event.PlacementConvertEvent;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.ban.BlockBanRecipe;
 import com.aetherteam.aether.recipe.recipes.ban.ItemBanRecipe;

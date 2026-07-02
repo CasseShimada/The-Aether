@@ -1,7 +1,5 @@
 package com.aetherteam.aether.recipe.recipes.block;
 
-import com.aetherteam.aether.event.AetherEventDispatch;
-import com.aetherteam.aether.event.ItemUseConvertEvent;
 import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
@@ -9,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -32,7 +29,7 @@ public interface MatchEventRecipe {
     }
 
     /**
-     * Checks if {@link ItemUseConvertEvent} is cancelled through {@link AetherEventDispatch#onItemUseConvert(Player, LevelAccessor, BlockPos, ItemStack, BlockState, BlockState, RecipeType)}.
+     * Allows shared item-use conversion recipes to keep a common match hook.
      *
      * @param player   The {@link Player} performing the recipe.
      * @param level    The {@link Level} the recipe is performed in.
@@ -40,10 +37,9 @@ public interface MatchEventRecipe {
      * @param stack    The {@link ItemStack} being used to perform the recipe.
      * @param oldState The original {@link BlockState} being interacted with.
      * @param newState The resulting {@link BlockState} from the recipe.
-     * @return Whether {@link ItemUseConvertEvent} is cancelled.
+     * @return Whether conversion should continue.
      */
     default boolean matches(@Nullable Player player, Level level, BlockPos pos, @Nullable ItemStack stack, BlockState oldState, BlockState newState, RecipeType<?> recipeType) {
-        ItemUseConvertEvent event = AetherEventDispatch.onItemUseConvert(player, level, pos, stack, oldState, newState, recipeType);
-        return !event.isCanceled();
+        return true;
     }
 }

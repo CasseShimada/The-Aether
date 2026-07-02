@@ -1,7 +1,6 @@
 package com.aetherteam.aether.recipe.recipes.block;
 
-import com.aetherteam.aether.event.AetherEventDispatch;
-import com.aetherteam.aether.event.PlacementConvertEvent;
+import com.aetherteam.aether.event.hooks.RecipeHooks;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.serializer.BiomeParameterRecipeSerializer;
@@ -29,7 +28,7 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     }
 
     /**
-     * Replaces an old {@link BlockState} with a new one from {@link com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe#getResultState(BlockState)}, if {@link PlacementConvertEvent} isn't cancelled.
+     * Replaces an old {@link BlockState} with a new one from {@link com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe#getResultState(BlockState)}.
      *
      * @param level    The {@link Level} the recipe is performed in.
      * @param pos      The {@link BlockPos} the recipe is performed at.
@@ -39,11 +38,9 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     public boolean convert(Level level, BlockPos pos, BlockState oldState) {
         if (this.matches(level, pos, oldState)) {
             BlockState newState = this.getResultState(oldState);
-            PlacementConvertEvent event = AetherEventDispatch.onPlacementConvert(level, pos, oldState, newState);
-            if (!event.isCanceled()) {
-                level.setBlockAndUpdate(pos, newState);
-                return true;
-            }
+            RecipeHooks.banOrConvert(level, pos);
+            level.setBlockAndUpdate(pos, newState);
+            return true;
         }
         return false;
     }
