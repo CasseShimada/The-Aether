@@ -35,22 +35,6 @@ public class AetherEventDispatch {
     }
 
     /**
-     * @see PlacementBanEvent.CheckItem
-     */
-    public static boolean isItemPlacementBanned(LevelAccessor level, BlockPos pos, ItemStack stack) {
-        PlacementBanEvent.CheckItem event = new PlacementBanEvent.CheckItem(level, pos, stack.copy());
-        return event.isBanned();
-    }
-
-    /**
-     * @see PlacementBanEvent.CheckBlock
-     */
-    public static boolean isBlockPlacementBanned(LevelAccessor level, BlockPos pos, BlockState state) {
-        PlacementBanEvent.CheckBlock event = new PlacementBanEvent.CheckBlock(level, pos, state);
-        return event.isBanned();
-    }
-
-    /**
      * @see PlacementConvertEvent
      */
     public static PlacementConvertEvent onPlacementConvert(LevelAccessor level, BlockPos pos, BlockState oldState, BlockState newState) {

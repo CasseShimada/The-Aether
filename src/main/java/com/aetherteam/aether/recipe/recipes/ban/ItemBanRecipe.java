@@ -20,7 +20,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -37,8 +36,7 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
 
     /**
      * Checks if the recipe matches the given parameters using {@link AbstractPlacementBanRecipe#matches(Level, BlockPos, Object)}.<br><br>
-     * Then checks an event hook through {@link AetherEventDispatch#isItemPlacementBanned(LevelAccessor, BlockPos, ItemStack)}.<br><br>
-     * Before calling {@link AetherEventDispatch#onPlacementSpawnParticles(LevelAccessor, BlockPos, Direction, ItemStack, BlockState)} to spawn particles on item ban.
+     * Then calls {@link AetherEventDispatch#onPlacementSpawnParticles} to spawn particles on item ban.
      *
      * @param level          The {@link Level} the recipe is performed in.
      * @param pos            The {@link BlockPos} the recipe is performed at.
@@ -49,12 +47,10 @@ public class ItemBanRecipe extends AbstractPlacementBanRecipe<ItemStack, Ingredi
      */
     public boolean banItem(Level level, BlockPos pos, Direction direction, ItemStack stack, boolean spawnParticles) {
         if (this.matches(level, pos, stack)) {
-            if (AetherEventDispatch.isItemPlacementBanned(level, pos, stack)) {
-                if (spawnParticles) {
-                    AetherEventDispatch.onPlacementSpawnParticles(level, pos, direction, stack, null);
-                }
-                return true;
+            if (spawnParticles) {
+                AetherEventDispatch.onPlacementSpawnParticles(level, pos, direction, stack, null);
             }
+            return true;
         }
         return false;
     }
