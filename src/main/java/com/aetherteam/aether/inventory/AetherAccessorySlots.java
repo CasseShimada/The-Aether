@@ -76,6 +76,10 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
         AccessoriesAPI.registerPredicate(HEAD_PREDICATE, SlotBasedPredicate.ofStack(AccessorySlotResolver::matchesHeadSlot));
     }
 
+    public static void register() {
+        UniqueSlotHandling.EVENT.register(INSTANCE);
+    }
+
     @Override
     public void registerSlots(UniqueSlotHandling.UniqueSlotBuilderFactory factory) {
         if (!AetherConfig.COMMON.use_default_accessories_menu.get()) {

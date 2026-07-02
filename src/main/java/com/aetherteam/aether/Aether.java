@@ -36,7 +36,6 @@ import com.aetherteam.aether.world.structurepiece.AetherStructurePieceTypes;
 import com.aetherteam.aether.world.treedecorator.AetherTreeDecoratorTypes;
 import com.aetherteam.aether.world.trunkplacer.AetherTrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
-import com.aetherteam.aether.accessories.api.slot.UniqueSlotHandling;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 
@@ -111,7 +110,7 @@ public final class Aether {
         registerDispenserBehaviors();
         registerCauldronInteractions();
 
-        UniqueSlotHandling.EVENT.register(AetherAccessorySlots.INSTANCE);
+        AetherAccessorySlots.register();
     }
 
     private static void registerDispenserBehaviors() {
