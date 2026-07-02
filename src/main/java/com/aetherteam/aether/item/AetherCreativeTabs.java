@@ -381,6 +381,9 @@ public class AetherCreativeTabs {
         return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(Aether.MODID, name), tab);
     }
 
+    public static void bootstrap() {
+    }
+
     public static void registerVanillaTabEntries() {
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(entries -> {
             entries.insertAfter(Items.LEATHER_BOOTS, AetherItems.LEATHER_GLOVES);
