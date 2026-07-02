@@ -8,7 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class AetherBlockEntityTypes {
+public final class AetherBlockEntityTypes {
     public static final BlockEntityType<AetherFlowerBlockEntity> FLOWER = register("flower",
             FabricBlockEntityTypeBuilder.create(AetherFlowerBlockEntity::new, AetherBlocks.PURPLE_FLOWER, AetherBlocks.WHITE_FLOWER).build());
 
@@ -44,5 +44,11 @@ public class AetherBlockEntityTypes {
 
     private static <T extends net.minecraft.world.level.block.entity.BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
+
+    private AetherBlockEntityTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }

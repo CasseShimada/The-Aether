@@ -91,10 +91,10 @@ public final class Aether {
 
         initializeClasses(
                 AetherCreativeTabs.class,
-                AetherBlocks.class,
-                AetherBlockEntityTypes.class,
-                AetherEntityTypes.class
+                AetherBlocks.class
         );
+        AetherBlockEntityTypes.bootstrap();
+        initializeClasses(AetherEntityTypes.class);
         AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
         initializeClasses(AetherItems.class);
