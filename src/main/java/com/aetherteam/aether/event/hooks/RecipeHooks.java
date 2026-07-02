@@ -52,7 +52,6 @@ public class RecipeHooks {
      * @param state          The {@link BlockState} being interacted with.
      * @param spawnParticles A {@link Boolean} for whether to spawn particles from the interaction's failure.
      * @return Whether an interaction is banned, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#checkBanned(PlayerInteractEvent.RightClickBlock)
      */
     public static boolean checkInteractionBanned(Player player, Level level, BlockPos pos, Direction face, ItemStack stack, BlockState state, boolean spawnParticles) {
         if (isItemPlacementBanned(level, pos, face, stack, spawnParticles)) {
@@ -106,7 +105,6 @@ public class RecipeHooks {
      *
      * @param levelAccessor The {@link LevelAccessor} the block is in.
      * @param pos           The {@link BlockPos} of the block.
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#onNeighborNotified(BlockEvent.NeighborNotifyEvent)
      */
     public static void checkExistenceBanned(LevelAccessor levelAccessor, BlockPos pos) {
         if (levelAccessor instanceof Level level) {
@@ -163,8 +161,6 @@ public class RecipeHooks {
      *
      * @param accessor The {@link LevelAccessor} that the interaction is in.
      * @param pos      The {@link BlockPos} the interaction is at.
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#onConvert(PlacementConvertEvent)
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#onBanned(PlacementBanEvent.SpawnParticles)
      */
     public static void banOrConvert(LevelAccessor accessor, BlockPos pos) {
         if (accessor instanceof ServerLevel serverLevel) {
@@ -184,7 +180,6 @@ public class RecipeHooks {
      *
      * @param accessor The {@link LevelAccessor} that the block is in.
      * @param pos      The {@link BlockPos}
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#onNeighborNotified(BlockEvent.NeighborNotifyEvent)
      */
     public static void sendIcestoneFreezableUpdateEvent(LevelAccessor accessor, BlockPos pos) {
         if (accessor instanceof Level level && !level.isClientSide()) {
@@ -203,7 +198,6 @@ public class RecipeHooks {
      * @param sourcePos The {@link BlockPos} of the source of the freezing.
      * @param pos       The {@link BlockPos} of the block to freeze.
      * @return Whether freezing a block should be prevented, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.RecipeListener#onBlockFreeze(FreezeEvent.FreezeFromBlock)
      */
     public static boolean preventBlockFreezing(LevelAccessor accessor, BlockPos sourcePos, BlockPos pos) {
         if (accessor.getBlockEntity(sourcePos) instanceof IcestoneBlockEntity blockEntity) {

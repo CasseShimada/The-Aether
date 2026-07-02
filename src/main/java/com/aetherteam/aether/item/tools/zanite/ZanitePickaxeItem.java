@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PickaxeItem;
 
 /**
- * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#modifyBreakSpeed(PlayerEvent.BreakSpeed)}.
+ * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.event.hooks.AbilityHooks.ToolHooks#handleZaniteToolAbility}.
  */
 public class ZanitePickaxeItem extends PickaxeItem implements ZaniteTool {
     public ZanitePickaxeItem() {

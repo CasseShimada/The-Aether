@@ -50,7 +50,6 @@ public class EntityHooks {
      * Adds a new goal to an entity.
      *
      * @param entity The {@link Entity}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onEntityJoin(EntityJoinLevelEvent)
      */
     public static void addGoals(Entity entity) {
         if (entity.getClass() == Bee.class) {
@@ -90,7 +89,6 @@ public class EntityHooks {
      * @param mount       The mounted {@link Entity}.
      * @param dismounting Whether the rider is trying to dismount, as a {@link Boolean}.
      * @return Whether to prevent the rider from dismounting, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onMountEntity(EntityMountEvent)
      */
     public static boolean dismountPrevention(Entity rider, Entity mount, boolean dismounting) {
         if (dismounting && rider.isShiftKeyDown()) {
@@ -115,7 +113,6 @@ public class EntityHooks {
      * Launches a mount when it interacts with a blue aercloud. This is handled as an event to get around a vanilla bug with it not working from the {@link com.aetherteam.aether.block.natural.BlueAercloudBlock} class.
      *
      * @param player The passenger {@link Player}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onRiderTick(PlayerTickEvent.Post)
      */
     public static void launchMount(Player player) {
         Entity mount = player.getVehicle();
@@ -134,7 +131,6 @@ public class EntityHooks {
      * @param target The target {@link Entity} to milk.
      * @param player The {@link Player} milking the target.
      * @param hand   The {@link InteractionHand} with the bucket item.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific)
      */
     public static void skyrootBucketMilking(Entity target, Player player, InteractionHand hand) {
         EntityBucketHooks.skyrootBucketMilking(target, player, hand);
@@ -147,7 +143,6 @@ public class EntityHooks {
      * @param player The {@link Player}.
      * @param hand   The {@link InteractionHand} with the bucket item.
      * @return The {@link Optional} {@link InteractionResult} from this interaction.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific)
      */
     public static Optional<InteractionResult> pickupBucketable(Entity target, Player player, InteractionHand hand) {
         return EntityBucketHooks.pickupBucketable(target, player, hand);
@@ -162,7 +157,6 @@ public class EntityHooks {
      * @param pos    The right-click {@link Vec3} position.
      * @param hand   The {@link InteractionHand} with the item.
      * @return The {@link Optional} {@link InteractionResult} from this interaction.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onInteractWithEntity(PlayerInteractEvent.EntityInteractSpecific)
      */
     public static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {
         return EntityArmorStandHooks.interactWithArmorStand(target, player, stack, pos, hand);
@@ -174,7 +168,6 @@ public class EntityHooks {
      * @param projectileEntity The hook projectile {@link Entity}.
      * @param rayTraceResult   The {@link HitResult} of the projectile.
      * @return Whether to prevent the hook interaction, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onProjectileHitEntity(ProjectileImpactEvent)
      */
     public static boolean preventEntityHooked(Entity projectileEntity, HitResult rayTraceResult) {
         if (rayTraceResult instanceof EntityHitResult entityHitResult) {
@@ -188,7 +181,6 @@ public class EntityHooks {
      *
      * @param source The {@link DamageSource} to block.
      * @return Whether to disallow blocking, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onShieldBlock(LivingShieldBlockEvent)
      */
     public static boolean preventSliderShieldBlock(DamageSource source) {
         return source.getEntity() instanceof Slider;
@@ -199,7 +191,6 @@ public class EntityHooks {
      *
      * @param entity The {@link Entity}.
      * @return Whether lightning hit a key item, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onLightningStrike(EntityStruckByLightningEvent)
      */
     public static boolean lightningHitKeys(Entity entity) {
         if (entity instanceof ItemEntity itemEntity) {
@@ -230,7 +221,6 @@ public class EntityHooks {
      *
      * @param entity    The {@link LivingEntity} that dropped the items.
      * @param itemDrops The {@link Collection} of dropped {@link ItemEntity}s.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onPlayerDrops(LivingDropsEvent)
      */
     public static void trackDrops(LivingEntity entity, Collection<ItemEntity> itemDrops) {
         if (entity instanceof Player player) {
@@ -246,7 +236,6 @@ public class EntityHooks {
      * @param recentlyHit Whether the entity was recently hit, as a {@link Boolean}.
      * @param looting     The {@link Integer} for the looting enchantment value.
      * @return The new {@link Collection} of {@link ItemEntity} drops.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#listen(IEventBus)
      */
     public static List<ItemStack> handleEntityAccessoryDrops(LivingEntity entity, List<ItemStack> itemStacks, boolean recentlyHit, int looting) {
         return EntityAccessorySpawnHooks.handleEntityAccessoryDrops(entity, itemStacks, recentlyHit, looting);
@@ -258,7 +247,6 @@ public class EntityHooks {
      * @param entity     The {@link LivingEntity} dropping the experience.
      * @param experience The original {@link Integer} amount of experience.
      * @return The new {@link Integer} amount of experience.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onDropExperience(LivingExperienceDropEvent)
      */
     public static int modifyExperience(LivingEntity entity, int experience) {
         return EntityAccessorySpawnHooks.modifyExperience(entity, experience);
@@ -270,7 +258,6 @@ public class EntityHooks {
      * @param livingEntity    The {@link LivingEntity} that the effect is being applied to.
      * @param appliedInstance The {@link MobEffectInstance}.
      * @return Whether Inebriation application can be prevented.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onEffectApply(MobEffectEvent.Applicable)
      */
     public static boolean preventInebriation(LivingEntity livingEntity, MobEffectInstance appliedInstance) {
         return livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY)) && appliedInstance.getEffect().value() == AetherEffects.INEBRIATION;
@@ -281,7 +268,6 @@ public class EntityHooks {
      *
      * @param mob The splitting {@link Mob}.
      * @return Whether the {@link Mob} should split.
-     * @see com.aetherteam.aether.event.listeners.EntityListener#onEntitySplit(MobSplitEvent)
      */
     public static boolean preventSplit(Mob mob) {
         return mob.getType().builtInRegistryHolder().is(AetherTags.Entities.SWETS);

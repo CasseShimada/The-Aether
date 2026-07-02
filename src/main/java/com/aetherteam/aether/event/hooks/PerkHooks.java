@@ -10,7 +10,6 @@ public class PerkHooks {
      * Removes perks from the player if they don't have a User stored with the server.
      *
      * @param player The {@link Player}.
-     * @see com.aetherteam.aether.event.listeners.PerkListener#playerLoggedIn(PlayerEvent.PlayerLoggedInEvent)
      */
     public static void refreshPerks(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {

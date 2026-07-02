@@ -23,7 +23,6 @@ public class DimensionHooks {
      * Spawns the player in the Aether dimension if the {@link AetherConfig.Server#spawn_in_aether} config is enabled.
      *
      * @param player The {@link Player}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerLogin(PlayerEvent.PlayerLoggedInEvent)
      */
     public static void startInAether(Player player) {
         DimensionSpawnHooks.startInAether(player);
@@ -39,7 +38,6 @@ public class DimensionHooks {
      * @param stack     The {@link ItemStack} used to attempt to activate the portal.
      * @param hand      The {@link InteractionHand} that the item is in.
      * @return Whether the portal should be created, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onInteractWithPortalFrame(PlayerInteractEvent.RightClickBlock)
      */
     public static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
         return DimensionPortalHooks.createPortal(player, level, pos, direction, stack, hand);
@@ -53,7 +51,6 @@ public class DimensionHooks {
      * @param blockState    The water {@link BlockState}.
      * @param fluidState    The water {@link FluidState}.
      * @return Whether the portal should be created, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onWaterExistsInsidePortalFrame(BlockEvent.NeighborNotifyEvent)
      */
     public static boolean detectWaterInFrame(LevelAccessor levelAccessor, BlockPos pos, BlockState blockState, FluidState fluidState) {
         return DimensionPortalHooks.detectWaterInFrame(levelAccessor, pos, blockState, fluidState);
@@ -63,7 +60,6 @@ public class DimensionHooks {
      * Ticks time in dimensions with the Aether effects location.
      *
      * @param level The {@link Level}
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onWorldTick(LevelTickEvent.Post)
      */
     public static void tickTime(Level level) {
         DimensionTimeHooks.tickTime(level);
@@ -73,7 +69,6 @@ public class DimensionHooks {
      * Checks whether eternal day is configured to be disabled, and disables it in the {@link AetherPlayerAttachment}.
      *
      * @param level The {@link Level}
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onWorldTick(LevelTickEvent.Post)
      */
     public static void checkEternalDayConfig(Level level) {
         DimensionTimeHooks.checkEternalDayConfig(level);
@@ -82,7 +77,6 @@ public class DimensionHooks {
     /**
      * @param entity    The {@link Entity} travelling between dimensions.
      * @param dimension The {@link ResourceKey} of the dimension ({@link Level}) being teleported to.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onEntityTravelToDimension(EntityTravelToDimensionEvent)
      */
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
         DimensionTravelHooks.dimensionTravel(entity, dimension);
@@ -90,7 +84,6 @@ public class DimensionHooks {
 
     /**
      * @param entity The {@link Entity} travelling between dimensions.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onEntityTravelToDimension(EntityTravelToDimensionEvent)
      */
     public static void removePlayerAerbunny(Entity entity) {
         DimensionTravelHooks.removePlayerAerbunny(entity);
@@ -98,7 +91,6 @@ public class DimensionHooks {
 
     /**
      * @param player The {@link Player} travelling between dimensions.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent)
      */
     public static void remountPlayerAerbunny(Player player) {
         DimensionTravelHooks.remountPlayerAerbunny(player);
@@ -108,7 +100,6 @@ public class DimensionHooks {
      * Checks if the player was falling out of the Aether, and prevents server fly-hack checks during this.
      *
      * @param player The {@link Player}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerTraveling(PlayerTickEvent.Post)
      */
     public static void travelling(Player player) {
         DimensionTravelHooks.travelling(player);
@@ -119,7 +110,6 @@ public class DimensionHooks {
      * serverLevelData and levelData are access transformed.
      *
      * @param level The {@link LevelAccessor}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onPlayerTraveling(PlayerTickEvent.Post)
      */
     public static void initializeLevelData(LevelAccessor level) {
         DimensionTimeHooks.initializeLevelData(level);
@@ -130,7 +120,6 @@ public class DimensionHooks {
      * Sets the time in the Aether according to the Aether's day/night cycle.
      *
      * @param level The {@link LevelAccessor}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onSleepFinish(SleepFinishedTimeEvent)
      */
     @Nullable
     public static Long finishSleep(LevelAccessor level, long newTime) {
@@ -142,7 +131,6 @@ public class DimensionHooks {
      *
      * @param player The {@link Player}.
      * @return Whether it is eternal day, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.DimensionListener#onTriedToSleep(CanPlayerSleepEvent)
      */
     public static boolean isEternalDay(Player player) {
         return DimensionTimeHooks.isEternalDay(player);

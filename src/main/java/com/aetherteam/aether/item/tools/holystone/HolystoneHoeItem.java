@@ -6,7 +6,7 @@ import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 
 /**
- * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#doHolystoneAbility(BlockEvent.BreakEvent)}.
+ * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.event.hooks.AbilityHooks.ToolHooks#handleHolystoneToolAbility}.
  */
 public class HolystoneHoeItem extends HoeItem implements HolystoneTool {
     public HolystoneHoeItem() {

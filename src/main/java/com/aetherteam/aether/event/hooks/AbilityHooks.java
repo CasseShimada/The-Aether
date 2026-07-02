@@ -69,8 +69,6 @@ public class AbilityHooks {
 
         /**
          * Damages Zanite Rings when a block is broken.
-         *
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onBlockBreak(BlockEvent.BreakEvent)
          */
         public static void damageZaniteRing(LivingEntity entity, LevelAccessor level, BlockState state, BlockPos pos) {
             List<SlotEntryReference> slotResults = EquipmentUtil.getZaniteRings(entity);
@@ -85,8 +83,6 @@ public class AbilityHooks {
 
         /**
          * Damages Zanite Pendant when a block is broken.
-         *
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onBlockBreak(BlockEvent.BreakEvent)
          */
         public static void damageZanitePendant(LivingEntity entity, LevelAccessor level, BlockState state, BlockPos pos) {
             SlotEntryReference slotResult = EquipmentUtil.getZanitePendant(entity);
@@ -117,7 +113,6 @@ public class AbilityHooks {
         /**
          * Handles ability for {@link ZaniteAccessory} for Zanite Rings (accounts for if multiple are equipped).
          * @see ZaniteAccessory#handleMiningSpeed(float, ItemStack)
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onMiningSpeed(PlayerEvent.BreakSpeed)
          */
         public static float handleZaniteRingAbility(LivingEntity entity, float speed) {
             float newSpeed = speed;
@@ -133,7 +128,6 @@ public class AbilityHooks {
         /**
          * Handles ability for {@link ZaniteAccessory} for the Zanite Pendant.
          * @see ZaniteAccessory#handleMiningSpeed(float, ItemStack)
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onMiningSpeed(PlayerEvent.BreakSpeed)
          */
         public static float handleZanitePendantAbility(LivingEntity entity, float speed) {
             SlotEntryReference slotResult = EquipmentUtil.getZanitePendant(entity);
@@ -145,8 +139,6 @@ public class AbilityHooks {
 
         /**
          * Checks whether an entity can be targeted while wearing an Invisibility Cloak.
-         *
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onTargetSet(LivingEvent.LivingVisibilityEvent)
          */
         public static boolean preventTargeting(LivingEntity target, @Nullable Entity lookingEntity) {
             if (target instanceof Player player) {
@@ -165,8 +157,6 @@ public class AbilityHooks {
 
         /**
          * Checks if an entity recently attacked while wearing an Invisibility Cloak.
-         *
-         * @see com.aetherteam.aether.event.listeners.abilities.AccessoryAbilityListener#onTargetSet(LivingEvent.LivingVisibilityEvent)
          */
         public static boolean recentlyAttackedWithInvisibility(LivingEntity target, Entity lookingEntity) {
             if (target instanceof Player player) {
@@ -203,7 +193,6 @@ public class AbilityHooks {
          *
          * @param entity The {@link LivingEntity} wearing the armor.
          * @return Whether the wearer's fall damage should be cancelled, as a {@link Boolean}.
-         * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityFall(LivingFallEvent)
          */
         public static boolean fallCancellation(LivingEntity entity) {
             return EquipmentUtil.hasSentryBoots(entity) || EquipmentUtil.hasFullGravititeSet(entity) || EquipmentUtil.hasFullValkyrieSet(entity);
@@ -256,7 +245,6 @@ public class AbilityHooks {
          * @param old      The old {@link BlockState} of the block an action is being performed on.
          * @param action   The tool action being performed on the block.
          * @return The new {@link BlockState} of the block.
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#setupToolModifications(BlockEvent.BlockToolModificationEvent)
          */
         public static BlockState setupItemAbilities(LevelAccessor accessor, BlockPos pos, BlockState old, ToolAction action) {
             Block oldBlock = old.getBlock();
@@ -282,7 +270,6 @@ public class AbilityHooks {
          * Handles ability for {@link com.aetherteam.aether.item.tools.abilities.HolystoneTool}.
          *
          * @see HolystoneTool#dropAmbrosium(Player, Level, BlockPos, ItemStack, BlockState)
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#doHolystoneAbility(BlockEvent.BreakEvent)
          */
         public static void handleHolystoneToolAbility(Player player, Level level, BlockPos pos, ItemStack stack, BlockState blockState) {
             if (stack.getItem() instanceof HolystoneTool holystoneTool) {
@@ -293,7 +280,6 @@ public class AbilityHooks {
         /**
          * Handles ability for {@link com.aetherteam.aether.item.tools.abilities.ZaniteTool}.
          * @see ZaniteTool#increaseSpeed(ItemStack, float)
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#modifyBreakSpeed(PlayerEvent.BreakSpeed)
          */
         public static float handleZaniteToolAbility(ItemStack stack, float speed) {
             if (stack.getItem() instanceof ZaniteTool zaniteTool) {
@@ -311,7 +297,6 @@ public class AbilityHooks {
          * @param stack The {@link ItemStack} being used for mining.
          * @param speed The mining speed of the stack, as a {@link Float}.
          * @return The debuffed mining speed, as a {@link Float}.
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#modifyBreakSpeed(PlayerEvent.BreakSpeed)
          */
         public static float reduceToolEffectiveness(Player player, BlockState state, ItemStack stack, float speed) {
             if (debuffTools) {
@@ -328,7 +313,6 @@ public class AbilityHooks {
          * Sets up the debuff tool state based on the current server value and attempts to sync the state to the client if needed
          *
          * @param player Current player logging into the server
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#
          */
         public static void setDebuffToolsState(ServerPlayer player) {
             if (debuffTools) {
@@ -356,7 +340,6 @@ public class AbilityHooks {
          * @param stack    The {@link ItemStack} performing an action.
          * @param action   The tool action being performed.
          * @param context  The {@link UseOnContext} of this interaction.
-         * @see com.aetherteam.aether.event.listeners.abilities.ToolAbilityListener#doGoldenOakStripping(BlockEvent.BlockToolModificationEvent)
          */
         public static void stripGoldenOak(LevelAccessor accessor, BlockState state, ItemStack stack, ToolAction action, UseOnContext context) {
             if (action == ToolAction.AXE_STRIP) {
@@ -386,7 +369,6 @@ public class AbilityHooks {
          *
          * @param entity The hurt {@link LivingEntity}.
          * @param source The {@link DamageSource} that hurt the entity.
-         * @see com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onDartHurt(LivingDamageEvent.Pre)
          */
         public static void stickDart(LivingEntity entity, DamageSource source) {
             if (entity instanceof Player player && !player.level().isClientSide()) {
@@ -407,7 +389,6 @@ public class AbilityHooks {
          *
          * @param result     The {@link HitResult} of the projectile.
          * @param projectile The {@link Projectile} that hit something.
-         * @see com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onArrowHit(ProjectileImpactEvent)
          */
         public static void phoenixArrowHit(HitResult result, Projectile projectile) {
             if (result instanceof EntityHitResult entityHitResult && projectile instanceof AbstractArrow abstractArrow) {
@@ -430,7 +411,6 @@ public class AbilityHooks {
          * @param entity    The {@link Entity} struck by the lightning bolt.
          * @param lightning The {@link LightningBolt} that struck the entity.
          * @return Whether the entity being hurt by the lightning strike should be prevented, as a {@link Boolean}.
-         * @see com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onLightningStrike(EntityStruckByLightningEvent)
          */
         public static boolean lightningTracking(Entity entity, LightningBolt lightning) {
             if (entity instanceof LivingEntity livingEntity) {
@@ -452,7 +432,6 @@ public class AbilityHooks {
          * @param source The attacking {@link Entity}.
          * @param damage The original damage as a {@link Float}.
          * @return The modified damage as a {@link Float}.
-         * @see com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onEntityDamage(LivingDamageEvent.Pre)
          */
         public static float reduceWeaponEffectiveness(LivingEntity target, Entity source, float damage) {
             if (AetherConfig.SERVER.tools_debuff.get() && !target.level().isClientSide()) { // Checks if tool debuffs are enabled and if the level is on the server side.
@@ -491,7 +470,6 @@ public class AbilityHooks {
          * @param source The attacking {@link Entity}.
          * @param damage The original damage as a {@link Float}.
          * @return The modified damage as a {@link Float}.
-         * @see com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onEntityDamage(LivingDamageEvent.Pre)
          */
         public static float reduceArmorEffectiveness(LivingEntity target, @Nullable Entity source, float damage) {
             if (source != null) {
