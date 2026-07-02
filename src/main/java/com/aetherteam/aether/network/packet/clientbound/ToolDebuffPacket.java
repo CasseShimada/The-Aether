@@ -1,7 +1,7 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
- * Stores a client value for whether tools are debuffed in the Aether for {@link com.aetherteam.aether.event.hooks.AbilityHooks.ToolHooks}.
+ * Stores a client value for whether tools are debuffed in the Aether for {@link ToolAbilityHooks}.
  */
 public record ToolDebuffPacket(boolean debuffTools) implements CustomPacketPayload {
     public static final Type<ToolDebuffPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "apply_tool_debuff"));
@@ -27,7 +27,7 @@ public record ToolDebuffPacket(boolean debuffTools) implements CustomPacketPaylo
 
     public static void execute(ToolDebuffPacket payload, AetherPayloadContext context) {
         if (context.player() != null) {
-            AbilityHooks.ToolHooks.debuffTools = payload.debuffTools();
+            ToolAbilityHooks.debuffTools = payload.debuffTools();
         }
     }
 }

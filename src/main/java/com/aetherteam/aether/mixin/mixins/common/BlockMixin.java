@@ -1,6 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import net.minecraft.core.BlockPos;
 import com.aetherteam.aether.registry.RegistryConstructionContext;
 import net.minecraft.core.registries.Registries;
@@ -33,7 +34,7 @@ public class BlockMixin {
         if (!level.isClientSide()) {
             AbilityHooks.AccessoryHooks.damageZaniteRing(player, level, state, pos);
             AbilityHooks.AccessoryHooks.damageZanitePendant(player, level, state, pos);
-            AbilityHooks.ToolHooks.handleHolystoneToolAbility(player, level, pos, stack, state);
+            ToolAbilityHooks.handleHolystoneToolAbility(player, level, pos, stack, state);
         }
     }
 }

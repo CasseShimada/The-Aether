@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,7 +24,7 @@ public class AxeItemMixin {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        BlockState modified = AbilityHooks.ToolHooks.setupItemAbilities(level, pos, state, AbilityHooks.ToolHooks.ToolAction.AXE_STRIP);
+        BlockState modified = ToolAbilityHooks.setupItemAbilities(level, pos, state, ToolAbilityHooks.ToolAction.AXE_STRIP);
         if (modified == state) {
             return;
         }
@@ -34,7 +34,7 @@ public class AxeItemMixin {
         if (!level.isClientSide()) {
             level.setBlock(pos, modified, 11);
             level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-            AbilityHooks.ToolHooks.stripGoldenOak(level, state, stack, AbilityHooks.ToolHooks.ToolAction.AXE_STRIP, context);
+            ToolAbilityHooks.stripGoldenOak(level, state, stack, ToolAbilityHooks.ToolAction.AXE_STRIP, context);
             if (player != null) {
                 stack.hurtAndBreak(1, player, context.getHand());
             }

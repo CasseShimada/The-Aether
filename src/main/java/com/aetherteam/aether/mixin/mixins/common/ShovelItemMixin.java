@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,7 +24,7 @@ public class ShovelItemMixin {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        BlockState modified = AbilityHooks.ToolHooks.setupItemAbilities(level, pos, state, AbilityHooks.ToolHooks.ToolAction.SHOVEL_FLATTEN);
+        BlockState modified = ToolAbilityHooks.setupItemAbilities(level, pos, state, ToolAbilityHooks.ToolAction.SHOVEL_FLATTEN);
         if (modified == state) {
             return;
         }

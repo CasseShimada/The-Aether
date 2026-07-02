@@ -14,7 +14,7 @@ import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityGoalHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.types.MoaSkins;
@@ -54,7 +54,7 @@ public final class AetherFabricEvents {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
             syncAetherTime(player);
             PerkHooks.refreshPerks(player);
-            AbilityHooks.ToolHooks.setDebuffToolsState(player);
+            ToolAbilityHooks.setDebuffToolsState(player);
             MoaSkins.registerMoaSkins(player.level());
             PacketDistributor.sendToPlayer(player, new RegisterMoaSkinsPacket());
             DimensionSpawnHooks.startInAether(player);

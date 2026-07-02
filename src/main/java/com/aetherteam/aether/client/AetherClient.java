@@ -17,7 +17,7 @@ import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.event.hooks.ItemHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
@@ -184,7 +184,7 @@ public class AetherClient {
     private static void registerConnectionCallbacks() {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             AudioHooks.stop();
-            AbilityHooks.ToolHooks.resetDebuffToolsState();
+            ToolAbilityHooks.resetDebuffToolsState();
         });
     }
 
