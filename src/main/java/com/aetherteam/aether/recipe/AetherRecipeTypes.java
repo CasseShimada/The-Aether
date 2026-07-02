@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class AetherRecipeTypes {
+public final class AetherRecipeTypes {
     public static final RecipeType<? extends AbstractAetherCookingRecipe> ENCHANTING = register("enchanting");
     public static final RecipeType<FreezingRecipe> FREEZING = register("freezing");
     public static final RecipeType<IncubationRecipe> INCUBATION = register("incubation");
@@ -36,5 +36,11 @@ public class AetherRecipeTypes {
                 return Aether.MODID + ":" + name;
             }
         };
+    }
+
+    private AetherRecipeTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }

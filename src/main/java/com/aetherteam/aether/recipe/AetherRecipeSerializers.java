@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class AetherRecipeSerializers {
+public final class AetherRecipeSerializers {
     public static final RecipeSerializer<AltarRepairRecipe> REPAIRING = register("repairing", AltarRepairRecipe.Serializer.create());
     public static final RecipeSerializer<EnchantingRecipe> ENCHANTING = register("enchanting", EnchantingRecipe.Serializer.create());
     public static final RecipeSerializer<FreezingRecipe> FREEZING = register("freezing", FreezingRecipe.Serializer.create());
@@ -29,5 +29,11 @@ public class AetherRecipeSerializers {
 
     private static <T extends Recipe<?>> RecipeSerializer<T> register(String name, RecipeSerializer<T> serializer) {
         return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(Aether.MODID, name), serializer);
+    }
+
+    private AetherRecipeSerializers() {
+    }
+
+    public static void bootstrap() {
     }
 }

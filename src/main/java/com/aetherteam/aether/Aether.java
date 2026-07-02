@@ -69,11 +69,9 @@ public final class Aether {
         AetherLootConditions.bootstrap();
         AetherDataComponents.bootstrap();
         AetherRecipeBookCategories.bootstrap();
+        AetherRecipeTypes.bootstrap();
+        AetherRecipeSerializers.bootstrap();
 
-        initializeClasses(
-                AetherRecipeTypes.class,
-                AetherRecipeSerializers.class
-        );
         AetherAttributes.bootstrap();
         AetherEffects.bootstrap();
 
