@@ -6,7 +6,7 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 
 | Module | Current State | Fabric-side Fix | Status |
 |---|---|---|---|
-| Slot storage model | Runtime-only `WeakHashMap<LivingEntity, AccessoriesCapability>` with in-memory `SimpleContainer` | Persist inventory into Fabric attachment (`AttachmentType`) and load/write through containers | DONE |
+| Slot storage model | `AccessoriesAPI` facade backed by per-entity accessory storage and Fabric attachment persistence | Persist inventory into Fabric attachment (`AttachmentType`) and load/write through containers | DONE |
 | Serialization / deserialization | No persistent accessory serialization for player/mob accessory slots | Add codec-backed Fabric attachment for slot stacks, cosmetic stacks, render flags | DONE |
 | Lifecycle robustness (join/rejoin/clone/dimension/respawn/menu reopen) | No dedicated accessory lifecycle sync/rehydration path | Add accessory sync hooks on join/respawn/dimension and deterministic runtime rehydrate | DONE |
 | Equip/unequip/replace transition closure | No unified diff; many paths set slot items directly without lifecycle callbacks | Add centralized transition diff engine with guaranteed `onUnequip` rollback on replacement/removal | DONE |
@@ -22,7 +22,7 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 | Trigger Path | Bridge Entry | Status |
 |---|---|---|
 | Vanilla/Fabric `LivingEntity#isHolding(Predicate<ItemStack>)` checks | `AccessoryEffectBridge.isHoldingEquivalent` via `LivingEntityMixin` return-augment | DONE |
-| Vanilla/Fabric inventory tick for held/equipped passive items | `AccessoriesCapability.tickHeldEquippedItem` dispatch (`Item#inventoryTick`) | DONE |
+| Vanilla/Fabric inventory tick for held/equipped passive items | Accessory runtime dispatches equipped stacks through `Item#inventoryTick` | DONE |
 | Twilight charm/equipment-slot consumption path (`TFItemStackUtils.consumeEquipmentSlot`) | Optional twilight mixin `TFItemStackUtilsMixin` + `AccessoryEffectBridge.consumeAccessoryItem` | DONE |
 | Twilight mystic-crown head-slot checks (scepter/wand family) | Optional twilight mixins (`TwilightWandItemMixin`, `ZombieWandItemMixin`, `LifedrainScepterItemMixin`) + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
 | Twilight temporary shield timer crown bonus (`FortificationShieldAttachment.checkLichCrownBonus`) | Optional twilight mixin `FortificationShieldAttachmentMixin` + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
