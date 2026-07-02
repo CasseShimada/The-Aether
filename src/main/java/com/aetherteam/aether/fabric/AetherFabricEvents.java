@@ -1,7 +1,7 @@
 package com.aetherteam.aether.fabric;
 
-import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
+import com.aetherteam.aether.event.hooks.CommandRegistrationHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
@@ -58,7 +58,7 @@ public final class AetherFabricEvents {
     }
 
     private static void registerCommandEvents() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> AetherCommands.registerCommands(dispatcher));
+        CommandRegistrationCallback.EVENT.register(CommandRegistrationHooks::register);
     }
 
     private static void registerInteractionEvents() {
