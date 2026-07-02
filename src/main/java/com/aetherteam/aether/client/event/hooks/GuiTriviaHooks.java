@@ -17,7 +17,7 @@ import net.minecraft.util.FormattedCharSequence;
 
 import javax.annotation.Nullable;
 
-final class GuiTriviaHooks {
+public final class GuiTriviaHooks {
     private static boolean generateTrivia = true;
     @Nullable
     private static Screen lastScreen;
@@ -25,7 +25,7 @@ final class GuiTriviaHooks {
     private GuiTriviaHooks() {
     }
 
-    static void drawTrivia(Screen screen, GuiGraphicsExtractor guiGraphics) {
+    public static void drawTrivia(Screen screen, GuiGraphicsExtractor guiGraphics) {
         generateTrivia(screen);
         drawTriviaLine(screen, guiGraphics);
         if (screenChangedForTrivia(screen) && !Aether.TRIVIA_READER.getTrivia().isEmpty()) {
@@ -34,7 +34,7 @@ final class GuiTriviaHooks {
         lastScreen = screen;
     }
 
-    static void drawAetherTravelMessage(Screen screen, GuiGraphicsExtractor guiGraphics) {
+    public static void drawAetherTravelMessage(Screen screen, GuiGraphicsExtractor guiGraphics) {
         if (!(screen instanceof LevelLoadingScreen || screen instanceof ProgressScreen)) {
             DimensionTravelState.displayAetherTravel = false;
             return;

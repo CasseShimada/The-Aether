@@ -22,13 +22,22 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-final class GuiAccessoryMenuHooks {
+public final class GuiAccessoryMenuHooks {
     private static boolean shouldAddButton = true;
 
     private GuiAccessoryMenuHooks() {
     }
 
-    static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
+    /**
+     * Checks whether the accessory button isn't disabled by {@link AetherConfig.Client#disable_accessory_button} or accessory tags being empty.
+     *
+     * @return The {@link Boolean} value.
+     */
+    public static boolean isAccessoryButtonEnabled() {
+        return !AetherConfig.CLIENT.disable_accessory_button.get() && !AetherConfig.COMMON.use_default_accessories_menu.get();
+    }
+
+    public static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
         AbstractContainerScreen<?> containerScreen = canCreateAccessoryButtonForScreen(screen);
         if (containerScreen == null) {
             return null;
@@ -38,7 +47,7 @@ final class GuiAccessoryMenuHooks {
         return new AccessoryButton(containerScreen, accessor.aether$getLeftPos() + offsets.x(), accessor.aether$getTopPos() + offsets.y(), AetherAccessoriesScreen.ACCESSORIES_BUTTON);
     }
 
-    static void openAccessoryMenu() {
+    public static void openAccessoryMenu() {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || ClientCompat.overlay(minecraft) != null || ClientCompat.screen(minecraft) != null) {
             return;
@@ -59,7 +68,7 @@ final class GuiAccessoryMenuHooks {
         shouldAddButton = false;
     }
 
-    static void closeContainerMenu(int key, int action) {
+    public static void closeContainerMenu(int key, int action) {
         Minecraft minecraft = Minecraft.getInstance();
         if (!(ClientCompat.screen(minecraft) instanceof AbstractContainerScreen<?> abstractContainerScreen)) {
             return;

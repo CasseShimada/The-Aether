@@ -2,7 +2,7 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
-import com.aetherteam.aether.client.event.hooks.GuiHooks;
+import com.aetherteam.aether.client.event.hooks.GuiBossBarHooks;
 import com.aetherteam.aether.client.sound.MusicSoundInstance;
 import com.aetherteam.aether.entity.AetherBossMob;
 import com.aetherteam.aether.mixin.mixins.client.accessor.BossHealthOverlayAccessor;
@@ -183,13 +183,13 @@ public class AetherMusicManager {
     }
 
     public static Map<UUID, LerpingBossEvent> getAetherBossFights() {
-        return ((BossHealthOverlayAccessor) minecraft.gui.hud.getBossOverlay()).getEvents().entrySet().stream().filter((entry) -> GuiHooks.isAetherBossBar(entry.getKey())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return ((BossHealthOverlayAccessor) minecraft.gui.hud.getBossOverlay()).getEvents().entrySet().stream().filter((entry) -> GuiBossBarHooks.isAetherBossBar(entry.getKey())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static <T extends LivingEntity & AetherBossMob<?>> T getBossFromFight() {
         for (Map.Entry<UUID, LerpingBossEvent> event : getAetherBossFights().entrySet()) {
             UUID eventUUID = event.getKey();
-            Integer entityId = GuiHooks.BOSS_EVENTS.get(eventUUID);
+            Integer entityId = GuiBossBarHooks.BOSS_EVENTS.get(eventUUID);
             if (entityId == null) {
                 continue;
             }

@@ -5,7 +5,9 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.event.hooks.AudioHooks;
 import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
-import com.aetherteam.aether.client.event.hooks.GuiHooks;
+import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
+import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
+import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
 import com.aetherteam.aether.client.event.hooks.MenuHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
@@ -172,10 +174,10 @@ public class AetherClient {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             AudioHooks.tick();
             DimensionClientHooks.tickTime();
-            GuiHooks.handlePatreonRefreshRebound();
+            GuiPerkScreenHooks.handlePatreonRefreshRebound();
             tickPlayerState(client);
             handleAccessoryHotkey(client);
-            GuiHooks.openAccessoryMenu();
+            GuiAccessoryMenuHooks.openAccessoryMenu();
         });
     }
 
@@ -197,9 +199,9 @@ public class AetherClient {
         updateAccessoryButtons(currentScreen);
         logJeiOverlayState(currentScreen);
         if (!tipsModLoaded) {
-            GuiHooks.drawTrivia(currentScreen, guiGraphics);
+            GuiTriviaHooks.drawTrivia(currentScreen, guiGraphics);
         }
-        GuiHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
+        GuiTriviaHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
     }
 
     private static void updateAccessoryButtons(Screen currentScreen) {
@@ -261,13 +263,13 @@ public class AetherClient {
         }
 
         var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
-        var inventoryAccessoryButton = GuiHooks.setupAccessoryButton(screen, offsets);
-        if (inventoryAccessoryButton != null && GuiHooks.isAccessoryButtonEnabled()) {
+        var inventoryAccessoryButton = GuiAccessoryMenuHooks.setupAccessoryButton(screen, offsets);
+        if (inventoryAccessoryButton != null && GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
             Screens.getWidgets(screen).add(inventoryAccessoryButton);
         }
 
-        GridLayout layout = GuiHooks.setupPerksButtons(screen);
-        if (layout != null && !GuiHooks.isAccessoryButtonEnabled()) {
+        GridLayout layout = GuiPerkScreenHooks.setupPerksButtons(screen);
+        if (layout != null && !GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
             addPerkWidgets(screen, layout);
         }
     }

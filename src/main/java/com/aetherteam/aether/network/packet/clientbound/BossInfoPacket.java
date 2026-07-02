@@ -90,7 +90,7 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
     @SuppressWarnings("unchecked")
     private static void updateBossEvent(UUID bossEvent, Integer entityID) {
         try {
-            Class<?> guiHooksClass = Class.forName("com.aetherteam.aether.client.event.hooks.GuiHooks");
+            Class<?> guiHooksClass = Class.forName("com.aetherteam.aether.client.event.hooks.GuiBossBarHooks");
             Field bossEventsField = guiHooksClass.getField("BOSS_EVENTS");
             Map<UUID, Integer> events = (Map<UUID, Integer>) bossEventsField.get(null);
             if (entityID == null) {

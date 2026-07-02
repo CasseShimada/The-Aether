@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-final class GuiBossBarHooks {
-    static final Map<UUID, Integer> BOSS_EVENTS = new HashMap<>();
+public final class GuiBossBarHooks {
+    public static final Map<UUID, Integer> BOSS_EVENTS = new HashMap<>();
 
     private GuiBossBarHooks() {
     }
 
-    static void drawBossHealthBar(GuiGraphicsExtractor guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
+    public static void drawBossHealthBar(GuiGraphicsExtractor guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
         Integer entityId = BOSS_EVENTS.get(bossEvent.getId());
         if (entityId == null) {
             return;
@@ -36,7 +36,7 @@ final class GuiBossBarHooks {
         guiGraphics.text(minecraft.font, component, nameX, y - 9, 16777215);
     }
 
-    static void drawBar(GuiGraphicsExtractor guiGraphics, int x, int y, BossEvent bossEvent, AetherBossMob<?> aetherBossMob) {
+    public static void drawBar(GuiGraphicsExtractor guiGraphics, int x, int y, BossEvent bossEvent, AetherBossMob<?> aetherBossMob) {
         if (aetherBossMob.getBossBarBackgroundTexture() == null || aetherBossMob.getBossBarTexture() == null) {
             return;
         }
@@ -47,5 +47,9 @@ final class GuiBossBarHooks {
         if (health > 0) {
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, aetherBossMob.getBossBarTexture(), 256, 16, 0, 0, x, y, health, 16);
         }
+    }
+
+    public static boolean isAetherBossBar(UUID uuid) {
+        return BOSS_EVENTS.containsKey(uuid);
     }
 }

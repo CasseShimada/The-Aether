@@ -20,12 +20,12 @@ import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 
-final class GuiPerkScreenHooks {
+public final class GuiPerkScreenHooks {
     private GuiPerkScreenHooks() {
     }
 
     @Nullable
-    static GridLayout setupPerksButtons(Screen screen) {
+    public static GridLayout setupPerksButtons(Screen screen) {
         if (!(screen instanceof PauseScreen)) {
             return null;
         }
@@ -57,7 +57,7 @@ final class GuiPerkScreenHooks {
         return gridLayout;
     }
 
-    static void handlePatreonRefreshRebound() {
+    public static void handlePatreonRefreshRebound() {
         if (RefreshButton.reboundTimer > 0) {
             RefreshButton.reboundTimer--;
         }
