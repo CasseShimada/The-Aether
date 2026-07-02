@@ -15,11 +15,11 @@ final class EntityAccessories {
 
     @Nullable
     static AccessoriesStorage get(LivingEntity entity) {
-        return getCapability(entity);
+        return getStorage(entity);
     }
 
     @Nullable
-    static AccessoriesCapability getCapability(LivingEntity entity) {
+    static AccessoriesCapability getStorage(LivingEntity entity) {
         if (entity == null) {
             return null;
         }

@@ -54,7 +54,7 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
     @Nullable
     @Deprecated(forRemoval = false)
     public static AccessoriesCapability get(LivingEntity entity) {
-        return EntityAccessories.getCapability(entity);
+        return EntityAccessories.getStorage(entity);
     }
 
     /**
