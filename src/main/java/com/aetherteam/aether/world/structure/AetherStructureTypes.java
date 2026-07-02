@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
-public class AetherStructureTypes {
+public final class AetherStructureTypes {
     public static final StructureType<LargeAercloudStructure> LARGE_AERCLOUD = register("large_aercloud", () -> LargeAercloudStructure.CODEC);
     public static final StructureType<BronzeDungeonStructure> BRONZE_DUNGEON = register("bronze_dungeon", () -> BronzeDungeonStructure.CODEC);
     public static final StructureType<SilverDungeonStructure> SILVER_DUNGEON = register("silver_dungeon", () -> SilverDungeonStructure.CODEC);
@@ -15,5 +15,11 @@ public class AetherStructureTypes {
 
     private static <T extends StructureType<?>> T register(String name, T type) {
         return Registry.register(BuiltInRegistries.STRUCTURE_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
+
+    private AetherStructureTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }

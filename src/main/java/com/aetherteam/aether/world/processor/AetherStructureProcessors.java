@@ -7,7 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 
-public class AetherStructureProcessors {
+public final class AetherStructureProcessors {
     public static final MapCodec<NoReplaceProcessor> NO_REPLACE = register("no_replace", NoReplaceProcessor.CODEC);
     public static final MapCodec<VerticalGradientProcessor> VERTICAL_GRADIENT = register("vertical_gradient", VerticalGradientProcessor.CODEC);
     public static final MapCodec<DoubleDropsProcessor> DOUBLE_DROPS = register("double_drops", DoubleDropsProcessor.CODEC);
@@ -18,5 +18,11 @@ public class AetherStructureProcessors {
 
     private static <T extends StructureProcessor> MapCodec<T> register(String name, MapCodec<T> codec) {
         return Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, Identifier.fromNamespaceAndPath(Aether.MODID, name), codec);
+    }
+
+    private AetherStructureProcessors() {
+    }
+
+    public static void bootstrap() {
     }
 }

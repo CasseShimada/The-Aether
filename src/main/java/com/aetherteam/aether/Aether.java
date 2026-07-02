@@ -79,12 +79,12 @@ public final class Aether {
         AetherTrunkPlacerTypes.bootstrap();
         AetherFoliagePlacerTypes.bootstrap();
         AetherPlacementModifiers.bootstrap();
+        AetherPosRuleTests.bootstrap();
+        AetherStructureProcessors.bootstrap();
+        AetherStructureTypes.bootstrap();
+        AetherStructurePieceTypes.bootstrap();
 
         initializeClasses(
-                AetherPosRuleTests.class,
-                AetherStructureProcessors.class,
-                AetherStructureTypes.class,
-                AetherStructurePieceTypes.class,
                 AetherPoi.class,
                 AetherFeatures.class
         );

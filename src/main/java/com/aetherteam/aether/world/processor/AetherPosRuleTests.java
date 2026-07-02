@@ -6,10 +6,16 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.PosRuleTestType;
 
-public class AetherPosRuleTests {
+public final class AetherPosRuleTests {
     public static final PosRuleTestType<BorderBoxPosTest> BORDER_BOX = register("border_box", () -> BorderBoxPosTest.CODEC);
 
     private static <T extends PosRuleTestType<?>> T register(String name, T type) {
         return Registry.register(BuiltInRegistries.POS_RULE_TEST, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
+
+    private AetherPosRuleTests() {
+    }
+
+    public static void bootstrap() {
     }
 }

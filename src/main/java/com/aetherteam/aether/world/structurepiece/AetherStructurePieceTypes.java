@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 import java.util.Locale;
 
-public class AetherStructurePieceTypes {
+public final class AetherStructurePieceTypes {
     public static final StructurePieceType LARGE_AERCLOUD = register("ALC", LargeAercloudChunk::new);
     public static final StructurePieceType BRONZE_BOSS_ROOM = register("BBossRoom", BronzeBossRoom::new);
     public static final StructurePieceType BRONZE_DUNGEON_ROOM = register("BDungeonRoom", BronzeDungeonRoom::new);
@@ -36,5 +36,11 @@ public class AetherStructurePieceTypes {
 
     private static StructurePieceType register(String name, StructurePieceType structurePieceType) {
         return Registry.register(BuiltInRegistries.STRUCTURE_PIECE, Identifier.fromNamespaceAndPath(Aether.MODID, name.toLowerCase(Locale.ROOT)), structurePieceType);
+    }
+
+    private AetherStructurePieceTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }
