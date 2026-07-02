@@ -100,7 +100,7 @@ MehVahdJukaar
 - Updated the support for extinguishing Copper Lanterns.
 
 Mike-U5
-- Fixes to some Curios default slot icons being incorrect.
+- Fixes to some legacy accessory slot icons being incorrect.
 
 mrjasonn
 - Improvements to mcfunctions for development testing.
@@ -139,7 +139,7 @@ TunefulTurnip
 - Fixes to the Slider ignoring players not in line of sight.
 
 Ultrasquid9
-- Cleanup of Curios data converter.
+- Cleanup of legacy accessory data converter.
 
 VoidLeech
 - Fixes to Skyroot Milk Bucket not working properly with milk fluid.
