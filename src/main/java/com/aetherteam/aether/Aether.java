@@ -94,7 +94,7 @@ public final class Aether {
                 AetherBlocks.class
         );
         AetherBlockEntityTypes.bootstrap();
-        initializeClasses(AetherEntityTypes.class);
+        AetherEntityTypes.bootstrap();
         AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
         initializeClasses(AetherItems.class);

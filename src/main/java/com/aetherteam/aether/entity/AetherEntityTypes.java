@@ -41,7 +41,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-public class AetherEntityTypes {
+public final class AetherEntityTypes {
     // Passive Mobs
     public static final EntityType<Phyg> PHYG = register("phyg",
             EntityType.Builder.of(Phyg::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10).build(key("phyg")));
@@ -217,5 +217,11 @@ public class AetherEntityTypes {
 
     private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name, EntityType<T> type) {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
+
+    private AetherEntityTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }
