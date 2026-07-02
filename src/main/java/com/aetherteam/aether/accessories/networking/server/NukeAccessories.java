@@ -1,7 +1,7 @@
 package com.aetherteam.aether.accessories.networking.server;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,7 +22,7 @@ public record NukeAccessories() implements CustomPacketPayload {
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(context.player());
+        var accessories = AccessoriesAPI.getAccessories(context.player());
         if (accessories != null) {
             accessories.clearAccessories(true);
         }
