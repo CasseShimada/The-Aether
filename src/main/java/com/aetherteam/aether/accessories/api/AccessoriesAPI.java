@@ -20,7 +20,7 @@ public final class AccessoriesAPI {
     private AccessoriesAPI() {
     }
 
-    public static AccessoriesCapability getAccessories(LivingEntity entity) {
+    public static AccessoriesStorage getAccessories(LivingEntity entity) {
         return AccessoriesCapability.get(entity);
     }
 
@@ -85,7 +85,7 @@ public final class AccessoriesAPI {
             Accessory accessory = getOrDefaultAccessory(current);
             accessory.onUnequip(current, reference);
             reference.setStack(ItemStack.EMPTY);
-            AccessoriesCapability accessories = getAccessories(reference.entity());
+            AccessoriesStorage accessories = getAccessories(reference.entity());
             if (accessories != null) {
                 accessories.handleImmediateUnequip(reference);
             }

@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
-public class AccessoriesCapability {
+public class AccessoriesCapability implements AccessoriesStorage {
     private static final Map<LivingEntity, AccessoriesCapability> ACCESSORIES_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final LivingEntity entity;
