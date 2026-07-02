@@ -18,6 +18,9 @@ public final class AetherItemTiers {
     public static final ToolMaterial HAMMER_OF_KINGBDOGZ = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6.0F, 2.0F, 14, AetherTags.Items.HAMMER_OF_KINGBDOGZ_REPAIRING);
     public static final ToolMaterial CANDY_CANE = new ToolMaterial(BlockTags.INCORRECT_FOR_WOODEN_TOOL, 32, 12.0F, 0.0F, 22, AetherTags.Items.CANDY_CANE_REPAIRING);
 
+    public static void bootstrap() {
+    }
+
     private AetherItemTiers() {
     }
 }

@@ -91,6 +91,9 @@ public class AetherArmorMaterials {
             EquipmentAssets.createId("sentry")
     ));
 
+    public static void bootstrap() {
+    }
+
     private static ArmorMaterial create(int durability, Map<ArmorType, Integer> defense, int enchantability, Holder<net.minecraft.sounds.SoundEvent> equipSound, float toughness, float knockbackResistance, net.minecraft.tags.TagKey<Item> repairTag, ResourceKey<EquipmentAsset> assetId) {
         return new ArmorMaterial(durability, defense, enchantability, equipSound, toughness, knockbackResistance, repairTag, assetId);
     }
