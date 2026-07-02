@@ -12,7 +12,7 @@ public interface GravititeArmor {
     /**
      * Launches the entity if wearing a full set of Gravitite armor ({@link EquipmentUtil#hasFullGravititeSet(LivingEntity)}).<br><br>
      * If they're a player, there are additional checks for if the Gravitite jump ability is active. This is dependent on {@link AetherPlayerAttachment#isGravititeJumpActive()},
-     * which is set by {@link com.aetherteam.aether.client.event.hooks.CapabilityClientHooks.AetherPlayerHooks} if the player is holding down the {@link com.aetherteam.aether.client.AetherKeys#GRAVITITE_JUMP_ABILITY} key (this is by default {@link org.lwjgl.glfw.GLFW#GLFW_KEY_LEFT_SHIFT}).
+     * which is set by {@link com.aetherteam.aether.client.event.hooks.AttachmentClientHooks.AetherPlayerHooks} if the player is holding down the {@link com.aetherteam.aether.client.AetherKeys#GRAVITITE_JUMP_ABILITY} key (this is by default {@link org.lwjgl.glfw.GLFW#GLFW_KEY_LEFT_SHIFT}).
      *
      * @param entity The {@link LivingEntity} wearing the armor.
      * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityJump(LivingEvent.LivingJumpEvent)

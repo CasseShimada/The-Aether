@@ -38,18 +38,18 @@ Status legend:
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |
 | `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + `AetherEventDispatch` recipe freeze/convert/ban bridges | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |
 
-## Capability Listeners
+## Attachment Listeners
 | NeoForge listener point | Fabric equivalent / bridge | Status | Notes |
 |---|---|---|---|
-| `AetherPlayerListener#onPlayerLogin` | `ServerPlayerEvents.JOIN` -> `CapabilityHooks.AetherPlayerHooks.login` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherPlayerListener#onPlayerLogout` | `ServerPlayerEvents.LEAVE` -> `CapabilityHooks.AetherPlayerHooks.logout` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherPlayerListener#onPlayerJoinLevel` | `ServerEntityEvents.ENTITY_LOAD` -> `CapabilityHooks.AetherPlayerHooks.joinLevel` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherPlayerListener#onPlayerUpdate` | `PlayerMixin#tick()` -> `CapabilityHooks.AetherPlayerHooks.update` | DONE | Existing mixin bridge. |
-| `AetherPlayerListener#onPlayerClone` | `ServerPlayerEvents.COPY_FROM` -> `CapabilityHooks.AetherPlayerHooks.clone` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherPlayerListener#onPlayerChangeDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` -> `CapabilityHooks.AetherPlayerHooks.changeDimension` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherTimeListener#onLogin` | `ServerPlayerEvents.JOIN` -> `CapabilityHooks.AetherTimeHooks.login` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherTimeListener#onChangeDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` -> `CapabilityHooks.AetherTimeHooks.changeDimension` | DONE | Registered in `AetherFabricEvents`. |
-| `AetherTimeListener#onPlayerRespawn` | `ServerPlayerEvents.AFTER_RESPAWN` -> `CapabilityHooks.AetherTimeHooks.respawn` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherPlayerListener#onPlayerLogin` | `ServerPlayerEvents.JOIN` -> `AttachmentHooks.AetherPlayerHooks.login` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherPlayerListener#onPlayerLogout` | `ServerPlayerEvents.LEAVE` -> `AttachmentHooks.AetherPlayerHooks.logout` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherPlayerListener#onPlayerJoinLevel` | `ServerEntityEvents.ENTITY_LOAD` -> `AttachmentHooks.AetherPlayerHooks.joinLevel` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherPlayerListener#onPlayerUpdate` | `PlayerMixin#tick()` -> `AttachmentHooks.AetherPlayerHooks.update` | DONE | Existing mixin bridge. |
+| `AetherPlayerListener#onPlayerClone` | `ServerPlayerEvents.COPY_FROM` -> `AttachmentHooks.AetherPlayerHooks.clone` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherPlayerListener#onPlayerChangeDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` -> `AttachmentHooks.AetherPlayerHooks.changeDimension` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherTimeListener#onLogin` | `ServerPlayerEvents.JOIN` -> `AttachmentHooks.AetherTimeHooks.login` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherTimeListener#onChangeDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` -> `AttachmentHooks.AetherTimeHooks.changeDimension` | DONE | Registered in `AetherFabricEvents`. |
+| `AetherTimeListener#onPlayerRespawn` | `ServerPlayerEvents.AFTER_RESPAWN` -> `AttachmentHooks.AetherTimeHooks.respawn` | DONE | Registered in `AetherFabricEvents`. |
 
 ## Ability / Client Listener Groups
 | NeoForge listener group | Fabric equivalent / bridge | Status | Notes |

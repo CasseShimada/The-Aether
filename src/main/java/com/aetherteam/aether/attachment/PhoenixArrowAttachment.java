@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Capability class to store whether a shot {@link AbstractArrow} is marked as having been shot from a Phoenix Bow or not. This capability works for all arrow types.
+ * Fabric attachment state storing whether a shot {@link AbstractArrow} was fired from a Phoenix Bow. This attachment works for all arrow types.
  *
  * @see com.aetherteam.aether.event.hooks.AbilityHooks.WeaponHooks#phoenixArrowHit(HitResult, Projectile)
  * @see com.aetherteam.aether.mixin.mixins.common.AbstractArrowMixin

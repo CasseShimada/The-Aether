@@ -18,10 +18,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Capability class to store data for the Aether's custom day/night cycle.
- * This capability only has an effect on levels where the dimension type's effects are set to the Aether's.
+ * Fabric attachment state for the Aether's custom day/night cycle.
+ * This attachment only has an effect on levels where the dimension type's effects are set to the Aether's.
  *
- * @see com.aetherteam.aether.event.hooks.CapabilityHooks.AetherTimeHooks
+ * @see com.aetherteam.aether.event.hooks.AttachmentHooks.AetherTimeHooks
  */
 public class AetherTimeAttachment implements INBTSynchable {
     private static int ticksPerDayMultiplier = -1;

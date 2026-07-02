@@ -12,14 +12,14 @@ import net.minecraft.client.player.ClientInput;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Input;
 
-public class CapabilityClientHooks {
+public class AttachmentClientHooks {
     public static class AetherPlayerHooks {
         /**
          * Tracks whether the player is jumping or moving on the client to the {@link AetherPlayerAttachment}.
          *
          * @param player The {@link Player}.
          * @param input  The {@link Input}.
-         * @see com.aetherteam.aether.client.event.listeners.capability.AetherPlayerClientListener#onMove(MovementInputUpdateEvent)
+         * Handles Fabric client movement input for Aether's player attachment.
          */
         public static void movementInput(Player player, ClientInput input) {
             var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
@@ -35,7 +35,7 @@ public class CapabilityClientHooks {
         }
 
         /**
-         * Fabric does not provide the same global post key/mouse events that NeoForge uses for this sync path.
+         * Fabric does not provide the same global post key/mouse events for this sync path.
          * Poll per-tick input states so the server always receives up-to-date hit and jump-ability flags.
          */
         public static void tickInput(Player player) {
@@ -56,7 +56,7 @@ public class CapabilityClientHooks {
          * Checks for mouse input.
          *
          * @param button The {@link Integer} ID for the button.
-         * @see com.aetherteam.aether.client.event.listeners.capability.AetherPlayerClientListener#onClick(InputEvent.MouseButton.Post)
+         * Handles client mouse input for Aether's player attachment.
          */
         public static void mouseInput(int button) {
             checkHitMouse(button);
@@ -67,7 +67,7 @@ public class CapabilityClientHooks {
          * Checks for key input.
          *
          * @param key The {@link Integer} ID for the key.
-         * @see com.aetherteam.aether.client.event.listeners.capability.AetherPlayerClientListener#onPress(InputEvent.Key)
+         * Handles client key input for Aether's player attachment.
          */
         public static void keyInput(int key) {
             checkHitKey(key);

@@ -3,7 +3,7 @@ package com.aetherteam.aether.client;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.event.hooks.AudioHooks;
-import com.aetherteam.aether.client.event.hooks.CapabilityClientHooks;
+import com.aetherteam.aether.client.event.hooks.AttachmentClientHooks;
 import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
 import com.aetherteam.aether.client.event.hooks.GuiHooks;
 import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
@@ -213,8 +213,8 @@ public class AetherClient {
             return;
         }
 
-        CapabilityClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
-        CapabilityClientHooks.AetherPlayerHooks.tickInput(client.player);
+        AttachmentClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
+        AttachmentClientHooks.AetherPlayerHooks.tickInput(client.player);
         EntityHooks.launchMount(client.player);
     }
 

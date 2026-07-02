@@ -56,9 +56,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Capability class for handling {@link Player} behavior for the Aether.
+ * Fabric attachment state for handling {@link Player} behavior for the Aether.
  *
- * @see com.aetherteam.aether.event.hooks.CapabilityHooks.AetherPlayerHooks
+ * @see com.aetherteam.aether.event.hooks.AttachmentHooks.AetherPlayerHooks
  */
 public class AetherPlayerAttachment implements INBTSynchable {
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");

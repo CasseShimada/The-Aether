@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Capability class used to track {@link LightningBolt}s created by entities and weapons.
+ * Fabric attachment state used to track {@link LightningBolt}s created by entities and weapons.
  *
  * @see com.aetherteam.aether.event.hooks.AbilityHooks.WeaponHooks#lightningTracking(Entity, LightningBolt)
  */
