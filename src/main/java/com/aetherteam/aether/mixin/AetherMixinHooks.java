@@ -7,7 +7,6 @@ import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
-import com.aetherteam.aether.item.accessories.pendant.PendantItem;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
@@ -15,13 +14,10 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -108,87 +104,4 @@ public class AetherMixinHooks {
         return ItemStack.EMPTY;
     }
 
-    /**
-     * Whether an accessory can be equipped or replace an already equipped accessory.
-     *
-     * @param mob       The {@link Mob} to equip the accessory to.
-     * @param candidate The {@link ItemStack} to try to equip.
-     * @param existing  The {@link ItemStack} already equipped.
-     * @return Whether the accessory can be equipped or replaced, as a {@link Boolean}.
-     */
-    public static boolean canReplaceCurrentAccessory(Mob mob, ItemStack candidate, ItemStack existing) {
-        if (EnchantmentHelper.hasAnyEnchantments(existing)) {
-            return false;
-        } else {
-            if (candidate.getItem() instanceof GlovesItem candidateGloves) {
-                if (!(existing.getItem() instanceof GlovesItem existingGloves)) {
-                    return true;
-                } else {
-                    if (candidateGloves.getDamage() != existingGloves.getDamage()) {
-                        return candidateGloves.getDamage() > existingGloves.getDamage();
-                    } else {
-                        return mob.canReplaceEqualItem(candidate, existing);
-                    }
-                }
-            } else if (candidate.getItem() instanceof PendantItem) {
-                if (!(existing.getItem() instanceof PendantItem)) {
-                    return true;
-                } else {
-                    return mob.canReplaceEqualItem(candidate, existing);
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Gets the corresponding slot identifier for an accessory item.
-     *
-     * @param livingEntity The {@link LivingEntity} to get the accessory from.
-     * @param stack        The accessory {@link ItemStack}.
-     * @return The slot identifier {@link String}.
-     */
-    public static SlotTypeReference getIdentifierForItem(LivingEntity livingEntity, ItemStack stack) {
-        if (stack.getItem() instanceof GlovesItem glovesItem) {
-            return glovesItem.getIdentifier();
-        } else if (stack.getItem() instanceof PendantItem pendantItem && (livingEntity.getType() == EntityTypes.PIGLIN || livingEntity.getType() == EntityTypes.ZOMBIFIED_PIGLIN)) {
-            return pendantItem.getIdentifier();
-        }
-        return null;
-    }
-
-    /**
-     * Gets an accessory from an entity.
-     *
-     * @param livingEntity The {@link LivingEntity} to get the accessory from.
-     * @param identifier The {@link SlotTypeReference} for the slot identifier.
-     * @return The accessory {@link ItemStack} gotten from the entity.
-     */
-    public static ItemStack getItemByIdentifier(LivingEntity livingEntity, SlotTypeReference identifier) {
-        var accessories = AccessoriesAPI.getAccessories(livingEntity);
-        if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
-            if (accessoriesContainer != null) {
-                return accessoriesContainer.getAccessories().getItem(0);
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    /**
-     * Equips an accessory to an entity.
-     *
-     * @param livingEntity The {@link LivingEntity} to equip to.
-     * @param itemStack    The {@link ItemStack} to equip.
-     * @param identifier   The {@link SlotTypeReference} for the slot identifier.
-     */
-    public static void setItemByIdentifier(LivingEntity livingEntity, ItemStack itemStack, SlotTypeReference identifier) {
-        var accessories = AccessoriesAPI.getAccessories(livingEntity);
-        if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
-            if (accessoriesContainer != null) {
-                accessoriesContainer.getAccessories().setItem(0, itemStack);
-            }
-        }
-    }
 }

@@ -1,8 +1,8 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.event.hooks.EntityAccessoryEquipHooks;
 import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
-import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.world.DifficultyInstance;
@@ -32,9 +32,9 @@ public class MobMixin {
     private boolean canTakeItem(boolean original, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
         if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
-            SlotTypeReference identifier = AetherMixinHooks.getIdentifierForItem(mob, stack);
+            SlotTypeReference identifier = EntityAccessoryEquipHooks.getIdentifierForItem(mob, stack);
             if (identifier != null) {
-                ItemStack accessory = AetherMixinHooks.getItemByIdentifier(mob, identifier);
+                ItemStack accessory = EntityAccessoryEquipHooks.getItemByIdentifier(mob, identifier);
                 if (accessory.isEmpty()) return true;
             }
         }
@@ -51,16 +51,16 @@ public class MobMixin {
     private ItemStack equipItemIfPossible(ItemStack original, ServerLevel serverLevel, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
         var data = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY);
-        SlotTypeReference identifier = AetherMixinHooks.getIdentifierForItem(mob, stack);
+        SlotTypeReference identifier = EntityAccessoryEquipHooks.getIdentifierForItem(mob, stack);
         if (identifier != null) {
-            ItemStack accessory = AetherMixinHooks.getItemByIdentifier(mob, identifier);
-            boolean flag = AetherMixinHooks.canReplaceCurrentAccessory(mob, stack, accessory);
+            ItemStack accessory = EntityAccessoryEquipHooks.getItemByIdentifier(mob, identifier);
+            boolean flag = EntityAccessoryEquipHooks.canReplaceCurrentAccessory(mob, stack, accessory);
             if (flag && mob.canHoldItem(stack)) {
                 double dropChance = data.getEquipmentDropChance(identifier);
                 if (!accessory.isEmpty() && Math.max(mob.getRandom().nextFloat() - 0.1F, 0.0F) < dropChance) {
                     mob.spawnAtLocation(serverLevel, accessory);
                 }
-                AetherMixinHooks.setItemByIdentifier(mob, stack, identifier);
+                EntityAccessoryEquipHooks.setItemByIdentifier(mob, stack, identifier);
                 data.setGuaranteedDrop(identifier);
                 mob.setPersistenceRequired();
                 return stack;
