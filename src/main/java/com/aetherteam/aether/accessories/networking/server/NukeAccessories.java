@@ -22,9 +22,9 @@ public record NukeAccessories() implements CustomPacketPayload {
             return;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(context.player());
-        if (capability != null) {
-            capability.clearAccessories(true);
+        AccessoriesCapability accessories = AccessoriesCapability.get(context.player());
+        if (accessories != null) {
+            accessories.clearAccessories(true);
         }
     }
 }

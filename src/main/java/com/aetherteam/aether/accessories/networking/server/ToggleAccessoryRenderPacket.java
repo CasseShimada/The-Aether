@@ -27,12 +27,12 @@ public record ToggleAccessoryRenderPacket(String slotName, int slotIndex, boolea
     }
 
     public static void execute(ToggleAccessoryRenderPacket payload, AetherPayloadContext context) {
-        AccessoriesCapability capability = AccessoriesCapability.get(context.player());
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(context.player());
+        if (accessories == null) {
             return;
         }
 
-        var container = capability.getContainer(() -> payload.slotName());
+        var container = accessories.getContainer(() -> payload.slotName());
         if (container == null) {
             return;
         }

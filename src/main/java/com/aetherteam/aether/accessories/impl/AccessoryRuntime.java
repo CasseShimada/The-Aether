@@ -22,15 +22,15 @@ public final class AccessoryRuntime {
     }
 
     public static void tick(LivingEntity entity) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return;
         }
 
-        capability.process(shouldRunAccessoryTicks(entity));
+        accessories.process(shouldRunAccessoryTicks(entity));
 
-        if (!entity.level().isClientSide() && capability.consumeSyncDirty()) {
-            syncEntity(entity, capability.createSyncPacket());
+        if (!entity.level().isClientSide() && accessories.consumeSyncDirty()) {
+            syncEntity(entity, accessories.createSyncPacket());
         }
     }
 
@@ -39,12 +39,12 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return;
         }
 
-        syncEntity(entity, capability.createSyncPacket());
+        syncEntity(entity, accessories.createSyncPacket());
     }
 
     public static void syncToPlayer(Entity trackedEntity, ServerPlayer player) {
@@ -52,9 +52,9 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
-        if (capability != null) {
-            PacketDistributor.sendToPlayer(player, capability.createSyncPacket());
+        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        if (accessories != null) {
+            PacketDistributor.sendToPlayer(player, accessories.createSyncPacket());
         }
     }
 
@@ -63,9 +63,9 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
-        if (capability != null) {
-            capability.clearRuntimeState(true);
+        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        if (accessories != null) {
+            accessories.clearRuntimeState(true);
             AccessoriesCapability.evict(livingEntity);
         }
     }
