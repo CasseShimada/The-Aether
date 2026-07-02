@@ -1,6 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
+import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -34,7 +35,7 @@ public class LevelMixin {
         Level level = (Level) (Object) this;
         if (!level.isClientSide()) {
             RecipeHooks.checkExistenceBanned(level, pos);
-            RecipeHooks.sendIcestoneFreezableUpdateEvent(level, pos);
+            IcestoneFreezingHooks.sendIcestoneFreezableUpdateEvent(level, pos);
         }
     }
 }

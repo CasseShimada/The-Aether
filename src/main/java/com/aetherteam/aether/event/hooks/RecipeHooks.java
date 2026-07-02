@@ -1,11 +1,8 @@
 package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.AetherGameEvents;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.aether.block.FreezingBlock;
-import com.aetherteam.aether.blockentity.IcestoneBlockEntity;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.ban.BlockBanRecipe;
 import com.aetherteam.aether.recipe.recipes.ban.ItemBanRecipe;
@@ -13,7 +10,6 @@ import com.aetherteam.aether.recipe.recipes.block.PlacementConversionRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -32,10 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Map;
 
 public class RecipeHooks {
     /**
@@ -171,39 +164,4 @@ public class RecipeHooks {
         }
     }
 
-    /**
-     * Caches all Icestone freezing recipes, checks if a block is in the cache, and sends a {@link AetherGameEvents#ICESTONE_FREEZABLE_UPDATE} game event update from that block.
-     * The game event is used to let Icestone blocks know to freeze another block in a performance-efficient way.
-     *
-     * @param accessor The {@link LevelAccessor} that the block is in.
-     * @param pos      The {@link BlockPos}
-     */
-    public static void sendIcestoneFreezableUpdateEvent(LevelAccessor accessor, BlockPos pos) {
-        if (accessor instanceof Level level && !level.isClientSide()) {
-            BlockState oldBlockState = level.getBlockState(pos);
-            FreezingBlock.cacheRecipes(level);
-            if (FreezingBlock.matchesCache(oldBlockState.getBlock(), oldBlockState) != null) {
-                level.gameEvent(BuiltInRegistries.GAME_EVENT.wrapAsHolder(AetherGameEvents.ICESTONE_FREEZABLE_UPDATE), pos, GameEvent.Context.of(oldBlockState));
-            }
-        }
-    }
-
-    /**
-     * Prevents freezing blocks at a position from Icestone if that position is marked to have delayed freezing.
-     *
-     * @param accessor  The {@link LevelAccessor} that the block is in.
-     * @param sourcePos The {@link BlockPos} of the source of the freezing.
-     * @param pos       The {@link BlockPos} of the block to freeze.
-     * @return Whether freezing a block should be prevented, as a {@link Boolean}.
-     */
-    public static boolean preventBlockFreezing(LevelAccessor accessor, BlockPos sourcePos, BlockPos pos) {
-        if (accessor.getBlockEntity(sourcePos) instanceof IcestoneBlockEntity blockEntity) {
-            for (Map.Entry<BlockPos, Integer> entry : blockEntity.getLastBrokenPositions().entrySet()) {
-                if (entry.getKey().equals(pos) && entry.getValue() > 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

@@ -54,7 +54,7 @@ public class IcestoneBlockEntity extends BlockEntity implements FreezingBlock {
      * Handles freezing blocks around Icestone when the {@link FreezingListener} detects certain update events in the radius of the block.
      * This makes it so that Icestone will only check to freeze blocks under certain circumstances, making this behavior more performant.<br><br>
      * The listener also detects and tracks the last positions of broken blocks in the vicinity so that they are temporarily not able to be frozen,
-     * as handled by {@link com.aetherteam.aether.event.hooks.RecipeHooks#preventBlockFreezing(LevelAccessor, BlockPos, BlockPos)}.
+     * as handled by {@link com.aetherteam.aether.event.hooks.IcestoneFreezingHooks#preventBlockFreezing(LevelAccessor, BlockPos, BlockPos)}.
      */
     class FreezingListener implements GameEventListener {
         private final PositionSource listenerSource;
