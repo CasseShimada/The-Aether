@@ -34,7 +34,7 @@ public class IncubatorMenu extends RecipeBookMenu {
     }
 
     public IncubatorMenu(int containerId, Inventory playerInventory, Container container, ContainerData data) {
-        super(AetherMenuTypes.INCUBATOR.get(), containerId);
+        super(AetherMenuTypes.INCUBATOR, containerId);
         checkContainerSize(container, 2);
         checkContainerDataCount(data, 7);
         this.container = container;

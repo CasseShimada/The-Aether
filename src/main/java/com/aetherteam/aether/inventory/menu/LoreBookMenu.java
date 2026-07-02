@@ -45,7 +45,7 @@ public class LoreBookMenu extends AbstractContainerMenu {
     }
 
     public LoreBookMenu(int id, Inventory playerInventory, LoreInventory loreInventory) {
-        super(AetherMenuTypes.BOOK_OF_LORE.get(), id);
+        super(AetherMenuTypes.BOOK_OF_LORE, id);
         checkContainerSize(loreInventory, 1);
         this.loreInventory = loreInventory;
         loreInventory.setMenu(this); // Provide this menu to the LoreInventory.

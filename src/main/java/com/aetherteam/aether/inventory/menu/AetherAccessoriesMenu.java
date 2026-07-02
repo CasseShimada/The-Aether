@@ -64,7 +64,7 @@ public class AetherAccessoriesMenu extends InventoryMenu {
         this.slots.clear();
 
         AbstractContainerMenuAccessor abstractContainerMenuAccessor = (AbstractContainerMenuAccessor) this;
-        abstractContainerMenuAccessor.aether$setMenuType(AetherMenuTypes.ACCESSORIES.get());
+        abstractContainerMenuAccessor.aether$setMenuType(AetherMenuTypes.ACCESSORIES);
         abstractContainerMenuAccessor.aether$setContainerId(containerId);
         abstractContainerMenuAccessor.aether$getRemoteSlots().clear();
         abstractContainerMenuAccessor.aether$getLastSlots().clear();
