@@ -34,7 +34,7 @@ public class SkyrootRemedyBucketItem extends Item implements ConsumableItem {
             user.addEffect(new MobEffectInstance(Holder.direct(AetherEffects.REMEDY), 200, 0, false, false, true));
         }
         this.consume(this, stack, user);
-        return stack.isEmpty() ? new ItemStack(AetherItems.SKYROOT_BUCKET.get()) : stack;
+        return stack.isEmpty() ? new ItemStack(AetherItems.SKYROOT_BUCKET) : stack;
     }
 
     @Override

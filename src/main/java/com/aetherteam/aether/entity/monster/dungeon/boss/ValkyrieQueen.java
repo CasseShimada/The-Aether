@@ -326,11 +326,11 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
                 if (this.level().getDifficulty() == Difficulty.PEACEFUL) { // Check for peaceful mode.
                     this.chat(player, Component.translatable("gui.aether.queen.dialog.peaceful"), true);
                 } else {
-                    if (player.getInventory().countItem(AetherItems.VICTORY_MEDAL.get()) >= 10) { // Checks for Victory Medals.
+                    if (player.getInventory().countItem(AetherItems.VICTORY_MEDAL) >= 10) { // Checks for Victory Medals.
                         this.readyUp();
                         int count = 10;
                         for (ItemStack item : player.inventoryMenu.getItems()) {
-                            if (item.is(AetherItems.VICTORY_MEDAL.get())) {
+                            if (item.is(AetherItems.VICTORY_MEDAL)) {
                                 if (item.getCount() > count) {
                                     item.shrink(count);
                                     break;

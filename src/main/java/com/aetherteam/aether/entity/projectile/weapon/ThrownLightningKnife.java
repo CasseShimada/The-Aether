@@ -18,7 +18,7 @@ public class ThrownLightningKnife extends ThrowableItemProjectile {
     }
 
     public ThrownLightningKnife(LivingEntity owner, Level level) {
-        super(AetherEntityTypes.LIGHTNING_KNIFE, owner, level, AetherItems.LIGHTNING_KNIFE.get().getDefaultInstance());
+        super(AetherEntityTypes.LIGHTNING_KNIFE, owner, level, AetherItems.LIGHTNING_KNIFE.getDefaultInstance());
     }
 
     public ThrownLightningKnife(Level level) {
@@ -44,6 +44,6 @@ public class ThrownLightningKnife extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return AetherItems.LIGHTNING_KNIFE.get();
+        return AetherItems.LIGHTNING_KNIFE;
     }
 }

@@ -63,7 +63,7 @@ public class HolySwordItem extends SwordItem {
         if (source.getDirectEntity() instanceof LivingEntity attacker) {
             if (EquipmentUtil.isFullStrength(attacker)) {
                 if (target.getType().builtInRegistryHolder().is(EntityTypeTags.UNDEAD) || target.isInvertedHealAndHarm()) {
-                    return attacker.getMainHandItem().is(AetherItems.HOLY_SWORD.get());
+                    return attacker.getMainHandItem().is(AetherItems.HOLY_SWORD);
                 }
             }
         }

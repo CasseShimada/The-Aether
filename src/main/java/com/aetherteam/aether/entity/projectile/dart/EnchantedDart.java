@@ -27,6 +27,6 @@ public class EnchantedDart extends AbstractDart {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(AetherItems.ENCHANTED_DART.get());
+        return new ItemStack(AetherItems.ENCHANTED_DART);
     }
 }

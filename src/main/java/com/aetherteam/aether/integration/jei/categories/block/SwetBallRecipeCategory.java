@@ -18,7 +18,7 @@ public class SwetBallRecipeCategory extends AbstractBiomeParameterRecipeCategory
     public SwetBallRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("swet_ball_conversion", UID,
             guiHelper.createDrawable(TEXTURE, 0, 0, 84, 28),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.SWET_BALL.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.SWET_BALL)),
             RECIPE_TYPE, fluidHelper);
     }
 }

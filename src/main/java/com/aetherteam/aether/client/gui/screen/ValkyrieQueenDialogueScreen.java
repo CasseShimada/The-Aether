@@ -30,7 +30,7 @@ public class ValkyrieQueenDialogueScreen extends Screen {
                     new DialogueChoiceComponent(this.buildDialogueChoice("question"), button -> this.finishChat((byte) 0)),
                     new DialogueChoiceComponent(this.buildDialogueChoice("challenge"), button -> { // Opens a new dialogue tree.
                         this.setDialogueAnswer(Component.translatable("gui.aether.queen.dialog.challenge")); // The Valkyrie Queen's response to the challenge choice in the GUI (not a chat message).
-                        int medals = this.minecraft.player.getInventory().countItem(AetherItems.VICTORY_MEDAL.get());
+                        int medals = this.minecraft.player.getInventory().countItem(AetherItems.VICTORY_MEDAL);
                         DialogueChoiceComponent startFightChoice = medals >= 10
                                 ? new DialogueChoiceComponent(this.buildDialogueChoice("have_medals"), button1 -> this.finishChat((byte) 1))
                                 : new DialogueChoiceComponent(this.buildDialogueChoice("no_medals").append(" (" + medals + "/10)"), button1 -> this.finishChat((byte) 1));

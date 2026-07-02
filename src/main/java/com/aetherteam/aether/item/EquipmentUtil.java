@@ -61,7 +61,7 @@ public final class EquipmentUtil {
      * @return The {@link List} of {@link SlotEntryReference}s for the accessory items.
      */
     public static List<SlotEntryReference> getZaniteRings(LivingEntity entity) {
-        return getAccessories(entity, AetherItems.ZANITE_RING.get());
+        return getAccessories(entity, AetherItems.ZANITE_RING);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class EquipmentUtil {
      */
     @Nullable
     public static SlotEntryReference getZanitePendant(LivingEntity entity) {
-        return getAccessory(entity, AetherItems.ZANITE_PENDANT.get());
+        return getAccessory(entity, AetherItems.ZANITE_PENDANT);
     }
 
     /**
@@ -82,7 +82,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasFreezingAccessory(LivingEntity entity) {
-        return hasAccessory(entity, AetherItems.ICE_PENDANT.get()) || hasAccessory(entity, AetherItems.ICE_RING.get());
+        return hasAccessory(entity, AetherItems.ICE_PENDANT) || hasAccessory(entity, AetherItems.ICE_RING);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasSwetCape(LivingEntity entity) {
-        return hasAccessory(entity, AetherItems.SWET_CAPE.get());
+        return hasAccessory(entity, AetherItems.SWET_CAPE);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasInvisibilityCloak(LivingEntity entity) {
-        return hasAccessory(entity, AetherItems.INVISIBILITY_CLOAK.get());
+        return hasAccessory(entity, AetherItems.INVISIBILITY_CLOAK);
     }
 
     /**
@@ -181,7 +181,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasSentryBoots(LivingEntity entity) {
-        return entity.getItemBySlot(EquipmentSlot.FEET).is(AetherItems.SENTRY_BOOTS.get());
+        return entity.getItemBySlot(EquipmentSlot.FEET).is(AetherItems.SENTRY_BOOTS);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasFullGravititeSet(LivingEntity entity) {
-        return hasArmorSet(entity, AetherItems.GRAVITITE_HELMET.get(), AetherItems.GRAVITITE_CHESTPLATE.get(), AetherItems.GRAVITITE_LEGGINGS.get(), AetherItems.GRAVITITE_BOOTS.get(), AetherItems.GRAVITITE_GLOVES.get());
+        return hasArmorSet(entity, AetherItems.GRAVITITE_HELMET, AetherItems.GRAVITITE_CHESTPLATE, AetherItems.GRAVITITE_LEGGINGS, AetherItems.GRAVITITE_BOOTS, AetherItems.GRAVITITE_GLOVES);
     }
 
     /**
@@ -201,7 +201,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasFullValkyrieSet(LivingEntity entity) {
-        return hasArmorSet(entity, AetherItems.VALKYRIE_HELMET.get(), AetherItems.VALKYRIE_CHESTPLATE.get(), AetherItems.VALKYRIE_LEGGINGS.get(), AetherItems.VALKYRIE_BOOTS.get(), AetherItems.VALKYRIE_GLOVES.get());
+        return hasArmorSet(entity, AetherItems.VALKYRIE_HELMET, AetherItems.VALKYRIE_CHESTPLATE, AetherItems.VALKYRIE_LEGGINGS, AetherItems.VALKYRIE_BOOTS, AetherItems.VALKYRIE_GLOVES);
     }
 
     /**
@@ -211,7 +211,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasFullNeptuneSet(LivingEntity entity) {
-        return hasArmorSet(entity, AetherItems.NEPTUNE_HELMET.get(), AetherItems.NEPTUNE_CHESTPLATE.get(), AetherItems.NEPTUNE_LEGGINGS.get(), AetherItems.NEPTUNE_BOOTS.get(), AetherItems.NEPTUNE_GLOVES.get());
+        return hasArmorSet(entity, AetherItems.NEPTUNE_HELMET, AetherItems.NEPTUNE_CHESTPLATE, AetherItems.NEPTUNE_LEGGINGS, AetherItems.NEPTUNE_BOOTS, AetherItems.NEPTUNE_GLOVES);
     }
 
     /**
@@ -221,7 +221,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasFullPhoenixSet(LivingEntity entity) {
-        return hasArmorSet(entity, AetherItems.PHOENIX_HELMET.get(), AetherItems.PHOENIX_CHESTPLATE.get(), AetherItems.PHOENIX_LEGGINGS.get(), AetherItems.PHOENIX_BOOTS.get(), AetherItems.PHOENIX_GLOVES.get());
+        return hasArmorSet(entity, AetherItems.PHOENIX_HELMET, AetherItems.PHOENIX_CHESTPLATE, AetherItems.PHOENIX_LEGGINGS, AetherItems.PHOENIX_BOOTS, AetherItems.PHOENIX_GLOVES);
     }
 
     /**
@@ -231,7 +231,7 @@ public final class EquipmentUtil {
      * @return The result of the check, as a {@link Boolean}.
      */
     public static boolean hasAnyPhoenixArmor(LivingEntity entity) {
-        return hasAnyArmor(entity, AetherItems.PHOENIX_HELMET.get(), AetherItems.PHOENIX_CHESTPLATE.get(), AetherItems.PHOENIX_LEGGINGS.get(), AetherItems.PHOENIX_BOOTS.get(), AetherItems.PHOENIX_GLOVES.get());
+        return hasAnyArmor(entity, AetherItems.PHOENIX_HELMET, AetherItems.PHOENIX_CHESTPLATE, AetherItems.PHOENIX_LEGGINGS, AetherItems.PHOENIX_BOOTS, AetherItems.PHOENIX_GLOVES);
     }
 
     /**

@@ -29,11 +29,11 @@ public class AetherCauldronInteractions {
             emptySkyrootBucket(level, pos, player, hand, stack, Blocks.POWDER_SNOW_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY_POWDER_SNOW);
 
     public static final CauldronInteraction EMPTY_WATER = (state, level, pos, player, hand, stack) ->
-            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_WATER_BUCKET.get()), (blockState) ->
+            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_WATER_BUCKET), (blockState) ->
                     blockState.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL);
 
     public static final CauldronInteraction EMPTY_POWDER_SNOW = (state, level, pos, player, hand, stack) ->
-            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get()), (blockState) ->
+            fillBucket(state, level, pos, player, hand, stack, new ItemStack(AetherItems.SKYROOT_POWDER_SNOW_BUCKET), (blockState) ->
                     blockState.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL);
 
     /**
@@ -41,7 +41,7 @@ public class AetherCauldronInteractions {
      */
     public static final CauldronInteraction CAPE = (state, level, pos, player, hand, stack) -> {
         if (!level.isClientSide()) {
-            player.setItemInHand(hand, new ItemStack(AetherItems.WHITE_CAPE.get()));
+            player.setItemInHand(hand, new ItemStack(AetherItems.WHITE_CAPE));
             player.awardStat(Stats.CLEAN_ARMOR);
             LayeredCauldronBlock.lowerFillLevel(state, level, pos);
         }
@@ -54,7 +54,7 @@ public class AetherCauldronInteractions {
     private static InteractionResult emptySkyrootBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
         if (!level.isClientSide()) {
             Item item = stack.getItem();
-            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(AetherItems.SKYROOT_BUCKET.get())));
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(AetherItems.SKYROOT_BUCKET)));
             player.awardStat(Stats.FILL_CAULDRON);
             player.awardStat(Stats.ITEM_USED.get(item));
             level.setBlockAndUpdate(pos, state);
@@ -81,19 +81,19 @@ public class AetherCauldronInteractions {
     }
 
     public static void registerCauldronInteractions() {
-        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        register(CauldronInteractions.WATER, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_WATER_BUCKET.get(), FILL_WATER);
-        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        register(CauldronInteractions.WATER, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get(), FILL_POWDER_SNOW);
-        register(CauldronInteractions.WATER, AetherItems.SKYROOT_BUCKET.get(), EMPTY_WATER);
-        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_BUCKET.get(), EMPTY_POWDER_SNOW);
-        register(CauldronInteractions.WATER, AetherItems.RED_CAPE.get(), CAPE);
-        register(CauldronInteractions.WATER, AetherItems.BLUE_CAPE.get(), CAPE);
-        register(CauldronInteractions.WATER, AetherItems.YELLOW_CAPE.get(), CAPE);
+        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_WATER_BUCKET, FILL_WATER);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_WATER_BUCKET, FILL_WATER);
+        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_WATER_BUCKET, FILL_WATER);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_WATER_BUCKET, FILL_WATER);
+        register(CauldronInteractions.EMPTY, AetherItems.SKYROOT_POWDER_SNOW_BUCKET, FILL_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_POWDER_SNOW_BUCKET, FILL_POWDER_SNOW);
+        register(CauldronInteractions.LAVA, AetherItems.SKYROOT_POWDER_SNOW_BUCKET, FILL_POWDER_SNOW);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_POWDER_SNOW_BUCKET, FILL_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.SKYROOT_BUCKET, EMPTY_WATER);
+        register(CauldronInteractions.POWDER_SNOW, AetherItems.SKYROOT_BUCKET, EMPTY_POWDER_SNOW);
+        register(CauldronInteractions.WATER, AetherItems.RED_CAPE, CAPE);
+        register(CauldronInteractions.WATER, AetherItems.BLUE_CAPE, CAPE);
+        register(CauldronInteractions.WATER, AetherItems.YELLOW_CAPE, CAPE);
     }
 
     private static InteractionResult sidedSuccess(Level level) {

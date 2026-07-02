@@ -56,7 +56,7 @@ public class CrystalFruitLeavesBlock extends LeavesWithParticlesBlock {
     public static void dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropXp) {
         if (level instanceof ServerLevel serverLevel) {
             getDrops(state, serverLevel, pos, blockEntity, entity, tool).forEach((itemStack) -> {
-                if (itemStack.getItem() != AetherItems.SKYROOT_STICK.get()) {
+                if (itemStack.getItem() != AetherItems.SKYROOT_STICK) {
                     popResource(level, pos, itemStack);
                 }
             });

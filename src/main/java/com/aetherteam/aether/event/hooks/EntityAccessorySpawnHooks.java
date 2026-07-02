@@ -185,21 +185,21 @@ final class EntityAccessorySpawnHooks {
     private static Item getEquipmentForSlot(SlotTypeReference identifier, ArmorMaterial armorMaterial) {
         if (identifier.equals(GlovesItem.getStaticIdentifier())) {
             if (armorMaterial == ArmorMaterials.LEATHER) {
-                return AetherItems.LEATHER_GLOVES.get();
+                return AetherItems.LEATHER_GLOVES;
             } else if (armorMaterial == ArmorMaterials.GOLD) {
-                return AetherItems.GOLDEN_GLOVES.get();
+                return AetherItems.GOLDEN_GLOVES;
             } else if (armorMaterial == ArmorMaterials.CHAINMAIL) {
-                return AetherItems.CHAINMAIL_GLOVES.get();
+                return AetherItems.CHAINMAIL_GLOVES;
             } else if (armorMaterial == ArmorMaterials.IRON) {
-                return AetherItems.IRON_GLOVES.get();
+                return AetherItems.IRON_GLOVES;
             } else if (armorMaterial == ArmorMaterials.DIAMOND) {
-                return AetherItems.DIAMOND_GLOVES.get();
+                return AetherItems.DIAMOND_GLOVES;
             }
         } else if (identifier.equals(PendantItem.getStaticIdentifier())) {
             if (armorMaterial == ArmorMaterials.IRON) {
-                return AetherItems.IRON_PENDANT.get();
+                return AetherItems.IRON_PENDANT;
             } else if (armorMaterial == ArmorMaterials.GOLD) {
-                return AetherItems.GOLDEN_PENDANT.get();
+                return AetherItems.GOLDEN_PENDANT;
             }
         }
         return null;

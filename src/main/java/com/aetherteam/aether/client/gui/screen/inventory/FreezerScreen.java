@@ -21,7 +21,7 @@ public class FreezerScreen extends AbstractAetherFurnaceScreen<FreezerMenu> {
     private static final List<RecipeBookComponent.TabInfo> TABS = List.of(
         new RecipeBookComponent.TabInfo(Items.COMPASS, AetherRecipeBookCategories.FREEZABLE_SEARCH),
         new RecipeBookComponent.TabInfo(AetherBlocks.BLUE_AERCLOUD.asItem(), AetherRecipeBookCategories.FREEZABLE_BLOCKS),
-        new RecipeBookComponent.TabInfo(AetherItems.ICE_RING.get(), AetherRecipeBookCategories.FREEZABLE_MISC));
+        new RecipeBookComponent.TabInfo(AetherItems.ICE_RING, AetherRecipeBookCategories.FREEZABLE_MISC));
 
     public FreezerScreen(FreezerMenu menu, Inventory inventory, Component title) {
         super(menu, new FreezerRecipeBookComponent(menu, TABS), inventory, title, FREEZER_GUI_TEXTURES, LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);

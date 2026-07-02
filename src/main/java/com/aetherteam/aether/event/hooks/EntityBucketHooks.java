@@ -36,14 +36,14 @@ final class EntityBucketHooks {
         } else {
             player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
         }
-        ItemStack filledBucket = ItemUtils.createFilledResult(heldStack, player, AetherItems.SKYROOT_MILK_BUCKET.get().getDefaultInstance());
+        ItemStack filledBucket = ItemUtils.createFilledResult(heldStack, player, AetherItems.SKYROOT_MILK_BUCKET.getDefaultInstance());
         player.swing(hand);
         player.setItemInHand(hand, filledBucket);
     }
 
     static Optional<InteractionResult> pickupBucketable(Entity target, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
-        if (!heldStack.is(AetherItems.SKYROOT_WATER_BUCKET.get())
+        if (!heldStack.is(AetherItems.SKYROOT_WATER_BUCKET)
                 || !(target instanceof Bucketable bucketable)
                 || !(target instanceof LivingEntity livingEntity)
                 || !livingEntity.isAlive()) {
@@ -70,6 +70,6 @@ final class EntityBucketHooks {
     private static boolean canMilkWithSkyrootBucket(Entity target, Player player, InteractionHand hand) {
         return (target instanceof Cow || target instanceof FlyingCow)
                 && !((Animal) target).isBaby()
-                && player.getItemInHand(hand).is(AetherItems.SKYROOT_BUCKET.get());
+                && player.getItemInHand(hand).is(AetherItems.SKYROOT_BUCKET);
     }
 }

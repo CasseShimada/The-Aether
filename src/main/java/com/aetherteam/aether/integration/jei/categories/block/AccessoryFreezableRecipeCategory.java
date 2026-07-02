@@ -18,7 +18,7 @@ public class AccessoryFreezableRecipeCategory extends AbstractAetherBlockStateRe
     public AccessoryFreezableRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("accessory_freezable", UID,
             guiHelper.createDrawable(TEXTURE, 0, 0, 84, 28),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.ICE_RING.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.ICE_RING)),
             RECIPE_TYPE, fluidHelper);
     }
 }

@@ -23,7 +23,7 @@ public class IncubatorScreen extends AbstractRecipeBookScreen<IncubatorMenu> {
     private static final Identifier INCUBATION_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/incubation_progress");
     private static final List<RecipeBookComponent.TabInfo> TABS = List.of(
         new RecipeBookComponent.TabInfo(Items.COMPASS, AetherRecipeBookCategories.INCUBATION_SEARCH),
-        new RecipeBookComponent.TabInfo(AetherItems.BLUE_MOA_EGG.get(), AetherRecipeBookCategories.INCUBATION_MISC));
+        new RecipeBookComponent.TabInfo(AetherItems.BLUE_MOA_EGG, AetherRecipeBookCategories.INCUBATION_MISC));
 
     public IncubatorScreen(IncubatorMenu menu, Inventory playerInventory, Component title) {
         super(menu, new IncubatorRecipeBookComponent(menu, TABS), playerInventory, title);

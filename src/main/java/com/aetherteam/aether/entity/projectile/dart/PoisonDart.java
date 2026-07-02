@@ -41,6 +41,6 @@ public class PoisonDart extends AbstractDart {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(AetherItems.POISON_DART.get());
+        return new ItemStack(AetherItems.POISON_DART);
     }
 }

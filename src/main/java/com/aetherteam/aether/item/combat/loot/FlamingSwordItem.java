@@ -32,7 +32,7 @@ public class FlamingSwordItem extends SwordItem {
         if (source.getDirectEntity() instanceof LivingEntity attacker) {
             if (EquipmentUtil.isFullStrength(attacker)) {
                 ItemStack heldStack = attacker.getMainHandItem();
-                if (heldStack.is(AetherItems.FLAMING_SWORD.get())) {
+                if (heldStack.is(AetherItems.FLAMING_SWORD)) {
                     int defaultTime = 30;
                     int fireAspectModifier = EnchantmentHelper.getEnchantmentLevel(attacker.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FIRE_ASPECT), attacker);
                     if (fireAspectModifier > 0) {

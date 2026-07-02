@@ -219,9 +219,9 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.is(AetherItems.SKYROOT_BUCKET.get()) && this.getPoisonRemaining() > 0) {
+        if (itemStack.is(AetherItems.SKYROOT_BUCKET) && this.getPoisonRemaining() > 0) {
             this.setPoisonRemaining(this.getPoisonRemaining() - 1);
-            ItemStack itemStack1 = ItemUtils.createFilledResult(itemStack, player, AetherItems.SKYROOT_POISON_BUCKET.get().getDefaultInstance());
+            ItemStack itemStack1 = ItemUtils.createFilledResult(itemStack, player, AetherItems.SKYROOT_POISON_BUCKET.getDefaultInstance());
             player.setItemInHand(hand, itemStack1);
             return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         } else {

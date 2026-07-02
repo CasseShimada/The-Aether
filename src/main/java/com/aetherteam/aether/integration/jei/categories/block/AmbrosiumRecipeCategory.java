@@ -18,7 +18,7 @@ public class AmbrosiumRecipeCategory extends AbstractAetherBlockStateRecipeCateg
     public AmbrosiumRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("ambrosium_enchanting", UID,
             guiHelper.createDrawable(TEXTURE, 0, 0, 84, 28),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.AMBROSIUM_SHARD.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.AMBROSIUM_SHARD)),
             RECIPE_TYPE, fluidHelper);
     }
 }

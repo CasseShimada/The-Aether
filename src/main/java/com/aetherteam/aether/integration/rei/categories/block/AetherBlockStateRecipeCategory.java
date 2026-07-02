@@ -25,7 +25,7 @@ public class AetherBlockStateRecipeCategory<R extends AbstractBlockStateRecipe> 
     }
 
     public static AetherBlockStateRecipeCategory<AccessoryFreezableRecipe> accessoryFreezable() {
-        return new AetherBlockStateRecipeCategory<>("accessory_freezable", AetherREIServerPlugin.ACCESSORY_FREEZABLE,84, 28, EntryStacks.of(AetherItems.ICE_RING.get()));
+        return new AetherBlockStateRecipeCategory<>("accessory_freezable", AetherREIServerPlugin.ACCESSORY_FREEZABLE,84, 28, EntryStacks.of(AetherItems.ICE_RING));
     }
 
     public static AetherBlockStateRecipeCategory<IcestoneFreezableRecipe> icestoneFreezable() {
@@ -33,6 +33,6 @@ public class AetherBlockStateRecipeCategory<R extends AbstractBlockStateRecipe> 
     }
 
     public static AetherBlockStateRecipeCategory<AmbrosiumRecipe> ambrosium() {
-        return new AetherBlockStateRecipeCategory<>("ambrosium_enchanting", AetherREIServerPlugin.AMBROSIUM_ENCHANTING,84, 28, EntryStacks.of(AetherItems.AMBROSIUM_SHARD.get()));
+        return new AetherBlockStateRecipeCategory<>("ambrosium_enchanting", AetherREIServerPlugin.AMBROSIUM_ENCHANTING,84, 28, EntryStacks.of(AetherItems.AMBROSIUM_SHARD));
     }
 }

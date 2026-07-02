@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 
 public class SkyrootBoat extends Boat {
     public SkyrootBoat(EntityType<? extends SkyrootBoat> type, Level level) {
-        super(type, level, AetherItems.SKYROOT_BOAT::get);
+        super(type, level, () -> AetherItems.SKYROOT_BOAT);
     }
 
     public SkyrootBoat(Level level, double x, double y, double z) {

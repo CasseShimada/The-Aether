@@ -53,13 +53,13 @@ public class AetherJEIPlugin implements IModPlugin {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<String> AETHER_SEARCH_ALIASES = List.of("aether", "the aether", "天境");
     private static final List<Supplier<ItemStack>> EXTRA_INGREDIENTS = List.of(
-            () -> new ItemStack(AetherItems.GOLDEN_FEATHER.get()),
-            () -> new ItemStack(AetherItems.MUSIC_DISC_CHINCHILLA.get()),
-            () -> new ItemStack(AetherItems.MUSIC_DISC_HIGH.get()),
-            () -> new ItemStack(AetherItems.MUSIC_DISC_KLEPTO.get()),
-            () -> new ItemStack(AetherItems.VALKYRIE_QUEEN_SPAWN_EGG.get()),
-            () -> new ItemStack(AetherItems.SLIDER_SPAWN_EGG.get()),
-            () -> new ItemStack(AetherItems.SUN_SPIRIT_SPAWN_EGG.get())
+            () -> new ItemStack(AetherItems.GOLDEN_FEATHER),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_CHINCHILLA),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_HIGH),
+            () -> new ItemStack(AetherItems.MUSIC_DISC_KLEPTO),
+            () -> new ItemStack(AetherItems.VALKYRIE_QUEEN_SPAWN_EGG),
+            () -> new ItemStack(AetherItems.SLIDER_SPAWN_EGG),
+            () -> new ItemStack(AetherItems.SUN_SPIRIT_SPAWN_EGG)
     );
     private static IJeiRuntime runtime;
     private static String lastOverlayLogState;
@@ -203,8 +203,8 @@ public class AetherJEIPlugin implements IModPlugin {
     }
 
     private static void registerBlockCatalysts(IRecipeCatalystRegistration registration) {
-        addItemCatalyst(registration, new ItemStack(AetherItems.AMBROSIUM_SHARD.get()), AmbrosiumRecipeCategory.RECIPE_TYPE);
-        addItemCatalyst(registration, new ItemStack(AetherItems.SWET_BALL.get()), SwetBallRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.AMBROSIUM_SHARD), AmbrosiumRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.SWET_BALL), SwetBallRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
                 new ItemStack(AetherBlocks.ICESTONE),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
@@ -218,12 +218,12 @@ public class AetherJEIPlugin implements IModPlugin {
                 new ItemStack(AetherBlocks.ICESTONE_WALL),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherItems.ICE_RING.get()),
+                new ItemStack(AetherItems.ICE_RING),
                 AccessoryFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherItems.ICE_PENDANT.get()),
+                new ItemStack(AetherItems.ICE_PENDANT),
                 AccessoryFreezableRecipeCategory.RECIPE_TYPE);
-        addItemCatalyst(registration, new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()), PlacementConversionRecipeCategory.RECIPE_TYPE);
+        addItemCatalyst(registration, new ItemStack(AetherItems.AETHER_PORTAL_FRAME), PlacementConversionRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration, new ItemStack(Items.FLINT_AND_STEEL), ItemBanRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration, new ItemStack(Blocks.TORCH), BlockBanRecipeCategory.RECIPE_TYPE);
     }

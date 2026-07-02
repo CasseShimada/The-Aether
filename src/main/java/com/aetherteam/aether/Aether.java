@@ -28,7 +28,6 @@ import com.aetherteam.aether.loot.functions.AetherLootFunctions;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.book.AetherRecipeBookCategories;
-import com.aetherteam.aether.registry.DeferredRegister;
 import com.aetherteam.aether.world.AetherPoi;
 import com.aetherteam.aether.world.feature.AetherFeatures;
 import com.aetherteam.aether.world.foliageplacer.AetherFoliagePlacerTypes;
@@ -96,7 +95,7 @@ public final class Aether {
         Reflection.initialize(AetherEntityTypes.class);
         AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
-        registerContent();
+        Reflection.initialize(AetherItems.class);
         AetherCreativeTabs.registerVanillaTabEntries();
         AetherPoi.registerBlockStateMappings();
         AetherEntityTypes.registerEntityAttributes();
@@ -116,16 +115,6 @@ public final class Aether {
         registerCauldronInteractions();
 
         UniqueSlotHandling.EVENT.register(AetherAccessorySlots.INSTANCE);
-    }
-
-    private static void registerContent() {
-        DeferredRegister<?>[] registers = {
-                AetherItems.ITEMS
-        };
-
-        for (DeferredRegister<?> register : registers) {
-            register.register();
-        }
     }
 
     private static void registerDispenserBehaviors() {

@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public final class AetherDataMaps {
     private static final List<FuelEntry> ALTAR_FUEL = List.of(
             new FuelEntry(() -> AetherBlocks.AMBROSIUM_BLOCK.asItem(), 2500),
-            new FuelEntry(() -> AetherItems.AMBROSIUM_SHARD.get(), 250)
+            new FuelEntry(() -> AetherItems.AMBROSIUM_SHARD, 250)
     );
     private static final List<FuelEntry> FREEZER_FUEL = List.of(
             new FuelEntry(() -> AetherBlocks.ICESTONE.asItem(), 400),

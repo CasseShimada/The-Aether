@@ -199,6 +199,6 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
 
     @Override
     public ItemStack getItem() {
-        return AetherItems.HAMMER_OF_KINGBDOGZ.get().getDefaultInstance();
+        return AetherItems.HAMMER_OF_KINGBDOGZ.getDefaultInstance();
     }
 }

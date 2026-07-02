@@ -31,7 +31,7 @@ public class SkyrootMobBucketItem extends MobBucketItem {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         InteractionResult result = super.use(level, player, hand);
         if (result.consumesAction() && player.getItemInHand(hand).is(Items.BUCKET)) {
-            player.setItemInHand(hand, new ItemStack(AetherItems.SKYROOT_BUCKET.get()));
+            player.setItemInHand(hand, new ItemStack(AetherItems.SKYROOT_BUCKET));
         }
         return result;
     }

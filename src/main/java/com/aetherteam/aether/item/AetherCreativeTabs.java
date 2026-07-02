@@ -162,7 +162,7 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.CHEST_MIMIC);
                 output.accept(AetherBlocks.PRESENT);
                 output.accept(AetherItems.createSwetBannerItemStack(features.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
-                output.accept(AetherItems.AETHER_PORTAL_FRAME.get());
+                output.accept(AetherItems.AETHER_PORTAL_FRAME);
             }).build());
     public static final CreativeModeTab AETHER_REDSTONE_BLOCKS = register("redstone_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 4)
             .icon(() -> new ItemStack(AetherBlocks.SKYROOT_FENCE_GATE))
@@ -176,205 +176,205 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.FREEZER);
                 output.accept(AetherBlocks.INCUBATOR);
                 output.accept(AetherBlocks.TREASURE_CHEST);
-                output.accept(AetherItems.SKYROOT_CHEST_BOAT.get());
+                output.accept(AetherItems.SKYROOT_CHEST_BOAT);
                 output.accept(AetherBlocks.SKYROOT_DOOR);
                 output.accept(AetherBlocks.SKYROOT_FENCE_GATE);
                 output.accept(AetherBlocks.SKYROOT_TRAPDOOR);
                 output.accept(AetherBlocks.ENCHANTED_GRAVITITE);
             }).build());
     public static final CreativeModeTab AETHER_EQUIPMENT_AND_UTILITIES = register("equipment_and_utilities", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 0)
-            .icon(() -> new ItemStack(AetherItems.GRAVITITE_PICKAXE.get()))
+            .icon(() -> new ItemStack(AetherItems.GRAVITITE_PICKAXE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".equipment_and_utilities"))
             .displayItems((features, output) -> {
-                output.accept(AetherItems.SKYROOT_SWORD.get());
-                output.accept(AetherItems.SKYROOT_SHOVEL.get());
-                output.accept(AetherItems.SKYROOT_PICKAXE.get());
-                output.accept(AetherItems.SKYROOT_AXE.get());
-                output.accept(AetherItems.SKYROOT_HOE.get());
-                output.accept(AetherItems.HOLYSTONE_SWORD.get());
-                output.accept(AetherItems.HOLYSTONE_SHOVEL.get());
-                output.accept(AetherItems.HOLYSTONE_PICKAXE.get());
-                output.accept(AetherItems.HOLYSTONE_AXE.get());
-                output.accept(AetherItems.HOLYSTONE_HOE.get());
-                output.accept(AetherItems.ZANITE_SWORD.get());
-                output.accept(AetherItems.ZANITE_SHOVEL.get());
-                output.accept(AetherItems.ZANITE_PICKAXE.get());
-                output.accept(AetherItems.ZANITE_AXE.get());
-                output.accept(AetherItems.ZANITE_HOE.get());
-                output.accept(AetherItems.GRAVITITE_SWORD.get());
-                output.accept(AetherItems.GRAVITITE_SHOVEL.get());
-                output.accept(AetherItems.GRAVITITE_PICKAXE.get());
-                output.accept(AetherItems.GRAVITITE_AXE.get());
-                output.accept(AetherItems.GRAVITITE_HOE.get());
-                output.accept(AetherItems.VALKYRIE_LANCE.get());
-                output.accept(AetherItems.VALKYRIE_SHOVEL.get());
-                output.accept(AetherItems.VALKYRIE_PICKAXE.get());
-                output.accept(AetherItems.VALKYRIE_AXE.get());
-                output.accept(AetherItems.VALKYRIE_HOE.get());
-                output.accept(AetherItems.GOLDEN_DART_SHOOTER.get());
-                output.accept(AetherItems.GOLDEN_DART.get());
-                output.accept(AetherItems.POISON_DART_SHOOTER.get());
-                output.accept(AetherItems.POISON_DART.get());
-                output.accept(AetherItems.ENCHANTED_DART_SHOOTER.get());
-                output.accept(AetherItems.ENCHANTED_DART.get());
-                output.accept(AetherItems.CANDY_CANE_SWORD.get());
-                output.accept(AetherItems.HOLY_SWORD.get());
-                output.accept(AetherItems.VAMPIRE_BLADE.get());
-                output.accept(AetherItems.LIGHTNING_SWORD.get());
-                output.accept(AetherItems.LIGHTNING_KNIFE.get());
-                output.accept(AetherItems.FLAMING_SWORD.get());
-                output.accept(AetherItems.PHOENIX_BOW.get());
-                output.accept(AetherItems.PIG_SLAYER.get());
-                output.accept(AetherItems.HAMMER_OF_KINGBDOGZ.get());
-                output.accept(AetherItems.CLOUD_STAFF.get());
-                output.accept(AetherItems.SKYROOT_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_WATER_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_PUFFERFISH_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_SALMON_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_COD_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_TROPICAL_FISH_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_AXOLOTL_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_TADPOLE_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_POWDER_SNOW_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_MILK_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_REMEDY_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_POISON_BUCKET.get());
-                output.accept(AetherItems.BOOK_OF_LORE.get());
-                output.accept(AetherItems.COLD_PARACHUTE.get());
-                output.accept(AetherItems.GOLDEN_PARACHUTE.get());
-                output.accept(AetherItems.AMBROSIUM_SHARD.get());
-                output.accept(AetherItems.SWET_BALL.get());
-                output.accept(AetherItems.BLUE_MOA_EGG.get());
-                output.accept(AetherItems.WHITE_MOA_EGG.get());
-                output.accept(AetherItems.BLACK_MOA_EGG.get());
-                output.accept(AetherItems.NATURE_STAFF.get());
-                output.accept(AetherItems.SKYROOT_BOAT.get());
-                output.accept(AetherItems.SKYROOT_CHEST_BOAT.get());
-                output.accept(AetherItems.BRONZE_DUNGEON_KEY.get());
-                output.accept(AetherItems.SILVER_DUNGEON_KEY.get());
-                output.accept(AetherItems.GOLD_DUNGEON_KEY.get());
-                output.accept(AetherItems.VICTORY_MEDAL.get());
-                output.accept(AetherItems.MUSIC_DISC_AETHER_TUNE.get());
-                output.accept(AetherItems.MUSIC_DISC_ASCENDING_DAWN.get());
-                output.accept(AetherItems.MUSIC_DISC_SLIDERS_WRATH.get());
+                output.accept(AetherItems.SKYROOT_SWORD);
+                output.accept(AetherItems.SKYROOT_SHOVEL);
+                output.accept(AetherItems.SKYROOT_PICKAXE);
+                output.accept(AetherItems.SKYROOT_AXE);
+                output.accept(AetherItems.SKYROOT_HOE);
+                output.accept(AetherItems.HOLYSTONE_SWORD);
+                output.accept(AetherItems.HOLYSTONE_SHOVEL);
+                output.accept(AetherItems.HOLYSTONE_PICKAXE);
+                output.accept(AetherItems.HOLYSTONE_AXE);
+                output.accept(AetherItems.HOLYSTONE_HOE);
+                output.accept(AetherItems.ZANITE_SWORD);
+                output.accept(AetherItems.ZANITE_SHOVEL);
+                output.accept(AetherItems.ZANITE_PICKAXE);
+                output.accept(AetherItems.ZANITE_AXE);
+                output.accept(AetherItems.ZANITE_HOE);
+                output.accept(AetherItems.GRAVITITE_SWORD);
+                output.accept(AetherItems.GRAVITITE_SHOVEL);
+                output.accept(AetherItems.GRAVITITE_PICKAXE);
+                output.accept(AetherItems.GRAVITITE_AXE);
+                output.accept(AetherItems.GRAVITITE_HOE);
+                output.accept(AetherItems.VALKYRIE_LANCE);
+                output.accept(AetherItems.VALKYRIE_SHOVEL);
+                output.accept(AetherItems.VALKYRIE_PICKAXE);
+                output.accept(AetherItems.VALKYRIE_AXE);
+                output.accept(AetherItems.VALKYRIE_HOE);
+                output.accept(AetherItems.GOLDEN_DART_SHOOTER);
+                output.accept(AetherItems.GOLDEN_DART);
+                output.accept(AetherItems.POISON_DART_SHOOTER);
+                output.accept(AetherItems.POISON_DART);
+                output.accept(AetherItems.ENCHANTED_DART_SHOOTER);
+                output.accept(AetherItems.ENCHANTED_DART);
+                output.accept(AetherItems.CANDY_CANE_SWORD);
+                output.accept(AetherItems.HOLY_SWORD);
+                output.accept(AetherItems.VAMPIRE_BLADE);
+                output.accept(AetherItems.LIGHTNING_SWORD);
+                output.accept(AetherItems.LIGHTNING_KNIFE);
+                output.accept(AetherItems.FLAMING_SWORD);
+                output.accept(AetherItems.PHOENIX_BOW);
+                output.accept(AetherItems.PIG_SLAYER);
+                output.accept(AetherItems.HAMMER_OF_KINGBDOGZ);
+                output.accept(AetherItems.CLOUD_STAFF);
+                output.accept(AetherItems.SKYROOT_BUCKET);
+                output.accept(AetherItems.SKYROOT_WATER_BUCKET);
+                output.accept(AetherItems.SKYROOT_PUFFERFISH_BUCKET);
+                output.accept(AetherItems.SKYROOT_SALMON_BUCKET);
+                output.accept(AetherItems.SKYROOT_COD_BUCKET);
+                output.accept(AetherItems.SKYROOT_TROPICAL_FISH_BUCKET);
+                output.accept(AetherItems.SKYROOT_AXOLOTL_BUCKET);
+                output.accept(AetherItems.SKYROOT_TADPOLE_BUCKET);
+                output.accept(AetherItems.SKYROOT_POWDER_SNOW_BUCKET);
+                output.accept(AetherItems.SKYROOT_MILK_BUCKET);
+                output.accept(AetherItems.SKYROOT_REMEDY_BUCKET);
+                output.accept(AetherItems.SKYROOT_POISON_BUCKET);
+                output.accept(AetherItems.BOOK_OF_LORE);
+                output.accept(AetherItems.COLD_PARACHUTE);
+                output.accept(AetherItems.GOLDEN_PARACHUTE);
+                output.accept(AetherItems.AMBROSIUM_SHARD);
+                output.accept(AetherItems.SWET_BALL);
+                output.accept(AetherItems.BLUE_MOA_EGG);
+                output.accept(AetherItems.WHITE_MOA_EGG);
+                output.accept(AetherItems.BLACK_MOA_EGG);
+                output.accept(AetherItems.NATURE_STAFF);
+                output.accept(AetherItems.SKYROOT_BOAT);
+                output.accept(AetherItems.SKYROOT_CHEST_BOAT);
+                output.accept(AetherItems.BRONZE_DUNGEON_KEY);
+                output.accept(AetherItems.SILVER_DUNGEON_KEY);
+                output.accept(AetherItems.GOLD_DUNGEON_KEY);
+                output.accept(AetherItems.VICTORY_MEDAL);
+                output.accept(AetherItems.MUSIC_DISC_AETHER_TUNE);
+                output.accept(AetherItems.MUSIC_DISC_ASCENDING_DAWN);
+                output.accept(AetherItems.MUSIC_DISC_SLIDERS_WRATH);
             }).build());
     public static final CreativeModeTab AETHER_ARMOR_AND_ACCESSORIES = register("armor_and_accessories", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 1)
-            .icon(() -> new ItemStack(AetherItems.VALKYRIE_CHESTPLATE.get()))
+            .icon(() -> new ItemStack(AetherItems.VALKYRIE_CHESTPLATE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".armor_and_accessories"))
             .displayItems((features, output) -> {
-                output.accept(AetherItems.ZANITE_HELMET.get());
-                output.accept(AetherItems.ZANITE_CHESTPLATE.get());
-                output.accept(AetherItems.ZANITE_LEGGINGS.get());
-                output.accept(AetherItems.ZANITE_BOOTS.get());
-                output.accept(AetherItems.ZANITE_GLOVES.get());
-                output.accept(AetherItems.GRAVITITE_HELMET.get());
-                output.accept(AetherItems.GRAVITITE_CHESTPLATE.get());
-                output.accept(AetherItems.GRAVITITE_LEGGINGS.get());
-                output.accept(AetherItems.GRAVITITE_BOOTS.get());
-                output.accept(AetherItems.GRAVITITE_GLOVES.get());
-                output.accept(AetherItems.NEPTUNE_HELMET.get());
-                output.accept(AetherItems.NEPTUNE_CHESTPLATE.get());
-                output.accept(AetherItems.NEPTUNE_LEGGINGS.get());
-                output.accept(AetherItems.NEPTUNE_BOOTS.get());
-                output.accept(AetherItems.NEPTUNE_GLOVES.get());
-                output.accept(AetherItems.VALKYRIE_HELMET.get());
-                output.accept(AetherItems.VALKYRIE_CHESTPLATE.get());
-                output.accept(AetherItems.VALKYRIE_LEGGINGS.get());
-                output.accept(AetherItems.VALKYRIE_BOOTS.get());
-                output.accept(AetherItems.VALKYRIE_GLOVES.get());
-                output.accept(AetherItems.PHOENIX_HELMET.get());
-                output.accept(AetherItems.PHOENIX_CHESTPLATE.get());
-                output.accept(AetherItems.PHOENIX_LEGGINGS.get());
-                output.accept(AetherItems.PHOENIX_BOOTS.get());
-                output.accept(AetherItems.PHOENIX_GLOVES.get());
-                output.accept(AetherItems.OBSIDIAN_HELMET.get());
-                output.accept(AetherItems.OBSIDIAN_CHESTPLATE.get());
-                output.accept(AetherItems.OBSIDIAN_LEGGINGS.get());
-                output.accept(AetherItems.OBSIDIAN_BOOTS.get());
-                output.accept(AetherItems.OBSIDIAN_GLOVES.get());
-                output.accept(AetherItems.SENTRY_BOOTS.get());
-                output.accept(AetherItems.IRON_RING.get());
-                output.accept(AetherItems.IRON_PENDANT.get());
-                output.accept(AetherItems.GOLDEN_RING.get());
-                output.accept(AetherItems.GOLDEN_PENDANT.get());
-                output.accept(AetherItems.ZANITE_RING.get());
-                output.accept(AetherItems.ZANITE_PENDANT.get());
-                output.accept(AetherItems.ICE_RING.get());
-                output.accept(AetherItems.ICE_PENDANT.get());
-                output.accept(AetherItems.WHITE_CAPE.get());
-                output.accept(AetherItems.YELLOW_CAPE.get());
-                output.accept(AetherItems.RED_CAPE.get());
-                output.accept(AetherItems.BLUE_CAPE.get());
-                output.accept(AetherItems.AGILITY_CAPE.get());
-                output.accept(AetherItems.SWET_CAPE.get());
-                output.accept(AetherItems.INVISIBILITY_CLOAK.get());
+                output.accept(AetherItems.ZANITE_HELMET);
+                output.accept(AetherItems.ZANITE_CHESTPLATE);
+                output.accept(AetherItems.ZANITE_LEGGINGS);
+                output.accept(AetherItems.ZANITE_BOOTS);
+                output.accept(AetherItems.ZANITE_GLOVES);
+                output.accept(AetherItems.GRAVITITE_HELMET);
+                output.accept(AetherItems.GRAVITITE_CHESTPLATE);
+                output.accept(AetherItems.GRAVITITE_LEGGINGS);
+                output.accept(AetherItems.GRAVITITE_BOOTS);
+                output.accept(AetherItems.GRAVITITE_GLOVES);
+                output.accept(AetherItems.NEPTUNE_HELMET);
+                output.accept(AetherItems.NEPTUNE_CHESTPLATE);
+                output.accept(AetherItems.NEPTUNE_LEGGINGS);
+                output.accept(AetherItems.NEPTUNE_BOOTS);
+                output.accept(AetherItems.NEPTUNE_GLOVES);
+                output.accept(AetherItems.VALKYRIE_HELMET);
+                output.accept(AetherItems.VALKYRIE_CHESTPLATE);
+                output.accept(AetherItems.VALKYRIE_LEGGINGS);
+                output.accept(AetherItems.VALKYRIE_BOOTS);
+                output.accept(AetherItems.VALKYRIE_GLOVES);
+                output.accept(AetherItems.PHOENIX_HELMET);
+                output.accept(AetherItems.PHOENIX_CHESTPLATE);
+                output.accept(AetherItems.PHOENIX_LEGGINGS);
+                output.accept(AetherItems.PHOENIX_BOOTS);
+                output.accept(AetherItems.PHOENIX_GLOVES);
+                output.accept(AetherItems.OBSIDIAN_HELMET);
+                output.accept(AetherItems.OBSIDIAN_CHESTPLATE);
+                output.accept(AetherItems.OBSIDIAN_LEGGINGS);
+                output.accept(AetherItems.OBSIDIAN_BOOTS);
+                output.accept(AetherItems.OBSIDIAN_GLOVES);
+                output.accept(AetherItems.SENTRY_BOOTS);
+                output.accept(AetherItems.IRON_RING);
+                output.accept(AetherItems.IRON_PENDANT);
+                output.accept(AetherItems.GOLDEN_RING);
+                output.accept(AetherItems.GOLDEN_PENDANT);
+                output.accept(AetherItems.ZANITE_RING);
+                output.accept(AetherItems.ZANITE_PENDANT);
+                output.accept(AetherItems.ICE_RING);
+                output.accept(AetherItems.ICE_PENDANT);
+                output.accept(AetherItems.WHITE_CAPE);
+                output.accept(AetherItems.YELLOW_CAPE);
+                output.accept(AetherItems.RED_CAPE);
+                output.accept(AetherItems.BLUE_CAPE);
+                output.accept(AetherItems.AGILITY_CAPE);
+                output.accept(AetherItems.SWET_CAPE);
+                output.accept(AetherItems.INVISIBILITY_CLOAK);
                 if (AetherConfig.SERVER.spawn_valkyrie_cape.get()) {
-                    output.accept(AetherItems.VALKYRIE_CAPE.get());
+                    output.accept(AetherItems.VALKYRIE_CAPE);
                 }
                 if (AetherConfig.SERVER.spawn_golden_feather.get()) {
-                    output.accept(AetherItems.GOLDEN_FEATHER.get());
+                    output.accept(AetherItems.GOLDEN_FEATHER);
                 }
-                output.accept(AetherItems.REGENERATION_STONE.get());
-                output.accept(AetherItems.IRON_BUBBLE.get());
-                output.accept(AetherItems.SHIELD_OF_REPULSION.get());
+                output.accept(AetherItems.REGENERATION_STONE);
+                output.accept(AetherItems.IRON_BUBBLE);
+                output.accept(AetherItems.SHIELD_OF_REPULSION);
             }).build());
     public static final CreativeModeTab AETHER_FOOD_AND_DRINKS = register("food_and_drinks", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 2)
-            .icon(() -> new ItemStack(AetherItems.BLUE_GUMMY_SWET.get()))
+            .icon(() -> new ItemStack(AetherItems.BLUE_GUMMY_SWET))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".food_and_drinks"))
             .displayItems((features, output) -> {
-                output.accept(AetherItems.BLUE_BERRY.get());
-                output.accept(AetherItems.ENCHANTED_BERRY.get());
-                output.accept(AetherItems.WHITE_APPLE.get());
+                output.accept(AetherItems.BLUE_BERRY);
+                output.accept(AetherItems.ENCHANTED_BERRY);
+                output.accept(AetherItems.WHITE_APPLE);
                 if (AetherConfig.SERVER.edible_ambrosium.get()) {
-                    output.accept(AetherItems.AMBROSIUM_SHARD.get());
+                    output.accept(AetherItems.AMBROSIUM_SHARD);
                 }
-                output.accept(AetherItems.HEALING_STONE.get());
-                output.accept(AetherItems.BLUE_GUMMY_SWET.get());
-                output.accept(AetherItems.GOLDEN_GUMMY_SWET.get());
-                output.accept(AetherItems.GINGERBREAD_MAN.get());
-                output.accept(AetherItems.CANDY_CANE.get());
-                output.accept(AetherItems.SKYROOT_MILK_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_REMEDY_BUCKET.get());
-                output.accept(AetherItems.SKYROOT_POISON_BUCKET.get());
-                output.accept(AetherItems.LIFE_SHARD.get());
+                output.accept(AetherItems.HEALING_STONE);
+                output.accept(AetherItems.BLUE_GUMMY_SWET);
+                output.accept(AetherItems.GOLDEN_GUMMY_SWET);
+                output.accept(AetherItems.GINGERBREAD_MAN);
+                output.accept(AetherItems.CANDY_CANE);
+                output.accept(AetherItems.SKYROOT_MILK_BUCKET);
+                output.accept(AetherItems.SKYROOT_REMEDY_BUCKET);
+                output.accept(AetherItems.SKYROOT_POISON_BUCKET);
+                output.accept(AetherItems.LIFE_SHARD);
             }).build());
     public static final CreativeModeTab AETHER_INGREDIENTS = register("ingredients", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 3)
-            .icon(() -> new ItemStack(AetherItems.AMBROSIUM_SHARD.get()))
+            .icon(() -> new ItemStack(AetherItems.AMBROSIUM_SHARD))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".ingredients"))
             .displayItems((features, output) -> {
-                output.accept(AetherItems.AMBROSIUM_SHARD.get());
-                output.accept(AetherItems.ZANITE_GEMSTONE.get());
+                output.accept(AetherItems.AMBROSIUM_SHARD);
+                output.accept(AetherItems.ZANITE_GEMSTONE);
                 output.accept(AetherBlocks.ENCHANTED_GRAVITITE);
-                output.accept(AetherItems.SKYROOT_STICK.get());
-                output.accept(AetherItems.GOLDEN_AMBER.get());
-                output.accept(AetherItems.AECHOR_PETAL.get());
-                output.accept(AetherItems.SKYROOT_POISON_BUCKET.get());
-                output.accept(AetherItems.SWET_BALL.get());
+                output.accept(AetherItems.SKYROOT_STICK);
+                output.accept(AetherItems.GOLDEN_AMBER);
+                output.accept(AetherItems.AECHOR_PETAL);
+                output.accept(AetherItems.SKYROOT_POISON_BUCKET);
+                output.accept(AetherItems.SWET_BALL);
             }).build());
     public static final CreativeModeTab AETHER_SPAWN_EGGS = register("spawn_eggs", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 4)
-            .icon(() -> new ItemStack(AetherItems.AERBUNNY_SPAWN_EGG.get()))
+            .icon(() -> new ItemStack(AetherItems.AERBUNNY_SPAWN_EGG))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".spawn_eggs"))
             .displayItems((features, output) -> {
-                output.accept(AetherItems.BLUE_MOA_EGG.get());
-                output.accept(AetherItems.WHITE_MOA_EGG.get());
-                output.accept(AetherItems.BLACK_MOA_EGG.get());
-                output.accept(AetherItems.AECHOR_PLANT_SPAWN_EGG.get());
-                output.accept(AetherItems.AERBUNNY_SPAWN_EGG.get());
-                output.accept(AetherItems.AERWHALE_SPAWN_EGG.get());
-                output.accept(AetherItems.BLUE_SWET_SPAWN_EGG.get());
-                output.accept(AetherItems.COCKATRICE_SPAWN_EGG.get());
-                output.accept(AetherItems.EVIL_WHIRLWIND_SPAWN_EGG.get());
-                output.accept(AetherItems.FIRE_MINION_SPAWN_EGG.get());
-                output.accept(AetherItems.FLYING_COW_SPAWN_EGG.get());
-                output.accept(AetherItems.GOLDEN_SWET_SPAWN_EGG.get());
-                output.accept(AetherItems.MIMIC_SPAWN_EGG.get());
-                output.accept(AetherItems.MOA_SPAWN_EGG.get());
-                output.accept(AetherItems.PHYG_SPAWN_EGG.get());
-                output.accept(AetherItems.SENTRY_SPAWN_EGG.get());
-                output.accept(AetherItems.SHEEPUFF_SPAWN_EGG.get());
-                output.accept(AetherItems.WHIRLWIND_SPAWN_EGG.get());
-                output.accept(AetherItems.VALKYRIE_SPAWN_EGG.get());
-                output.accept(AetherItems.ZEPHYR_SPAWN_EGG.get());
+                output.accept(AetherItems.BLUE_MOA_EGG);
+                output.accept(AetherItems.WHITE_MOA_EGG);
+                output.accept(AetherItems.BLACK_MOA_EGG);
+                output.accept(AetherItems.AECHOR_PLANT_SPAWN_EGG);
+                output.accept(AetherItems.AERBUNNY_SPAWN_EGG);
+                output.accept(AetherItems.AERWHALE_SPAWN_EGG);
+                output.accept(AetherItems.BLUE_SWET_SPAWN_EGG);
+                output.accept(AetherItems.COCKATRICE_SPAWN_EGG);
+                output.accept(AetherItems.EVIL_WHIRLWIND_SPAWN_EGG);
+                output.accept(AetherItems.FIRE_MINION_SPAWN_EGG);
+                output.accept(AetherItems.FLYING_COW_SPAWN_EGG);
+                output.accept(AetherItems.GOLDEN_SWET_SPAWN_EGG);
+                output.accept(AetherItems.MIMIC_SPAWN_EGG);
+                output.accept(AetherItems.MOA_SPAWN_EGG);
+                output.accept(AetherItems.PHYG_SPAWN_EGG);
+                output.accept(AetherItems.SENTRY_SPAWN_EGG);
+                output.accept(AetherItems.SHEEPUFF_SPAWN_EGG);
+                output.accept(AetherItems.WHIRLWIND_SPAWN_EGG);
+                output.accept(AetherItems.VALKYRIE_SPAWN_EGG);
+                output.accept(AetherItems.ZEPHYR_SPAWN_EGG);
             }).build());
 
     private static CreativeModeTab register(String name, CreativeModeTab tab) {
@@ -383,12 +383,12 @@ public class AetherCreativeTabs {
 
     public static void registerVanillaTabEntries() {
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(entries -> {
-            entries.insertAfter(Items.LEATHER_BOOTS, AetherItems.LEATHER_GLOVES.get());
-            entries.insertAfter(Items.CHAINMAIL_BOOTS, AetherItems.CHAINMAIL_GLOVES.get());
-            entries.insertAfter(Items.IRON_BOOTS, AetherItems.IRON_GLOVES.get());
-            entries.insertAfter(Items.GOLDEN_BOOTS, AetherItems.GOLDEN_GLOVES.get());
-            entries.insertAfter(Items.DIAMOND_BOOTS, AetherItems.DIAMOND_GLOVES.get());
-            entries.insertAfter(Items.NETHERITE_BOOTS, AetherItems.NETHERITE_GLOVES.get());
+            entries.insertAfter(Items.LEATHER_BOOTS, AetherItems.LEATHER_GLOVES);
+            entries.insertAfter(Items.CHAINMAIL_BOOTS, AetherItems.CHAINMAIL_GLOVES);
+            entries.insertAfter(Items.IRON_BOOTS, AetherItems.IRON_GLOVES);
+            entries.insertAfter(Items.GOLDEN_BOOTS, AetherItems.GOLDEN_GLOVES);
+            entries.insertAfter(Items.DIAMOND_BOOTS, AetherItems.DIAMOND_GLOVES);
+            entries.insertAfter(Items.NETHERITE_BOOTS, AetherItems.NETHERITE_GLOVES);
         });
     }
 }

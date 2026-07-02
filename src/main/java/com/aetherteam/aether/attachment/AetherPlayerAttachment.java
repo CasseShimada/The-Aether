@@ -588,7 +588,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
      */
     public void givePortalItem(Player player) {
         if (this.canGetPortal()) {
-            player.addItem(new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get()));
+            player.addItem(new ItemStack(AetherItems.AETHER_PORTAL_FRAME));
             this.setCanGetPortal(false);
         }
     }

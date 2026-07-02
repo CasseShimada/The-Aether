@@ -36,7 +36,7 @@ public class AetherEnumExtensions {
 
     public static Object enchantingFoodIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ENCHANTED_BERRY.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ENCHANTED_BERRY));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }
@@ -50,14 +50,14 @@ public class AetherEnumExtensions {
 
     public static Object enchantingMiscIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.SKYROOT_REMEDY_BUCKET.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.SKYROOT_REMEDY_BUCKET));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }
 
     public static Object enchantingRepairIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ZANITE_PICKAXE.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ZANITE_PICKAXE));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }
@@ -78,7 +78,7 @@ public class AetherEnumExtensions {
 
     public static Object freezableMiscIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ICE_RING.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.ICE_RING));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }
@@ -92,7 +92,7 @@ public class AetherEnumExtensions {
 
     public static Object incubationMiscIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.BLUE_MOA_EGG.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherItems.BLUE_MOA_EGG));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }

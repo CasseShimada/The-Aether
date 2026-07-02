@@ -363,7 +363,7 @@ public class Moa extends MountableAnimal implements WingedBird {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (this.isPlayerGrown() && itemStack.is(AetherItems.NATURE_STAFF.get())) {
+        if (this.isPlayerGrown() && itemStack.is(AetherItems.NATURE_STAFF)) {
             if (player.isShiftKeyDown()) { // Toggles whether a tamed Moa will follow the player.
                 if (this.getFollowing() == null) {
                     this.setFollowing(player.getUUID());

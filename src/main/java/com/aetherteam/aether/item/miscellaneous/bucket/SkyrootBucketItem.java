@@ -126,7 +126,7 @@ public class SkyrootBucketItem extends BucketItem {
      * Returns a Skyroot Bucket instead of a vanilla bucket.
      */
     public static ItemStack getEmptySuccessItem(ItemStack bucketStack, Player player) {
-        return !player.getAbilities().instabuild ? new ItemStack(AetherItems.SKYROOT_BUCKET.get()) : bucketStack;
+        return !player.getAbilities().instabuild ? new ItemStack(AetherItems.SKYROOT_BUCKET) : bucketStack;
     }
 
     /**

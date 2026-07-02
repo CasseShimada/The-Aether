@@ -30,7 +30,7 @@ public interface ShieldOfRepulsionAccessory {
         if (hitResult.getType() == HitResult.Type.ENTITY && hitResult instanceof EntityHitResult entityHitResult) {
             if (entityHitResult.getEntity() instanceof LivingEntity impactedLiving) {
                 if (projectile.getType().builtInRegistryHolder().is(AetherTags.Entities.DEFLECTABLE_PROJECTILES)) {
-                    SlotEntryReference slotResult = EquipmentUtil.getAccessory(impactedLiving, AetherItems.SHIELD_OF_REPULSION.get());
+                    SlotEntryReference slotResult = EquipmentUtil.getAccessory(impactedLiving, AetherItems.SHIELD_OF_REPULSION);
                     if (slotResult != null) {
                         Vec3 motion = impactedLiving.getDeltaMovement();
                         if (impactedLiving instanceof Player player) {

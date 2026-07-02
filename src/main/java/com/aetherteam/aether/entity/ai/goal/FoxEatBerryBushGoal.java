@@ -73,11 +73,11 @@ public class FoxEatBerryBushGoal extends MoveToBlockGoal {
         int j = 1 + this.mob.level().getRandom().nextInt(3) + (onEnchantedGrass ? 1 : 0);
         ItemStack itemStack = this.mob.getItemBySlot(EquipmentSlot.MAINHAND);
         if (itemStack.isEmpty()) {
-            this.mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AetherItems.BLUE_BERRY.get()));
+            this.mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AetherItems.BLUE_BERRY));
             --j;
         }
         if (j > 0) {
-            Block.popResource(this.mob.level(), this.blockPos, new ItemStack(AetherItems.BLUE_BERRY.get(), j));
+            Block.popResource(this.mob.level(), this.blockPos, new ItemStack(AetherItems.BLUE_BERRY, j));
         }
         this.mob.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
         this.mob.level().setBlock(this.blockPos, AetherBlocks.BERRY_BUSH_STEM.defaultBlockState(), 2);

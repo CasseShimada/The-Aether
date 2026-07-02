@@ -25,10 +25,10 @@ public class BiomeParameterRecipeCategory<R extends AbstractBiomeParameterRecipe
     }
 
     public static BiomeParameterRecipeCategory<PlacementConversionRecipe> placementConversion() {
-        return new BiomeParameterRecipeCategory<>("placement_conversion", AetherREIServerPlugin.PLACEMENT_CONVERSION, 84, 28, EntryStacks.of(AetherItems.AETHER_PORTAL_FRAME.get()));
+        return new BiomeParameterRecipeCategory<>("placement_conversion", AetherREIServerPlugin.PLACEMENT_CONVERSION, 84, 28, EntryStacks.of(AetherItems.AETHER_PORTAL_FRAME));
     }
 
     public static BiomeParameterRecipeCategory<SwetBallRecipe> swetBall() {
-        return new BiomeParameterRecipeCategory<>("swet_ball_conversion", AetherREIServerPlugin.SWET_BALL_CONVERSION, 84, 28, EntryStacks.of(AetherItems.SWET_BALL.get()));
+        return new BiomeParameterRecipeCategory<>("swet_ball_conversion", AetherREIServerPlugin.SWET_BALL_CONVERSION, 84, 28, EntryStacks.of(AetherItems.SWET_BALL));
     }
 }

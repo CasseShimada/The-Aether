@@ -22,10 +22,10 @@ public class AltarScreen extends AbstractAetherFurnaceScreen<AltarMenu> {
     private static final Identifier BURN_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/burn_progress");
     private static final List<RecipeBookComponent.TabInfo> TABS = List.of(
         new RecipeBookComponent.TabInfo(Items.COMPASS, AetherRecipeBookCategories.ENCHANTING_SEARCH),
-        new RecipeBookComponent.TabInfo(AetherItems.ENCHANTED_BERRY.get(), AetherRecipeBookCategories.ENCHANTING_FOOD),
+        new RecipeBookComponent.TabInfo(AetherItems.ENCHANTED_BERRY, AetherRecipeBookCategories.ENCHANTING_FOOD),
         new RecipeBookComponent.TabInfo(AetherBlocks.ENCHANTED_GRAVITITE.asItem(), AetherRecipeBookCategories.ENCHANTING_BLOCKS),
-        new RecipeBookComponent.TabInfo(AetherItems.SKYROOT_REMEDY_BUCKET.get(), AetherRecipeBookCategories.ENCHANTING_MISC),
-        new RecipeBookComponent.TabInfo(AetherItems.ZANITE_PICKAXE.get(), AetherRecipeBookCategories.ENCHANTING_REPAIR));
+        new RecipeBookComponent.TabInfo(AetherItems.SKYROOT_REMEDY_BUCKET, AetherRecipeBookCategories.ENCHANTING_MISC),
+        new RecipeBookComponent.TabInfo(AetherItems.ZANITE_PICKAXE, AetherRecipeBookCategories.ENCHANTING_REPAIR));
 
     public AltarScreen(AltarMenu menu, Inventory inventory, Component title) {
         super(menu, new AltarRecipeBookComponent(menu, TABS), inventory, title, ALTAR_GUI_TEXTURES, LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);

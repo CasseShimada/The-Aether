@@ -63,7 +63,7 @@ public class SkyrootBoatDispenseBehavior extends DefaultDispenseItemBehavior {
     }
 
     public static void registerDispenserBehaviors() {
-        DispenserBlock.registerBehavior(AetherItems.SKYROOT_BOAT.get(), new SkyrootBoatDispenseBehavior());
-        DispenserBlock.registerBehavior(AetherItems.SKYROOT_CHEST_BOAT.get(), new SkyrootBoatDispenseBehavior(true));
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_BOAT, new SkyrootBoatDispenseBehavior());
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_CHEST_BOAT, new SkyrootBoatDispenseBehavior(true));
     }
 }

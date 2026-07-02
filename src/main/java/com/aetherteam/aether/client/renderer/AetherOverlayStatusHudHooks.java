@@ -36,13 +36,13 @@ final class AetherOverlayStatusHudHooks {
         }
 
         Inventory inventory = player.getInventory();
-        if (!inventory.contains(itemStack -> itemStack.is(AetherItems.HAMMER_OF_KINGBDOGZ.get()))) {
+        if (!inventory.contains(itemStack -> itemStack.is(AetherItems.HAMMER_OF_KINGBDOGZ))) {
             return;
         }
 
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack itemStack = inventory.getItem(slot);
-            if (!itemStack.is(AetherItems.HAMMER_OF_KINGBDOGZ.get())) {
+            if (!itemStack.is(AetherItems.HAMMER_OF_KINGBDOGZ)) {
                 continue;
             }
 
@@ -79,10 +79,10 @@ final class AetherOverlayStatusHudHooks {
     }
 
     private static ItemStack resolveDisplayedHammer(LocalPlayer player, ItemStack inventoryStack) {
-        if (player.getMainHandItem().is(AetherItems.HAMMER_OF_KINGBDOGZ.get())) {
+        if (player.getMainHandItem().is(AetherItems.HAMMER_OF_KINGBDOGZ)) {
             return player.getMainHandItem();
         }
-        if (player.getOffhandItem().is(AetherItems.HAMMER_OF_KINGBDOGZ.get())) {
+        if (player.getOffhandItem().is(AetherItems.HAMMER_OF_KINGBDOGZ)) {
             return player.getOffhandItem();
         }
         return inventoryStack;

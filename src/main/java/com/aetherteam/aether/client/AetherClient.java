@@ -76,8 +76,8 @@ public class AetherClient {
 
     public static void registerTooltipOverrides() {
         TooltipListeners.onTooltipCreationLowPriority();
-        registerHealingGummySwetOverride(AetherItems.BLUE_GUMMY_SWET.get().builtInRegistryHolder());
-        registerHealingGummySwetOverride(AetherItems.GOLDEN_GUMMY_SWET.get().builtInRegistryHolder());
+        registerHealingGummySwetOverride(AetherItems.BLUE_GUMMY_SWET.builtInRegistryHolder());
+        registerHealingGummySwetOverride(AetherItems.GOLDEN_GUMMY_SWET.builtInRegistryHolder());
         registerLifeShardOverride();
     }
 
@@ -91,7 +91,7 @@ public class AetherClient {
     }
 
     private static void registerLifeShardOverride() {
-        TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD.get().builtInRegistryHolder(), (player, stack, components, context, component) -> {
+        TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD.builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey(), AetherConfig.SERVER.maximum_life_shards.get());
             }
@@ -103,7 +103,7 @@ public class AetherClient {
      * Applies a unique lore entry in the Book of Lore for the Hammer of Jeb Easter Egg item texture.
      */
     public static void registerLoreOverrides() {
-        LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> stack.is(AetherItems.HAMMER_OF_KINGBDOGZ.get()) && stack.getHoverName().getString().equalsIgnoreCase("hammer of jeb"), "lore.item.aether.hammer_of_jeb");
+        LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> stack.is(AetherItems.HAMMER_OF_KINGBDOGZ) && stack.getHoverName().getString().equalsIgnoreCase("hammer of jeb"), "lore.item.aether.hammer_of_jeb");
         LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> ItemStack.isSameItemSameComponents(stack, AetherItems.createSwetBannerItemStack(registryAccess.lookupOrThrow(Registries.BANNER_PATTERN))), "lore.item.aether.swet_banner");
     }
 

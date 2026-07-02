@@ -76,7 +76,7 @@ public class PigSlayerItem extends SwordItem {
         if (source.getDirectEntity() instanceof LivingEntity attacker) {
             if (EquipmentUtil.isFullStrength(attacker)) {
                 if (target.getType().builtInRegistryHolder().is(AetherTags.Entities.PIGS)) {
-                    return attacker.getMainHandItem().is(AetherItems.PIG_SLAYER.get());
+                    return attacker.getMainHandItem().is(AetherItems.PIG_SLAYER);
                 }
             }
         }

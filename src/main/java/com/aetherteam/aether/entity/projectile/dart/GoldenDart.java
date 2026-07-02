@@ -27,6 +27,6 @@ public class GoldenDart extends AbstractDart {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(AetherItems.GOLDEN_DART.get());
+        return new ItemStack(AetherItems.GOLDEN_DART);
     }
 }

@@ -26,6 +26,6 @@ public class SkyrootMilkBucketItem extends MilkBucketItem implements ConsumableI
             user.removeAllEffects();
         }
         this.consume(this, stack, user);
-        return stack.isEmpty() ? new ItemStack(AetherItems.SKYROOT_BUCKET.get()) : stack;
+        return stack.isEmpty() ? new ItemStack(AetherItems.SKYROOT_BUCKET) : stack;
     }
 }

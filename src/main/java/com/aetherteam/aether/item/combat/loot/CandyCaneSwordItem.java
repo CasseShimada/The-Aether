@@ -27,7 +27,7 @@ public class CandyCaneSwordItem extends SwordItem {
     public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (EquipmentUtil.isFullStrength(attacker) && target.level() instanceof ServerLevel serverLevel) {
             if (!target.getType().builtInRegistryHolder().is(AetherTags.Entities.NO_CANDY_CANE_DROPS) && target.level().getRandom().nextBoolean()) {
-                target.spawnAtLocation(serverLevel, AetherItems.CANDY_CANE.get());
+                target.spawnAtLocation(serverLevel, AetherItems.CANDY_CANE);
             }
         }
         super.hurtEnemy(stack, target, attacker);

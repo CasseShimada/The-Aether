@@ -103,7 +103,7 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
                 this.lookAt(player, 180.0F, 180.0F); // Look at player.
                 if (!this.level().isClientSide() && this.chatTimer <= 0) {
                     String translationId;
-                    if (item.getItem() == AetherItems.VICTORY_MEDAL.get()) { // Change what message is displayed depending on how many medals a player shows a Valkyrie.
+                    if (item.getItem() == AetherItems.VICTORY_MEDAL) { // Change what message is displayed depending on how many medals a player shows a Valkyrie.
                         if (item.getCount() >= 10) {
                             translationId = "gui.aether.valkyrie.dialog.medal.1";
                         } else if (item.getCount() >= 5) {

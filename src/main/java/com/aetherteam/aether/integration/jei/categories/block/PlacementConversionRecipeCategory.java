@@ -18,7 +18,7 @@ public class PlacementConversionRecipeCategory extends AbstractBiomeParameterRec
     public PlacementConversionRecipeCategory(IGuiHelper helper, IPlatformFluidHelper<?> fluidHelper) {
         super("placement_conversion", UID,
             helper.createDrawable(TEXTURE, 0, 0, 84, 28),
-            helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.AETHER_PORTAL_FRAME.get())),
+            helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherItems.AETHER_PORTAL_FRAME)),
             RECIPE_TYPE, fluidHelper);
     }
 }

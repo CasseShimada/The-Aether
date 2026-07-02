@@ -110,7 +110,7 @@ public class AetherDispenseBehaviors {
         public ItemStack execute(BlockSource source, ItemStack stack) {
             Level level = source.level();
             Direction direction = source.state().getValue(DispenserBlock.FACING);
-            HammerOfKingbdogzItem item = (HammerOfKingbdogzItem) AetherItems.HAMMER_OF_KINGBDOGZ.get();
+            HammerOfKingbdogzItem item = (HammerOfKingbdogzItem) AetherItems.HAMMER_OF_KINGBDOGZ;
             ProjectileItem.DispenseConfig config = item.createDispenseConfig();
 
             Position position = config.positionFunction().getDispensePosition(source, direction);
@@ -144,7 +144,7 @@ public class AetherDispenseBehaviors {
             Level level = source.level();
             if (dispensibleContainerItem.emptyContents(null, level, blockpos, null)) {
                 dispensibleContainerItem.checkExtraContent(null, level, stack, blockpos);
-                return new ItemStack(AetherItems.SKYROOT_BUCKET.get());
+                return new ItemStack(AetherItems.SKYROOT_BUCKET);
             } else {
                 return this.defaultDispenseItemBehavior.dispense(source, stack);
             }
@@ -179,8 +179,8 @@ public class AetherDispenseBehaviors {
     };
 
     public static void registerDispenserBehaviors() {
-        DispenserBlock.registerBehavior(AetherItems.HAMMER_OF_KINGBDOGZ.get(), DISPENSE_KINGBDOGZ_HAMMER_BEHAVIOR);
-        DispenserBlock.registerBehavior(AetherItems.SKYROOT_WATER_BUCKET.get(), SKYROOT_BUCKET_DISPENSE_BEHAVIOR);
-        DispenserBlock.registerBehavior(AetherItems.SKYROOT_BUCKET.get(), SKYROOT_BUCKET_PICKUP_BEHAVIOR);
+        DispenserBlock.registerBehavior(AetherItems.HAMMER_OF_KINGBDOGZ, DISPENSE_KINGBDOGZ_HAMMER_BEHAVIOR);
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_WATER_BUCKET, SKYROOT_BUCKET_DISPENSE_BEHAVIOR);
+        DispenserBlock.registerBehavior(AetherItems.SKYROOT_BUCKET, SKYROOT_BUCKET_PICKUP_BEHAVIOR);
     }
 }
