@@ -64,13 +64,8 @@ configurations {
 repositories {
     mavenCentral()
     maven { url = "https://maven.fabricmc.net" }
-    maven { url = "https://maven.theillusivec4.top/" }
     maven { url = "https://maven.blamejared.com" }
-    maven { url = "https://maven.shedaniel.me/" }
-    maven { url = "https://maven.architectury.dev/" }
     maven { url = "https://cursemaven.com" }
-    maven { url = "https://jitpack.io" }
-    maven { url = "https://packages.aether-mod.net/Nitrogen" }
     mavenLocal()
 }
 
