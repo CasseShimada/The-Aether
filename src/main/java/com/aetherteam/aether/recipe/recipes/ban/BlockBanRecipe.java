@@ -1,6 +1,6 @@
 package com.aetherteam.aether.recipe.recipes.ban;
 
-import com.aetherteam.aether.event.hooks.RecipeHooks;
+import com.aetherteam.aether.event.hooks.PlacementRecipeHooks;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.serializer.PlacementBanRecipeSerializer;
@@ -33,7 +33,7 @@ public class BlockBanRecipe extends AbstractPlacementBanRecipe<BlockState, Block
 
     /**
      * Checks if the recipe matches the given parameters using {@link AbstractPlacementBanRecipe#matches(Level, BlockPos, Object)}.<br><br>
-     * Then calls {@link RecipeHooks#banOrConvert} to spawn particles on block ban.
+     * Then calls {@link PlacementRecipeHooks#banOrConvert} to spawn particles on block ban.
      *
      * @param level The {@link Level} the recipe is performed in.
      * @param pos   The {@link BlockPos} the recipe is performed at.
@@ -42,7 +42,7 @@ public class BlockBanRecipe extends AbstractPlacementBanRecipe<BlockState, Block
      */
     public boolean banBlock(Level level, BlockPos pos, BlockState state) {
         if (this.matches(level, pos.below(), state)) {
-            RecipeHooks.banOrConvert(level, pos);
+            PlacementRecipeHooks.banOrConvert(level, pos);
             return true;
         }
         return false;

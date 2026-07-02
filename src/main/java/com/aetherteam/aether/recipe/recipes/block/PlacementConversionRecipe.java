@@ -1,6 +1,6 @@
 package com.aetherteam.aether.recipe.recipes.block;
 
-import com.aetherteam.aether.event.hooks.RecipeHooks;
+import com.aetherteam.aether.event.hooks.PlacementRecipeHooks;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.serializer.BiomeParameterRecipeSerializer;
@@ -38,7 +38,7 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     public boolean convert(Level level, BlockPos pos, BlockState oldState) {
         if (this.matches(level, pos, oldState)) {
             BlockState newState = this.getResultState(oldState);
-            RecipeHooks.banOrConvert(level, pos);
+            PlacementRecipeHooks.banOrConvert(level, pos);
             level.setBlockAndUpdate(pos, newState);
             return true;
         }
