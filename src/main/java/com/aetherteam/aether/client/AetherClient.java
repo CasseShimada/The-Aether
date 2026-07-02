@@ -2,8 +2,8 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.event.hooks.AudioHooks;
-import com.aetherteam.aether.client.event.hooks.AttachmentClientHooks;
 import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
 import com.aetherteam.aether.client.event.hooks.GuiHooks;
 import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
@@ -22,6 +22,7 @@ import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.perk.CustomizationsOptions;
+import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -43,6 +44,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
@@ -213,9 +215,34 @@ public class AetherClient {
             return;
         }
 
-        AttachmentClientHooks.AetherPlayerHooks.movementInput(client.player, client.player.input);
-        AttachmentClientHooks.AetherPlayerHooks.tickInput(client.player);
+        syncPlayerInput(client);
         EntityHooks.launchMount(client.player);
+    }
+
+    private static void syncPlayerInput(Minecraft client) {
+        var player = client.player;
+        var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
+        Input keys = player.input.keyPresses;
+
+        boolean isJumping = keys.jump();
+        if (isJumping != aetherPlayer.isJumping()) {
+            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setJumping", isJumping);
+        }
+
+        boolean isMoving = isJumping || keys.forward() || keys.backward() || keys.left() || keys.right() || player.isFallFlying();
+        if (isMoving != aetherPlayer.isMoving()) {
+            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setMoving", isMoving);
+        }
+
+        boolean isHitting = client.options.keyAttack.isDown();
+        if (isHitting != aetherPlayer.isHitting()) {
+            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setHitting", isHitting);
+        }
+
+        boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
+        if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
+            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
+        }
     }
 
     private static void handleAccessoryHotkey(Minecraft client) {
