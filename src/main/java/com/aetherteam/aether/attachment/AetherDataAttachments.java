@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.resources.Identifier;
 
-public class AetherDataAttachments {
+public final class AetherDataAttachments {
     public static final AttachmentType<AetherPlayerAttachment> AETHER_PLAYER = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "aether_player"),
             builder -> builder.initializer(AetherPlayerAttachment::new).persistent(AetherPlayerAttachment.CODEC).copyOnDeath());
 
@@ -26,4 +26,13 @@ public class AetherDataAttachments {
 
     public static final AttachmentType<AetherTimeAttachment> AETHER_TIME = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "aether_time"),
             builder -> builder.initializer(AetherTimeAttachment::new).persistent(AetherTimeAttachment.CODEC));
+
+    private AetherDataAttachments() {
+    }
+
+    /**
+     * Triggers static attachment registration from the mod initializer.
+     */
+    public static void bootstrap() {
+    }
 }

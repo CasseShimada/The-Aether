@@ -65,8 +65,9 @@ public final class Aether {
 
         DIRECTORY.toFile().mkdirs();
 
+        AetherDataAttachments.bootstrap();
+
         initializeClasses(
-                AetherDataAttachments.class,
                 AetherGameEvents.class,
                 AetherLootFunctions.class,
                 AetherLootConditions.class,
