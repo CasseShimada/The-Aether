@@ -1,8 +1,6 @@
 package com.aetherteam.aether.item.accessories.abilities;
 
 import com.aetherteam.aether.block.FreezingBehavior;
-import com.aetherteam.aether.event.AetherEventDispatch;
-import com.aetherteam.aether.event.FreezeEvent;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.AccessoryFreezableRecipe;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
@@ -96,7 +94,7 @@ public interface FreezingAccessory extends FreezingBehavior<ItemStack> {
     }
 
     @Override
-    default FreezeEvent onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, ItemStack source) {
-        return AetherEventDispatch.onItemFreezeFluid(level, pos, oldBlockState, newBlockState, source);
+    default boolean onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, ItemStack source) {
+        return true;
     }
 }

@@ -47,7 +47,7 @@ Old Curios, ForgeCaps, and `neoforge:attachments` save migration support is inte
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` (`refreshPerks`, `MoaSkins.registerMoaSkins`, `RegisterMoaSkinsPacket`) | Done |
 | `RecipeListener#checkBanned` | `UseBlockCallback` recipe ban check | Done |
 | neighbor notify recipe checks | `LevelMixin#neighborChanged` | Done |
-| freeze prevention hook | `AetherEventDispatch#onBlockFreezeFluid` -> `RecipeHooks.preventBlockFreezing` | Done |
+| freeze prevention hook | direct `RecipeHooks#preventBlockFreezing` guard | Done |
 | placement convert / ban particle hooks | direct `RecipeHooks#banOrConvert` calls | Done |
 | `AetherPlayer` login/logout/clone/update/change-dim | `ServerPlayerEvents`, `PlayerMixin#tick`, and world-change callbacks | Done |
 | `AetherTime` login/respawn/change-dim sync | `ServerPlayerEvents` and world-change callbacks | Done |

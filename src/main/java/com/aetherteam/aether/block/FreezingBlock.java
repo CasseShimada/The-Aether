@@ -1,7 +1,6 @@
 package com.aetherteam.aether.block;
 
-import com.aetherteam.aether.event.AetherEventDispatch;
-import com.aetherteam.aether.event.FreezeEvent;
+import com.aetherteam.aether.event.hooks.RecipeHooks;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.IcestoneFreezableRecipe;
 import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
@@ -79,8 +78,8 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
     }
 
     @Override
-    default FreezeEvent onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, BlockState source) {
-        return AetherEventDispatch.onBlockFreezeFluid(level, pos, origin, oldBlockState, newBlockState, source);
+    default boolean onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, BlockState source) {
+        return !RecipeHooks.preventBlockFreezing(level, origin, pos);
     }
 
     /**

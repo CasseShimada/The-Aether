@@ -1,6 +1,5 @@
 package com.aetherteam.aether.block;
 
-import com.aetherteam.aether.event.FreezeEvent;
 import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
@@ -105,7 +104,7 @@ public interface FreezingBehavior<T> {
     int freezeFromRecipe(Level level, BlockPos pos, BlockPos origin, T source, int flag);
 
     /**
-     * Freezes (sets) a block at a position if the {@link FreezeEvent} isn't cancelled. Also schedules a tick if the block can randomly tick, and plays a lava extinguishing sound if the old block is in the {@link FluidTags#LAVA} tag.
+     * Freezes (sets) a block at a position if the freeze hook allows it. Also schedules a tick if the block can randomly tick, and plays a lava extinguishing sound if the old block is in the {@link FluidTags#LAVA} tag.
      *
      * @param level         The {@link Level} to perform the freezing in.
      * @param pos           The {@link BlockPos} to freeze at.
@@ -118,8 +117,7 @@ public interface FreezingBehavior<T> {
      * @return An {@link Integer} 0 if the block failed to freeze or 1 if it succeeded
      */
     default int freezeBlockAt(Level level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, Optional<CacheableFunction> function, T source, int flag) {
-        FreezeEvent event = this.onFreeze(level, pos, origin, oldBlockState, newBlockState, source);
-        if (!event.isCanceled()) {
+        if (this.onFreeze(level, pos, origin, oldBlockState, newBlockState, source)) {
             level.setBlock(pos, newBlockState, flag);
             if (newBlockState.isRandomlyTicking()) {
                 level.scheduleTick(pos, newBlockState.getBlock(), Mth.nextInt(level.getRandom(), 60, 120));
@@ -131,7 +129,7 @@ public interface FreezingBehavior<T> {
     }
 
     /**
-     * Event hook call for freezing blocks, used by subclasses.
+     * Hook call for freezing blocks, used by subclasses.
      *
      * @param level         The {@link Level} to perform the freezing in.
      * @param pos           The {@link BlockPos} to freeze at.
@@ -139,7 +137,7 @@ public interface FreezingBehavior<T> {
      * @param oldBlockState The original {@link BlockState} being frozen.
      * @param newBlockState The new {@link BlockState} to freeze into.
      * @param source        The source causing the freezing, which is accepted as {@link T}.
-     * @return The {@link FreezeEvent} for this behavior.
+     * @return Whether freezing should continue.
      */
-    FreezeEvent onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, T source);
+    boolean onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, T source);
 }

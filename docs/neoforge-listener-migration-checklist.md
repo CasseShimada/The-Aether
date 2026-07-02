@@ -40,7 +40,7 @@ Status legend:
 | `EntityListener#onLoadPlayerFile` | Not ported | REMOVED | Legacy `ForgeCaps`/`neoforge:attachments` Curios save migration was intentionally removed; current Fabric attachment storage remains supported. |
 | `ItemListener#onTooltipAdd` | Fabric `ItemTooltipCallback` + Nitrogen tooltip override bridge in `AetherClient` | DONE | Dungeon tooltips and Aether tooltip override predicates are registered from the client bootstrap. |
 | `PerkListener#playerLoggedIn` | `ServerPlayerEvents.JOIN` -> `PerkHooks.refreshPerks` | DONE | Registered in `AetherFabricEvents`. |
-| `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + direct `RecipeHooks` ban/convert calls; freeze still uses the local `AetherEventDispatch` bridge | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |
+| `RecipeListener` event chain | `UseBlockCallback` + `LevelMixin#neighborChanged` + direct `RecipeHooks` ban/convert/freeze guards | DONE | Placement-ban checks, neighbor-based ban/convert checks, freeze guard, and ban/convert particle hooks restored. |
 
 ## Attachment Listeners
 | NeoForge listener point | Fabric equivalent / bridge | Status | Notes |
