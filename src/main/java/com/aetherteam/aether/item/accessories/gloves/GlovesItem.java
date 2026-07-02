@@ -5,7 +5,6 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
-import com.aetherteam.aether.registry.DeferredHolder;
 import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilder;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
@@ -34,10 +33,6 @@ public class GlovesItem extends AccessoryItem implements SlotIdentifierHolder {
 
     public GlovesItem(Holder<ArmorMaterial> material, double punchDamage, String glovesName, Holder<SoundEvent> glovesSound, Properties properties) {
         this(material.value(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), glovesSound, properties);
-    }
-
-    public GlovesItem(DeferredHolder<ArmorMaterial, ArmorMaterial> material, double punchDamage, String glovesName, SoundEvent glovesSound, Properties properties) {
-        this(material.get(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), BuiltInRegistries.SOUND_EVENT.wrapAsHolder(glovesSound), properties);
     }
 
     public GlovesItem(ArmorMaterial material, double punchDamage, String glovesName, SoundEvent glovesSound, Properties properties) {
