@@ -3,13 +3,9 @@ package com.aetherteam.aether.client;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.event.hooks.ClientLifecycleHooks;
+import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.ClientTickHooks;
-import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
-import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
-import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
-import com.aetherteam.aether.client.event.hooks.TitleScreenHooks;
-import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -28,14 +24,7 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -45,22 +34,16 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.lang.reflect.Method;
 
 public class AetherClient {
     public static Map<Predicate<ItemStack>, Identifier> CAPE_SECRETS = new HashMap<>();
     private static boolean initialized;
-    private static boolean jeiLoaded;
-    private static boolean tipsModLoaded;
-    private static boolean jeiOverlayLoggerResolved;
-    private static Method jeiOverlayLogger;
 
     public static void init() {
         if (initialized) {
             return;
         }
         initialized = true;
-        captureLoadedClientMods();
         registerClientContent();
         registerClientCallbacks();
     }
@@ -102,11 +85,6 @@ public class AetherClient {
     public static void registerLoreOverrides() {
         LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> stack.is(AetherItems.HAMMER_OF_KINGBDOGZ) && stack.getHoverName().getString().equalsIgnoreCase("hammer of jeb"), "lore.item.aether.hammer_of_jeb");
         LoreBookMenu.addLoreEntryOverride(registryAccess -> stack -> ItemStack.isSameItemSameComponents(stack, AetherItems.createSwetBannerItemStack(registryAccess.lookupOrThrow(Registries.BANNER_PATTERN))), "lore.item.aether.swet_banner");
-    }
-
-    private static void captureLoadedClientMods() {
-        jeiLoaded = FabricLoader.getInstance().isModLoaded("jei");
-        tipsModLoaded = FabricLoader.getInstance().isModLoaded("tipsmod");
     }
 
     private static void registerClientContent() {
@@ -154,11 +132,7 @@ public class AetherClient {
     }
 
     private static void registerScreenCallbacks() {
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            configureScreen(screen);
-            ScreenEvents.afterExtract(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) ->
-                    renderScreenOverlay(currentScreen, guiGraphics));
-        });
+        ScreenEvents.AFTER_INIT.register(ClientScreenHooks::afterInit);
     }
 
     private static void registerTickCallbacks() {
@@ -171,75 +145,6 @@ public class AetherClient {
 
     private static void registerLevelRenderCallbacks() {
         LevelRenderEvents.COLLECT_SUBMITS.register(DungeonOverlayClientHooks::collectSubmits);
-    }
-
-    private static void renderScreenOverlay(Screen currentScreen, GuiGraphicsExtractor guiGraphics) {
-        updateAccessoryButtons(currentScreen);
-        logJeiOverlayState(currentScreen);
-        if (!tipsModLoaded) {
-            GuiTriviaHooks.drawTrivia(currentScreen, guiGraphics);
-        }
-        GuiTriviaHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
-    }
-
-    private static void updateAccessoryButtons(Screen currentScreen) {
-        Screens.getWidgets(currentScreen).forEach(widget -> {
-            if (widget instanceof AccessoryButton accessoryButton) {
-                accessoryButton.updateButtonState();
-            }
-        });
-    }
-
-    private static void configureScreen(Screen screen) {
-        if (screen instanceof TitleScreen titleScreen) {
-            TitleScreenHooks.setCustomSplashText(titleScreen);
-        }
-
-        var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
-        var inventoryAccessoryButton = GuiAccessoryMenuHooks.setupAccessoryButton(screen, offsets);
-        if (inventoryAccessoryButton != null && GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
-            Screens.getWidgets(screen).add(inventoryAccessoryButton);
-        }
-
-        GridLayout layout = GuiPerkScreenHooks.setupPerksButtons(screen);
-        if (layout != null && !GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
-            addPerkWidgets(screen, layout);
-        }
-    }
-
-    private static void addPerkWidgets(Screen screen, GridLayout layout) {
-        layout.visitWidgets(widget -> {
-            if (widget instanceof AbstractWidget abstractWidget) {
-                Screens.getWidgets(screen).add(abstractWidget);
-            }
-        });
-    }
-
-    private static void logJeiOverlayState(Screen screen) {
-        if (!jeiLoaded) {
-            return;
-        }
-
-        if (!jeiOverlayLoggerResolved) {
-            jeiOverlayLoggerResolved = true;
-            try {
-                Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
-                jeiOverlayLogger = pluginClass.getMethod("logVisibleOverlayState", Screen.class);
-            } catch (ReflectiveOperationException | LinkageError exception) {
-                Aether.LOGGER.debug("Failed to resolve JEI overlay logger", exception);
-                jeiOverlayLogger = null;
-            }
-        }
-
-        if (jeiOverlayLogger == null) {
-            return;
-        }
-
-        try {
-            jeiOverlayLogger.invoke(null, screen);
-        } catch (ReflectiveOperationException exception) {
-            Aether.LOGGER.debug("Failed to query JEI overlay state", exception);
-        }
     }
 
     /**
