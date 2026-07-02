@@ -18,7 +18,7 @@ public class IcestoneFreezableRecipeCategory extends AbstractAetherBlockStateRec
     public IcestoneFreezableRecipeCategory(IGuiHelper guiHelper, IPlatformFluidHelper<?> fluidHelper) {
         super("icestone_freezable", UID,
             guiHelper.createDrawable(TEXTURE, 0, 0, 84, 28),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.ICESTONE.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.ICESTONE)),
             RECIPE_TYPE, fluidHelper);
     }
 }

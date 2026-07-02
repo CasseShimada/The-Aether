@@ -24,7 +24,7 @@ public class AltarRepairRecipeCategory extends AbstractAetherCookingRecipeCatego
     public AltarRepairRecipeCategory(IGuiHelper guiHelper) {
         super("altar.repairing", UID,
             guiHelper.createDrawable(TEXTURE, 55, 16, 82, 54),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.ALTAR.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.ALTAR)),
             guiHelper.drawableBuilder(FLAME_TEXTURE, 0, 0, 14, 14).setTextureSize(14, 14).build(),
             guiHelper.createAnimatedDrawable(guiHelper.drawableBuilder(ARROW_TEXTURE, 0, 0, 24, 16).setTextureSize(24, 16).build(), 100, IDrawableAnimated.StartDirection.LEFT, false),
             RECIPE_TYPE);

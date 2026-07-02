@@ -64,8 +64,8 @@ public class AetherRenderers {
         EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_BOAT, (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_BOAT, SkyrootBoatRenderer.SKYROOT_BOAT));
         EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_CHEST_BOAT, (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_CHEST_BOAT, SkyrootBoatRenderer.SKYROOT_CHEST_BOAT));
         EntityRendererRegistry.register(AetherEntityTypes.CLOUD_MINION, CloudMinionRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.COLD_PARACHUTE, (context) -> new ParachuteRenderer(context, AetherBlocks.COLD_AERCLOUD));
-        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_PARACHUTE, (context) -> new ParachuteRenderer(context, AetherBlocks.GOLDEN_AERCLOUD));
+        EntityRendererRegistry.register(AetherEntityTypes.COLD_PARACHUTE, (context) -> new ParachuteRenderer(context, () -> AetherBlocks.COLD_AERCLOUD));
+        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_PARACHUTE, (context) -> new ParachuteRenderer(context, () -> AetherBlocks.GOLDEN_AERCLOUD));
         EntityRendererRegistry.register(AetherEntityTypes.FLOATING_BLOCK, FloatingBlockRenderer::new);
         EntityRendererRegistry.register(AetherEntityTypes.TNT_PRESENT, TntPresentRenderer::new);
 

@@ -42,7 +42,7 @@ final class AetherOverlayVignetteHooks {
             timeInPortal = timeInPortal * 0.8F + 0.2F;
         }
 
-        TextureAtlasSprite sprite = minecraft.getModelManager().getBlockStateModelSet().getParticleMaterial(AetherBlocks.AETHER_PORTAL.get().defaultBlockState()).sprite();
+        TextureAtlasSprite sprite = minecraft.getModelManager().getBlockStateModelSet().getParticleMaterial(AetherBlocks.AETHER_PORTAL.defaultBlockState()).sprite();
         int color = ARGB.color(Mth.clamp((int) (timeInPortal * 255.0F), 0, 255), 255, 255, 255);
         guiGraphics.blitSprite(RenderPipelines.GUI_NAUSEA_OVERLAY, sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight(), color);
     }

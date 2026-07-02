@@ -26,7 +26,7 @@ public class AetherFarmBlock extends FarmlandBlock {
      */
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? AetherBlocks.AETHER_DIRT.get().defaultBlockState() : this.defaultBlockState();
+        return !this.defaultBlockState().canSurvive(context.getLevel(), context.getClickedPos()) ? AetherBlocks.AETHER_DIRT.defaultBlockState() : this.defaultBlockState();
     }
 
     /**
@@ -75,7 +75,7 @@ public class AetherFarmBlock extends FarmlandBlock {
      * [CODE COPY] - {@link FarmlandBlock#turnToDirt(Entity, BlockState, Level, BlockPos)}.
      */
     public static void turnToDirt(BlockState state, Level level, BlockPos pos) {
-        level.setBlockAndUpdate(pos, pushEntitiesUp(state, AetherBlocks.AETHER_DIRT.get().defaultBlockState(), level, pos));
+        level.setBlockAndUpdate(pos, pushEntitiesUp(state, AetherBlocks.AETHER_DIRT.defaultBlockState(), level, pos));
     }
 
     /**

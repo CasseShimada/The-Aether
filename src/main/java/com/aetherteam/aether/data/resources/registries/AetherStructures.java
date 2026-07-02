@@ -58,7 +58,7 @@ public class AetherStructures {
         HolderGetter<StructureProcessorList> processors = context.lookup(Registries.PROCESSOR_LIST);
         context.register(LARGE_AERCLOUD, new LargeAercloudStructure(
                 AetherStructureBuilders.structure(biomes.getOrThrow(AetherTags.Biomes.HAS_LARGE_AERCLOUD), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE),
-                BlockStateProvider.simple(AetherBlocks.COLD_AERCLOUD.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true)),
+                BlockStateProvider.simple(AetherBlocks.COLD_AERCLOUD.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true)),
                 3, 32));
         context.register(BRONZE_DUNGEON, new BronzeDungeonStructure(AetherStructureBuilders.structure(
                 biomes.getOrThrow(AetherTags.Biomes.HAS_BRONZE_DUNGEON),

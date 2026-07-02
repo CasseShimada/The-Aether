@@ -58,7 +58,7 @@ public class SilverDungeonRoom extends SilverDungeonPiece {
     }
 
     private void placeChestOrMimic(ServerLevelAccessor level, BoundingBox generatingChunk, RandomSource random, BlockPos pos) {
-        BlockState state = (random.nextInt(5) > 1 ? Blocks.CHEST : AetherBlocks.CHEST_MIMIC.get()).defaultBlockState();
+        BlockState state = (random.nextInt(5) > 1 ? Blocks.CHEST : AetherBlocks.CHEST_MIMIC).defaultBlockState();
         Direction facing = Direction.from2DDataValue(random.nextInt(4));
         state.setValue(HorizontalDirectionalBlock.FACING, facing);
         this.createChest(level, generatingChunk, random, pos, AetherLoot.SILVER_DUNGEON, state);

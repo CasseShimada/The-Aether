@@ -134,7 +134,7 @@ public class AetherPortalShape {
                 if (!isEmpty(blockState)) {
                     return i;
                 }
-                if (blockState.is(AetherBlocks.AETHER_PORTAL.get())) {
+                if (blockState.is(AetherBlocks.AETHER_PORTAL)) {
                     ++this.numPortalBlocks;
                 }
             }
@@ -144,7 +144,7 @@ public class AetherPortalShape {
     }
 
     private static boolean isEmpty(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER) || state.is(AetherBlocks.AETHER_PORTAL.get());
+        return state.isAir() || state.is(Blocks.WATER) || state.is(AetherBlocks.AETHER_PORTAL);
     }
 
     public boolean isValid() {
@@ -152,7 +152,7 @@ public class AetherPortalShape {
     }
 
     public void createPortalBlocks() {
-        BlockState blockState = AetherBlocks.AETHER_PORTAL.get().defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
+        BlockState blockState = AetherBlocks.AETHER_PORTAL.defaultBlockState().setValue(NetherPortalBlock.AXIS, this.axis);
         BlockPos.betweenClosed(this.bottomLeft, this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1)).forEach((pos) -> {
             this.level.setBlock(pos, blockState, 2 | 16);
             if (this.level instanceof ServerLevel serverLevel) {

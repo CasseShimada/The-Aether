@@ -83,12 +83,12 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     private static final EntityDataAccessor<Component> DATA_BOSS_NAME = SynchedEntityData.defineId(ValkyrieQueen.class, EntityDataSerializers.COMPONENT);
     private static final Music VALKYRIE_QUEEN_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_VALKYRIE_QUEEN), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
-        Map.entry(AetherBlocks.LOCKED_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.ANGELIC_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.TRAPPED_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.ANGELIC_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.LOCKED_LIGHT_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.LIGHT_ANGELIC_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.TRAPPED_LIGHT_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.LIGHT_ANGELIC_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.BOSS_DOORWAY_ANGELIC_STONE.get(), (blockState) -> Blocks.AIR.defaultBlockState()),
-        Map.entry(AetherBlocks.TREASURE_DOORWAY_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.SKYROOT_TRAPDOOR.get().defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, blockState.getValue(HorizontalDirectionalBlock.FACING)))
+        Map.entry(AetherBlocks.LOCKED_ANGELIC_STONE, (blockState) -> AetherBlocks.ANGELIC_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.TRAPPED_ANGELIC_STONE, (blockState) -> AetherBlocks.ANGELIC_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.LOCKED_LIGHT_ANGELIC_STONE, (blockState) -> AetherBlocks.LIGHT_ANGELIC_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.TRAPPED_LIGHT_ANGELIC_STONE, (blockState) -> AetherBlocks.LIGHT_ANGELIC_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.BOSS_DOORWAY_ANGELIC_STONE, (blockState) -> Blocks.AIR.defaultBlockState()),
+        Map.entry(AetherBlocks.TREASURE_DOORWAY_ANGELIC_STONE, (blockState) -> AetherBlocks.SKYROOT_TRAPDOOR.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, blockState.getValue(HorizontalDirectionalBlock.FACING)))
     ));
 
     /**

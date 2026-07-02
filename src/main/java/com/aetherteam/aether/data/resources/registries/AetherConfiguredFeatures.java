@@ -135,11 +135,11 @@ public class AetherConfiguredFeatures {
                         BlockStateProvider.simple(AetherFeatureStates.QUICKSOIL),
                         ConstantFloat.of(Mth.sqrt(12)),
                         UniformInt.of(0, 48),
-                        HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.AETHER_GRASS_BLOCK.get())));
+                        HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.AETHER_GRASS_BLOCK)));
         register(context, WATER_LAKE_CONFIGURATION, AetherFeatures.LAKE,
                 AetherConfiguredFeatureBuilders.lake(BlockStateProvider.simple(Blocks.WATER), BlockStateProvider.simple(AetherFeatureStates.AETHER_GRASS_BLOCK)));
         register(context, WATER_SPRING_CONFIGURATION, Feature.SPRING,
-                AetherConfiguredFeatureBuilders.spring(Fluids.WATER.defaultFluidState(), true, 4, 1, HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.HOLYSTONE.get(), AetherBlocks.AETHER_DIRT.get())));
+                AetherConfiguredFeatureBuilders.spring(Fluids.WATER.defaultFluidState(), true, 4, 1, HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.HOLYSTONE, AetherBlocks.AETHER_DIRT)));
         register(context, ORE_AETHER_DIRT_CONFIGURATION, Feature.ORE, new OreConfiguration(AetherFeatureRules.HOLYSTONE, AetherFeatureStates.AETHER_DIRT, 33));
         register(context, ORE_ICESTONE_CONFIGURATION, Feature.ORE, new OreConfiguration(AetherFeatureRules.HOLYSTONE, AetherFeatureStates.ICESTONE, 32));
         register(context, ORE_AMBROSIUM_CONFIGURATION, Feature.ORE, new OreConfiguration(AetherFeatureRules.HOLYSTONE, AetherFeatureStates.AMBROSIUM_ORE, 16));
@@ -147,15 +147,15 @@ public class AetherConfiguredFeatures {
         register(context, ORE_GRAVITITE_BURIED_CONFIGURATION, Feature.ORE, new OreConfiguration(AetherFeatureRules.HOLYSTONE, AetherFeatureStates.GRAVITITE_ORE, 3, 0.5F));
         register(context, ORE_GRAVITITE_CONFIGURATION, Feature.ORE, new OreConfiguration(AetherFeatureRules.HOLYSTONE, AetherFeatureStates.GRAVITITE_ORE, 4));
         register(context, TREES_SKYROOT_AND_GOLDEN_OAK_CONFIGURATION, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(
-                PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(GOLDEN_OAK_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.GOLDEN_OAK_SAPLING.get())), 0.01F)),
-                PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(SKYROOT_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.SKYROOT_SAPLING.get()))));
+                PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(GOLDEN_OAK_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.GOLDEN_OAK_SAPLING)), 0.01F)),
+                PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(SKYROOT_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.SKYROOT_SAPLING))));
         register(context, SINGLE_GOLD_DUNGEON_FLOWER_CONFIGURATION, Feature.SIMPLE_BLOCK,
             new SimpleBlockConfiguration(new WeightedStateProvider(
                 new Builder<BlockState>()
                     .add(Blocks.DANDELION.defaultBlockState())
                     .add(Blocks.POPPY.defaultBlockState()))));
         register(context, GOLD_DUNGEON_ISLAND_FOLIAGE_CONFIGURATION, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(
-            PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(GOLDEN_OAK_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.GOLDEN_OAK_SAPLING.get())), 0.66F)),
+            PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(GOLDEN_OAK_TREE_CONFIGURATION), PlacementUtils.filteredByBlockSurvival(AetherBlocks.GOLDEN_OAK_SAPLING)), 0.66F)),
             PlacementUtils.inlinePlaced(configuredFeatures.getOrThrow(SINGLE_GOLD_DUNGEON_FLOWER_CONFIGURATION), PlacementUtils.isEmpty())));
 
     }

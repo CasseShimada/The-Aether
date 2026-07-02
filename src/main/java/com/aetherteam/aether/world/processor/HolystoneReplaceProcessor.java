@@ -25,14 +25,14 @@ public class HolystoneReplaceProcessor implements StructureProcessor {
     public static final MapCodec<HolystoneReplaceProcessor> CODEC = MapCodec.unit(() -> HolystoneReplaceProcessor.INSTANCE);
     public static final HolystoneReplaceProcessor INSTANCE = new HolystoneReplaceProcessor();
     private final Map<Block, Block> replacements = Util.make(Maps.newHashMap(), (map) -> {
-        map.put(Blocks.COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS.get());
-        map.put(Blocks.MOSSY_COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS.get());
-        map.put(Blocks.COBBLESTONE_STAIRS, AetherBlocks.HOLYSTONE_BRICK_STAIRS.get());
-        map.put(Blocks.MOSSY_COBBLESTONE_STAIRS, AetherBlocks.HOLYSTONE_BRICK_STAIRS.get());
-        map.put(Blocks.COBBLESTONE_SLAB, AetherBlocks.HOLYSTONE_BRICK_SLAB.get());
-        map.put(Blocks.MOSSY_COBBLESTONE_SLAB, AetherBlocks.HOLYSTONE_BRICK_SLAB.get());
-        map.put(Blocks.COBBLESTONE_WALL, AetherBlocks.HOLYSTONE_BRICK_WALL.get());
-        map.put(Blocks.MOSSY_COBBLESTONE_WALL, AetherBlocks.HOLYSTONE_BRICK_WALL.get());
+        map.put(Blocks.COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS);
+        map.put(Blocks.MOSSY_COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS);
+        map.put(Blocks.COBBLESTONE_STAIRS, AetherBlocks.HOLYSTONE_BRICK_STAIRS);
+        map.put(Blocks.MOSSY_COBBLESTONE_STAIRS, AetherBlocks.HOLYSTONE_BRICK_STAIRS);
+        map.put(Blocks.COBBLESTONE_SLAB, AetherBlocks.HOLYSTONE_BRICK_SLAB);
+        map.put(Blocks.MOSSY_COBBLESTONE_SLAB, AetherBlocks.HOLYSTONE_BRICK_SLAB);
+        map.put(Blocks.COBBLESTONE_WALL, AetherBlocks.HOLYSTONE_BRICK_WALL);
+        map.put(Blocks.MOSSY_COBBLESTONE_WALL, AetherBlocks.HOLYSTONE_BRICK_WALL);
     });
 
     private HolystoneReplaceProcessor() { }

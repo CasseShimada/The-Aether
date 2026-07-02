@@ -6,7 +6,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +40,6 @@ public class DeferredRegister<T> {
     @SuppressWarnings("unchecked")
     public static <T> DeferredRegister<T> create(Registry<T> registry, String modId) {
         return new DeferredRegister<>((ResourceKey<? extends Registry<T>>) registry.key(), modId);
-    }
-
-    public static Blocks createBlocks(String modId) {
-        return new Blocks(modId);
     }
 
     public static Items createItems(String modId) {
@@ -116,19 +111,6 @@ public class DeferredRegister<T> {
     }
 
     private record Registration<R, V extends R>(DeferredHolder<R, V> holder, Supplier<? extends V> supplier) {
-    }
-
-    public static final class Blocks extends DeferredRegister<Block> {
-        private Blocks(String modId) {
-            super(Registries.BLOCK, modId);
-        }
-
-        public <I extends Block> DeferredBlock<I> register(String name, Supplier<? extends I> supplier) {
-            Identifier id = Identifier.fromNamespaceAndPath(this.modId(), name);
-            DeferredBlock<I> holder = new DeferredBlock<>(Registries.BLOCK, id);
-            this.registerInternal(id, holder, supplier);
-            return holder;
-        }
     }
 
     public static final class Items extends DeferredRegister<Item> {

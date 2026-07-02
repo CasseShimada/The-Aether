@@ -87,7 +87,7 @@ public class IncubationRecipe implements Recipe<SingleRecipeInput> {
     }
 
     public ItemStack getToastSymbol() {
-        return new ItemStack(AetherBlocks.INCUBATOR.get());
+        return new ItemStack(AetherBlocks.INCUBATOR);
     }
 
     @Override

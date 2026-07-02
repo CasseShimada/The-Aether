@@ -17,10 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Set;
 
 public class AetherPoi {
-    public static final PoiType AETHER_PORTAL = register("aether_portal", new PoiType(getBlockStates(AetherBlocks.AETHER_PORTAL.get()), 0, 1));
+    public static final PoiType AETHER_PORTAL = register("aether_portal", new PoiType(getBlockStates(AetherBlocks.AETHER_PORTAL), 0, 1));
 
     public static void registerBlockStateMappings() {
-        PoiTypesAccessor.aether$registerBlockStates(getPortalHolder(), getBlockStates(AetherBlocks.AETHER_PORTAL.get()));
+        PoiTypesAccessor.aether$registerBlockStates(getPortalHolder(), getBlockStates(AetherBlocks.AETHER_PORTAL));
     }
 
     public static void registerPortal(ServerLevel level, BlockPos pos) {

@@ -41,7 +41,7 @@ public class CrystalFruitLeavesBlock extends LeavesWithParticlesBlock {
         if (AetherConfig.SERVER.crystal_leaves_consistency.get()) {
             CrystalFruitLeavesBlock.dropResources(state, level, pos, null, player, ItemStack.EMPTY, true);
             level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
-            level.setBlock(pos, AetherBlocks.CRYSTAL_LEAVES.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
+            level.setBlock(pos, AetherBlocks.CRYSTAL_LEAVES.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
             return InteractionResult.SUCCESS;
         } else {

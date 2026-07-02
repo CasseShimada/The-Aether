@@ -11,17 +11,17 @@ import java.util.function.Supplier;
 
 public final class AetherDataMaps {
     private static final List<FuelEntry> ALTAR_FUEL = List.of(
-            new FuelEntry(() -> AetherBlocks.AMBROSIUM_BLOCK.get().asItem(), 2500),
+            new FuelEntry(() -> AetherBlocks.AMBROSIUM_BLOCK.asItem(), 2500),
             new FuelEntry(() -> AetherItems.AMBROSIUM_SHARD.get(), 250)
     );
     private static final List<FuelEntry> FREEZER_FUEL = List.of(
-            new FuelEntry(() -> AetherBlocks.ICESTONE.get().asItem(), 400),
-            new FuelEntry(() -> AetherBlocks.ICESTONE_SLAB.get().asItem(), 200),
-            new FuelEntry(() -> AetherBlocks.ICESTONE_STAIRS.get().asItem(), 400),
-            new FuelEntry(() -> AetherBlocks.ICESTONE_WALL.get().asItem(), 400)
+            new FuelEntry(() -> AetherBlocks.ICESTONE.asItem(), 400),
+            new FuelEntry(() -> AetherBlocks.ICESTONE_SLAB.asItem(), 200),
+            new FuelEntry(() -> AetherBlocks.ICESTONE_STAIRS.asItem(), 400),
+            new FuelEntry(() -> AetherBlocks.ICESTONE_WALL.asItem(), 400)
     );
     private static final List<FuelEntry> INCUBATOR_FUEL = List.of(
-            new FuelEntry(() -> AetherBlocks.AMBROSIUM_TORCH.get().asItem(), 500)
+            new FuelEntry(() -> AetherBlocks.AMBROSIUM_TORCH.asItem(), 500)
     );
 
     private AetherDataMaps() {

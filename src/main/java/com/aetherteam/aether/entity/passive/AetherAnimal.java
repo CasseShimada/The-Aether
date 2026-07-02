@@ -31,6 +31,6 @@ public abstract class AetherAnimal extends Animal {
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return level.getBlockState(pos.below()).is(AetherBlocks.AETHER_GRASS_BLOCK.get()) ? 10.0F : level.getMaxLocalRawBrightness(pos) - 0.5F;
+        return level.getBlockState(pos.below()).is(AetherBlocks.AETHER_GRASS_BLOCK) ? 10.0F : level.getMaxLocalRawBrightness(pos) - 0.5F;
     }
 }

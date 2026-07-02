@@ -136,7 +136,7 @@ public class AetherPortalForcer {
             }
         }
 
-        BlockState blockState = AetherBlocks.AETHER_PORTAL.get().defaultBlockState().setValue(AetherPortalBlock.AXIS, axis);
+        BlockState blockState = AetherBlocks.AETHER_PORTAL.defaultBlockState().setValue(AetherPortalBlock.AXIS, axis);
         for (int k2 = 0; k2 < 2; ++k2) {
             for (int l2 = 0; l2 < 3; ++l2) {
                 mutablePos.setWithOffset(blockPos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());

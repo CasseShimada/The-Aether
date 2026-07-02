@@ -21,7 +21,7 @@ public class PortalClientUtil {
             if (!(ClientCompat.screen(Minecraft.getInstance()) instanceof LevelLoadingScreen)) {
                 attachment.oPortalIntensity = attachment.portalIntensity;
                 float f = 0.0F;
-                if (localPlayer.portalProcess != null && localPlayer.portalProcess.isInsidePortalThisTick() && localPlayer.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL.get())) {
+                if (localPlayer.portalProcess != null && localPlayer.portalProcess.isInsidePortalThisTick() && localPlayer.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL)) {
                     if (ClientCompat.screen(Minecraft.getInstance()) != null
                         && !ClientCompat.screen(Minecraft.getInstance()).isPauseScreen()
                         && !(ClientCompat.screen(Minecraft.getInstance()) instanceof DeathScreen)

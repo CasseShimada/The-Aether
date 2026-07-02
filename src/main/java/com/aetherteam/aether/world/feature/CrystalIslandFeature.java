@@ -84,7 +84,7 @@ public class CrystalIslandFeature extends Feature<NoneFeatureConfiguration> {
                         CarvingContext carvingcontext = new CarvingContext(noiseBasedChunkGenerator, level.registryAccess(), chunkAccess.getHeightAccessorForGeneration(), noisechunk, serverChunkCache.randomState(), surfaceRule);
                         Optional<BlockState> state = carvingcontext.topMaterial(level.getBiomeManager()::getNoiseBiomeAtPosition, chunkAccess, pos, false);
                         if (state.isPresent()) {
-                            if (testState.is(AetherTags.Blocks.AETHER_DIRT) && !testState.is(AetherBlocks.AETHER_DIRT.get()) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
+                            if (testState.is(AetherTags.Blocks.AETHER_DIRT) && !testState.is(AetherBlocks.AETHER_DIRT) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
                                 newState = state.get();
                             }
                         }

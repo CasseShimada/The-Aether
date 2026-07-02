@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
-    private static final ItemStackTemplate PLACEHOLDER_RESULT = new ItemStackTemplate(AetherBlocks.ALTAR.get().asItem());
+    private static final ItemStackTemplate PLACEHOLDER_RESULT = new ItemStackTemplate(AetherBlocks.ALTAR.asItem());
     public final Ingredient ingredient;
 
     public AltarRepairRecipe(String group, Ingredient ingredient, int repairTime) {
@@ -53,7 +53,7 @@ public class AltarRepairRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     protected Item furnaceIcon() {
-        return AetherBlocks.ALTAR.get().asItem();
+        return AetherBlocks.ALTAR.asItem();
     }
 
     @Override

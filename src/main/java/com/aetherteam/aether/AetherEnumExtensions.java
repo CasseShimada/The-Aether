@@ -43,7 +43,7 @@ public class AetherEnumExtensions {
 
     public static Object enchantingBlocksIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherBlocks.ENCHANTED_GRAVITITE.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherBlocks.ENCHANTED_GRAVITITE));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }
@@ -71,7 +71,7 @@ public class AetherEnumExtensions {
 
     public static Object freezableBlocksIcon(int idx, Class<?> type) {
         return type.cast(switch (idx) {
-            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherBlocks.BLUE_AERCLOUD.get()));
+            case 0 -> (Supplier<List<ItemStack>>) () -> List.of(new ItemStack(AetherBlocks.BLUE_AERCLOUD));
             default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
         });
     }

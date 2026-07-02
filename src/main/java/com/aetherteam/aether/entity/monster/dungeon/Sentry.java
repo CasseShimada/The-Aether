@@ -157,7 +157,7 @@ public class Sentry extends Slime {
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new BlockParticleOption(ParticleTypes.BLOCK, AetherBlocks.SENTRY_STONE.get().defaultBlockState());
+        return new BlockParticleOption(ParticleTypes.BLOCK, AetherBlocks.SENTRY_STONE.defaultBlockState());
     }
 
     @Override

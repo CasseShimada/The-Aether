@@ -33,7 +33,7 @@ public class BronzeDungeonRoom extends BronzeDungeonPiece {
     protected void handleDataMarker(String name, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox box) {
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         if (name.equals("Chest")) {
-            BlockState state = (random.nextInt(5) > 1 ? Blocks.CHEST : AetherBlocks.CHEST_MIMIC.get()).defaultBlockState();
+            BlockState state = (random.nextInt(5) > 1 ? Blocks.CHEST : AetherBlocks.CHEST_MIMIC).defaultBlockState();
             this.createChest(level, box, random, pos, AetherLoot.BRONZE_DUNGEON, state);
         }
     }

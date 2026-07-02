@@ -32,20 +32,20 @@ import java.util.List;
 
 public class BronzeDungeonSurfaceRuins extends StructurePiece {
     private static final BlockStateProvider BLOCKS = new WeightedStateProvider(WeightedList.<BlockState>builder()
-        .add(AetherBlocks.HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
-        .add(AetherBlocks.MOSSY_HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true))
+        .add(AetherBlocks.HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
+        .add(AetherBlocks.MOSSY_HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true))
         .build());
     private static final BlockStateProvider TOPS = new WeightedStateProvider(WeightedList.<BlockState>builder()
-        .add(AetherBlocks.HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 6)
-        .add(AetherBlocks.HOLYSTONE_SLAB.get().defaultBlockState(), 6)
-        .add(AetherBlocks.MOSSY_HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
-        .add(AetherBlocks.MOSSY_HOLYSTONE_SLAB.get().defaultBlockState(), 3)
+        .add(AetherBlocks.HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 6)
+        .add(AetherBlocks.HOLYSTONE_SLAB.defaultBlockState(), 6)
+        .add(AetherBlocks.MOSSY_HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
+        .add(AetherBlocks.MOSSY_HOLYSTONE_SLAB.defaultBlockState(), 3)
         .build());
     private static final BlockStateProvider BOTTOMS = new WeightedStateProvider(WeightedList.<BlockState>builder()
-        .add(AetherBlocks.HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 6)
-        .add(AetherBlocks.HOLYSTONE_SLAB.get().defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP), 6)
-        .add(AetherBlocks.MOSSY_HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
-        .add(AetherBlocks.MOSSY_HOLYSTONE_SLAB.get().defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP), 3)
+        .add(AetherBlocks.HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 6)
+        .add(AetherBlocks.HOLYSTONE_SLAB.defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP), 6)
+        .add(AetherBlocks.MOSSY_HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3)
+        .add(AetherBlocks.MOSSY_HOLYSTONE_SLAB.defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP), 3)
         .build());
     private static final ConfiguredFeature<?, ? extends Feature<?>> MIXED_FLOWER_PATCH = new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder()
         .add(AetherFeatureStates.PURPLE_FLOWER, 1)

@@ -47,9 +47,9 @@ public class AetherREIClientPlugin implements REIClientPlugin {
 
     public static List<FuelRecipe> getFuelRecipes() {
         List<FuelRecipe> fuelRecipes = new ArrayList<>();
-        AetherDataMaps.forEachAltarFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.ALTAR.get())));
-        AetherDataMaps.forEachFreezerFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.FREEZER.get())));
-        AetherDataMaps.forEachIncubatorFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.INCUBATOR.get())));
+        AetherDataMaps.forEachAltarFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.ALTAR)));
+        AetherDataMaps.forEachFreezerFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.FREEZER)));
+        AetherDataMaps.forEachIncubatorFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.INCUBATOR)));
         return fuelRecipes;
     }
 
@@ -111,12 +111,12 @@ public class AetherREIClientPlugin implements REIClientPlugin {
         registry.add(AetherCookingRecipeCategory.freezing());
         registry.add(AetherCookingRecipeCategory.incubating());
 
-        registry.addWorkstations(AetherREIServerPlugin.AETHER_FUEL, EntryStacks.of(AetherBlocks.FREEZER.get()), EntryStacks.of(AetherBlocks.ALTAR.get()), EntryStacks.of(AetherBlocks.INCUBATOR.get()));
+        registry.addWorkstations(AetherREIServerPlugin.AETHER_FUEL, EntryStacks.of(AetherBlocks.FREEZER), EntryStacks.of(AetherBlocks.ALTAR), EntryStacks.of(AetherBlocks.INCUBATOR));
 
-        registry.addWorkstations(AetherREIServerPlugin.FREEZING, EntryStacks.of(AetherBlocks.FREEZER.get()));
-        registry.addWorkstations(AetherREIServerPlugin.ALTAR_REPAIR, EntryStacks.of(AetherBlocks.ALTAR.get()));
-        registry.addWorkstations(AetherREIServerPlugin.ALTAR_ENCHANTING, EntryStacks.of(AetherBlocks.ALTAR.get()));
-        registry.addWorkstations(AetherREIServerPlugin.INCUBATING, EntryStacks.of(AetherBlocks.INCUBATOR.get()));
+        registry.addWorkstations(AetherREIServerPlugin.FREEZING, EntryStacks.of(AetherBlocks.FREEZER));
+        registry.addWorkstations(AetherREIServerPlugin.ALTAR_REPAIR, EntryStacks.of(AetherBlocks.ALTAR));
+        registry.addWorkstations(AetherREIServerPlugin.ALTAR_ENCHANTING, EntryStacks.of(AetherBlocks.ALTAR));
+        registry.addWorkstations(AetherREIServerPlugin.INCUBATING, EntryStacks.of(AetherBlocks.INCUBATOR));
     }
 
     @Override

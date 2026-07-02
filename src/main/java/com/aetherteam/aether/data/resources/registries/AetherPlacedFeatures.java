@@ -83,7 +83,7 @@ public class AetherPlacedFeatures {
                 PlacementUtils.HEIGHTMAP_OCEAN_FLOOR,
                 BiomeFilter.biome(),
                 new HolidayFilter(),
-                PlacementUtils.filteredByBlockSurvival(AetherBlocks.SKYROOT_SAPLING.get()));
+                PlacementUtils.filteredByBlockSurvival(AetherBlocks.SKYROOT_SAPLING));
         register(context, GRASS_PATCH_PLACEMENT, configuredFeatures.getOrThrow(AetherConfiguredFeatures.GRASS_PATCH_CONFIGURATION),
                 NoiseThresholdCountPlacement.of(-0.8, 5, 10),
                 ImprovedLayerPlacementModifier.of(Heightmap.Types.MOTION_BLOCKING, UniformInt.of(0, 1), 4),

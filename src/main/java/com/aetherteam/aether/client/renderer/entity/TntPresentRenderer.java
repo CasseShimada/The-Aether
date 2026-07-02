@@ -36,7 +36,7 @@ public class TntPresentRenderer extends EntityRenderer<TntPresent, TntPresentRen
     public void extractRenderState(TntPresent entity, TntPresentRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.fuse = entity.getFuse();
-        this.blockModelResolver.update(reusedState.blockState, AetherBlocks.PRESENT.get().defaultBlockState(), BLOCK_DISPLAY_CONTEXT);
+        this.blockModelResolver.update(reusedState.blockState, AetherBlocks.PRESENT.defaultBlockState(), BLOCK_DISPLAY_CONTEXT);
     }
 
     @Override

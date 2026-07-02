@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import java.util.List;
 
 public class AetherNoiseBuilders {
-    private static final SurfaceRules.RuleSource GRASS_BLOCK = SurfaceRules.state(AetherBlocks.AETHER_GRASS_BLOCK.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true));
-    private static final SurfaceRules.RuleSource DIRT = SurfaceRules.state(AetherBlocks.AETHER_DIRT.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true));
+    private static final SurfaceRules.RuleSource GRASS_BLOCK = SurfaceRules.state(AetherBlocks.AETHER_GRASS_BLOCK.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true));
+    private static final SurfaceRules.RuleSource DIRT = SurfaceRules.state(AetherBlocks.AETHER_DIRT.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true));
 
     public static NoiseGeneratorSettings skylandsNoiseSettings(HolderGetter<DensityFunction> densityFunctions, HolderGetter<NormalNoise.NoiseParameters> noise) {
-        BlockState holystone = AetherBlocks.HOLYSTONE.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true);
+        BlockState holystone = AetherBlocks.HOLYSTONE.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true);
         return new NoiseGeneratorSettings(
                 new NoiseSettings(0, 128, 2, 1), // noiseSettings
                 holystone, // defaultBlock

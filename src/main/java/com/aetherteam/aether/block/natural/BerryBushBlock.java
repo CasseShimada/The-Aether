@@ -72,7 +72,7 @@ public class BerryBushBlock extends AetherBushBlock {
         if (AetherConfig.SERVER.berry_bush_consistency.get()) {
             Block.dropResources(state, level, pos, null, player, ItemStack.EMPTY);
             level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
-            level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
+            level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
             return InteractionResult.SUCCESS;
         } else {
@@ -94,7 +94,7 @@ public class BerryBushBlock extends AetherBushBlock {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), tool) <= 0) {
-            level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
+            level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
             if (AetherConfig.SERVER.berry_bush_consistency.get()) { // Destroy stem too if config is enabled.
                 level.destroyBlock(pos, true, player);
             }
@@ -112,7 +112,7 @@ public class BerryBushBlock extends AetherBushBlock {
     @Override
     protected void onExplosionHit(BlockState state, net.minecraft.server.level.ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {
         super.onExplosionHit(state, level, pos, explosion, dropConsumer);
-        level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
+        level.setBlock(pos, AetherBlocks.BERRY_BUSH_STEM.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)), 1 | 2);
         if (AetherConfig.SERVER.berry_bush_consistency.get()) { // Destroy stem too if config is enabled.
             level.destroyBlock(pos, true);
         }

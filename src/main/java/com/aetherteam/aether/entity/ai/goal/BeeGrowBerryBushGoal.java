@@ -53,12 +53,12 @@ public class BeeGrowBerryBushGoal extends Goal {
                 BlockState blockState = this.bee.level().getBlockState(blockPos);
                 boolean isStem = false;
                 if (blockState.is(BlockTags.BEE_GROWABLES)) {
-                    if (blockState.is(AetherBlocks.BERRY_BUSH_STEM.get())) {
+                    if (blockState.is(AetherBlocks.BERRY_BUSH_STEM)) {
                         isStem = true;
                     }
                     if (isStem) {
                         this.bee.level().levelEvent(2005, blockPos, 0);
-                        this.bee.level().setBlockAndUpdate(blockPos, AetherBlocks.BERRY_BUSH.get().defaultBlockState());
+                        this.bee.level().setBlockAndUpdate(blockPos, AetherBlocks.BERRY_BUSH.defaultBlockState());
                         beeAccessor.callIncrementNumCropsGrownSincePollination();
                     }
                 }

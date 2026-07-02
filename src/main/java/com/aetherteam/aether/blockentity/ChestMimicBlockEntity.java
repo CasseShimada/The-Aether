@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ChestMimicBlockEntity extends BlockEntity {
     public ChestMimicBlockEntity() {
-        super(AetherBlockEntityTypes.CHEST_MIMIC, BlockPos.ZERO, AetherBlocks.CHEST_MIMIC.get().defaultBlockState());
+        super(AetherBlockEntityTypes.CHEST_MIMIC, BlockPos.ZERO, AetherBlocks.CHEST_MIMIC.defaultBlockState());
     }
 
     public ChestMimicBlockEntity(BlockPos pos, BlockState state) {

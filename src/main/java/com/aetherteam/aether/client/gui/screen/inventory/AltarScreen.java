@@ -23,7 +23,7 @@ public class AltarScreen extends AbstractAetherFurnaceScreen<AltarMenu> {
     private static final List<RecipeBookComponent.TabInfo> TABS = List.of(
         new RecipeBookComponent.TabInfo(Items.COMPASS, AetherRecipeBookCategories.ENCHANTING_SEARCH),
         new RecipeBookComponent.TabInfo(AetherItems.ENCHANTED_BERRY.get(), AetherRecipeBookCategories.ENCHANTING_FOOD),
-        new RecipeBookComponent.TabInfo(AetherBlocks.ENCHANTED_GRAVITITE.get().asItem(), AetherRecipeBookCategories.ENCHANTING_BLOCKS),
+        new RecipeBookComponent.TabInfo(AetherBlocks.ENCHANTED_GRAVITITE.asItem(), AetherRecipeBookCategories.ENCHANTING_BLOCKS),
         new RecipeBookComponent.TabInfo(AetherItems.SKYROOT_REMEDY_BUCKET.get(), AetherRecipeBookCategories.ENCHANTING_MISC),
         new RecipeBookComponent.TabInfo(AetherItems.ZANITE_PICKAXE.get(), AetherRecipeBookCategories.ENCHANTING_REPAIR));
 

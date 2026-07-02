@@ -22,7 +22,7 @@ public class EnchantingRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     protected Item furnaceIcon() {
-        return AetherBlocks.ALTAR.get().asItem();
+        return AetherBlocks.ALTAR.asItem();
     }
 
     @Override

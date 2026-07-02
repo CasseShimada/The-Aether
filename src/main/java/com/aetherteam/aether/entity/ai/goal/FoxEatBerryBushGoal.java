@@ -35,7 +35,7 @@ public class FoxEatBerryBushGoal extends MoveToBlockGoal {
     @Override
     protected boolean isValidTarget(LevelReader level, BlockPos pos) {
         BlockState blockState = level.getBlockState(pos);
-        return blockState.is(AetherBlocks.BERRY_BUSH.get());
+        return blockState.is(AetherBlocks.BERRY_BUSH);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class FoxEatBerryBushGoal extends MoveToBlockGoal {
     protected void onReachedTarget() {
         if (EventHooks.canEntityGrief(this.fox.level(), this.fox)) {
             BlockState blockState = this.mob.level().getBlockState(this.blockPos);
-            if (blockState.is(AetherBlocks.BERRY_BUSH.get())) {
+            if (blockState.is(AetherBlocks.BERRY_BUSH)) {
                 this.pickBlueBerries();
             }
         }
@@ -80,7 +80,7 @@ public class FoxEatBerryBushGoal extends MoveToBlockGoal {
             Block.popResource(this.mob.level(), this.blockPos, new ItemStack(AetherItems.BLUE_BERRY.get(), j));
         }
         this.mob.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1.0F, 1.0F);
-        this.mob.level().setBlock(this.blockPos, AetherBlocks.BERRY_BUSH_STEM.get().defaultBlockState(), 2);
+        this.mob.level().setBlock(this.blockPos, AetherBlocks.BERRY_BUSH_STEM.defaultBlockState(), 2);
     }
 
     @Override

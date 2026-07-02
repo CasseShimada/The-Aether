@@ -60,14 +60,14 @@ public class RecipeHooks {
             return true;
         }
         if (level.getBiome(pos).is(AetherTags.Biomes.ULTRACOLD) && AetherConfig.SERVER.enable_bed_explosions.get()) { // Explodes beds in the Aether if the config for it is enabled.
-            if (state.is(BlockTags.BEDS) && state.getBlock() != AetherBlocks.SKYROOT_BED.get()) {
+            if (state.is(BlockTags.BEDS) && state.getBlock() != AetherBlocks.SKYROOT_BED) {
                 if (!level.isClientSide()) {
                     if (state.getValue(BedBlock.PART) != BedPart.HEAD) {
                         pos = pos.relative(state.getValue(BedBlock.FACING));
                         state = level.getBlockState(pos);
                     }
                     BlockPos blockpos = pos.relative(state.getValue(BedBlock.FACING).getOpposite());
-                    if (level.getBlockState(blockpos).is(BlockTags.BEDS) && level.getBlockState(blockpos).getBlock() != AetherBlocks.SKYROOT_BED.get()) {
+                    if (level.getBlockState(blockpos).is(BlockTags.BEDS) && level.getBlockState(blockpos).getBlock() != AetherBlocks.SKYROOT_BED) {
                         level.removeBlock(blockpos, false);
                     }
                     Vec3 vec3 = Vec3.atCenterOf(pos);

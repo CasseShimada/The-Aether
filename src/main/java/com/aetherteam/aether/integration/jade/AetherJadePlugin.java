@@ -45,7 +45,7 @@ public class AetherJadePlugin implements IWailaPlugin {
                 if (doorBlock != null) {
                     return client.blockAccessor().from(target).blockState(doorBlock.defaultBlockState()).build();
                 }
-            } else if (target.getBlock() == AetherBlocks.CHEST_MIMIC.get()) { // Mimics show up as normal chests. There's not a single way to tell the difference between these and normal chests from the tooltip.
+            } else if (target.getBlock() == AetherBlocks.CHEST_MIMIC) { // Mimics show up as normal chests. There's not a single way to tell the difference between these and normal chests from the tooltip.
                 return client.blockAccessor().from(target).serverData(this.createFakeChestData(target)).blockState(Blocks.CHEST.defaultBlockState()).build();
             }
         }

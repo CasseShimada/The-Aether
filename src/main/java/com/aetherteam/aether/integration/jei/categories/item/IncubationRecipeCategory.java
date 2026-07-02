@@ -26,7 +26,7 @@ public class IncubationRecipeCategory extends AbstractAetherCookingRecipeCategor
     public IncubationRecipeCategory(IGuiHelper guiHelper) {
         super("incubating", UID,
             guiHelper.createDrawable(TEXTURE, 72, 16, 70, 54),
-            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.INCUBATOR.get())),
+            guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(AetherBlocks.INCUBATOR)),
             guiHelper.drawableBuilder(FLAME_TEXTURE, 0, 0, 14, 14).setTextureSize(14, 14).build(),
             guiHelper.createAnimatedDrawable(guiHelper.drawableBuilder(INCUBATION_PROGRESS_TEXTURE, 0, 0, 10, 54).setTextureSize(10, 54).build(), 5700, IDrawableAnimated.StartDirection.BOTTOM, false),
             RECIPE_TYPE);

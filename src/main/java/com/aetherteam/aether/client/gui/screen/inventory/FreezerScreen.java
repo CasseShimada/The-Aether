@@ -20,7 +20,7 @@ public class FreezerScreen extends AbstractAetherFurnaceScreen<FreezerMenu> {
     private static final Identifier BURN_PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "menu/burn_progress");
     private static final List<RecipeBookComponent.TabInfo> TABS = List.of(
         new RecipeBookComponent.TabInfo(Items.COMPASS, AetherRecipeBookCategories.FREEZABLE_SEARCH),
-        new RecipeBookComponent.TabInfo(AetherBlocks.BLUE_AERCLOUD.get().asItem(), AetherRecipeBookCategories.FREEZABLE_BLOCKS),
+        new RecipeBookComponent.TabInfo(AetherBlocks.BLUE_AERCLOUD.asItem(), AetherRecipeBookCategories.FREEZABLE_BLOCKS),
         new RecipeBookComponent.TabInfo(AetherItems.ICE_RING.get(), AetherRecipeBookCategories.FREEZABLE_MISC));
 
     public FreezerScreen(FreezerMenu menu, Inventory inventory, Component title) {

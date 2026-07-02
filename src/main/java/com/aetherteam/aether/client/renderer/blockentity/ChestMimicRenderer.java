@@ -33,7 +33,7 @@ public class ChestMimicRenderer extends SingleChestRenderer<ChestMimicBlockEntit
     public void extractRenderState(ChestMimicBlockEntity blockEntity, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockState blockState = blockEntity.getBlockState();
         if (!(blockState.getBlock() instanceof ChestMimicBlock)) {
-            blockState = AetherBlocks.CHEST_MIMIC.get().defaultBlockState().setValue(ChestMimicBlock.FACING, Direction.SOUTH);
+            blockState = AetherBlocks.CHEST_MIMIC.defaultBlockState().setValue(ChestMimicBlock.FACING, Direction.SOUTH);
         }
         Direction facing = blockState.getValue(ChestMimicBlock.FACING);
         this.extractSingleChestRenderState(blockEntity, state, partialTick, facing, 0.0F, crumblingOverlay);

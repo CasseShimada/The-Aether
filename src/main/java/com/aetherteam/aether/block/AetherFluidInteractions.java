@@ -18,7 +18,7 @@ public final class AetherFluidInteractions {
 
         for (Direction direction : LiquidBlock.POSSIBLE_FLOW_DIRECTIONS) {
             if (level.getBlockState(pos.relative(direction.getOpposite())).is(Blocks.MAGMA_BLOCK)) {
-                level.setBlockAndUpdate(pos, AetherBlocks.HOLYSTONE.get().defaultBlockState());
+                level.setBlockAndUpdate(pos, AetherBlocks.HOLYSTONE.defaultBlockState());
                 level.levelEvent(1501, pos, 0);
                 return true;
             }
@@ -28,6 +28,6 @@ public final class AetherFluidInteractions {
 
     private static boolean isQuicksoilWater(Level level, BlockPos pos) {
         return level.getFluidState(pos).is(FluidTags.WATER)
-            && level.getBlockState(pos.below()).is(AetherBlocks.QUICKSOIL.get());
+            && level.getBlockState(pos.below()).is(AetherBlocks.QUICKSOIL);
     }
 }

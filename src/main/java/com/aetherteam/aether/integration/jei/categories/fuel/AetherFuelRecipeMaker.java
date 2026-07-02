@@ -14,9 +14,9 @@ public final class AetherFuelRecipeMaker {
 
     public static List<FuelRecipe> getFuelRecipes() {
         List<FuelRecipe> fuelRecipes = new ArrayList<>();
-        AetherDataMaps.forEachAltarFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.ALTAR.get())));
-        AetherDataMaps.forEachFreezerFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.FREEZER.get())));
-        AetherDataMaps.forEachIncubatorFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.INCUBATOR.get())));
+        AetherDataMaps.forEachAltarFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.ALTAR)));
+        AetherDataMaps.forEachFreezerFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.FREEZER)));
+        AetherDataMaps.forEachIncubatorFuel((item, burnTime) -> fuelRecipes.add(new FuelRecipe(List.of(new ItemStack(item)), burnTime, AetherBlocks.INCUBATOR)));
         return fuelRecipes;
     }
 }

@@ -31,12 +31,12 @@ public class VerticalGradientProcessor implements StructureProcessor {
             if (worldGenLevel instanceof WorldGenRegion region && BlockLogicUtil.isOutOfBounds(blockInfo.pos(), region.getCenter())) {
                 return blockInfo;
             }
-            if (blockInfo.state().is(AetherBlocks.AETHER_DIRT.get())) {
+            if (blockInfo.state().is(AetherBlocks.AETHER_DIRT)) {
                 BlockPos below = blockInfo.pos().below();
                 if (worldGenLevel.getBlockState(below).is(AetherTags.Blocks.HOLYSTONE)) {
                     RandomSource random = settings.getRandom(below);
                     if (random.nextBoolean()) {
-                        worldGenLevel.setBlock(below, AetherBlocks.AETHER_DIRT.get().defaultBlockState(), 2);
+                        worldGenLevel.setBlock(below, AetherBlocks.AETHER_DIRT.defaultBlockState(), 2);
                     }
                 }
             }

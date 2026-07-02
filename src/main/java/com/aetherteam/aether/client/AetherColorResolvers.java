@@ -38,7 +38,7 @@ public class AetherColorResolvers {
                 BlockPos baseBlock = newPos.below();
                 if (level.getBlockState(baseBlock).is(AetherTags.Blocks.ENCHANTED_GRASS)) {
                     return ENCHANTED_GRASS_COLOR;
-                } else if (level.getBlockState(baseBlock).is(AetherBlocks.AETHER_GRASS_BLOCK.get())) {
+                } else if (level.getBlockState(baseBlock).is(AetherBlocks.AETHER_GRASS_BLOCK)) {
                     return AETHER_GRASS_COLOR;
                 }
                 return BiomeColors.getAverageGrassColor(level, newPos);

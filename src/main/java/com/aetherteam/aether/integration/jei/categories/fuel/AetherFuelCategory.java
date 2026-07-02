@@ -17,7 +17,7 @@ public class AetherFuelCategory extends AbstractFuelCategory {
     public static final IRecipeType<FuelRecipe> RECIPE_TYPE = IRecipeType.create(Aether.MODID, "fuel", FuelRecipe.class);
 
     public AetherFuelCategory(IGuiHelper helper) {
-        super(helper, List.of(AetherBlocks.ALTAR.get().getName().getString(), AetherBlocks.FREEZER.get().getName().getString(), AetherBlocks.INCUBATOR.get().getName().getString()));
+        super(helper, List.of(AetherBlocks.ALTAR.getName().getString(), AetherBlocks.FREEZER.getName().getString(), AetherBlocks.INCUBATOR.getName().getString()));
     }
 
     @Override

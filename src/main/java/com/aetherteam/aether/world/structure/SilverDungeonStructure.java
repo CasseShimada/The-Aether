@@ -207,7 +207,7 @@ public class SilverDungeonStructure extends Structure {
         chunks.forEach(((chunkPos, blockPosSet) -> {
             blockPosSet.addAll(positions.stream().filter(pos -> (ChunkPos.containing(pos).equals(chunkPos))).toList());
             builder.addPiece(new LargeAercloudChunk(blockPosSet,
-                    BlockStateProvider.simple(AetherBlocks.COLD_AERCLOUD.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true)),
+                    BlockStateProvider.simple(AetherBlocks.COLD_AERCLOUD.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true)),
                     new BoundingBox(chunkPos.getMinBlockX(), origin.getY(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), origin.getY(), chunkPos.getMaxBlockZ()),
                     direction));
         }));

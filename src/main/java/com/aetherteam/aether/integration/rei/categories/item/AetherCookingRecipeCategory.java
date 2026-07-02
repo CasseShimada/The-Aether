@@ -50,19 +50,19 @@ public class AetherCookingRecipeCategory<R extends Recipe<?>> extends AbstractRe
     }
 
     public static AetherCookingRecipeCategory<AltarRepairRecipe> altarRepair() {
-        return new AetherCookingRecipeCategory<>("altar.repairing", AetherREIServerPlugin.ALTAR_REPAIR, 140, 39, EntryStacks.of(AetherBlocks.ALTAR.get()), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
+        return new AetherCookingRecipeCategory<>("altar.repairing", AetherREIServerPlugin.ALTAR_REPAIR, 140, 39, EntryStacks.of(AetherBlocks.ALTAR), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
     }
 
     public static AetherCookingRecipeCategory<EnchantingRecipe> altarEnchanting() {
-        return new AetherCookingRecipeCategory<>("altar.enchanting", AetherREIServerPlugin.ALTAR_ENCHANTING, 140, 39, EntryStacks.of(AetherBlocks.ALTAR.get()), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
+        return new AetherCookingRecipeCategory<>("altar.enchanting", AetherREIServerPlugin.ALTAR_ENCHANTING, 140, 39, EntryStacks.of(AetherBlocks.ALTAR), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
     }
 
     public static AetherCookingRecipeCategory<FreezingRecipe> freezing() {
-        return new AetherCookingRecipeCategory<>("freezing", AetherREIServerPlugin.FREEZING, 140, 39, EntryStacks.of(AetherBlocks.FREEZER.get()), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
+        return new AetherCookingRecipeCategory<>("freezing", AetherREIServerPlugin.FREEZING, 140, 39, EntryStacks.of(AetherBlocks.FREEZER), LIT_PROGRESS_TEXTURE, BURN_PROGRESS_TEXTURE);
     }
 
     public static AetherCookingRecipeCategory<IncubationRecipe> incubating() {
-        return new AetherCookingRecipeCategory<>("incubating", AetherREIServerPlugin.INCUBATING, 88, 54, EntryStacks.of(AetherBlocks.INCUBATOR.get()), LIT_PROGRESS_TEXTURE, () -> {
+        return new AetherCookingRecipeCategory<>("incubating", AetherREIServerPlugin.INCUBATING, 88, 54, EntryStacks.of(AetherBlocks.INCUBATOR), LIT_PROGRESS_TEXTURE, () -> {
             MutableDouble lastTick = new MutableDouble(0);
 
             Rectangle widgetBound = new Rectangle(8, -13, 10, 54);

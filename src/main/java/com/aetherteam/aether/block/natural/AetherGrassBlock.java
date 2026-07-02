@@ -37,7 +37,7 @@ public class AetherGrassBlock extends GrassBlock {
     }
 
     public boolean onTreeGrow(BlockState state, LevelReader level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeConfiguration config) {
-        placeFunction.accept(pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)));
+        placeFunction.accept(pos, AetherBlocks.AETHER_DIRT.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, state.getValue(AetherBlockStateProperties.DOUBLE_DROPS)));
         return true;
     }
 
@@ -48,13 +48,13 @@ public class AetherGrassBlock extends GrassBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!SpreadingSnowyDirtBlockAccessor.callCanBeGrass(state, level, pos)) {
-            level.setBlockAndUpdate(pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, AetherBlocks.AETHER_DIRT.defaultBlockState());
         } else {
             if (level.getMaxLocalRawBrightness(pos.above()) >= 9) {
                 BlockState blockstate = this.defaultBlockState();
                 for (int i = 0; i < 4; ++i) {
                     BlockPos blockpos = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                    if (level.getBlockState(blockpos).is(AetherBlocks.AETHER_DIRT.get()) && SpreadingSnowyDirtBlockAccessor.callCanPropagate(blockstate, level, blockpos)) {
+                    if (level.getBlockState(blockpos).is(AetherBlocks.AETHER_DIRT) && SpreadingSnowyDirtBlockAccessor.callCanPropagate(blockstate, level, blockpos)) {
                         level.setBlockAndUpdate(blockpos, blockstate.setValue(SNOWY, level.getBlockState(blockpos.above()).is(Blocks.SNOW)));
                     }
                 }
@@ -65,7 +65,7 @@ public class AetherGrassBlock extends GrassBlock {
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos abovePos = pos.above();
-        Block grass = AetherBlocks.AETHER_GRASS_BLOCK.get();
+        Block grass = AetherBlocks.AETHER_GRASS_BLOCK;
         Optional<Holder.Reference<PlacedFeature>> grassFeatureOptional = level.registryAccess().lookupOrThrow(Registries.PLACED_FEATURE).get(AetherPlacedFeatures.AETHER_GRASS_BONEMEAL);
 
         start:

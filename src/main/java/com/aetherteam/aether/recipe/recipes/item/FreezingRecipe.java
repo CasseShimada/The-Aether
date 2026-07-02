@@ -22,7 +22,7 @@ public class FreezingRecipe extends AbstractAetherCookingRecipe {
 
     @Override
     protected Item furnaceIcon() {
-        return AetherBlocks.FREEZER.get().asItem();
+        return AetherBlocks.FREEZER.asItem();
     }
 
     @Override

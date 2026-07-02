@@ -152,7 +152,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
      * [CODE COPY] - {@link net.minecraft.world.level.levelgen.structure.structures.RuinedPortalPiece#maybeAddLeavesAbove(RandomSource, LevelAccessor, BlockPos)}.
      */
     private void maybeAddLeavesAbove(RandomSource random, LevelAccessor level, BlockPos pos) {
-        if (random.nextFloat() < 0.5F && level.getBlockState(pos).is(AetherBlocks.AETHER_GRASS_BLOCK.get()) && level.getBlockState(pos.above()).isAir()) {
+        if (random.nextFloat() < 0.5F && level.getBlockState(pos).is(AetherBlocks.AETHER_GRASS_BLOCK) && level.getBlockState(pos.above()).isAir()) {
             level.setBlock(pos.above(), Blocks.JUNGLE_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
         }
     }
@@ -165,7 +165,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
         for (int i = this.boundingBox.minX() + 1; i < this.boundingBox.maxX(); ++i) {
             for (int j = this.boundingBox.minZ() + 1; j < this.boundingBox.maxZ(); ++j) {
                 BlockPos blockPos = new BlockPos(i, this.boundingBox.minY(), j);
-                if (level.getBlockState(blockPos).is(AetherBlocks.AETHER_GRASS_BLOCK.get())) {
+                if (level.getBlockState(blockPos).is(AetherBlocks.AETHER_GRASS_BLOCK)) {
                     this.addDirtBuryingColumn(random, level, blockPos.below());
                 }
             }
@@ -248,7 +248,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
             level.setBlock(pos, grass, 3);
             this.growGrassAndFlowers(random, level, pos.above());
         } else {
-            level.setBlock(pos, AetherBlocks.AETHER_DIRT.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3);
+            level.setBlock(pos, AetherBlocks.AETHER_DIRT.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true), 3);
         }
     }
 
@@ -266,7 +266,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
         int featureType = random.nextInt(50);
         if (random.nextInt(100) < 20 && level.isEmptyBlock(pos)) {
             if (featureType < 5 && level.getBlockState(pos.below()).is(AetherTags.Blocks.AETHER_DIRT)) {
-                Block flower = random.nextBoolean() ? AetherBlocks.PURPLE_FLOWER.get() : AetherBlocks.WHITE_FLOWER.get();
+                Block flower = random.nextBoolean() ? AetherBlocks.PURPLE_FLOWER : AetherBlocks.WHITE_FLOWER;
                 level.setBlock(pos, flower.defaultBlockState(), 2);
             } else {
                 if (random.nextInt(50) > 5) {
@@ -314,7 +314,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
                                 CarvingContext carvingcontext = new CarvingContext(noiseBasedChunkGenerator, worldGenLevel.registryAccess(), chunkAccess.getHeightAccessorForGeneration(), noisechunk, serverChunkCache.randomState(), surfaceRule);
                                 Optional<BlockState> state = carvingcontext.topMaterial(worldGenLevel.getBiomeManager()::getBiome, chunkAccess, pos, false);
                                 if (state.isPresent()) {
-                                    if (originalState.is(AetherTags.Blocks.AETHER_DIRT) && !originalState.is(AetherBlocks.AETHER_DIRT.get()) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
+                                    if (originalState.is(AetherTags.Blocks.AETHER_DIRT) && !originalState.is(AetherBlocks.AETHER_DIRT) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
                                         return state.get();
                                     }
                                 }
@@ -324,7 +324,7 @@ public class GlowstoneRuinedPortalPiece extends TemplateStructurePiece {
                 }
             }
         }
-        return AetherBlocks.AETHER_GRASS_BLOCK.get().defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true);
+        return AetherBlocks.AETHER_GRASS_BLOCK.defaultBlockState().setValue(AetherBlockStateProperties.DOUBLE_DROPS, true);
     }
 
     public static class Properties {

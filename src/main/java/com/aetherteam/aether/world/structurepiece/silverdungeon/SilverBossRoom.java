@@ -48,7 +48,7 @@ public class SilverBossRoom extends SilverDungeonPiece {
         Vec3i template = templateManager.getOrCreate(id).getSize();
         BorderBoxPosTest borderTest = new BorderBoxPosTest(0, 1, 0, template.getX() - 1, template.getY() - 1, template.getZ() - 1);
         return new RuleProcessor(ImmutableList.of(
-                new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.LOCKED_ANGELIC_STONE.get(), 0.05F), AlwaysTrueTest.INSTANCE, borderTest, AetherBlocks.LOCKED_LIGHT_ANGELIC_STONE.get().defaultBlockState())
+                new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.LOCKED_ANGELIC_STONE, 0.05F), AlwaysTrueTest.INSTANCE, borderTest, AetherBlocks.LOCKED_LIGHT_ANGELIC_STONE.defaultBlockState())
         ));
     }
 

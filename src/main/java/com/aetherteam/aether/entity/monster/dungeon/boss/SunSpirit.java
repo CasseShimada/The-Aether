@@ -87,10 +87,10 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     private static final EntityDataAccessor<Boolean> DATA_DISPLAY_WEAK_MESSAGE = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.BOOLEAN);
     private static final Music SUN_SPIRIT_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SUN_SPIRIT), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
-        Map.entry(AetherBlocks.LOCKED_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.HELLFIRE_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.LOCKED_LIGHT_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.LIGHT_HELLFIRE_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.BOSS_DOORWAY_HELLFIRE_STONE.get(), (blockState) -> Blocks.AIR.defaultBlockState()),
-        Map.entry(AetherBlocks.TREASURE_DOORWAY_HELLFIRE_STONE.get(), (blockState) -> Blocks.AIR.defaultBlockState())
+        Map.entry(AetherBlocks.LOCKED_HELLFIRE_STONE, (blockState) -> AetherBlocks.HELLFIRE_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.LOCKED_LIGHT_HELLFIRE_STONE, (blockState) -> AetherBlocks.LIGHT_HELLFIRE_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.BOSS_DOORWAY_HELLFIRE_STONE, (blockState) -> Blocks.AIR.defaultBlockState()),
+        Map.entry(AetherBlocks.TREASURE_DOORWAY_HELLFIRE_STONE, (blockState) -> Blocks.AIR.defaultBlockState())
     ));
 
     /**

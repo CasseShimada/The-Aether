@@ -120,7 +120,7 @@ public class EntityHooks {
     public static void launchMount(Player player) {
         Entity mount = player.getVehicle();
         if (player.isPassenger() && mount != null) {
-            if (mount.level().getBlockStates(mount.getBoundingBox()).anyMatch((state) -> state.is(AetherBlocks.BLUE_AERCLOUD.get()))) {
+            if (mount.level().getBlockStates(mount.getBoundingBox()).anyMatch((state) -> state.is(AetherBlocks.BLUE_AERCLOUD))) {
                 if (player.level().isClientSide()) {
                     mount.setDeltaMovement(mount.getDeltaMovement().x(), 2.0, mount.getDeltaMovement().z());
                 }

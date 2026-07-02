@@ -192,13 +192,13 @@ public class AetherJEIPlugin implements IModPlugin {
     }
 
     private static void registerItemCatalysts(IRecipeCatalystRegistration registration) {
-        ItemStack altar = new ItemStack(AetherBlocks.ALTAR.get());
+        ItemStack altar = new ItemStack(AetherBlocks.ALTAR);
         addItemCatalyst(registration, altar, EnchantingRecipeCategory.RECIPE_TYPE, AltarRepairRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
 
-        ItemStack freezer = new ItemStack(AetherBlocks.FREEZER.get());
+        ItemStack freezer = new ItemStack(AetherBlocks.FREEZER);
         addItemCatalyst(registration, freezer, FreezingRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
 
-        ItemStack incubator = new ItemStack(AetherBlocks.INCUBATOR.get());
+        ItemStack incubator = new ItemStack(AetherBlocks.INCUBATOR);
         addItemCatalyst(registration, incubator, IncubationRecipeCategory.RECIPE_TYPE, AetherFuelCategory.RECIPE_TYPE);
     }
 
@@ -206,16 +206,16 @@ public class AetherJEIPlugin implements IModPlugin {
         addItemCatalyst(registration, new ItemStack(AetherItems.AMBROSIUM_SHARD.get()), AmbrosiumRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration, new ItemStack(AetherItems.SWET_BALL.get()), SwetBallRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherBlocks.ICESTONE.get()),
+                new ItemStack(AetherBlocks.ICESTONE),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherBlocks.ICESTONE_SLAB.get()),
+                new ItemStack(AetherBlocks.ICESTONE_SLAB),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherBlocks.ICESTONE_STAIRS.get()),
+                new ItemStack(AetherBlocks.ICESTONE_STAIRS),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
-                new ItemStack(AetherBlocks.ICESTONE_WALL.get()),
+                new ItemStack(AetherBlocks.ICESTONE_WALL),
                 IcestoneFreezableRecipeCategory.RECIPE_TYPE);
         addItemCatalyst(registration,
                 new ItemStack(AetherItems.ICE_RING.get()),

@@ -26,15 +26,15 @@ public abstract class BronzeDungeonPiece extends AetherTemplateStructurePiece {
     public static final ProtectedBlockProcessor AVOID_DUNGEONS = new ProtectedBlockProcessor(BuiltInRegistries.BLOCK.getOrThrow(AetherTags.Blocks.NON_BRONZE_DUNGEON_REPLACEABLE));
 
     public static final RuleProcessor LOCKED_SENTRY_STONE = new RuleProcessor(ImmutableList.of(
-            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.LOCKED_CARVED_STONE.get(), 0.05F), AlwaysTrueTest.INSTANCE, AetherBlocks.LOCKED_SENTRY_STONE.get().defaultBlockState())
+            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.LOCKED_CARVED_STONE, 0.05F), AlwaysTrueTest.INSTANCE, AetherBlocks.LOCKED_SENTRY_STONE.defaultBlockState())
     ));
     public static final RuleProcessor BRONZE_DUNGEON_STONE = new RuleProcessor(ImmutableList.of(
-            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.CARVED_STONE.get(), 0.1F), AlwaysTrueTest.INSTANCE, AetherBlocks.SENTRY_STONE.get().defaultBlockState()),
-            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.HOLYSTONE.get(), 0.2F), AlwaysTrueTest.INSTANCE, AetherBlocks.MOSSY_HOLYSTONE.get().defaultBlockState())
+            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.CARVED_STONE, 0.1F), AlwaysTrueTest.INSTANCE, AetherBlocks.SENTRY_STONE.defaultBlockState()),
+            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.HOLYSTONE, 0.2F), AlwaysTrueTest.INSTANCE, AetherBlocks.MOSSY_HOLYSTONE.defaultBlockState())
     ));
     public static final RuleProcessor TRAPPED_CARVED_STONE = new RuleProcessor(ImmutableList.of(
-            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.CARVED_STONE.get(), 0.13F), AlwaysTrueTest.INSTANCE, ON_FLOOR, AetherBlocks.TRAPPED_CARVED_STONE.get().defaultBlockState()),
-            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.SENTRY_STONE.get(), 0.003F), AlwaysTrueTest.INSTANCE, ON_FLOOR, AetherBlocks.TRAPPED_SENTRY_STONE.get().defaultBlockState())
+            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.CARVED_STONE, 0.13F), AlwaysTrueTest.INSTANCE, ON_FLOOR, AetherBlocks.TRAPPED_CARVED_STONE.defaultBlockState()),
+            new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.SENTRY_STONE, 0.003F), AlwaysTrueTest.INSTANCE, ON_FLOOR, AetherBlocks.TRAPPED_SENTRY_STONE.defaultBlockState())
     ));
 
     public BronzeDungeonPiece(StructurePieceType type, StructureTemplateManager manager, String name, StructurePlaceSettings settings, BlockPos pos, Holder<StructureProcessorList> processors) {

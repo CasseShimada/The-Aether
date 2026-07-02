@@ -16,7 +16,7 @@ public class AetherReceivingLevelScreen extends LevelLoadingScreen {
 
     public AetherReceivingLevelScreen(LevelLoadTracker levelLoadTracker, Reason reason) {
         super(levelLoadTracker, reason);
-        if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.portalProcess != null && Minecraft.getInstance().player.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL.get())) {
+        if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.portalProcess != null && Minecraft.getInstance().player.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL)) {
             var data = Minecraft.getInstance().player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             this.isInAetherPortal = true;
             this.portalIntensity = data.getPortalIntensity();
@@ -27,7 +27,7 @@ public class AetherReceivingLevelScreen extends LevelLoadingScreen {
     @Override
     public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.isInAetherPortal) {
-            TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(AetherBlocks.AETHER_PORTAL.get().defaultBlockState()).sprite();
+            TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(AetherBlocks.AETHER_PORTAL.defaultBlockState()).sprite();
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
         }
     }

@@ -55,7 +55,7 @@ public class SurfaceRuleProcessor implements StructureProcessor {
                         CarvingContext carvingcontext = new CarvingContext(noiseBasedChunkGenerator, worldGenLevel.registryAccess(), chunkAccess.getHeightAccessorForGeneration(), noisechunk, serverChunkCache.randomState(), surfaceRule);
                         Optional<BlockState> state = carvingcontext.topMaterial(worldGenLevel.getBiomeManager()::getNoiseBiomeAtPosition, chunkAccess, blockInfo.pos(), false);
                         if (state.isPresent()) {
-                            if (blockInfo.state().is(AetherTags.Blocks.AETHER_DIRT) && !blockInfo.state().is(AetherBlocks.AETHER_DIRT.get()) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
+                            if (blockInfo.state().is(AetherTags.Blocks.AETHER_DIRT) && !blockInfo.state().is(AetherBlocks.AETHER_DIRT) && state.get().is(AetherTags.Blocks.AETHER_DIRT)) {
                                 return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), state.get(), null);
                             }
                         }

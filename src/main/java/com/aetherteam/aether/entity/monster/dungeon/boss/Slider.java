@@ -73,10 +73,10 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_Z_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
     private static final Music SLIDER_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SLIDER), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
-        Map.entry(AetherBlocks.LOCKED_CARVED_STONE.get(), (blockState) -> AetherBlocks.CARVED_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.LOCKED_SENTRY_STONE.get(), (blockState) -> AetherBlocks.SENTRY_STONE.get().defaultBlockState()),
-        Map.entry(AetherBlocks.BOSS_DOORWAY_CARVED_STONE.get(), (blockState) -> Blocks.AIR.defaultBlockState()),
-        Map.entry(AetherBlocks.TREASURE_DOORWAY_CARVED_STONE.get(), (blockState) -> AetherBlocks.SKYROOT_TRAPDOOR.get().defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, blockState.getValue(HorizontalDirectionalBlock.FACING)))
+        Map.entry(AetherBlocks.LOCKED_CARVED_STONE, (blockState) -> AetherBlocks.CARVED_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.LOCKED_SENTRY_STONE, (blockState) -> AetherBlocks.SENTRY_STONE.defaultBlockState()),
+        Map.entry(AetherBlocks.BOSS_DOORWAY_CARVED_STONE, (blockState) -> Blocks.AIR.defaultBlockState()),
+        Map.entry(AetherBlocks.TREASURE_DOORWAY_CARVED_STONE, (blockState) -> AetherBlocks.SKYROOT_TRAPDOOR.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, blockState.getValue(HorizontalDirectionalBlock.FACING)))
     ));
 
     /**
@@ -278,7 +278,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
                 }
                 if (this.getDungeon() == null || this.getDungeon().isPlayerWithinRoomInterior(attacker)) { // Only allow damage within the boss room.
                     ItemStack heldItem = attacker.getMainHandItem();
-                    BlockState carvedStone = AetherBlocks.CARVED_STONE.get().defaultBlockState();
+                    BlockState carvedStone = AetherBlocks.CARVED_STONE.defaultBlockState();
                     if (heldItem.is(ItemTags.PICKAXES)
                         || heldItem.is(AetherTags.Items.SLIDER_DAMAGING_ITEMS)
                         || heldItem.isCorrectToolForDrops(carvedStone)) {

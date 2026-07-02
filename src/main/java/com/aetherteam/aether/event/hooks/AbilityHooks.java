@@ -221,29 +221,29 @@ public class AbilityHooks {
          * Blocks able to be stripped, and the equivalent result block.
          */
         public static final Map<Block, Block> STRIPPABLES = (new ImmutableMap.Builder<Block, Block>())
-                .put(AetherBlocks.SKYROOT_LOG.get(), AetherBlocks.STRIPPED_SKYROOT_LOG.get())
-                .put(AetherBlocks.GOLDEN_OAK_LOG.get(), AetherBlocks.STRIPPED_SKYROOT_LOG.get())
-                .put(AetherBlocks.SKYROOT_WOOD.get(), AetherBlocks.STRIPPED_SKYROOT_WOOD.get())
-                .put(AetherBlocks.GOLDEN_OAK_WOOD.get(), AetherBlocks.STRIPPED_SKYROOT_WOOD.get())
+                .put(AetherBlocks.SKYROOT_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG)
+                .put(AetherBlocks.GOLDEN_OAK_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG)
+                .put(AetherBlocks.SKYROOT_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD)
+                .put(AetherBlocks.GOLDEN_OAK_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD)
                 .build();
 
         /**
          * Blocks able to be flattened, and the equivalent result block.
          */
         public static final Map<Block, Block> FLATTENABLES = (new ImmutableMap.Builder<Block, Block>())
-                .put(AetherBlocks.AETHER_GRASS_BLOCK.get(), AetherBlocks.AETHER_DIRT_PATH.get())
-                .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK.get(), AetherBlocks.AETHER_DIRT_PATH.get())
-                .put(AetherBlocks.AETHER_DIRT.get(), AetherBlocks.AETHER_DIRT_PATH.get())
+                .put(AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH)
+                .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH)
+                .put(AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_DIRT_PATH)
                 .build();
 
         /**
          * Blocks able to be tilled, and the equivalent result block.
          */
         public static final Map<Block, Block> TILLABLES = (new ImmutableMap.Builder<Block, Block>())
-                .put(AetherBlocks.AETHER_DIRT.get(), AetherBlocks.AETHER_FARMLAND.get())
-                .put(AetherBlocks.AETHER_GRASS_BLOCK.get(), AetherBlocks.AETHER_FARMLAND.get())
-                .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK.get(), AetherBlocks.AETHER_FARMLAND.get())
-                .put(AetherBlocks.AETHER_DIRT_PATH.get(), AetherBlocks.AETHER_FARMLAND.get())
+                .put(AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_FARMLAND)
+                .put(AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND)
+                .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND)
+                .put(AetherBlocks.AETHER_DIRT_PATH, AetherBlocks.AETHER_FARMLAND)
                 .build();
 
         public static boolean debuffTools;

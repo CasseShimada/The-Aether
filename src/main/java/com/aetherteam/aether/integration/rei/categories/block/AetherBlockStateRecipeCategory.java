@@ -29,7 +29,7 @@ public class AetherBlockStateRecipeCategory<R extends AbstractBlockStateRecipe> 
     }
 
     public static AetherBlockStateRecipeCategory<IcestoneFreezableRecipe> icestoneFreezable() {
-        return new AetherBlockStateRecipeCategory<>("icestone_freezable", AetherREIServerPlugin.ICESTONE_FREEZABLE,84, 28, EntryStacks.of(AetherBlocks.ICESTONE.get()));
+        return new AetherBlockStateRecipeCategory<>("icestone_freezable", AetherREIServerPlugin.ICESTONE_FREEZABLE,84, 28, EntryStacks.of(AetherBlocks.ICESTONE));
     }
 
     public static AetherBlockStateRecipeCategory<AmbrosiumRecipe> ambrosium() {
