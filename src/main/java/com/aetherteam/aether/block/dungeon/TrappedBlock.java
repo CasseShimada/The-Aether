@@ -1,7 +1,6 @@
 package com.aetherteam.aether.block.dungeon;
 
 import com.aetherteam.aether.client.AetherSoundEvents;
-import com.aetherteam.aether.event.AetherEventDispatch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -44,7 +43,7 @@ public class TrappedBlock extends Block {
      */
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof Player player && AetherEventDispatch.onTriggerTrap(player, level, pos, state)) {
+        if (entity instanceof Player player) {
             level.setBlockAndUpdate(pos, this.defaultStateSupplier.get());
             if (level instanceof ServerLevel serverLevel) {
                 float yRot = player.getYRot() * Mth.DEG_TO_RAD;
