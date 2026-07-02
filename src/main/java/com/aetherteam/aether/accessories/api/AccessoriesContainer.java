@@ -29,6 +29,10 @@ public class AccessoriesContainer {
         return this.owner;
     }
 
+    /**
+     * @deprecated Use {@link #owner()} for current accessory storage ownership terminology.
+     */
+    @Deprecated(forRemoval = false)
     public AccessoriesCapability capability() {
         return this.owner;
     }
