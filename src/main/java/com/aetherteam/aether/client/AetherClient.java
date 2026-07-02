@@ -19,7 +19,7 @@ import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
-import com.aetherteam.aether.event.hooks.ItemHooks;
+import com.aetherteam.aether.event.hooks.ItemTooltipHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
@@ -159,7 +159,7 @@ public class AetherClient {
                 AetherColorResolvers.registerBlockColor(client.getBlockColors()));
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
-                ItemHooks.addDungeonTooltips(components, stack, tooltipType));
+                ItemTooltipHooks.addDungeonTooltips(components, stack, tooltipType));
     }
 
     private static void registerScreenCallbacks() {
