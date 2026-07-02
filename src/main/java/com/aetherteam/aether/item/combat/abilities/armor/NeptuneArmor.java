@@ -15,7 +15,6 @@ public interface NeptuneArmor {
      * Boosts the entity's movement in water or bubble columns if wearing a full set of Neptune Armor. The default boost is modified based on duration in water and whether the boots have Depth Strider.
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityUpdate(EntityTickEvent.Post)
      */
     static void boostWaterSwimming(LivingEntity entity) {
         if (EquipmentUtil.hasFullNeptuneSet(entity)) {

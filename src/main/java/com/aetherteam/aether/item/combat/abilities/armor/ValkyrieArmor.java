@@ -13,7 +13,6 @@ public interface ValkyrieArmor {
      * Allows an entity temporary upwards flight if wearing a full set of Valkyrie Armor. This only works for players.
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityUpdate(EntityTickEvent.Post)
      */
     static void handleFlight(LivingEntity entity) {
         if (EquipmentUtil.hasFullValkyrieSet(entity)) {

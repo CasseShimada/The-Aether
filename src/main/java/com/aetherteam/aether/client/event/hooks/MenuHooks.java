@@ -11,8 +11,6 @@ import java.util.Calendar;
 public class MenuHooks {
     /**
      * If the current date is July 22nd, displays the Aether's anniversary splash text.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.MenuListener#onGuiInitialize(ScreenEvent.Init.Post)
      */
     public static void setCustomSplashText(TitleScreen screen) {
         Calendar calendar = Calendar.getInstance();

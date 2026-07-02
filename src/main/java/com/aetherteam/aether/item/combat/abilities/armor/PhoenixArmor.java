@@ -28,7 +28,6 @@ public interface PhoenixArmor {
      * Wearing Phoenix Armor also clears any fire from the wearer and spawns flame particles around them.
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityUpdate(EntityTickEvent.Post)
      */
     static void boostLavaSwimming(LivingEntity entity) {
         if (EquipmentUtil.hasFullPhoenixSet(entity)) {
@@ -65,7 +64,6 @@ public interface PhoenixArmor {
      * Boosts the entity's vertical movement in lava if wearing a full set of Phoenix Armor. The default boost is modified based on duration in lava and whether the boots have Depth Strider.<br><br>
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityUpdate(EntityTickEvent.Post)
      */
     static void boostVerticalLavaSwimming(LivingEntity entity) {
         if (EquipmentUtil.hasFullPhoenixSet(entity)) {
@@ -113,7 +111,6 @@ public interface PhoenixArmor {
      * The methods used for this are {@link PhoenixArmor#breakPhoenixArmor(LivingEntity, ItemStack, ItemStack, EquipmentSlot)} and {@link PhoenixArmor#breakPhoenixGloves(LivingEntity, SlotEntryReference, ItemStack)}.
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityUpdate(EntityTickEvent.Post)
      */
     static void damageArmor(LivingEntity entity) {
         if (entity instanceof Player player) {
@@ -192,7 +189,6 @@ public interface PhoenixArmor {
      * @param entity The {@link LivingEntity} wearing the armor.
      * @param source The attacking {@link DamageSource}.
      * @return Whether the fire damage should be cancelled, as a {@link Boolean}.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityAttack(LivingIncomingDamageEvent)
      */
     static boolean extinguishUser(LivingEntity entity, DamageSource source) {
         return EquipmentUtil.hasFullPhoenixSet(entity) && source.is(DamageTypeTags.IS_FIRE);

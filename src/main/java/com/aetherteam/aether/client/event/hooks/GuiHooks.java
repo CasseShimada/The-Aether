@@ -24,7 +24,6 @@ public class GuiHooks {
      * Checks whether the accessory button isn't disabled by {@link AetherConfig.Client#disable_accessory_button} or accessory tags being empty.
      *
      * @return The {@link Boolean} value.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiInitialize(ScreenEvent.Init.Post)
      */
     public static boolean isAccessoryButtonEnabled() {
         return !AetherConfig.CLIENT.disable_accessory_button.get() && !AetherConfig.COMMON.use_default_accessories_menu.get();
@@ -36,7 +35,6 @@ public class GuiHooks {
      * @param screen  The parent {@link Screen}.
      * @param offsets A {@link ScreenOffset} containing the x and y offsets.
      * @return The {@link AccessoryButton}.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiInitialize(ScreenEvent.Init.Post)
      */
     @Nullable
     public static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
@@ -48,7 +46,6 @@ public class GuiHooks {
      *
      * @param screen The parent {@link Screen}.
      * @return The {@link GridLayout} holding the buttons.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiInitialize(ScreenEvent.Init.Post)
      */
     @Nullable
     public static GridLayout setupPerksButtons(Screen screen) {
@@ -60,7 +57,6 @@ public class GuiHooks {
      *
      * @param screen      The current {@link Screen}.
      * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiDraw(ScreenEvent.Render.Post)
      */
     public static void drawTrivia(Screen screen, GuiGraphicsExtractor guiGraphics) {
         GuiTriviaHooks.drawTrivia(screen, guiGraphics);
@@ -72,7 +68,6 @@ public class GuiHooks {
      *
      * @param screen      The current {@link Screen}.
      * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onGuiDraw(ScreenEvent.Render.Post)
      */
     public static void drawAetherTravelMessage(Screen screen, GuiGraphicsExtractor guiGraphics) {
         GuiTriviaHooks.drawAetherTravelMessage(screen, guiGraphics);
@@ -80,8 +75,6 @@ public class GuiHooks {
 
     /**
      * Handles the time until the Patreon {@link RefreshButton} can be clicked again.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onClientTick(ClientTickEvent.Post)
      */
     public static void handlePatreonRefreshRebound() {
         GuiPerkScreenHooks.handlePatreonRefreshRebound();
@@ -89,8 +82,6 @@ public class GuiHooks {
 
     /**
      * Handles opening the {@link AetherAccessoriesMenu} when clicking the {@link AetherKeys#OPEN_ACCESSORY_INVENTORY} keybind.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onKeyPress(InputEvent.Key)
      */
     public static void openAccessoryMenu() {
         GuiAccessoryMenuHooks.openAccessoryMenu();
@@ -101,7 +92,6 @@ public class GuiHooks {
      *
      * @param key    The {@link Integer} ID for the key.
      * @param action The {@link Integer} for the key action.
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onKeyPress(InputEvent.Key)
      */
     public static void closeContainerMenu(int key, int action) {
         GuiAccessoryMenuHooks.closeContainerMenu(key, action);
@@ -110,8 +100,6 @@ public class GuiHooks {
     /**
      * [CODE COPY] - {@link net.minecraft.client.gui.components.BossHealthOverlay#render(GuiGraphicsExtractor)}
      * Modified to draw the Aether's custom boss health bars.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.GuiListener#onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress)
      */
     public static void drawBossHealthBar(GuiGraphicsExtractor guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
         GuiBossBarHooks.drawBossHealthBar(guiGraphics, x, y, bossEvent);

@@ -15,7 +15,6 @@ public interface GravititeArmor {
      * which is set by {@link com.aetherteam.aether.client.event.hooks.AttachmentClientHooks.AetherPlayerHooks} if the player is holding down the {@link com.aetherteam.aether.client.AetherKeys#GRAVITITE_JUMP_ABILITY} key (this is by default {@link org.lwjgl.glfw.GLFW#GLFW_KEY_LEFT_SHIFT}).
      *
      * @param entity The {@link LivingEntity} wearing the armor.
-     * @see com.aetherteam.aether.event.listeners.abilities.ArmorAbilityListener#onEntityJump(LivingEvent.LivingJumpEvent)
      */
     static void boostedJump(LivingEntity entity) {
         if (EquipmentUtil.hasFullGravititeSet(entity)) {

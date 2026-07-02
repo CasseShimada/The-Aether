@@ -26,7 +26,7 @@ public class LightningKnifeItem extends Item implements ProjectileItem {
 
     /**
      * Spawns a thrown Lightning Knife projectile when right-clicking, consuming the item.<br><br>
-     * {@link com.aetherteam.aether.event.listeners.abilities.WeaponAbilityListener#onLightningStrike(EntityStruckByLightningEvent)} prevents the attacker from being injured by the lightning.
+     * {@link com.aetherteam.aether.event.hooks.AbilityHooks.WeaponHooks#lightningTracking} prevents the attacker from being injured by the lightning.
      *
      * @param level  The {@link Level} of the user.
      * @param player The {@link Player} using this item.

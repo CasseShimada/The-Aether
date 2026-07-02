@@ -27,7 +27,6 @@ public class DimensionClientHooks {
      * @param mode        The {@link net.minecraft.client.renderer.FogRenderer.FogMode}.
      * @param farDistance The far distance for the fog, as a {@link Float}.
      * @return The new far distance for the fog, as a {@link Float}.
-     * @see com.aetherteam.aether.client.event.listeners.DimensionClientListener#onRenderFog(ViewportEvent.RenderFog)
      */
     @Nullable
     public static Float renderNearFog(Camera camera, FogRenderer.FogMode mode, float farDistance) {
@@ -48,7 +47,6 @@ public class DimensionClientHooks {
      * @param camera       The {@link Camera} for rendering the fog.
      * @param nearDistance The near distance for the fog, as a {@link Float}.
      * @return The new near distance for the fog, as a {@link Float}.
-     * @see com.aetherteam.aether.client.event.listeners.DimensionClientListener#onRenderFog(ViewportEvent.RenderFog)
      */
     @Nullable
     public static Float reduceLavaFog(Camera camera, float nearDistance) {
@@ -72,7 +70,6 @@ public class DimensionClientHooks {
      * @param green  The green value of the fog color, as a {@link Float}.
      * @param blue   The blue value of the fog color, as a {@link Float}.
      * @return A {@link Triple} of {@link Float}s, containing the RGB values for the fog color.
-     * @see com.aetherteam.aether.client.event.listeners.DimensionClientListener#onRenderFogColor(ViewportEvent.ComputeFogColor)
      */
     @Nullable
     public static Triple<Float, Float, Float> renderFogColors(Camera camera, float red, float green, float blue) {
@@ -103,7 +100,6 @@ public class DimensionClientHooks {
      * @param green  The green value of the fog color, as a {@link Float}.
      * @param blue   The blue value of the fog color, as a {@link Float}.
      * @return A {@link Triple} of {@link Float}s, containing the RGB values for the fog color.
-     * @see com.aetherteam.aether.client.event.listeners.DimensionClientListener#onRenderFogColor(ViewportEvent.ComputeFogColor)
      */
     @Nullable
     public static Triple<Float, Float, Float> adjustWeatherFogColors(Camera camera, float red, float green, float blue) {
@@ -148,8 +144,6 @@ public class DimensionClientHooks {
 
     /**
      * Ticks time in clientside Aether levels.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.DimensionClientListener#onClientTick(ClientTickEvent.Post)
      */
     public static void tickTime() {
         ClientLevel level = Minecraft.getInstance().level;

@@ -19,8 +19,6 @@ import java.util.Optional;
 public class AudioHooks {
     /**
      * Stops other music from playing over Aether music.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.AudioListener#onPlaySound(PlaySoundEvent)
      */
     public static boolean shouldCancelMusic(SoundInstance sound) {
         if (Minecraft.getInstance().level != null && !AetherConfig.CLIENT.disable_music_manager.get()) {
@@ -36,8 +34,6 @@ public class AudioHooks {
 
     /**
      * Prevents ambient Aether Portal sounds from overlapping other portal sounds.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.AudioListener#onPlaySound(PlaySoundEvent)
      */
     public static boolean preventAmbientPortalSound(SoundEngine soundEngine, SoundInstance sound) {
         if (sound != null) {
@@ -54,8 +50,6 @@ public class AudioHooks {
 
     /**
      * Stops ambient Aether Portal sounds when other portal sounds are activated.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.AudioListener#onPlaySound(PlaySoundEvent)
      */
     public static void overrideActivatedPortalSound(SoundEngine soundEngine, SoundInstance sound) {
         if (sound != null) {
@@ -80,8 +74,6 @@ public class AudioHooks {
 
     /**
      * Ticks the Aether's music manager.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.AudioListener#onClientTick(ClientTickEvent.Post)
      */
     public static void tick() {
         if (!Minecraft.getInstance().isPaused() && Minecraft.getInstance().level != null && !AetherConfig.CLIENT.disable_music_manager.get()) {
@@ -91,8 +83,6 @@ public class AudioHooks {
 
     /**
      * Resets the music on respawn.
-     *
-     * @see com.aetherteam.aether.client.event.listeners.AudioListener#onPlayerRespawn(ClientPlayerNetworkEvent.Clone)
      */
     public static void stop() {
         if (!AetherConfig.CLIENT.disable_music_manager.get()) {
