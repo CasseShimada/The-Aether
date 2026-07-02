@@ -65,12 +65,12 @@ public final class Aether {
 
         AetherDataAttachments.bootstrap();
         AetherGameEvents.bootstrap();
+        AetherLootFunctions.bootstrap();
+        AetherLootConditions.bootstrap();
+        AetherDataComponents.bootstrap();
+        AetherRecipeBookCategories.bootstrap();
 
         initializeClasses(
-                AetherLootFunctions.class,
-                AetherLootConditions.class,
-                AetherDataComponents.class,
-                AetherRecipeBookCategories.class,
                 AetherRecipeTypes.class,
                 AetherRecipeSerializers.class
         );

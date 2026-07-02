@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 
-public class AetherRecipeBookCategories {
+public final class AetherRecipeBookCategories {
     public static final RecipeBookCategory ENCHANTING_FOOD = register("enchanting_food");
     public static final RecipeBookCategory ENCHANTING_BLOCKS = register("enchanting_blocks");
     public static final RecipeBookCategory ENCHANTING_MISC = register("enchanting_misc");
@@ -23,5 +23,11 @@ public class AetherRecipeBookCategories {
 
     private static RecipeBookCategory register(String name) {
         return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(Aether.MODID, name), new RecipeBookCategory());
+    }
+
+    private AetherRecipeBookCategories() {
+    }
+
+    public static void bootstrap() {
     }
 }
