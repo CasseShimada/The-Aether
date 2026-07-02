@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 /**
  * Fabric attachment state storing whether a shot {@link AbstractArrow} was fired from a Phoenix Bow. This attachment works for all arrow types.
  *
- * @see com.aetherteam.aether.event.hooks.AbilityHooks.WeaponHooks#phoenixArrowHit(HitResult, Projectile)
+ * @see com.aetherteam.aether.event.hooks.WeaponAbilityHooks#phoenixArrowHit(HitResult, Projectile)
  * @see com.aetherteam.aether.mixin.mixins.common.AbstractArrowMixin
  * @see com.aetherteam.aether.mixin.mixins.client.TippableArrowRendererMixin
  */

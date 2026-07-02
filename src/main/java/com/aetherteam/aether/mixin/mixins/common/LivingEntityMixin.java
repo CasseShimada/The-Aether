@@ -6,6 +6,7 @@ import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.event.hooks.ArmorAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.event.hooks.EntityCombatHooks;
+import com.aetherteam.aether.event.hooks.WeaponAbilityHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
@@ -167,7 +168,7 @@ public abstract class LivingEntityMixin {
     private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         AbilityHooks.AccessoryHooks.setAttack(source);
-        AbilityHooks.WeaponHooks.stickDart(livingEntity, source);
+        WeaponAbilityHooks.stickDart(livingEntity, source);
         if (AbilityHooks.AccessoryHooks.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
             cir.setReturnValue(false);
         }
@@ -177,8 +178,8 @@ public abstract class LivingEntityMixin {
     private float aether$modifyIncomingDamage(float amount, ServerLevel level, DamageSource source) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         Entity direct = source.getDirectEntity();
-        amount = AbilityHooks.WeaponHooks.reduceWeaponEffectiveness(livingEntity, direct, amount);
-        return AbilityHooks.WeaponHooks.reduceArmorEffectiveness(livingEntity, direct, amount);
+        amount = WeaponAbilityHooks.reduceWeaponEffectiveness(livingEntity, direct, amount);
+        return WeaponAbilityHooks.reduceArmorEffectiveness(livingEntity, direct, amount);
     }
 
     @ModifyReturnValue(method = "getVisibilityPercent(Lnet/minecraft/world/entity/Entity;)D", at = @At("RETURN"))
