@@ -2,7 +2,6 @@ package com.aetherteam.aether.event;
 
 import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -12,17 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 
 public class AetherEventDispatch {
-    /**
-     * @see PlacementBanEvent.SpawnParticles
-     */
-    public static PlacementBanEvent.SpawnParticles onPlacementSpawnParticles(LevelAccessor level, BlockPos pos, @Nullable Direction face, @Nullable ItemStack stack, @Nullable BlockState state) {
-        PlacementBanEvent.SpawnParticles event = new PlacementBanEvent.SpawnParticles(level, pos, face, stack, state);
-        if (!event.isCanceled()) {
-            RecipeHooks.banOrConvert(level, pos);
-        }
-        return event;
-    }
-
     /**
      * @see PlacementConvertEvent
      */
