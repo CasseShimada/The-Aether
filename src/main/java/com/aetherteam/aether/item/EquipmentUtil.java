@@ -4,7 +4,7 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -167,7 +167,7 @@ public final class EquipmentUtil {
      * @return The {@link List} of {@link SlotEntryReference}s for the accessory items.
      */
     public static List<SlotEntryReference> getAccessories(LivingEntity entity, Item item) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories != null) {
             return accessories.getEquipped(item);
         }
@@ -277,7 +277,7 @@ public final class EquipmentUtil {
     }
 
     public static Optional<SlotEntryReference> findFirstAccessory(LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories != null) {
             SlotEntryReference slotEntryReference = accessories.getFirstEquipped(predicate);
             if (slotEntryReference != null) {

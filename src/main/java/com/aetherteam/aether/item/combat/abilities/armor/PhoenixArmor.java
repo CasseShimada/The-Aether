@@ -3,7 +3,7 @@ package com.aetherteam.aether.item.combat.abilities.armor;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
@@ -171,7 +171,7 @@ public interface PhoenixArmor {
      */
     private static void breakPhoenixGloves(LivingEntity entity, SlotEntryReference slotResult, ItemStack outcomeStack) {
         outcomeStack = new ItemStack(outcomeStack.typeHolder(), 1, slotResult.stack().getComponentsPatch());
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(slotResult.reference().type());
             if (accessoriesContainer != null) {
