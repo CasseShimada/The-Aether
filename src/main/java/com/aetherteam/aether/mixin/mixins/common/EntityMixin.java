@@ -2,7 +2,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
@@ -85,7 +85,7 @@ public class EntityMixin {
                 Entity target = entity.teleport(transition);
                 if (target != null) {
                     if (target instanceof ServerPlayer) {
-                        DimensionHooks.teleportationTimer = 500; // Sets a timer marking that the player teleported from falling out of the Aether.
+                        DimensionTravelState.teleportationTimer = 500; // Sets a timer marking that the player teleported from falling out of the Aether.
                     }
                 }
                 return target;

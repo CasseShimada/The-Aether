@@ -64,7 +64,7 @@ public class GuiHooks {
 
     /**
      * Draws text for leaving and entering the Aether.
-     * Checks for when to display different text are handled by {@link DimensionHooks}.
+     * Checks for when to display different text are handled by {@link DimensionTravelState}.
      *
      * @param screen      The current {@link Screen}.
      * @param guiGraphics The rendering {@link GuiGraphicsExtractor}.

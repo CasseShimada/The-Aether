@@ -1,7 +1,7 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -29,7 +29,7 @@ public record LeavingAetherPacket(boolean playerLeavingAether) implements Custom
 
     public static void execute(LeavingAetherPacket payload, AetherPayloadContext context) {
         if (context.player() != null) {
-            DimensionHooks.playerLeavingAether = payload.playerLeavingAether();
+            DimensionTravelState.playerLeavingAether = payload.playerLeavingAether();
         }
     }
 }

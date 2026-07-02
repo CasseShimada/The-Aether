@@ -40,7 +40,7 @@ public final class DimensionTravelHooks {
             return;
         }
 
-        updateTravelDisplay(false, DimensionHooks.playerLeavingAether);
+        updateTravelDisplay(false, DimensionTravelState.playerLeavingAether);
     }
 
     public static void removePlayerAerbunny(Entity entity) {
@@ -55,22 +55,22 @@ public final class DimensionTravelHooks {
 
     public static void travelling(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (DimensionHooks.teleportationTimer > 0) {
+            if (DimensionTravelState.teleportationTimer > 0) {
                 ServerGamePacketListenerImplAccessor accessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;
                 accessor.aether$setAboveGroundTickCount(0);
                 accessor.aether$setAboveGroundVehicleTickCount(0);
-                DimensionHooks.teleportationTimer--;
+                DimensionTravelState.teleportationTimer--;
             }
-            if (DimensionHooks.teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
-                DimensionHooks.teleportationTimer = 0;
+            if (DimensionTravelState.teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
+                DimensionTravelState.teleportationTimer = 0;
             }
         }
     }
 
     private static void updateTravelDisplay(boolean visible, boolean leavingAether) {
-        DimensionHooks.displayAetherTravel = visible;
+        DimensionTravelState.displayAetherTravel = visible;
         if (visible) {
-            DimensionHooks.playerLeavingAether = leavingAether;
+            DimensionTravelState.playerLeavingAether = leavingAether;
         }
         PacketDistributor.sendToAllPlayers(new AetherTravelPacket(visible));
         if (visible) {

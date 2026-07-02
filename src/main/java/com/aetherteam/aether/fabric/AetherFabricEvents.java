@@ -4,7 +4,6 @@ import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
-import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;

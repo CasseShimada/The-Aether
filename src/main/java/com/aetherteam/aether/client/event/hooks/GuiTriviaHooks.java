@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -36,16 +36,16 @@ final class GuiTriviaHooks {
 
     static void drawAetherTravelMessage(Screen screen, GuiGraphicsExtractor guiGraphics) {
         if (!(screen instanceof LevelLoadingScreen || screen instanceof ProgressScreen)) {
-            DimensionHooks.displayAetherTravel = false;
+            DimensionTravelState.displayAetherTravel = false;
             return;
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player == null || !DimensionHooks.displayAetherTravel) {
+        if (minecraft.player == null || !DimensionTravelState.displayAetherTravel) {
             return;
         }
 
-        Component message = DimensionHooks.playerLeavingAether
+        Component message = DimensionTravelState.playerLeavingAether
                 ? Component.translatable("gui.aether.descending")
                 : Component.translatable("gui.aether.ascending");
         guiGraphics.centeredText(minecraft.font, message, screen.width / 2, AetherConfig.CLIENT.portal_text_y.get(), 16777215);
