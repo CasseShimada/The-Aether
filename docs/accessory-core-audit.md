@@ -1,13 +1,13 @@
 # Aether Accessory Core Audit (Stage 1)
 
-This checklist tracks the self-written Aether accessory core required before any vanilla/twilight held/equipped compatibility work.
+This checklist tracks the self-written Aether accessory core built on Fabric attachments before any vanilla/twilight held/equipped compatibility work.
 
-## Stage 1: Core Capability Matrix
+## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |
 |---|---|---|---|
-| Slot storage model | Runtime-only `WeakHashMap<LivingEntity, AccessoriesCapability>` with in-memory `SimpleContainer` | Persist inventory into Fabric Attachment (`AttachmentType`) and load/write through containers | DONE |
-| Serialization / deserialization | No persistent accessory serialization for player/mob accessory slots | Add codec-backed persistent attachment for slot stacks, cosmetic stacks, render flags | DONE |
+| Slot storage model | Runtime-only `WeakHashMap<LivingEntity, AccessoriesCapability>` with in-memory `SimpleContainer` | Persist inventory into Fabric attachment (`AttachmentType`) and load/write through containers | DONE |
+| Serialization / deserialization | No persistent accessory serialization for player/mob accessory slots | Add codec-backed Fabric attachment for slot stacks, cosmetic stacks, render flags | DONE |
 | Lifecycle robustness (join/rejoin/clone/dimension/respawn/menu reopen) | No dedicated accessory lifecycle sync/rehydration path | Add accessory sync hooks on join/respawn/dimension and deterministic runtime rehydrate | DONE |
 | Equip/unequip/replace transition closure | No unified diff; many paths set slot items directly without lifecycle callbacks | Add centralized transition diff engine with guaranteed `onUnequip` rollback on replacement/removal | DONE |
 | Stack mutation closure (count/NBT/durability changes) | Container callbacks miss in-place stack mutation; stale effects possible | Add per-tick stack fingerprint diff to detect in-place mutations and re-evaluate state | DONE |
