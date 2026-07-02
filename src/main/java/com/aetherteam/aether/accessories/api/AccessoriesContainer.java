@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AccessoriesContainer {
-    private final AccessoriesCapability capability;
+    private final AccessoriesCapability owner;
     private final SlotType slotType;
     private final TrackedSimpleContainer accessories;
     private final TrackedSimpleContainer cosmeticAccessories;
     private final boolean[] renderFlags;
     private boolean suppressUpdates;
 
-    public AccessoriesContainer(AccessoriesCapability capability, SlotType slotType) {
-        this.capability = capability;
+    public AccessoriesContainer(AccessoriesCapability owner, SlotType slotType) {
+        this.owner = owner;
         this.slotType = slotType;
         this.accessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
         this.cosmeticAccessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
@@ -26,7 +26,7 @@ public class AccessoriesContainer {
     }
 
     public AccessoriesCapability capability() {
-        return this.capability;
+        return this.owner;
     }
 
     public SlotType slotType() {
@@ -87,7 +87,7 @@ public class AccessoriesContainer {
 
     private void onContainerChanged() {
         if (!this.suppressUpdates) {
-            this.capability.onContainerChanged(this.slotType.name());
+            this.owner.onContainerChanged(this.slotType.name());
         }
     }
 

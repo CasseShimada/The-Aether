@@ -57,9 +57,9 @@ public class AccessoriesCapability {
         if (entity == null) {
             return null;
         }
-        AccessoriesCapability capability = CAPABILITIES.computeIfAbsent(entity, AccessoriesCapability::new);
-        capability.ensureContainers();
-        return capability;
+        AccessoriesCapability accessories = CAPABILITIES.computeIfAbsent(entity, AccessoriesCapability::new);
+        accessories.ensureContainers();
+        return accessories;
     }
 
     public static void evict(LivingEntity entity) {
