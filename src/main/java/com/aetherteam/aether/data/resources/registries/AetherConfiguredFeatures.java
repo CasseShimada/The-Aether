@@ -82,10 +82,10 @@ public class AetherConfiguredFeatures {
     @SuppressWarnings("deprecation")
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
-        register(context, COLD_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD.get(), AetherConfiguredFeatureBuilders.aercloud(16, AetherFeatureStates.COLD_AERCLOUD));
-        register(context, BLUE_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD.get(), AetherConfiguredFeatureBuilders.aercloud(8, AetherFeatureStates.BLUE_AERCLOUD));
-        register(context, GOLDEN_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD.get(), AetherConfiguredFeatureBuilders.aercloud(4, AetherFeatureStates.GOLDEN_AERCLOUD));
-        register(context, CRYSTAL_ISLAND_CONFIGURATION, AetherFeatures.CRYSTAL_ISLAND.get(), NoneFeatureConfiguration.INSTANCE);
+        register(context, COLD_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD, AetherConfiguredFeatureBuilders.aercloud(16, AetherFeatureStates.COLD_AERCLOUD));
+        register(context, BLUE_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD, AetherConfiguredFeatureBuilders.aercloud(8, AetherFeatureStates.BLUE_AERCLOUD));
+        register(context, GOLDEN_AERCLOUD_CONFIGURATION, AetherFeatures.AERCLOUD, AetherConfiguredFeatureBuilders.aercloud(4, AetherFeatureStates.GOLDEN_AERCLOUD));
+        register(context, CRYSTAL_ISLAND_CONFIGURATION, AetherFeatures.CRYSTAL_ISLAND, NoneFeatureConfiguration.INSTANCE);
         register(context, SKYROOT_TREE_CONFIGURATION, Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
                         BlockStateProvider.simple(AetherFeatureStates.SKYROOT_LOG),
@@ -130,13 +130,13 @@ public class AetherConfiguredFeatures {
                 NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.PURPLE_FLOWER, 1)), 64));
         register(context, BERRY_BUSH_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK,
                 NitrogenConfiguredFeatureBuilders.grassPatch(new WeightedStateProvider(WeightedList.<BlockState>builder().add(AetherFeatureStates.BERRY_BUSH, 1)), 32));
-        register(context, QUICKSOIL_SHELF_CONFIGURATION, AetherFeatures.SHELF.get(),
+        register(context, QUICKSOIL_SHELF_CONFIGURATION, AetherFeatures.SHELF,
                 new ShelfConfiguration(
                         BlockStateProvider.simple(AetherFeatureStates.QUICKSOIL),
                         ConstantFloat.of(Mth.sqrt(12)),
                         UniformInt.of(0, 48),
                         HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.AETHER_GRASS_BLOCK.get())));
-        register(context, WATER_LAKE_CONFIGURATION, AetherFeatures.LAKE.get(),
+        register(context, WATER_LAKE_CONFIGURATION, AetherFeatures.LAKE,
                 AetherConfiguredFeatureBuilders.lake(BlockStateProvider.simple(Blocks.WATER), BlockStateProvider.simple(AetherFeatureStates.AETHER_GRASS_BLOCK)));
         register(context, WATER_SPRING_CONFIGURATION, Feature.SPRING,
                 AetherConfiguredFeatureBuilders.spring(Fluids.WATER.defaultFluidState(), true, 4, 1, HolderSet.direct(Block::builtInRegistryHolder, AetherBlocks.HOLYSTONE.get(), AetherBlocks.AETHER_DIRT.get())));
