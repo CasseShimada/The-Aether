@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
-public class AetherSoundEvents {
+public final class AetherSoundEvents {
     public static final SoundEvent BLOCK_AETHER_PORTAL_AMBIENT = register("block.aether_portal.ambient");
     public static final SoundEvent BLOCK_AETHER_PORTAL_TRAVEL = register("block.aether_portal.travel");
     public static final SoundEvent BLOCK_AETHER_PORTAL_TRIGGER = register("block.aether_portal.trigger");
@@ -180,5 +180,11 @@ public class AetherSoundEvents {
     private static SoundEvent registerHolder(String location) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, location);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
+    }
+
+    private AetherSoundEvents() {
+    }
+
+    public static void bootstrap() {
     }
 }

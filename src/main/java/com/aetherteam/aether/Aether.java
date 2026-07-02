@@ -74,9 +74,9 @@ public final class Aether {
 
         AetherAttributes.bootstrap();
         AetherEffects.bootstrap();
+        AetherParticleTypes.bootstrap();
 
         initializeClasses(
-                AetherParticleTypes.class,
                 AetherTreeDecoratorTypes.class,
                 AetherTrunkPlacerTypes.class,
                 AetherFoliagePlacerTypes.class,
@@ -87,8 +87,11 @@ public final class Aether {
                 AetherStructurePieceTypes.class,
                 AetherPoi.class,
                 AetherFeatures.class,
-                AetherMenuTypes.class,
-                AetherSoundEvents.class,
+                AetherMenuTypes.class
+        );
+        AetherSoundEvents.bootstrap();
+
+        initializeClasses(
                 AetherCreativeTabs.class,
                 AetherBlocks.class,
                 AetherBlockEntityTypes.class,

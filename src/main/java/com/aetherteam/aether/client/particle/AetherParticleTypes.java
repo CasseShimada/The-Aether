@@ -9,7 +9,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-public class AetherParticleTypes {
+public final class AetherParticleTypes {
     public static final SimpleParticleType AETHER_PORTAL = register("aether_portal", false);
     public static final SimpleParticleType CRYSTAL_LEAVES = register("crystal_leaves", false);
     public static final SimpleParticleType BOSS_DOORWAY_BLOCK = register("door", true);
@@ -37,9 +37,15 @@ public class AetherParticleTypes {
         return Registry.register(BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), new PublicSimpleParticleType(alwaysShow));
     }
 
+    private AetherParticleTypes() {
+    }
+
     private static final class PublicSimpleParticleType extends SimpleParticleType {
         private PublicSimpleParticleType(boolean alwaysShow) {
             super(alwaysShow);
         }
+    }
+
+    public static void bootstrap() {
     }
 }
