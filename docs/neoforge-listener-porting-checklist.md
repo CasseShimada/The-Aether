@@ -1,6 +1,8 @@
-# NeoForge Listener Porting Checklist
+# Fabric Listener Porting Record
 
-This checklist maps legacy NeoForge listener points from `The-Aether` 1.21.1 to the current Fabric-side implementation in `The-Aether-fabric` 26.2.
+This historical record maps legacy NeoForge listener points from `The-Aether` 1.21.1 to the current Fabric-side implementation in `The-Aether-fabric` 26.2. It is retained as porting documentation only; it is not an active compatibility or old-save migration contract.
+
+Old Curios, ForgeCaps, and `neoforge:attachments` save migration support is intentionally removed. Current Fabric attachment storage remains supported.
 
 ## Dimension Listener
 
@@ -37,7 +39,7 @@ This checklist maps legacy NeoForge listener points from `The-Aether` 1.21.1 to 
 | accessory spawn equip on mob spawn | `MobMixin#finalizeSpawn` calling `spawnWithAccessories` | Done |
 | accessory drop handling on death | `LivingEntityMixin#dropCustomDeathLoot` bridge | Done |
 
-## Item / Perk / Recipe / Capability
+## Item / Perk / Recipe / Attachment
 
 | NeoForge listener point | Fabric equivalent / bridge | Status |
 | --- | --- | --- |

@@ -18,7 +18,7 @@
 
 7. Open the locally cloned repository with IntelliJ IDEA and set up the project workspace.
 
-   If you're not familiar with setting up IntelliJ IDEA for use with ForgeGradle projects, cpw has created a setup video on a few of the basics of ForgeGradle [here](https://www.youtube.com/watch?v=PfmlNiHonV0).
+   Use IntelliJ IDEA's Gradle import flow for this Fabric Loom workspace. Let Gradle sync finish before running or editing generated run configurations.
 
 8. Create a branch for your changes named `feat/<username>/<title>`. Read up on your relevant Git tutorial if you are unsure how to do this.
 

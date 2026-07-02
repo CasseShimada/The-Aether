@@ -1,4 +1,8 @@
-# NeoForge Listener Migration Checklist
+# Fabric Listener Migration Record
+
+This historical record documents the original listener migration from NeoForge to Fabric. It is kept for maintenance context only; Fabric is the runtime target, and removed old-save migration entries are not active compatibility commitments.
+
+Old Curios, ForgeCaps, and `neoforge:attachments` save migration support is intentionally removed. Current Fabric attachment storage remains supported.
 
 Baseline: `The-Aether` branch `1.21.1-develop` event listeners.
 
@@ -16,7 +20,7 @@ Status legend:
 | `DimensionListener#onWaterExistsInsidePortalFrame` | `LevelMixin#setBlock(..., flags, recursion)` tail -> `DimensionHooks.detectWaterInFrame` | DONE | Server-side water frame detection bridge restored for portal auto-creation. |
 | `DimensionListener#onWorldTick` | `ServerTickEvents.END_WORLD_TICK` -> `DimensionHooks.tickTime/checkEternalDayConfig` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onEntityTravelToDimension` | `EntityMixin#teleport(TeleportTransition)` -> `DimensionHooks.dimensionTravel/removePlayerAerbunny` | DONE | Pre-transfer hook restored for entity/player travel flow. |
-| `DimensionListener#onPlayerChangedDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` | DONE | `remountPlayerAerbunny` + capability/time sync. |
+| `DimensionListener#onPlayerChangedDimension` | `ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD` | DONE | `remountPlayerAerbunny` + attachment/time sync. |
 | `DimensionListener#onPlayerTraveling` | `PlayerMixin#tick()` | DONE | Calls `DimensionHooks.travelling`. |
 | `DimensionListener#onWorldLoad` | `ServerWorldEvents.LOAD` -> `DimensionHooks.initializeLevelData` | DONE | Registered in `AetherFabricEvents`. |
 | `DimensionListener#onSleepFinish` | `ServerLevelMixin#wakeUpAllPlayers` tail -> `DimensionHooks.finishSleep` | DONE | Sleep-finish time rewrite parity restored for Aether dimensions. |

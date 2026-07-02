@@ -72,7 +72,7 @@ public abstract class PlayerMixin {
     }
 
     /**
-     * Mirrors NeoForge player lifecycle tick callbacks for Fabric, so attachment and dimension travel hooks run every tick.
+     * Runs Aether player attachment and dimension travel hooks from the vanilla player tick.
      */
     @Inject(at = @At("TAIL"), method = "tick()V")
     private void tick(CallbackInfo ci) {

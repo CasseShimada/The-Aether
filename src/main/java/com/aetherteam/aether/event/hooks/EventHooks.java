@@ -16,7 +16,7 @@ import net.minecraft.world.phys.HitResult;
 import javax.annotation.Nullable;
 
 /**
- * Fabric-side compatibility layer for legacy EventHooks calls.
+ * Fabric-side hook helpers for call sites that need simple Minecraft defaults.
  * These methods use vanilla default behavior when no loader-specific hook exists.
  */
 public final class EventHooks {

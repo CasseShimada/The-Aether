@@ -288,7 +288,7 @@ public class EntityHooks {
     }
 
     /**
-     * Bridges custom NeoForge mob-category behavior by performing low-frequency natural spawn attempts
+     * Performs low-frequency natural spawn attempts
      * for Aether sky mobs that should remain present around active players.
      */
     public static void tickAetherSkySpawns(ServerLevel level) {
