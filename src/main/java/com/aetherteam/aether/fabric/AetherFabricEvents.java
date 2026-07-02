@@ -10,7 +10,8 @@ import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
 import com.aetherteam.aether.event.hooks.EntityBucketHooks;
-import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntityEffectHooks;
+import com.aetherteam.aether.event.hooks.EntityGoalHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
@@ -81,7 +82,7 @@ public final class AetherFabricEvents {
 
     private static void registerEntityEvents() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            EntityHooks.addGoals(entity);
+            EntityGoalHooks.addGoals(entity);
             if (entity instanceof Player player) {
                 player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onJoinLevel(player);
             }
@@ -91,7 +92,7 @@ public final class AetherFabricEvents {
         });
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> AccessoryRuntime.clear(entity));
         ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
-                !EntityHooks.preventInebriation(entity, effectInstance));
+                !EntityEffectHooks.preventInebriation(entity, effectInstance));
     }
 
     private static void registerLevelEvents() {

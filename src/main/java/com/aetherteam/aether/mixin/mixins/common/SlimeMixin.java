@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntitySplitHooks;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -16,6 +16,6 @@ public class SlimeMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z")
     )
     private boolean aether$preventSwetSplit(Level level, Entity entity) {
-        return !EntityHooks.preventSplit((Mob) (Object) this);
+        return !EntitySplitHooks.preventSplit((Mob) (Object) this);
     }
 }

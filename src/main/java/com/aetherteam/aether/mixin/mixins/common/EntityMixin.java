@@ -4,7 +4,6 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
-import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.EntityLightningHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;

@@ -359,7 +359,7 @@ public class AetherItems {
     /**
      * Sets up the possible replacements for vanilla buckets to Skyroot buckets.
      *
-     * @see com.aetherteam.aether.event.hooks.EntityHooks#pickupBucketable(Entity, Player, InteractionHand)
+     * @see com.aetherteam.aether.event.hooks.EntityBucketHooks#pickupBucketable
      */
     public static void setupBucketReplacements() {
         SkyrootBucketItem.REPLACEMENTS.put(() -> Items.WATER_BUCKET, () -> AetherItems.SKYROOT_WATER_BUCKET);

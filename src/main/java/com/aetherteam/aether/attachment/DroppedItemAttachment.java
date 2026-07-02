@@ -3,18 +3,14 @@ package com.aetherteam.aether.attachment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Optional;
 
 /**
  * Fabric attachment state used to track {@link ItemEntity}s dropped by player death.
- *
- * @see com.aetherteam.aether.event.hooks.EntityHooks#trackDrops(LivingEntity, Collection)
  */
 public class DroppedItemAttachment {
     private Optional<Integer> ownerID;
