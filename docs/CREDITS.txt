@@ -139,7 +139,7 @@ TunefulTurnip
 - Fixes to the Slider ignoring players not in line of sight.
 
 Ultrasquid9
-- Cleanup of legacy accessory data converter.
+- Cleanup of accessory data handling.
 
 VoidLeech
 - Fixes to Skyroot Milk Bucket not working properly with milk fluid.
