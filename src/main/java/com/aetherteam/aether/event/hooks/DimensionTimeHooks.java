@@ -8,6 +8,7 @@ import com.aetherteam.aether.mixin.mixins.common.accessor.ServerLevelAccessor;
 import com.aetherteam.aether.util.LevelTimeUtil;
 import com.aetherteam.aether.world.AetherLevelData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -71,5 +72,11 @@ public final class DimensionTimeHooks {
     public static boolean isEternalDay(Player player) {
         return player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)
                 && player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
+    }
+
+    public static void syncAetherTime(Player player) {
+        if (player instanceof ServerPlayer serverPlayer && player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)) {
+            player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).updateEternalDay(serverPlayer);
+        }
     }
 }
