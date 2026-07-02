@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import net.minecraft.core.BlockPos;
 import com.aetherteam.aether.registry.RegistryConstructionContext;
@@ -32,8 +32,8 @@ public class BlockMixin {
     @Inject(method = "playerDestroy", at = @At("TAIL"))
     private void aether$onPlayerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
         if (!level.isClientSide()) {
-            AbilityHooks.AccessoryHooks.damageZaniteRing(player, level, state, pos);
-            AbilityHooks.AccessoryHooks.damageZanitePendant(player, level, state, pos);
+            AccessoryAbilityHooks.damageZaniteRing(player, level, state, pos);
+            AccessoryAbilityHooks.damageZanitePendant(player, level, state, pos);
             ToolAbilityHooks.handleHolystoneToolAbility(player, level, pos, stack, state);
         }
     }

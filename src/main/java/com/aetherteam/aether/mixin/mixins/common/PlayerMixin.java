@@ -3,7 +3,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.monster.Swet;
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -36,13 +36,13 @@ public abstract class PlayerMixin {
      *
      * @param target The target {@link Entity}.
      * @param ci     The {@link CallbackInfo} for the void method return.
-     * @see AbilityHooks.AccessoryHooks#damageGloves(Player)
+     * @see AccessoryAbilityHooks#damageGloves(Player)
      */
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setLastHurtMob(Lnet/minecraft/world/entity/Entity;)V", shift = At.Shift.AFTER), method = "attack(Lnet/minecraft/world/entity/Entity;)V")
     private void attack(Entity target, CallbackInfo ci) {
         Player player = (Player) (Object) this;
         if (target instanceof LivingEntity) {
-            AbilityHooks.AccessoryHooks.damageGloves(player);
+            AccessoryAbilityHooks.damageGloves(player);
         }
     }
 
@@ -103,8 +103,8 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         ItemStack stack = player.getMainHandItem();
         float speed = original;
-        speed = AbilityHooks.AccessoryHooks.handleZaniteRingAbility(player, speed);
-        speed = AbilityHooks.AccessoryHooks.handleZanitePendantAbility(player, speed);
+        speed = AccessoryAbilityHooks.handleZaniteRingAbility(player, speed);
+        speed = AccessoryAbilityHooks.handleZanitePendantAbility(player, speed);
         speed = ToolAbilityHooks.handleZaniteToolAbility(stack, speed);
         return ToolAbilityHooks.reduceToolEffectiveness(player, state, stack, speed);
     }

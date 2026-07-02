@@ -2,7 +2,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
-import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
 import com.aetherteam.aether.event.hooks.ArmorAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.event.hooks.EntityCombatHooks;
@@ -167,9 +167,9 @@ public abstract class LivingEntityMixin {
     @Inject(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
     private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-        AbilityHooks.AccessoryHooks.setAttack(source);
+        AccessoryAbilityHooks.setAttack(source);
         WeaponAbilityHooks.stickDart(livingEntity, source);
-        if (AbilityHooks.AccessoryHooks.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
+        if (AccessoryAbilityHooks.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
             cir.setReturnValue(false);
         }
     }
@@ -186,11 +186,11 @@ public abstract class LivingEntityMixin {
     private double aether$modifyVisibility(double original, Entity lookingEntity) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (lookingEntity != null) {
-            if (AbilityHooks.AccessoryHooks.preventTargeting(livingEntity, lookingEntity)
-                    && !AbilityHooks.AccessoryHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+            if (AccessoryAbilityHooks.preventTargeting(livingEntity, lookingEntity)
+                    && !AccessoryAbilityHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
                 return 0.0D;
             }
-            if (AbilityHooks.AccessoryHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+            if (AccessoryAbilityHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
                 return 1.0D;
             }
         }
