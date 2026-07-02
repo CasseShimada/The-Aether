@@ -16,14 +16,6 @@ public class AccessoriesContainer {
     private final boolean[] renderFlags;
     private boolean suppressUpdates;
 
-    /**
-     * @deprecated Containers are created by the current accessory storage implementation.
-     */
-    @Deprecated(forRemoval = false)
-    public AccessoriesContainer(AccessoriesCapability owner, SlotType slotType) {
-        this((AccessoriesContainerOwner) owner, slotType);
-    }
-
     static AccessoriesContainer create(AccessoriesContainerOwner owner, SlotType slotType) {
         return new AccessoriesContainer(owner, slotType);
     }
@@ -39,14 +31,6 @@ public class AccessoriesContainer {
 
     public AccessoriesStorage owner() {
         return this.owner;
-    }
-
-    /**
-     * @deprecated Use {@link #owner()} for current accessory storage ownership terminology.
-     */
-    @Deprecated(forRemoval = false)
-    public AccessoriesCapability capability() {
-        return (AccessoriesCapability) this.owner;
     }
 
     public SlotType slotType() {

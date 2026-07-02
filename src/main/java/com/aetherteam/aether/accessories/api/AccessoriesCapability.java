@@ -48,23 +48,6 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
         this.entity = entity;
     }
 
-    /**
-     * @deprecated Use {@link AccessoriesAPI#getAccessories(LivingEntity)} so callers do not depend on the legacy capability-shaped type name.
-     */
-    @Nullable
-    @Deprecated(forRemoval = false)
-    public static AccessoriesCapability get(LivingEntity entity) {
-        return EntityAccessories.getStorage(entity);
-    }
-
-    /**
-     * @deprecated Use {@link AccessoriesAPI#evictAccessories(LivingEntity)} so lifecycle code goes through the accessory API boundary.
-     */
-    @Deprecated(forRemoval = false)
-    public static void evict(LivingEntity entity) {
-        EntityAccessories.evict(entity);
-    }
-
     synchronized void ensureReady() {
         this.ensureContainers();
     }
