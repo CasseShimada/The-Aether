@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class AccessoriesCapability implements AccessoriesContainerOwner {
+final class EntityAccessoryStorage implements AccessoriesContainerOwner {
     private final LivingEntity entity;
     private final Map<String, AccessoriesContainer> containers = new LinkedHashMap<>();
     private final Map<String, ItemStack> previousEquipped = new HashMap<>();
@@ -44,7 +44,7 @@ public class AccessoriesCapability implements AccessoriesContainerOwner {
     private boolean syncDirty;
     private boolean processing;
 
-    AccessoriesCapability(LivingEntity entity) {
+    EntityAccessoryStorage(LivingEntity entity) {
         this.entity = entity;
     }
 

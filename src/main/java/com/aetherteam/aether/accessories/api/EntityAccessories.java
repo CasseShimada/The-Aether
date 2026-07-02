@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 final class EntityAccessories {
-    private static final Map<LivingEntity, AccessoriesCapability> STORAGE_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<LivingEntity, EntityAccessoryStorage> STORAGE_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
 
     private EntityAccessories() {
     }
@@ -19,11 +19,11 @@ final class EntityAccessories {
     }
 
     @Nullable
-    static AccessoriesCapability getStorage(LivingEntity entity) {
+    static EntityAccessoryStorage getStorage(LivingEntity entity) {
         if (entity == null) {
             return null;
         }
-        AccessoriesCapability storage = STORAGE_BY_ENTITY.computeIfAbsent(entity, AccessoriesCapability::new);
+        EntityAccessoryStorage storage = STORAGE_BY_ENTITY.computeIfAbsent(entity, EntityAccessoryStorage::new);
         storage.ensureReady();
         return storage;
     }
