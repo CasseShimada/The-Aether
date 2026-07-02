@@ -161,9 +161,6 @@ public class AetherEntityTypes {
     public static final EntityType<HammerProjectile> HAMMER_PROJECTILE = register("hammer_projectile",
             EntityType.Builder.<HammerProjectile>of(HammerProjectile::new, MobCategory.MISC).sized(0.35F, 0.35F).clientTrackingRange(4).updateInterval(10).build(key("hammer_projectile")));
 
-    /**
-     * @see Aether#eventSetup(IEventBus)
-     */
     public static void registerSpawnPlacements() {
         // Passive Mobs
         SpawnPlacementsAccessor.aether$register(AetherEntityTypes.PHYG, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AetherAnimal::checkAetherAnimalSpawnRules);
@@ -183,9 +180,6 @@ public class AetherEntityTypes {
         SpawnPlacementsAccessor.aether$register(AetherEntityTypes.ZEPHYR, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zephyr::checkZephyrSpawnRules);
     }
 
-    /**
-     * @see Aether#eventSetup(IEventBus)
-     */
     public static void registerEntityAttributes() {
         // Passive Mobs
         FabricDefaultAttributeRegistry.register(AetherEntityTypes.PHYG, Phyg.createMobAttributes());

@@ -1,6 +1,5 @@
 package com.aetherteam.aether.client.renderer;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.blockentity.AetherBlockEntityTypes;
@@ -149,9 +148,6 @@ public class AetherRenderers {
         ModelLayerRegistry.registerModelLayer(AetherModelLayers.PLAYER_HALO, () -> HaloModel.createLayer(0.0F, 0.0F, 0.0F, 0.0F));
     }
 
-    /**
-     * @see com.aetherteam.aether.client.AetherClient#clientSetup(FMLClientSetupEvent)
-     */
     public static void registerAccessoryRenderers() {
     }
 

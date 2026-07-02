@@ -43,7 +43,7 @@ public class AetherGrassBlock extends GrassBlock {
 
     /**
      * Based on {@link net.minecraft.world.level.block.SpreadingSnowyDirtBlock#randomTick(BlockState, ServerLevel, BlockPos, RandomSource)}.<br><br>
-     * Warning for "deprecation" is suppressed due to being copied from what Forge does.
+     * Warning for "deprecation" is suppressed because this follows the vanilla spread logic.
      */
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
