@@ -156,8 +156,7 @@ public class AetherClient {
     private static void registerLifecycleCallbacks() {
         ClientLifecycleEvents.CLIENT_STARTED.register(ClientLifecycleHooks::started);
 
-        ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
-                ItemTooltipHooks.addDungeonTooltips(components, stack, tooltipType));
+        ItemTooltipCallback.EVENT.register(ItemTooltipHooks::addItemTooltip);
     }
 
     private static void registerScreenCallbacks() {

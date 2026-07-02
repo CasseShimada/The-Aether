@@ -12,6 +12,10 @@ public final class ItemTooltipHooks {
     private ItemTooltipHooks() {
     }
 
+    public static void addItemTooltip(ItemStack stack, Object context, TooltipFlag flag, List<Component> components) {
+        addDungeonTooltips(components, stack, flag);
+    }
+
     /**
      * Adds a tooltip to loot items in the creative inventory, indicating what dungeon(s) they can be found in.
      *
