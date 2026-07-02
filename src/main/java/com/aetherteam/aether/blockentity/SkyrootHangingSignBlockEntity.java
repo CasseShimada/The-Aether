@@ -12,6 +12,6 @@ public class SkyrootHangingSignBlockEntity extends HangingSignBlockEntity {
 
     @Override
     public BlockEntityType<SkyrootHangingSignBlockEntity> getType() {
-        return AetherBlockEntityTypes.SKYROOT_HANGING_SIGN.get();
+        return AetherBlockEntityTypes.SKYROOT_HANGING_SIGN;
     }
 }

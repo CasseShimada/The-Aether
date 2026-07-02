@@ -108,7 +108,7 @@ public class IncubatorBlockEntity extends BaseContainerBlockEntity implements Wo
     }
 
     public IncubatorBlockEntity(BlockPos pos, BlockState state, RecipeType<IncubationRecipe> recipeType) {
-        super(AetherBlockEntityTypes.INCUBATOR.get(), pos, state);
+        super(AetherBlockEntityTypes.INCUBATOR, pos, state);
         this.quickCheck = RecipeManager.createCheck(recipeType);
         this.x = pos.getX();
         this.y = pos.getY();

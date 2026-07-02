@@ -32,10 +32,10 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 
 public class AetherRenderers {
     public static void registerEntityRenderers() {
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_SIGN.get(), (BlockEntityRendererProvider) StandingSignRenderer::new);
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_HANGING_SIGN.get(), (BlockEntityRendererProvider) HangingSignRenderer::new);
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.CHEST_MIMIC.get(), ChestMimicRenderer::new);
-        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.TREASURE_CHEST.get(), TreasureChestRenderer::new);
+        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_SIGN, (BlockEntityRendererProvider) StandingSignRenderer::new);
+        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.SKYROOT_HANGING_SIGN, (BlockEntityRendererProvider) HangingSignRenderer::new);
+        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.CHEST_MIMIC, ChestMimicRenderer::new);
+        BlockEntityRendererRegistry.register(AetherBlockEntityTypes.TREASURE_CHEST, TreasureChestRenderer::new);
 
         EntityRendererRegistry.register(AetherEntityTypes.PHYG.get(), PhygRenderer::new);
         EntityRendererRegistry.register(AetherEntityTypes.FLYING_COW.get(), FlyingCowRenderer::new);

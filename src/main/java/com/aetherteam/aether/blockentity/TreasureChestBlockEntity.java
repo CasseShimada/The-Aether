@@ -72,11 +72,11 @@ public class TreasureChestBlockEntity extends RandomizableContainerBlockEntity i
     private Identifier kind;
 
     public TreasureChestBlockEntity() {
-        this(AetherBlockEntityTypes.TREASURE_CHEST.get(), BlockPos.ZERO, AetherBlocks.TREASURE_CHEST.get().defaultBlockState());
+        this(AetherBlockEntityTypes.TREASURE_CHEST, BlockPos.ZERO, AetherBlocks.TREASURE_CHEST.get().defaultBlockState());
     }
 
     public TreasureChestBlockEntity(BlockPos pos, BlockState state) {
-        this(AetherBlockEntityTypes.TREASURE_CHEST.get(), pos, state);
+        this(AetherBlockEntityTypes.TREASURE_CHEST, pos, state);
     }
 
     protected TreasureChestBlockEntity(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {

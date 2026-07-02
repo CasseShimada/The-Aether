@@ -8,11 +8,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SkyrootBedBlockEntity extends BlockEntity {
     public SkyrootBedBlockEntity() {
-        super(AetherBlockEntityTypes.SKYROOT_BED.get(), BlockPos.ZERO, AetherBlocks.SKYROOT_BED.get().defaultBlockState());
+        super(AetherBlockEntityTypes.SKYROOT_BED, BlockPos.ZERO, AetherBlocks.SKYROOT_BED.get().defaultBlockState());
     }
 
     public SkyrootBedBlockEntity(BlockPos pos, BlockState state) {
-        super(AetherBlockEntityTypes.SKYROOT_BED.get(), pos, state);
+        super(AetherBlockEntityTypes.SKYROOT_BED, pos, state);
     }
 
     @Override

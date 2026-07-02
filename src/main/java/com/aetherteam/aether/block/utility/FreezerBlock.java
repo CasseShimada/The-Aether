@@ -38,7 +38,7 @@ public class FreezerBlock extends AbstractFurnaceBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide() ? null : createTickerHelper(blockEntityType, AetherBlockEntityTypes.FREEZER.get(), AbstractAetherFurnaceBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(blockEntityType, AetherBlockEntityTypes.FREEZER, AbstractAetherFurnaceBlockEntity::serverTick);
     }
 
     @Override

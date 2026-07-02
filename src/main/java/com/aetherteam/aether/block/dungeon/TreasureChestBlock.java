@@ -49,7 +49,7 @@ public class TreasureChestBlock extends AbstractChestBlock<TreasureChestBlockEnt
     protected static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 14.0, 15.0);
 
     public TreasureChestBlock(Properties properties) {
-        this(properties, AetherBlockEntityTypes.TREASURE_CHEST::get);
+        this(properties, () -> AetherBlockEntityTypes.TREASURE_CHEST);
     }
 
     public TreasureChestBlock(Properties properties, Supplier<BlockEntityType<? extends TreasureChestBlockEntity>> blockEntityTypeSupplier) {

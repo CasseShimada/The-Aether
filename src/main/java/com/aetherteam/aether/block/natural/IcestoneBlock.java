@@ -43,7 +43,7 @@ public class IcestoneBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide() ? null : createTickerHelper(blockEntityType, AetherBlockEntityTypes.ICESTONE.get(), IcestoneBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(blockEntityType, AetherBlockEntityTypes.ICESTONE, IcestoneBlockEntity::serverTick);
     }
 
     /**

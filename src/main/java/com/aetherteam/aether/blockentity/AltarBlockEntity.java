@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class AltarBlockEntity extends AbstractAetherFurnaceBlockEntity {
 
     public AltarBlockEntity(BlockPos pos, BlockState state) {
-        super(AetherBlockEntityTypes.ALTAR.get(), pos, state, AetherRecipeTypes.ENCHANTING);
+        super(AetherBlockEntityTypes.ALTAR, pos, state, AetherRecipeTypes.ENCHANTING);
     }
 
     @Override

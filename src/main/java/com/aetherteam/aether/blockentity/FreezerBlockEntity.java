@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class FreezerBlockEntity extends AbstractAetherFurnaceBlockEntity {
 
     public FreezerBlockEntity(BlockPos pos, BlockState state) {
-        super(AetherBlockEntityTypes.FREEZER.get(), pos, state, AetherRecipeTypes.FREEZING);
+        super(AetherBlockEntityTypes.FREEZER, pos, state, AetherRecipeTypes.FREEZING);
     }
 
     @Override

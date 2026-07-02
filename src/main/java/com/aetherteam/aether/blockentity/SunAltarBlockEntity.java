@@ -28,7 +28,7 @@ public class SunAltarBlockEntity extends BlockEntity implements Nameable {
     private Component name;
 
     public SunAltarBlockEntity(BlockPos pos, BlockState blockState) {
-        super(AetherBlockEntityTypes.SUN_ALTAR.get(), pos, blockState);
+        super(AetherBlockEntityTypes.SUN_ALTAR, pos, blockState);
     }
 
     @Nullable

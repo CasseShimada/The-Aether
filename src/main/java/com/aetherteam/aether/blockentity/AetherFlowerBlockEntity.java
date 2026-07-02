@@ -6,6 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class AetherFlowerBlockEntity extends BlockEntity {
     public AetherFlowerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(AetherBlockEntityTypes.FLOWER.get(), pos, blockState);
+        super(AetherBlockEntityTypes.FLOWER, pos, blockState);
     }
 }
