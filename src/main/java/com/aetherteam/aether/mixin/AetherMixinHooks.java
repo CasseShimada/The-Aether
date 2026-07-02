@@ -3,7 +3,7 @@ package com.aetherteam.aether.mixin;
 import com.aetherteam.aether.client.AetherClient;
 import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.accessories.Accessories;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
@@ -44,7 +44,7 @@ public class AetherMixinHooks {
     }
 
     public static ItemStack getVisibleWingsAccessory(LivingEntity livingEntity) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             for (SlotEntryReference reference : accessories.getAllEquipped()) {
                 AccessoriesContainer accessoriesContainer = accessories.getContainer(reference.reference().type());
@@ -92,7 +92,7 @@ public class AetherMixinHooks {
     }
 
     public static ItemStack getVisibleAccessory(LivingEntity livingEntity, SlotTypeReference identifier, int slotIndex) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
             return getVisibleAccessory(accessoriesContainer, slotIndex);
@@ -183,7 +183,7 @@ public class AetherMixinHooks {
      * @return The accessory {@link ItemStack} gotten from the entity.
      */
     public static ItemStack getItemByIdentifier(LivingEntity livingEntity, SlotTypeReference identifier) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
             if (accessoriesContainer != null) {
@@ -201,7 +201,7 @@ public class AetherMixinHooks {
      * @param identifier   The {@link SlotTypeReference} for the slot identifier.
      */
     public static void setItemByIdentifier(LivingEntity livingEntity, ItemStack itemStack, SlotTypeReference identifier) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
             if (accessoriesContainer != null) {
