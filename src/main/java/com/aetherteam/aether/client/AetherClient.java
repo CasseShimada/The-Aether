@@ -34,7 +34,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.fabricmc.loader.api.FabricLoader;
-import com.google.common.reflect.Reflection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -117,7 +116,7 @@ public class AetherClient {
     }
 
     private static void registerClientContent() {
-        Reflection.initialize(CustomizationsOptions.class);
+        initializeClass(CustomizationsOptions.class);
         registerVisualContent();
         registerMenuAndInputContent();
         registerTooltipOverrides();
@@ -314,5 +313,13 @@ public class AetherClient {
      */
     public static void setToSunAltarScreen(Component name, int timeScale) {
         ClientCompat.setScreen(Minecraft.getInstance(), new SunAltarScreen(name, timeScale));
+    }
+
+    private static void initializeClass(Class<?> type) {
+        try {
+            Class.forName(type.getName(), true, type.getClassLoader());
+        } catch (ClassNotFoundException exception) {
+            throw new IllegalStateException("Unable to initialize " + type.getName(), exception);
+        }
     }
 }

@@ -38,7 +38,6 @@ import com.aetherteam.aether.world.structure.AetherStructureTypes;
 import com.aetherteam.aether.world.structurepiece.AetherStructurePieceTypes;
 import com.aetherteam.aether.world.treedecorator.AetherTreeDecoratorTypes;
 import com.aetherteam.aether.world.trunkplacer.AetherTrunkPlacerTypes;
-import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import com.aetherteam.aether.accessories.api.slot.UniqueSlotHandling;
 import net.fabricmc.loader.api.FabricLoader;
@@ -66,44 +65,48 @@ public final class Aether {
 
         DIRECTORY.toFile().mkdirs();
 
-        Reflection.initialize(AetherDataAttachments.class);
-        Reflection.initialize(AetherGameEvents.class);
-        Reflection.initialize(AetherLootFunctions.class);
-        Reflection.initialize(AetherLootConditions.class);
-        Reflection.initialize(AetherDataComponents.class);
-        Reflection.initialize(AetherRecipeBookCategories.class);
-        Reflection.initialize(AetherRecipeTypes.class);
-        Reflection.initialize(AetherRecipeSerializers.class);
-        Reflection.initialize(AetherAttributes.class);
-        Reflection.initialize(AetherEffects.class);
-        Reflection.initialize(AetherParticleTypes.class);
-        Reflection.initialize(AetherTreeDecoratorTypes.class);
-        Reflection.initialize(AetherTrunkPlacerTypes.class);
-        Reflection.initialize(AetherFoliagePlacerTypes.class);
-        Reflection.initialize(AetherPlacementModifiers.class);
-        Reflection.initialize(AetherPosRuleTests.class);
-        Reflection.initialize(AetherStructureProcessors.class);
-        Reflection.initialize(AetherStructureTypes.class);
-        Reflection.initialize(AetherStructurePieceTypes.class);
-        Reflection.initialize(AetherPoi.class);
-        Reflection.initialize(AetherFeatures.class);
-        Reflection.initialize(AetherMenuTypes.class);
-        Reflection.initialize(AetherSoundEvents.class);
-        Reflection.initialize(AetherCreativeTabs.class);
-        Reflection.initialize(AetherBlocks.class);
-        Reflection.initialize(AetherBlockEntityTypes.class);
-        Reflection.initialize(AetherEntityTypes.class);
+        initializeClasses(
+                AetherDataAttachments.class,
+                AetherGameEvents.class,
+                AetherLootFunctions.class,
+                AetherLootConditions.class,
+                AetherDataComponents.class,
+                AetherRecipeBookCategories.class,
+                AetherRecipeTypes.class,
+                AetherRecipeSerializers.class,
+                AetherAttributes.class,
+                AetherEffects.class,
+                AetherParticleTypes.class,
+                AetherTreeDecoratorTypes.class,
+                AetherTrunkPlacerTypes.class,
+                AetherFoliagePlacerTypes.class,
+                AetherPlacementModifiers.class,
+                AetherPosRuleTests.class,
+                AetherStructureProcessors.class,
+                AetherStructureTypes.class,
+                AetherStructurePieceTypes.class,
+                AetherPoi.class,
+                AetherFeatures.class,
+                AetherMenuTypes.class,
+                AetherSoundEvents.class,
+                AetherCreativeTabs.class,
+                AetherBlocks.class,
+                AetherBlockEntityTypes.class,
+                AetherEntityTypes.class
+        );
         AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
-        Reflection.initialize(AetherItems.class);
+        initializeClasses(AetherItems.class);
         AetherCreativeTabs.registerVanillaTabEntries();
         AetherPoi.registerBlockStateMappings();
         AetherEntityTypes.registerEntityAttributes();
         AetherEntityTypes.registerSpawnPlacements();
 
-        Reflection.initialize(AetherRecipeBookTypes.class);
-        Reflection.initialize(AetherMobCategory.class);
-        Reflection.initialize(AetherAdvancementTriggers.class);
+        initializeClasses(
+                AetherRecipeBookTypes.class,
+                AetherMobCategory.class,
+                AetherAdvancementTriggers.class
+        );
 
         AetherBlocks.registerPots();
         AetherBlocks.registerFlammability();
@@ -125,5 +128,15 @@ public final class Aether {
 
     private static void registerCauldronInteractions() {
         AetherCauldronInteractions.registerCauldronInteractions();
+    }
+
+    private static void initializeClasses(Class<?>... classes) {
+        for (Class<?> type : classes) {
+            try {
+                Class.forName(type.getName(), true, type.getClassLoader());
+            } catch (ClassNotFoundException exception) {
+                throw new IllegalStateException("Unable to initialize " + type.getName(), exception);
+            }
+        }
     }
 }
