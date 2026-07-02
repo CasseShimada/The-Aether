@@ -95,6 +95,7 @@ public final class Aether {
         Reflection.initialize(AetherBlockEntityTypes.class);
         Reflection.initialize(AetherEntityTypes.class);
         AetherBlocks.registerWoodTypes();
+        AetherBlocks.registerBlockItems();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
         AetherPoi.registerBlockStateMappings();
