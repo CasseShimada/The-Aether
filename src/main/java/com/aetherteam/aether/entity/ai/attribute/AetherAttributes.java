@@ -8,9 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 public class AetherAttributes {
-    public static final Attribute MOA_MAX_JUMPS = register("moa_max_jumps", new RangedAttribute("aether.attribute.name.moa_max_jumps", -1.0, -1.0, 1024.0).setSyncable(true));
-
-    private static Attribute register(String name, Attribute attribute) {
-        return Registry.register(BuiltInRegistries.ATTRIBUTE, Identifier.fromNamespaceAndPath(Aether.MODID, name), attribute);
-    }
+    public static final Attribute MOA_MAX_JUMPS = Registry.register(
+            BuiltInRegistries.ATTRIBUTE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "moa_max_jumps"),
+            new RangedAttribute("aether.attribute.name.moa_max_jumps", -1.0, -1.0, 1024.0).setSyncable(true));
 }
