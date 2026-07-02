@@ -1,8 +1,9 @@
 package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.command.AetherCommands;
-import com.aetherteam.aether.event.hooks.AttachmentHooks;
+import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
@@ -11,6 +12,7 @@ import com.aetherteam.aether.event.hooks.AbilityHooks;
 import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.types.MoaSkins;
+import com.aetherteam.nitrogen.attachment.INBTSynchable;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -22,6 +24,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -42,8 +45,8 @@ public final class AetherFabricEvents {
 
     private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(player -> {
-            AttachmentHooks.AetherPlayerHooks.login(player);
-            AttachmentHooks.AetherTimeHooks.login(player);
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
+            syncAetherTime(player);
             PerkHooks.refreshPerks(player);
             AbilityHooks.ToolHooks.setDebuffToolsState(player);
             MoaSkins.registerMoaSkins(player.level());
@@ -52,18 +55,19 @@ public final class AetherFabricEvents {
             AccessoryRuntime.forceSync(player);
         });
         ServerPlayerEvents.LEAVE.register(player -> {
-            AttachmentHooks.AetherPlayerHooks.logout(player);
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogout(player);
             AccessoryRuntime.clear(player);
         });
-        ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> AttachmentHooks.AetherPlayerHooks.clone(newPlayer, !alive));
+        ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
+                newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-            AttachmentHooks.AetherTimeHooks.respawn(newPlayer);
+            syncAetherTime(newPlayer);
             AccessoryRuntime.forceSync(newPlayer);
         });
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
             DimensionHooks.remountPlayerAerbunny(player);
-            AttachmentHooks.AetherPlayerHooks.changeDimension(player);
-            AttachmentHooks.AetherTimeHooks.changeDimension(player);
+            syncPlayerAttachment(player);
+            syncAetherTime(player);
             AccessoryRuntime.forceSync(player);
         });
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
@@ -73,7 +77,9 @@ public final class AetherFabricEvents {
     private static void registerEntityEvents() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             EntityHooks.addGoals(entity);
-            AttachmentHooks.AetherPlayerHooks.joinLevel(entity);
+            if (entity instanceof Player player) {
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onJoinLevel(player);
+            }
             if (entity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
                 AccessoryRuntime.forceSync(livingEntity);
             }
@@ -148,6 +154,18 @@ public final class AetherFabricEvents {
                 level.getBlockState(blockPos),
                 !inHand.isEmpty()
         );
+    }
+
+    private static void syncPlayerAttachment(Player player) {
+        if (!player.level().isClientSide()) {
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
+        }
+    }
+
+    private static void syncAetherTime(Player player) {
+        if (player instanceof ServerPlayer serverPlayer && player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)) {
+            player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).updateEternalDay(serverPlayer);
+        }
     }
 
     private static ItemStack getInteractionStack(Player player, InteractionHand hand, ItemStack inHand) {

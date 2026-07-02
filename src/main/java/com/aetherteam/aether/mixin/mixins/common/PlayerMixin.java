@@ -1,9 +1,9 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.monster.Swet;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
-import com.aetherteam.aether.event.hooks.AttachmentHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -77,7 +77,7 @@ public abstract class PlayerMixin {
     @Inject(at = @At("TAIL"), method = "tick()V")
     private void tick(CallbackInfo ci) {
         Player player = (Player) (Object) this;
-        AttachmentHooks.AetherPlayerHooks.update(player);
+        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onUpdate(player);
         DimensionHooks.travelling(player);
     }
 
