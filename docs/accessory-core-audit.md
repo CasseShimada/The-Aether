@@ -11,7 +11,7 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 | Lifecycle robustness (join/rejoin/clone/dimension/respawn/menu reopen) | No dedicated accessory lifecycle sync/rehydration path | Add accessory sync hooks on join/respawn/dimension and deterministic runtime rehydrate | DONE |
 | Equip/unequip/replace transition closure | No unified diff; many paths set slot items directly without lifecycle callbacks | Add centralized transition diff engine with guaranteed `onUnequip` rollback on replacement/removal | DONE |
 | Stack mutation closure (count/NBT/durability changes) | Container callbacks miss in-place stack mutation; stale effects possible | Add per-tick stack fingerprint diff to detect in-place mutations and re-evaluate state | DONE |
-| Unified equipped query API | Queries scattered via `EquipmentUtil` and raw container access | Add unified bridge/query API over accessory core snapshots | DONE |
+| Unified equipped query API | Queries scattered via `EquipmentUtil` and raw container access | Add unified query API over accessory core snapshots | DONE |
 | Unified accessory tick entry | No central runtime tick loop for all equipped accessories | Add central per-entity accessory runtime tick dispatcher | DONE |
 | Dynamic attributes add/remove loop | `AccessoryAttributeBuilder` stores untyped modifiers and is not applied globally | Rework builder to typed entries and apply/remove deterministic transient modifiers per slot | DONE |
 | Server-authoritative sync state | No dedicated accessory payload sync path | Add client sync packet for accessory slot snapshots and server dirty-flush path | DONE |

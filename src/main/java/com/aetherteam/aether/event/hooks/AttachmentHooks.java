@@ -39,7 +39,7 @@ public class AttachmentHooks {
 
         /**
          * @see AetherPlayerAttachment#onUpdate(Player)
-         * Handles the Fabric player tick bridge for Aether's player attachment.
+         * Handles the Fabric player tick callback for Aether's player attachment.
          */
         public static void update(LivingEntity entity) {
             if (entity instanceof Player player) {
