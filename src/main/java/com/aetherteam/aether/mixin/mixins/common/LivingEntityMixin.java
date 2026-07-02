@@ -3,6 +3,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
@@ -116,7 +117,7 @@ public abstract class LivingEntityMixin {
                 livingEntity
         );
 
-        List<ItemStack> drops = EntityHooks.handleEntityAccessoryDrops(livingEntity, equippedAccessories, recentlyHit, looting);
+        List<ItemStack> drops = EntityAccessorySpawnHooks.handleEntityAccessoryDrops(livingEntity, equippedAccessories, recentlyHit, looting);
         drops.stream().filter(stack -> !stack.isEmpty()).forEach(stack -> livingEntity.spawnAtLocation(level, stack.copy()));
     }
 
@@ -136,7 +137,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "getExperienceReward(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/Entity;)I", at = @At("RETURN"), cancellable = true)
     private void aether$modifyExperienceReward(ServerLevel level, net.minecraft.world.entity.Entity attacker, CallbackInfoReturnable<Integer> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-        cir.setReturnValue(EntityHooks.modifyExperience(livingEntity, cir.getReturnValueI()));
+        cir.setReturnValue(EntityAccessorySpawnHooks.modifyExperience(livingEntity, cir.getReturnValueI()));
     }
 
     @Inject(method = "tick()V", at = @At("TAIL"))

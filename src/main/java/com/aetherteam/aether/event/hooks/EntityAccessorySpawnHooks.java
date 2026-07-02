@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-final class EntityAccessorySpawnHooks {
+public final class EntityAccessorySpawnHooks {
     private static final SlotTypeReference[] ALL_ACCESSORY_SLOTS = {
             GlovesItem.getStaticIdentifier(),
             PendantItem.getStaticIdentifier()
@@ -44,7 +44,7 @@ final class EntityAccessorySpawnHooks {
     private EntityAccessorySpawnHooks() {
     }
 
-    static boolean canMobSpawnWithAccessories(Entity entity) {
+    public static boolean canMobSpawnWithAccessories(Entity entity) {
         EntityType<?> entityType = entity.getType();
         return entity instanceof Mob
                 && (entityType == EntityTypes.ZOMBIE
@@ -55,7 +55,7 @@ final class EntityAccessorySpawnHooks {
                 || entityType == EntityTypes.PIGLIN);
     }
 
-    static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
+    public static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
         if (!(entity instanceof Mob mob) || !(mob.level() instanceof ServerLevel)) {
             return;
         }
@@ -69,7 +69,7 @@ final class EntityAccessorySpawnHooks {
         enchantAccessories(mob, difficulty);
     }
 
-    static List<ItemStack> handleEntityAccessoryDrops(LivingEntity entity, List<ItemStack> itemStacks, boolean recentlyHit, int looting) {
+    public static List<ItemStack> handleEntityAccessoryDrops(LivingEntity entity, List<ItemStack> itemStacks, boolean recentlyHit, int looting) {
         if (!(entity instanceof Mob mob)) {
             return itemStacks;
         }
@@ -98,7 +98,7 @@ final class EntityAccessorySpawnHooks {
         return itemStacks;
     }
 
-    static int modifyExperience(LivingEntity entity, int experience) {
+    public static int modifyExperience(LivingEntity entity, int experience) {
         if (!(entity instanceof Mob mob) || !mob.hasAttached(AetherDataAttachments.MOB_ACCESSORY) || experience <= 0) {
             return experience;
         }

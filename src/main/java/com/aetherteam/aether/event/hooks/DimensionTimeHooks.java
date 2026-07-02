@@ -29,7 +29,7 @@ public final class DimensionTimeHooks {
                 LevelTimeUtil.setTime(serverLevel, serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
             }
 
-            EntityHooks.tickAetherSkySpawns(serverLevel);
+            EntitySkySpawnHooks.tickAetherSkySpawns(serverLevel);
         }
     }
 

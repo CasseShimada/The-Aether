@@ -13,8 +13,6 @@ import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.projectile.crystal.ThunderCrystal;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -28,7 +26,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.Collection;
-import java.util.List;
 
 public class EntityHooks {
     /**
@@ -44,27 +41,6 @@ public class EntityHooks {
             Fox fox = (Fox) entity;
             ((MobAccessor) fox).aether$getGoalSelector().addGoal(10, new FoxEatBerryBushGoal(fox, 1.2F, 12, 1));
         }
-    }
-
-    /**
-     * Used to check whether an entity can spawn with accessories based on their {@link EntityType}.
-     *
-     * @param entity The {@link Entity} that is spawning.
-     * @return Whether the entity can spawn in the world with accessories, as a {@link Boolean}.
-     * @see com.aetherteam.aether.mixin.mixins.common.MobMixin
-     */
-    public static boolean canMobSpawnWithAccessories(Entity entity) {
-        return EntityAccessorySpawnHooks.canMobSpawnWithAccessories(entity);
-    }
-
-    /**
-     * Equips entities with accessories during spawning.
-     *
-     * @param entity The {@link Entity} to equip accessories to.
-     * @see com.aetherteam.aether.mixin.mixins.common.MobMixin
-     */
-    public static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
-        EntityAccessorySpawnHooks.spawnWithAccessories(entity, difficulty);
     }
 
     /**
@@ -177,30 +153,6 @@ public class EntityHooks {
     }
 
     /**
-     * Damages certain accessory items dropped from entities if they're not guaranteed drops.
-     *
-     * @param entity      The {@link LivingEntity} dropping the accessories.
-     * @param itemStacks   The {@link List} of {@link ItemStack} drops.
-     * @param recentlyHit Whether the entity was recently hit, as a {@link Boolean}.
-     * @param looting     The {@link Integer} for the looting enchantment value.
-     * @return The new {@link Collection} of {@link ItemEntity} drops.
-     */
-    public static List<ItemStack> handleEntityAccessoryDrops(LivingEntity entity, List<ItemStack> itemStacks, boolean recentlyHit, int looting) {
-        return EntityAccessorySpawnHooks.handleEntityAccessoryDrops(entity, itemStacks, recentlyHit, looting);
-    }
-
-    /**
-     * Increase the experience drops of an entity based on whether they're wearing accessories.
-     *
-     * @param entity     The {@link LivingEntity} dropping the experience.
-     * @param experience The original {@link Integer} amount of experience.
-     * @return The new {@link Integer} amount of experience.
-     */
-    public static int modifyExperience(LivingEntity entity, int experience) {
-        return EntityAccessorySpawnHooks.modifyExperience(entity, experience);
-    }
-
-    /**
      * Prevents an entity from being inflicted with {@link AetherEffects#INEBRIATION} if it has {@link AetherEffects#REMEDY} applied.
      *
      * @param livingEntity    The {@link LivingEntity} that the effect is being applied to.
@@ -221,11 +173,4 @@ public class EntityHooks {
         return mob.getType().builtInRegistryHolder().is(AetherTags.Entities.SWETS);
     }
 
-    /**
-     * Performs low-frequency natural spawn attempts
-     * for Aether sky mobs that should remain present around active players.
-     */
-    public static void tickAetherSkySpawns(ServerLevel level) {
-        EntitySkySpawnHooks.tickAetherSkySpawns(level);
-    }
 }

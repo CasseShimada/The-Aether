@@ -14,11 +14,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-final class EntitySkySpawnHooks {
+public final class EntitySkySpawnHooks {
     private EntitySkySpawnHooks() {
     }
 
-    static void tickAetherSkySpawns(ServerLevel level) {
+    public static void tickAetherSkySpawns(ServerLevel level) {
         if (level.getDifficulty() == Difficulty.PEACEFUL || level.getGameTime() % 80L != 0L) {
             return;
         }

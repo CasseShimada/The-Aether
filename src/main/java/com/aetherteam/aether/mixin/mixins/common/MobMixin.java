@@ -1,7 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.mixin.AetherMixinHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
@@ -31,7 +31,7 @@ public class MobMixin {
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "canHoldItem(Lnet/minecraft/world/item/ItemStack;)Z")
     private boolean canTakeItem(boolean original, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
-        if (EntityHooks.canMobSpawnWithAccessories(mob)) {
+        if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
             SlotTypeReference identifier = AetherMixinHooks.getIdentifierForItem(mob, stack);
             if (identifier != null) {
                 ItemStack accessory = AetherMixinHooks.getItemByIdentifier(mob, identifier);
@@ -72,8 +72,8 @@ public class MobMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void aether$spawnWithAccessories(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnData, CallbackInfoReturnable<SpawnGroupData> cir) {
         Mob mob = (Mob) (Object) this;
-        if (EntityHooks.canMobSpawnWithAccessories(mob)) {
-            EntityHooks.spawnWithAccessories(mob, difficulty);
+        if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
+            EntityAccessorySpawnHooks.spawnWithAccessories(mob, difficulty);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.aetherteam.aether.block.dispenser;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
@@ -91,7 +91,7 @@ public class AetherDispenseBehaviors {
                 if (equipReference.first().slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
                     armorStand.setShowArms(true);
                 }
-            } else if (livingEntity instanceof Mob mob && EntityHooks.canMobSpawnWithAccessories(mob)) {
+            } else if (livingEntity instanceof Mob mob && EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
                 mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
                 mob.setPersistenceRequired();
             }
