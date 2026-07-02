@@ -44,8 +44,7 @@ public final class AetherFabricEvents {
     private static void registerEntityEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(EntityLifecycleHooks::load);
         ServerEntityEvents.ENTITY_UNLOAD.register(EntityLifecycleHooks::unload);
-        ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, ctx) ->
-                !EntityEffectHooks.preventInebriation(entity, effectInstance));
+        ServerMobEffectEvents.ALLOW_ADD.register(EntityEffectHooks::allowAdd);
     }
 
     private static void registerLevelEvents() {
