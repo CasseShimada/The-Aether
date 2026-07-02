@@ -75,12 +75,12 @@ public final class Aether {
         AetherAttributes.bootstrap();
         AetherEffects.bootstrap();
         AetherParticleTypes.bootstrap();
+        AetherTreeDecoratorTypes.bootstrap();
+        AetherTrunkPlacerTypes.bootstrap();
+        AetherFoliagePlacerTypes.bootstrap();
+        AetherPlacementModifiers.bootstrap();
 
         initializeClasses(
-                AetherTreeDecoratorTypes.class,
-                AetherTrunkPlacerTypes.class,
-                AetherFoliagePlacerTypes.class,
-                AetherPlacementModifiers.class,
                 AetherPosRuleTests.class,
                 AetherStructureProcessors.class,
                 AetherStructureTypes.class,
