@@ -21,11 +21,11 @@ import net.minecraft.world.level.material.Fluids;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-final class DimensionPortalHooks {
+public final class DimensionPortalHooks {
     private DimensionPortalHooks() {
     }
 
-    static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
+    public static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
         if (level.isClientSide() || shouldDeferToImmersivePortals() || direction == null || !canCreatePortal(level, stack)) {
             return false;
         }
@@ -41,7 +41,7 @@ final class DimensionPortalHooks {
         return true;
     }
 
-    static boolean detectWaterInFrame(LevelAccessor levelAccessor, BlockPos pos, BlockState blockState, FluidState fluidState) {
+    public static boolean detectWaterInFrame(LevelAccessor levelAccessor, BlockPos pos, BlockState blockState, FluidState fluidState) {
         if (!(levelAccessor instanceof Level level)) {
             return false;
         }

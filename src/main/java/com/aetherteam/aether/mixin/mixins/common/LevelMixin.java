@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -22,7 +22,7 @@ public class LevelMixin {
     private void aether$detectWaterPortalFrame(BlockPos pos, BlockState state, int flags, int recursionLeft, CallbackInfoReturnable<Boolean> cir) {
         Level level = (Level) (Object) this;
         if (!level.isClientSide() && cir.getReturnValueZ()) {
-            DimensionHooks.detectWaterInFrame(level, pos, state, state.getFluidState());
+            DimensionPortalHooks.detectWaterInFrame(level, pos, state, state.getFluidState());
         }
     }
 
