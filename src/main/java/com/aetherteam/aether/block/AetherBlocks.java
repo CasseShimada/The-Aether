@@ -231,6 +231,9 @@ public class AetherBlocks {
     public static final Block FROSTED_ICE = registerBlockOnly("frosted_ice", () -> new AetherFrostedIceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.ICE).friction(0.98F).randomTicks().strength(0.5F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, entityType) -> entityType == EntityTypes.POLAR_BEAR).isRedstoneConductor(AetherBlocks::never)));
     public static final Block UNSTABLE_OBSIDIAN = registerBlockOnly("unstable_obsidian", () -> new UnstableObsidianBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).randomTicks().requiresCorrectToolForDrops().strength(50.0F, 1200.0F)));
 
+    public static void bootstrap() {
+    }
+
     public static void registerPots() {
         // Potted contents are registered via FlowerPotBlock construction.
     }

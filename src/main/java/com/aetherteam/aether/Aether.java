@@ -90,7 +90,7 @@ public final class Aether {
         AetherSoundEvents.bootstrap();
 
         AetherCreativeTabs.bootstrap();
-        initializeClasses(AetherBlocks.class);
+        AetherBlocks.bootstrap();
         AetherBlockEntityTypes.bootstrap();
         AetherEntityTypes.bootstrap();
         AetherBlocks.registerWoodTypes();
