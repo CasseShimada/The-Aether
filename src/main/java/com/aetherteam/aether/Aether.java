@@ -83,11 +83,9 @@ public final class Aether {
         AetherStructureProcessors.bootstrap();
         AetherStructureTypes.bootstrap();
         AetherStructurePieceTypes.bootstrap();
+        AetherFeatures.bootstrap();
 
-        initializeClasses(
-                AetherPoi.class,
-                AetherFeatures.class
-        );
+        initializeClasses(AetherPoi.class);
         AetherMenuTypes.bootstrap();
         AetherSoundEvents.bootstrap();
 
