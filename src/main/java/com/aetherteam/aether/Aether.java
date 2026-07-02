@@ -95,7 +95,7 @@ public final class Aether {
         AetherEntityTypes.bootstrap();
         AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
-        initializeClasses(AetherItems.class);
+        AetherItems.bootstrap();
         AetherCreativeTabs.registerVanillaTabEntries();
         AetherPoi.registerBlockStateMappings();
         AetherEntityTypes.registerEntityAttributes();

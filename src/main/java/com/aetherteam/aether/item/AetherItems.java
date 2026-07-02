@@ -305,6 +305,9 @@ public class AetherItems {
 
     public static ItemStack SWET_BANNER = null;
 
+    public static void bootstrap() {
+    }
+
     private static <I extends Item> I register(String name, Supplier<? extends I> supplier) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
         RegistryConstructionContext.push(Registries.ITEM, id);
