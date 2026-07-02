@@ -45,13 +45,13 @@ public class AccessoryItem extends Item implements Accessory {
             return InteractionResult.PASS;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(player);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        if (accessories == null) {
             return InteractionResult.PASS;
         }
 
         Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(heldStack);
-        var equipReference = capability.canEquipAccessory(heldStack, true, reference -> canEquipFromUse(accessory, heldStack, reference));
+        var equipReference = accessories.canEquipAccessory(heldStack, true, reference -> canEquipFromUse(accessory, heldStack, reference));
         if (equipReference == null) {
             return InteractionResult.PASS;
         }

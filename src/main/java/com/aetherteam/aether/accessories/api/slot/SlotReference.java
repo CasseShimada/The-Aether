@@ -51,11 +51,11 @@ public interface SlotReference {
 
         @Override
         public ItemStack getStack() {
-            AccessoriesCapability capability = AccessoriesCapability.get(this.entity);
-            if (capability == null) {
+            AccessoriesCapability accessories = AccessoriesCapability.get(this.entity);
+            if (accessories == null) {
                 return ItemStack.EMPTY;
             }
-            var container = capability.getContainer(SlotTypeReference.of(this.slotName));
+            var container = accessories.getContainer(SlotTypeReference.of(this.slotName));
             if (container == null || this.slot < 0 || this.slot >= container.getAccessories().getContainerSize()) {
                 return ItemStack.EMPTY;
             }
@@ -64,11 +64,11 @@ public interface SlotReference {
 
         @Override
         public void setStack(ItemStack stack) {
-            AccessoriesCapability capability = AccessoriesCapability.get(this.entity);
-            if (capability == null) {
+            AccessoriesCapability accessories = AccessoriesCapability.get(this.entity);
+            if (accessories == null) {
                 return;
             }
-            var container = capability.getContainer(SlotTypeReference.of(this.slotName));
+            var container = accessories.getContainer(SlotTypeReference.of(this.slotName));
             if (container != null && this.slot >= 0 && this.slot < container.getAccessories().getContainerSize()) {
                 container.getAccessories().setItem(this.slot, stack);
             }

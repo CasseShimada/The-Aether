@@ -95,9 +95,9 @@ public record AccessorySyncPacket(int entityId, List<AccessorySyncPacket.SlotDat
             return;
         }
 
-        AccessoriesCapability capability = AccessoriesCapability.get(livingEntity);
-        if (capability != null) {
-            capability.applyClientSync(payload);
+        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        if (accessories != null) {
+            accessories.applyClientSync(payload);
         }
     }
 
