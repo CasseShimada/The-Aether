@@ -6,6 +6,7 @@ import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
+import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
@@ -53,7 +54,7 @@ public final class AetherFabricEvents {
             AbilityHooks.ToolHooks.setDebuffToolsState(player);
             MoaSkins.registerMoaSkins(player.level());
             PacketDistributor.sendToPlayer(player, new RegisterMoaSkinsPacket());
-            DimensionHooks.startInAether(player);
+            DimensionSpawnHooks.startInAether(player);
             AccessoryRuntime.forceSync(player);
         });
         ServerPlayerEvents.LEAVE.register(player -> {

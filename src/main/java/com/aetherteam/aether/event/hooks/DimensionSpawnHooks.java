@@ -18,11 +18,11 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
 
-final class DimensionSpawnHooks {
+public final class DimensionSpawnHooks {
     private DimensionSpawnHooks() {
     }
 
-    static void startInAether(Player player) {
+    public static void startInAether(Player player) {
         var aetherPlayer = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
         if (AetherConfig.SERVER.spawn_in_aether.get()) {
             if (aetherPlayer.canSpawnInAether()) {

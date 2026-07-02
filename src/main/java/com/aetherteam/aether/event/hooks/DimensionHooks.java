@@ -11,15 +11,6 @@ public class DimensionHooks {
     public static int teleportationTimer;
 
     /**
-     * Spawns the player in the Aether dimension if the {@link AetherConfig.Server#spawn_in_aether} config is enabled.
-     *
-     * @param player The {@link Player}.
-     */
-    public static void startInAether(Player player) {
-        DimensionSpawnHooks.startInAether(player);
-    }
-
-    /**
      * @param entity    The {@link Entity} travelling between dimensions.
      * @param dimension The {@link ResourceKey} of the dimension ({@link Level}) being teleported to.
      */
