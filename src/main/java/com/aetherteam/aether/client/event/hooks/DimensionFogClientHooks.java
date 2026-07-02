@@ -1,25 +1,24 @@
 package com.aetherteam.aether.client.event.hooks;
 
-import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogRenderer;
-import net.minecraft.util.Mth;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributes;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FogType;
+import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 
-public class DimensionClientHooks {
+public final class DimensionFogClientHooks {
+    private DimensionFogClientHooks() {
+    }
+
     /**
      * Halves the far fog distance in the Aether to add to the dimension's ambience, similar to beta.
      *
@@ -140,19 +139,5 @@ public class DimensionClientHooks {
             }
         }
         return null;
-    }
-
-    /**
-     * Ticks time in clientside Aether levels.
-     */
-    public static void tickTime() {
-        ClientLevel level = Minecraft.getInstance().level;
-        if (level != null && !Minecraft.getInstance().isPaused() && level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            AetherTimeAttachment data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
-            if (!data.isTimeSynced()) {
-                long dayTime = data.tickTime(level) - 1; // ClientLevel now always advances gameTime locally each tick.
-                level.getLevelData().setGameTime(dayTime);
-            }
-        }
     }
 }

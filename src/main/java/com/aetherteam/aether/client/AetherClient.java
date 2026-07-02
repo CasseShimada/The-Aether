@@ -4,7 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.event.hooks.AudioHooks;
-import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
+import com.aetherteam.aether.client.event.hooks.ClientDimensionTimeHooks;
 import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
 import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
@@ -173,7 +173,7 @@ public class AetherClient {
     private static void registerTickCallbacks() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             AudioHooks.tick();
-            DimensionClientHooks.tickTime();
+            ClientDimensionTimeHooks.tickTime();
             GuiPerkScreenHooks.handlePatreonRefreshRebound();
             tickPlayerState(client);
             handleAccessoryHotkey(client);

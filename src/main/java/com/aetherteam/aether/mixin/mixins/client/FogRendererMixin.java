@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
-import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
+import com.aetherteam.aether.client.event.hooks.DimensionFogClientHooks;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -24,12 +24,12 @@ public class FogRendererMixin {
         float nearDistance = accessor.aether$getRenderDistanceStart();
         float farDistance = accessor.aether$getRenderDistanceEnd();
 
-        Float renderNearFog = DimensionClientHooks.renderNearFog(camera, FogRenderer.FogMode.WORLD, farDistance);
+        Float renderNearFog = DimensionFogClientHooks.renderNearFog(camera, FogRenderer.FogMode.WORLD, farDistance);
         if (renderNearFog != null) {
             nearDistance = renderNearFog;
         }
 
-        Float reduceLavaFog = DimensionClientHooks.reduceLavaFog(camera, nearDistance);
+        Float reduceLavaFog = DimensionFogClientHooks.reduceLavaFog(camera, nearDistance);
         if (reduceLavaFog != null) {
             nearDistance = reduceLavaFog;
             farDistance = reduceLavaFog * 4.0F;
@@ -41,12 +41,12 @@ public class FogRendererMixin {
 
     @Inject(method = "computeFogColor", at = @At("TAIL"))
     private void aether$computeFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistanceChunks, float darkenWorldAmount, Vector4f color, CallbackInfo ci) {
-        Triple<Float, Float, Float> renderFogColors = DimensionClientHooks.renderFogColors(camera, color.x(), color.y(), color.z());
+        Triple<Float, Float, Float> renderFogColors = DimensionFogClientHooks.renderFogColors(camera, color.x(), color.y(), color.z());
         if (renderFogColors != null) {
             color.set(renderFogColors.getLeft(), renderFogColors.getMiddle(), renderFogColors.getRight(), color.w());
         }
 
-        Triple<Float, Float, Float> adjustWeatherFogColors = DimensionClientHooks.adjustWeatherFogColors(camera, color.x(), color.y(), color.z());
+        Triple<Float, Float, Float> adjustWeatherFogColors = DimensionFogClientHooks.adjustWeatherFogColors(camera, color.x(), color.y(), color.z());
         if (adjustWeatherFogColors != null) {
             color.set(adjustWeatherFogColors.getLeft(), adjustWeatherFogColors.getMiddle(), adjustWeatherFogColors.getRight(), color.w());
         }
