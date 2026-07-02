@@ -287,12 +287,12 @@ public class AetherAccessoriesMenu extends InventoryMenu {
     }
 
     private int getFirstEmptyAccessorySlot(Player player, ItemStack stack) {
-        AccessoriesCapability capability = AccessoriesCapability.get(player);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        if (accessories == null) {
             return -1;
         }
 
-        var equipReference = capability.canEquipAccessory(stack, true);
+        var equipReference = accessories.canEquipAccessory(stack, true);
         if (equipReference == null) {
             return -1;
         }

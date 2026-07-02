@@ -28,8 +28,8 @@ public final class AccessoriesSlotGenerator {
     }
 
     public void column() {
-        AccessoriesCapability capability = AccessoriesCapability.get(this.owner);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(this.owner);
+        if (accessories == null) {
             return;
         }
 
@@ -38,7 +38,7 @@ public final class AccessoriesSlotGenerator {
             if (slotTypeReference == null) {
                 continue;
             }
-            AccessoriesContainer container = capability.getContainer(slotTypeReference);
+            AccessoriesContainer container = accessories.getContainer(slotTypeReference);
             if (container == null) {
                 continue;
             }
@@ -50,8 +50,8 @@ public final class AccessoriesSlotGenerator {
     }
 
     public void row() {
-        AccessoriesCapability capability = AccessoriesCapability.get(this.owner);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(this.owner);
+        if (accessories == null) {
             return;
         }
 
@@ -60,7 +60,7 @@ public final class AccessoriesSlotGenerator {
             if (slotTypeReference == null) {
                 continue;
             }
-            AccessoriesContainer container = capability.getContainer(slotTypeReference);
+            AccessoriesContainer container = accessories.getContainer(slotTypeReference);
             if (container == null) {
                 continue;
             }

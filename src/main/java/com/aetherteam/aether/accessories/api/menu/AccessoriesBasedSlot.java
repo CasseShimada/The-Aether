@@ -47,9 +47,9 @@ public class AccessoriesBasedSlot extends Slot {
             return false;
         }
 
-        AccessoriesCapability capability = this.container.capability();
+        AccessoriesCapability accessories = this.container.capability();
         SlotReference reference = SlotReference.of(this.owner, this.slotType.name(), this.slotIndex);
-        return capability.canEquipAccessory(stack, true, slot -> slot.slotName().equals(this.slotType.name()) && slot.slot() == this.slotIndex) != null
+        return accessories.canEquipAccessory(stack, true, slot -> slot.slotName().equals(this.slotType.name()) && slot.slot() == this.slotIndex) != null
                 && AccessoriesAPI.getOrDefaultAccessory(stack).canEquip(stack, reference);
     }
 
@@ -83,14 +83,14 @@ public class AccessoriesBasedSlot extends Slot {
             return;
         }
 
-        AccessoriesCapability capability = this.container.capability();
+        AccessoriesCapability accessories = this.container.capability();
         SlotReference reference = SlotReference.of(this.owner, this.slotType.name(), this.slotIndex);
         if (!oldStack.isEmpty()) {
             AccessoriesAPI.getOrDefaultAccessory(oldStack).onUnequip(oldStack.copy(), reference);
-            capability.handleImmediateUnequip(reference);
+            accessories.handleImmediateUnequip(reference);
         }
 
-        capability.process(true);
+        accessories.process(true);
         AccessoryRuntime.forceSync(this.owner);
     }
 
