@@ -93,7 +93,6 @@ public final class Aether {
         AetherBlocks.bootstrap();
         AetherBlockEntityTypes.bootstrap();
         AetherEntityTypes.bootstrap();
-        AetherBlocks.registerWoodTypes();
         AetherBlocks.registerBlockItems();
         AetherArmorMaterials.bootstrap();
         AetherItemTiers.bootstrap();
@@ -106,7 +105,6 @@ public final class Aether {
 
         AetherAdvancementTriggers.bootstrap();
 
-        AetherBlocks.registerPots();
         AetherBlocks.registerFlammability();
 
         AetherItems.registerAccessories();

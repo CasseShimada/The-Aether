@@ -234,10 +234,6 @@ public class AetherBlocks {
     public static void bootstrap() {
     }
 
-    public static void registerPots() {
-        // Potted contents are registered via FlowerPotBlock construction.
-    }
-
     public static void registerFlammability() {
         FireBlockAccessor fireBlockAccessor = (FireBlockAccessor) Blocks.FIRE;
         fireBlockAccessor.callSetFlammable(AetherBlocks.SKYROOT_LEAVES, 30, 60);
@@ -262,10 +258,6 @@ public class AetherBlocks {
         fireBlockAccessor.callSetFlammable(AetherBlocks.SKYROOT_STAIRS, 5, 20);
         fireBlockAccessor.callSetFlammable(AetherBlocks.SKYROOT_SLAB, 5, 20);
         fireBlockAccessor.callSetFlammable(AetherBlocks.SKYROOT_BOOKSHELF, 30, 20);
-    }
-
-    public static void registerWoodTypes() {
-        // WoodType registration is handled internally by construction.
     }
 
     public static void registerBlockItems() {
