@@ -20,7 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.Vec3;
 
-public class RecipeHooks {
+public final class InteractionRecipeHooks {
+    private InteractionRecipeHooks() {
+    }
+
     /**
      * Checks if an interaction in the Aether is banned. This is used both for item interaction recipes and interacting with beds in the Aether.
      *
@@ -38,7 +41,7 @@ public class RecipeHooks {
             com.aetherteam.aether.util.MessageUtil.sendPlayerMessage(player, Component.translatable("aether.banned_item", stack.getItem().getName(stack)), true);
             return true;
         }
-        if (level.getBiome(pos).is(AetherTags.Biomes.ULTRACOLD) && AetherConfig.SERVER.enable_bed_explosions.get()) { // Explodes beds in the Aether if the config for it is enabled.
+        if (level.getBiome(pos).is(AetherTags.Biomes.ULTRACOLD) && AetherConfig.SERVER.enable_bed_explosions.get()) {
             if (state.is(BlockTags.BEDS) && state.getBlock() != AetherBlocks.SKYROOT_BED) {
                 if (!level.isClientSide()) {
                     if (state.getValue(BedBlock.PART) != BedPart.HEAD) {
@@ -79,5 +82,4 @@ public class RecipeHooks {
         }
         return false;
     }
-
 }

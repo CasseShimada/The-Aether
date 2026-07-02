@@ -12,7 +12,7 @@ import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
 import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityGoalHooks;
-import com.aetherteam.aether.event.hooks.RecipeHooks;
+import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
 import com.aetherteam.aether.event.hooks.ServerPerkHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.network.PacketDistributor;
@@ -151,7 +151,7 @@ public final class AetherFabricEvents {
     private static boolean isBlockedInteraction(Player player, net.minecraft.world.level.Level level, InteractionHand hand, net.minecraft.core.BlockPos blockPos, net.minecraft.core.Direction direction) {
         ItemStack inHand = player.getItemInHand(hand);
         ItemStack interactionStack = getInteractionStack(player, hand, inHand);
-        return RecipeHooks.checkInteractionBanned(
+        return InteractionRecipeHooks.checkInteractionBanned(
                 player,
                 level,
                 blockPos,

@@ -3,7 +3,6 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
 import com.aetherteam.aether.event.hooks.PlacementRecipeHooks;
-import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
