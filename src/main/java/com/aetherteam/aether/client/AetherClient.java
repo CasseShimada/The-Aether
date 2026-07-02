@@ -8,7 +8,7 @@ import com.aetherteam.aether.client.event.hooks.DimensionClientHooks;
 import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
 import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
-import com.aetherteam.aether.client.event.hooks.LevelClientHooks;
+import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
 import com.aetherteam.aether.client.event.hooks.MenuHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
@@ -191,7 +191,7 @@ public class AetherClient {
     private static void registerLevelRenderCallbacks() {
         LevelRenderEvents.COLLECT_SUBMITS.register(context -> {
             Minecraft minecraft = Minecraft.getInstance();
-            LevelClientHooks.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
+            DungeonOverlayClientHooks.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
         });
     }
 
