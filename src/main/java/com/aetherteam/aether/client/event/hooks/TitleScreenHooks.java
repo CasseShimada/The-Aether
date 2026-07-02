@@ -8,7 +8,10 @@ import net.minecraft.network.chat.Component;
 
 import java.util.Calendar;
 
-public class MenuHooks {
+public final class TitleScreenHooks {
+    private TitleScreenHooks() {
+    }
+
     /**
      * If the current date is July 22nd, displays the Aether's anniversary splash text.
      */

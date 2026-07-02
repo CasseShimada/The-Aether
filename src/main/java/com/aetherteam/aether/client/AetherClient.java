@@ -9,7 +9,7 @@ import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
 import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
-import com.aetherteam.aether.client.event.hooks.MenuHooks;
+import com.aetherteam.aether.client.event.hooks.TitleScreenHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
@@ -259,7 +259,7 @@ public class AetherClient {
 
     private static void configureScreen(Screen screen) {
         if (screen instanceof TitleScreen titleScreen) {
-            MenuHooks.setCustomSplashText(titleScreen);
+            TitleScreenHooks.setCustomSplashText(titleScreen);
         }
 
         var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
