@@ -1,6 +1,7 @@
 package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.AttachmentHooks;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
@@ -14,6 +15,7 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -35,6 +37,7 @@ public final class AetherFabricEvents {
         registerLevelEvents();
         registerTrackingEvents();
         registerInteractionEvents();
+        registerCommandEvents();
     }
 
     private static void registerPlayerEvents() {
@@ -90,6 +93,10 @@ public final class AetherFabricEvents {
 
     private static void registerTrackingEvents() {
         EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
+    }
+
+    private static void registerCommandEvents() {
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> AetherCommands.registerCommands(dispatcher));
     }
 
     private static void registerInteractionEvents() {

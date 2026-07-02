@@ -3,10 +3,8 @@ package com.aetherteam.aether.fabric;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
-import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.network.AetherNetworking;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 
 public class AetherFabric implements ModInitializer {
@@ -16,6 +14,5 @@ public class AetherFabric implements ModInitializer {
         Aether.init();
         AetherNetworking.registerCommon();
         AetherFabricEvents.register();
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> AetherCommands.registerCommands(dispatcher));
     }
 }
