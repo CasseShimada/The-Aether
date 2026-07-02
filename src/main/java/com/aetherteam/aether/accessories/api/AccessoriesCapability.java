@@ -194,7 +194,7 @@ public class AccessoriesCapability {
                     accessory.tick(liveStack, reference);
                 }
                 if (this.isServerSide()) {
-                    this.tickHeldEquippedCompat(liveStack, reference);
+                    this.tickHeldEquippedItem(liveStack, reference);
                     this.applyDynamicModifiers(key, liveStack, reference, accessory);
                 }
             }
@@ -404,7 +404,7 @@ public class AccessoriesCapability {
         }
     }
 
-    private void tickHeldEquippedCompat(ItemStack stack, SlotReference reference) {
+    private void tickHeldEquippedItem(ItemStack stack, SlotReference reference) {
         if (!(this.entity.level() instanceof ServerLevel serverLevel)) {
             return;
         }

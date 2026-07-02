@@ -22,7 +22,7 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 | Trigger Path | Bridge Entry | Status |
 |---|---|---|
 | Vanilla/Fabric `LivingEntity#isHolding(Predicate<ItemStack>)` checks | `AccessoryEffectBridge.isHoldingEquivalent` via `LivingEntityMixin` return-augment | DONE |
-| Vanilla/Fabric inventory tick for held/equipped passive items | `AccessoriesCapability.tickHeldEquippedCompat` dispatch (`Item#inventoryTick`) | DONE |
+| Vanilla/Fabric inventory tick for held/equipped passive items | `AccessoriesCapability.tickHeldEquippedItem` dispatch (`Item#inventoryTick`) | DONE |
 | Twilight charm/equipment-slot consumption path (`TFItemStackUtils.consumeEquipmentSlot`) | Optional twilight mixin `TFItemStackUtilsMixin` + `AccessoryEffectBridge.consumeAccessoryItem` | DONE |
 | Twilight mystic-crown head-slot checks (scepter/wand family) | Optional twilight mixins (`TwilightWandItemMixin`, `ZombieWandItemMixin`, `LifedrainScepterItemMixin`) + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
 | Twilight temporary shield timer crown bonus (`FortificationShieldAttachment.checkLichCrownBonus`) | Optional twilight mixin `FortificationShieldAttachmentMixin` + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |

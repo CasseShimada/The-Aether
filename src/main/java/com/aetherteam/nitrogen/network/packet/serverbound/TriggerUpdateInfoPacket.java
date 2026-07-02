@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
 /**
- * Compatibility packet kept for the Moa skin refresh button path.
+ * Packet used by the Moa skin refresh button path.
  */
 public record TriggerUpdateInfoPacket(int playerID) implements CustomPacketPayload {
     public static final Type<TriggerUpdateInfoPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath("nitrogen_internals", "trigger_patreon_info_update"));
@@ -25,6 +25,6 @@ public record TriggerUpdateInfoPacket(int playerID) implements CustomPacketPaylo
     }
 
     public static void execute(TriggerUpdateInfoPacket payload, AetherPayloadContext context) {
-        // Intentionally no-op in local Fabric migration: no external Patreon sync service is bundled.
+        // Intentionally no-op because no external Patreon sync service is bundled.
     }
 }
