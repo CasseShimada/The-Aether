@@ -15,6 +15,9 @@ public class CustomizationsOptions {
 
     public static final CustomizationsOptions INSTANCE = new CustomizationsOptions();
 
+    public static void bootstrap() {
+    }
+
     public CustomizationsOptions() {
         if (CUSTOMIZATIONS_FILE.exists()) {
             this.load();
