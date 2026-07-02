@@ -12,7 +12,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
-public class AetherMenuTypes {
+public final class AetherMenuTypes {
     public static final MenuType<AetherAccessoriesMenu> ACCESSORIES = register("accessories", AetherAccessoriesMenu::new);
     public static final MenuType<LoreBookMenu> BOOK_OF_LORE = register("book_of_lore", LoreBookMenu::new);
     public static final MenuType<AltarMenu> ALTAR = register("altar", AltarMenu::new);
@@ -33,5 +33,11 @@ public class AetherMenuTypes {
 
     private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerScreen(MenuType<M> menuType, MenuScreens.ScreenConstructor<M, U> constructor) {
         MenuScreens.register(menuType, constructor);
+    }
+
+    private AetherMenuTypes() {
+    }
+
+    public static void bootstrap() {
     }
 }
