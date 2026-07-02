@@ -8,7 +8,7 @@ import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
@@ -100,7 +100,7 @@ public abstract class LivingEntityMixin {
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(mob);
+        var accessories = AccessoriesAPI.getAccessories(mob);
         if (accessories == null) {
             return;
         }

@@ -1,7 +1,7 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -95,7 +95,7 @@ public record AccessorySyncPacket(int entityId, List<AccessorySyncPacket.SlotDat
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             accessories.applyClientSync(payload);
         }
