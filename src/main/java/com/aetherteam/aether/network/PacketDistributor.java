@@ -3,7 +3,7 @@ package com.aetherteam.aether.network;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import com.aetherteam.aether.util.ClientReflection;
+import com.aetherteam.aether.util.ClientServices;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ public final class PacketDistributor {
     }
 
     public static void sendToServer(CustomPacketPayload payload) {
-        ClientReflection.sendToServer(payload);
+        ClientServices.sendToServer(payload);
     }
 
     public static void sendToPlayer(ServerPlayer player, CustomPacketPayload payload) {
