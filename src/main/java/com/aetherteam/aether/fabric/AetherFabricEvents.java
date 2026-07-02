@@ -1,6 +1,5 @@
 package com.aetherteam.aether.fabric;
 
-import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
@@ -55,7 +54,7 @@ public final class AetherFabricEvents {
     }
 
     private static void registerTrackingEvents() {
-        EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
+        EntityTrackingEvents.START_TRACKING.register(EntityLifecycleHooks::startTracking);
     }
 
     private static void registerCommandEvents() {

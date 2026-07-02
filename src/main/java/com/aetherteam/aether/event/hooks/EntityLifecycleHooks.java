@@ -2,6 +2,7 @@ package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,5 +23,9 @@ public final class EntityLifecycleHooks {
 
     public static void unload(Entity entity, ServerLevel level) {
         AccessoryRuntime.clear(entity);
+    }
+
+    public static void startTracking(Entity trackedEntity, ServerPlayer player) {
+        AccessoryRuntime.syncToPlayer(trackedEntity, player);
     }
 }
