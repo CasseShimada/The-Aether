@@ -15,7 +15,7 @@ import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Mounts an Aerbunny to the player using stored NBT data if the player previously logged out with a mounted Aerbunny. This is called by {@link AetherPlayerAttachment#remountAerbunny(Player)}.<br><br>
- * This also stores the summoned Aerbunny back into the capability so the player is tracked as having a mounted Aerbunny.
+ * This also stores the summoned Aerbunny back into the player attachment so the player is tracked as having a mounted Aerbunny.
  */
 public record RemountAerbunnyPacket(int vehicleID, int aerbunnyID) implements CustomPacketPayload {
     public static final Type<RemountAerbunnyPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "remount_aerbunny"));

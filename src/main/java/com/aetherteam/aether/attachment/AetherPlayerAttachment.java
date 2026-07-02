@@ -442,7 +442,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Checks whether the capability should stop tracking a mounted Aerbunny.
+     * Checks whether the player attachment should stop tracking a mounted Aerbunny.
      */
     private void checkToRemoveAerbunny(Player player) {
         if (this.getMountedAerbunny() != null && (!this.getMountedAerbunny().isAlive() || !player.isAlive())) {
@@ -451,7 +451,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Removes an Aerbunny from the world and stores it to NBT for the capability. This is used when a player logs out with an Aerbunny.
+     * Removes an Aerbunny from the world and stores it to NBT for the player attachment. This is used when a player logs out with an Aerbunny.
      */
     public void removeAerbunny() {
         if (this.getMountedAerbunny() != null) {
@@ -485,14 +485,14 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * Checks whether the capability should stop tracking Cloud Minions.
+     * Checks whether the player attachment should stop tracking Cloud Minions.
      */
     private void checkToRemoveCloudMinions() {
         this.getCloudMinions().removeIf(cloudMinion -> !cloudMinion.isAlive());
     }
 
     /**
-     * Used when capability data is copied. This restores any extra health the players had from Life Shards before the copy occurred.
+     * Used when player attachment data is copied. This restores any extra health the players had from Life Shards before the copy occurred.
      */
     private void handleSavedHealth(Player player) {
         if (this.getSavedHealth() > 0.0F) {
@@ -873,7 +873,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * @return The {@link Float} for player health stored between capability copying.
+     * @return The {@link Float} for player health stored between player attachment copying.
      */
     public float getSavedHealth() {
         return this.savedHealth;
@@ -957,7 +957,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     }
 
     /**
-     * @return Whether the capability should sync server values to nearby clients.
+     * @return Whether the player attachment should sync server values to nearby clients.
      */
     private boolean shouldSyncBetweenClients() {
         return this.shouldSyncBetweenClients;
