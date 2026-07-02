@@ -5,7 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-public class AetherAdvancementTriggers {
+public final class AetherAdvancementTriggers {
     public static final IncubationTrigger INCUBATION_TRIGGER = Registry.register(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(Aether.MODID, "incubation_trigger"),
@@ -14,4 +14,10 @@ public class AetherAdvancementTriggers {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(Aether.MODID, "lore_entry"),
             new LoreTrigger());
+
+    private AetherAdvancementTriggers() {
+    }
+
+    public static void bootstrap() {
+    }
 }

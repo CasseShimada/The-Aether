@@ -64,17 +64,20 @@ public final class Aether {
         DIRECTORY.toFile().mkdirs();
 
         AetherDataAttachments.bootstrap();
+        AetherGameEvents.bootstrap();
 
         initializeClasses(
-                AetherGameEvents.class,
                 AetherLootFunctions.class,
                 AetherLootConditions.class,
                 AetherDataComponents.class,
                 AetherRecipeBookCategories.class,
                 AetherRecipeTypes.class,
-                AetherRecipeSerializers.class,
-                AetherAttributes.class,
-                AetherEffects.class,
+                AetherRecipeSerializers.class
+        );
+        AetherAttributes.bootstrap();
+        AetherEffects.bootstrap();
+
+        initializeClasses(
                 AetherParticleTypes.class,
                 AetherTreeDecoratorTypes.class,
                 AetherTrunkPlacerTypes.class,
@@ -101,7 +104,7 @@ public final class Aether {
         AetherEntityTypes.registerEntityAttributes();
         AetherEntityTypes.registerSpawnPlacements();
 
-        initializeClasses(AetherAdvancementTriggers.class);
+        AetherAdvancementTriggers.bootstrap();
 
         AetherBlocks.registerPots();
         AetherBlocks.registerFlammability();
