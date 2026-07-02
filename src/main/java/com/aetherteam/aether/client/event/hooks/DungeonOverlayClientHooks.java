@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 
 import javax.annotation.Nullable;
 
@@ -20,6 +21,11 @@ public final class DungeonOverlayClientHooks {
      * [CODE COPY] - {@link ClientLevel#animateTick(int, int, int)}.
      * Checks to set up positions and render overlays for dungeon blocks from whatever block item the player is holding.
      */
+    public static void collectSubmits(LevelRenderContext context) {
+        Minecraft minecraft = Minecraft.getInstance();
+        renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
+    }
+
     public static void renderDungeonBlockOverlays(PoseStack poseStack, SubmitNodeCollector collector, Camera camera, @Nullable Frustum frustum, Minecraft minecraft) {
         if (minecraft.level != null) {
             LocalPlayer player = minecraft.player;
