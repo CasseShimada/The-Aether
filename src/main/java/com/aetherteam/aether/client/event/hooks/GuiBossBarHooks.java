@@ -18,6 +18,14 @@ public final class GuiBossBarHooks {
     private GuiBossBarHooks() {
     }
 
+    public static void displayBossEvent(UUID bossEvent, int entityId) {
+        BOSS_EVENTS.put(bossEvent, entityId);
+    }
+
+    public static void removeBossEvent(UUID bossEvent) {
+        BOSS_EVENTS.remove(bossEvent);
+    }
+
     public static void drawBossHealthBar(GuiGraphicsExtractor guiGraphics, int x, int y, LerpingBossEvent bossEvent) {
         Integer entityId = BOSS_EVENTS.get(bossEvent.getId());
         if (entityId == null) {

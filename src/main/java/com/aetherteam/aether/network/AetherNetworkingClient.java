@@ -1,5 +1,6 @@
 package com.aetherteam.aether.network;
 
+import com.aetherteam.aether.client.event.hooks.GuiBossBarHooks;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
@@ -45,8 +46,8 @@ public final class AetherNetworkingClient {
 
         registerClientReceiver(AetherTravelPacket.TYPE, AetherTravelPacket::execute);
         registerClientReceiver(AccessorySyncPacket.TYPE, AccessorySyncPacket::execute);
-        registerClientReceiver(BossInfoPacket.Display.TYPE, BossInfoPacket.Display::execute);
-        registerClientReceiver(BossInfoPacket.Remove.TYPE, BossInfoPacket.Remove::execute);
+        registerClientReceiver(BossInfoPacket.Display.TYPE, (payload, context) -> GuiBossBarHooks.displayBossEvent(payload.getBossEvent(), payload.getEntityID()));
+        registerClientReceiver(BossInfoPacket.Remove.TYPE, (payload, context) -> GuiBossBarHooks.removeBossEvent(payload.getBossEvent()));
         registerClientReceiver(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Remove.TYPE, ClientDeveloperGlowPacket.Remove::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Sync.TYPE, ClientDeveloperGlowPacket.Sync::execute);

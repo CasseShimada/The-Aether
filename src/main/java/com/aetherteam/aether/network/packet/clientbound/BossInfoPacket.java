@@ -7,10 +7,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -46,10 +43,6 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
         public Type<BossInfoPacket.Display> type() {
             return TYPE;
         }
-
-        public static void execute(BossInfoPacket.Display payload, AetherPayloadContext context) {
-            updateBossEvent(payload.bossEvent, payload.entityID);
-        }
     }
 
     /**
@@ -73,10 +66,6 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
         public Type<BossInfoPacket.Remove> type() {
             return TYPE;
         }
-
-        public static void execute(BossInfoPacket.Remove payload, AetherPayloadContext context) {
-            updateBossEvent(payload.bossEvent, null);
-        }
     }
 
     public UUID getBossEvent() {
@@ -85,20 +74,5 @@ public abstract class BossInfoPacket implements CustomPacketPayload {
 
     public int getEntityID() {
         return this.entityID;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void updateBossEvent(UUID bossEvent, Integer entityID) {
-        try {
-            Class<?> guiHooksClass = Class.forName("com.aetherteam.aether.client.event.hooks.GuiBossBarHooks");
-            Field bossEventsField = guiHooksClass.getField("BOSS_EVENTS");
-            Map<UUID, Integer> events = (Map<UUID, Integer>) bossEventsField.get(null);
-            if (entityID == null) {
-                events.remove(bossEvent);
-            } else {
-                events.put(bossEvent, entityID);
-            }
-        } catch (ReflectiveOperationException ignored) {
-        }
     }
 }
