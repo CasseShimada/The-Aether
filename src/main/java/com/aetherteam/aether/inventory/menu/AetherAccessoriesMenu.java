@@ -1,7 +1,7 @@
 package com.aetherteam.aether.inventory.menu;
 
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
 import com.aetherteam.aether.mixin.mixins.common.accessor.AbstractContainerMenuAccessor;
 import com.aetherteam.aether.mixin.mixins.common.accessor.CraftingMenuAccessor;
@@ -287,7 +287,7 @@ public class AetherAccessoriesMenu extends InventoryMenu {
     }
 
     private int getFirstEmptyAccessorySlot(Player player, ItemStack stack) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        var accessories = AccessoriesAPI.getAccessories(player);
         if (accessories == null) {
             return -1;
         }

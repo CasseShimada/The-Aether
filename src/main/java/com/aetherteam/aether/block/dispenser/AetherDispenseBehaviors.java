@@ -7,7 +7,6 @@ import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.equip.EquipAction;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
@@ -74,7 +73,7 @@ public class AetherDispenseBehaviors {
         ItemStack candidateStack = stack.copyWithCount(1);
         Accessory accessory = AccessoriesAPI.getOrDefaultAccessory(candidateStack);
         for (LivingEntity livingEntity : list) {
-            AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+            var accessories = AccessoriesAPI.getAccessories(livingEntity);
             if (accessories == null) {
                 continue;
             }

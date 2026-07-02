@@ -1,7 +1,6 @@
 package com.aetherteam.aether.item.accessories;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.SoundEventData;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
@@ -45,7 +44,7 @@ public class AccessoryItem extends Item implements Accessory {
             return InteractionResult.PASS;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        var accessories = AccessoriesAPI.getAccessories(player);
         if (accessories == null) {
             return InteractionResult.PASS;
         }
