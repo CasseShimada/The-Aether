@@ -5,6 +5,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntityLightningHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.world.LevelUtil;
@@ -107,7 +108,7 @@ public class EntityMixin {
     @Inject(method = "thunderHit(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LightningBolt;)V", at = @At("HEAD"), cancellable = true)
     private void aether$preventLightningDamage(ServerLevel level, LightningBolt lightningBolt, CallbackInfo ci) {
         Entity entity = (Entity) (Object) this;
-        if (EntityHooks.lightningHitKeys(entity) || EntityHooks.thunderCrystalHitItems(entity, lightningBolt)) {
+        if (EntityLightningHooks.lightningHitKeys(entity) || EntityLightningHooks.thunderCrystalHitItems(entity, lightningBolt)) {
             ci.cancel();
         }
     }

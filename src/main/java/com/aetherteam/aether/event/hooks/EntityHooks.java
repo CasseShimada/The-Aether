@@ -6,8 +6,6 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
-import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
-import com.aetherteam.aether.entity.projectile.crystal.ThunderCrystal;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,10 +15,6 @@ import net.minecraft.world.entity.animal.bee.Bee;
 import net.minecraft.world.entity.animal.fox.Fox;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FishingHook;
-import net.minecraft.world.item.*;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 
 import java.util.Collection;
 
@@ -41,20 +35,6 @@ public class EntityHooks {
     }
 
     /**
-     * Prevents an entity from being hooked with a Fishing Rod.
-     *
-     * @param projectileEntity The hook projectile {@link Entity}.
-     * @param rayTraceResult   The {@link HitResult} of the projectile.
-     * @return Whether to prevent the hook interaction, as a {@link Boolean}.
-     */
-    public static boolean preventEntityHooked(Entity projectileEntity, HitResult rayTraceResult) {
-        if (rayTraceResult instanceof EntityHitResult entityHitResult) {
-            return entityHitResult.getEntity().getType().builtInRegistryHolder().is(AetherTags.Entities.UNHOOKABLE) && projectileEntity instanceof FishingHook;
-        }
-        return false;
-    }
-
-    /**
      * Disallows blocking the Slider with a shield.
      *
      * @param source The {@link DamageSource} to block.
@@ -62,36 +42,6 @@ public class EntityHooks {
      */
     public static boolean preventSliderShieldBlock(DamageSource source) {
         return source.getEntity() instanceof Slider;
-    }
-
-    /**
-     * Prevents lightning from damaging dungeon keys.
-     *
-     * @param entity The {@link Entity}.
-     * @return Whether lightning hit a key item, as a {@link Boolean}.
-     */
-    public static boolean lightningHitKeys(Entity entity) {
-        if (entity instanceof ItemEntity itemEntity) {
-            return itemEntity.getItem().is(AetherTags.Items.DUNGEON_KEYS);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Prevents lightning summoned by Thunder Crystals from damaging items.
-     *
-     * @param entity    The {@link Entity} struck by the lightning bolt.
-     * @param lightning The {@link LightningBolt} that struck the entity.
-     * @return Whether the lightning was from a {@link ThunderCrystal} and hit an item, as a {@link Boolean}.
-     */
-    public static boolean thunderCrystalHitItems(Entity entity, LightningBolt lightning) {
-        if (entity instanceof ItemEntity) {
-            if (lightning.hasAttached(AetherDataAttachments.LIGHTNING_TRACKER)) {
-                return lightning.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).getOwner(lightning.level()) instanceof ValkyrieQueen;
-            }
-        }
-        return false;
     }
 
     /**
