@@ -2,6 +2,10 @@
 
 This checklist tracks the self-written Aether accessory core built on Fabric attachments before any vanilla/twilight held/equipped compatibility work.
 
+## Legacy Migration Decision
+
+Old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data has been intentionally removed from this Fabric branch. Current Aether accessory storage remains backed by the mod's Fabric attachment data and current network sync path.
+
 ## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |
