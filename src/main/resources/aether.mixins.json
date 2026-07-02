@@ -56,7 +56,6 @@
     "common.accessor.LevelAccessor",
     "common.accessor.LivingEntityAccessor",
     "common.accessor.LookAtPlayerGoalAccessor",
-    "common.accessor.MinecraftServerAccessor",
     "common.accessor.MobAccessor",
     "common.accessor.PoiTypesAccessor",
     "common.accessor.ServerGamePacketListenerImplAccessor",

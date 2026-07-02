@@ -1,7 +1,6 @@
 package com.aetherteam.aether.mixin;
 
 import com.aetherteam.aether.client.AetherClient;
-import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.accessories.Accessories;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
@@ -9,10 +8,8 @@ import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
-import com.aetherteam.aether.mixin.mixins.common.accessor.MinecraftServerAccessor;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -26,7 +23,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -110,20 +106,6 @@ public class AetherMixinHooks {
             return stack;
         }
         return ItemStack.EMPTY;
-    }
-
-    /**
-     * Checks whether the {@link SelectWorldScreen} is open and the level that the lock belongs to is the same one as the level loaded by the world preview.
-     *
-     * @param basePath The {@link Path} for the level directory.
-     * @return Whether the level can be unlocked, as a {@link Boolean}.
-     * @see com.aetherteam.aether.mixin.mixins.common.DirectoryLockMixin
-     */
-    public static boolean canUnlockLevel(Path basePath) {
-        if (ClientCompat.screen(Minecraft.getInstance()) instanceof SelectWorldScreen && Minecraft.getInstance().getSingleplayerServer() != null) {
-            return basePath.getFileName().toString().equals(((MinecraftServerAccessor) Minecraft.getInstance().getSingleplayerServer()).aether$getStorageSource().getLevelId());
-        }
-        return false;
     }
 
     /**
