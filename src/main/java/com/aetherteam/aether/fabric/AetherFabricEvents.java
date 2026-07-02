@@ -34,7 +34,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -117,7 +116,7 @@ public final class AetherFabricEvents {
                 return InteractionResult.PASS;
             }
 
-            if (isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
+            if (InteractionRecipeHooks.isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
                 return InteractionResult.FAIL;
             }
 
@@ -148,20 +147,6 @@ public final class AetherFabricEvents {
         });
     }
 
-    private static boolean isBlockedInteraction(Player player, net.minecraft.world.level.Level level, InteractionHand hand, net.minecraft.core.BlockPos blockPos, net.minecraft.core.Direction direction) {
-        ItemStack inHand = player.getItemInHand(hand);
-        ItemStack interactionStack = getInteractionStack(player, hand, inHand);
-        return InteractionRecipeHooks.checkInteractionBanned(
-                player,
-                level,
-                blockPos,
-                direction,
-                interactionStack,
-                level.getBlockState(blockPos),
-                !inHand.isEmpty()
-        );
-    }
-
     private static void syncPlayerAttachment(Player player) {
         if (!player.level().isClientSide()) {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
@@ -174,11 +159,4 @@ public final class AetherFabricEvents {
         }
     }
 
-    private static ItemStack getInteractionStack(Player player, InteractionHand hand, ItemStack inHand) {
-        if (!inHand.isEmpty()) {
-            return inHand;
-        }
-        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        return player.getItemInHand(otherHand);
-    }
 }

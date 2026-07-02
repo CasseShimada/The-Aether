@@ -24,6 +24,20 @@ public final class InteractionRecipeHooks {
     private InteractionRecipeHooks() {
     }
 
+    public static boolean isBlockedInteraction(Player player, Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
+        ItemStack inHand = player.getItemInHand(hand);
+        ItemStack interactionStack = getInteractionStack(player, hand, inHand);
+        return checkInteractionBanned(
+                player,
+                level,
+                blockPos,
+                direction,
+                interactionStack,
+                level.getBlockState(blockPos),
+                !inHand.isEmpty()
+        );
+    }
+
     /**
      * Checks if an interaction in the Aether is banned. This is used both for item interaction recipes and interacting with beds in the Aether.
      *
@@ -81,5 +95,13 @@ public final class InteractionRecipeHooks {
             }
         }
         return false;
+    }
+
+    private static ItemStack getInteractionStack(Player player, InteractionHand hand, ItemStack inHand) {
+        if (!inHand.isEmpty()) {
+            return inHand;
+        }
+        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        return player.getItemInHand(otherHand);
     }
 }
