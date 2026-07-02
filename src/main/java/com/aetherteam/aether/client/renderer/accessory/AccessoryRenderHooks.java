@@ -1,4 +1,4 @@
-package com.aetherteam.aether.mixin;
+package com.aetherteam.aether.client.renderer.accessory;
 
 import com.aetherteam.aether.client.AetherClient;
 import com.aetherteam.aether.accessories.Accessories;
@@ -22,13 +22,16 @@ import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class AetherMixinHooks {
+public final class AccessoryRenderHooks {
+    private AccessoryRenderHooks() {
+    }
+
     /**
      * Checks whether a cape accessory is visible.
      *
      * @param livingEntity The {@link LivingEntity} wearing the cape.
      * @return Whether the cape is visible, as a {@link Boolean}.
-     * @see com.aetherteam.aether.mixin.mixins.client.PlayerSkinMixin
+     * @see com.aetherteam.aether.mixin.mixins.client.AbstractClientPlayerMixin
      */
     public static ItemStack isCapeVisible(LivingEntity livingEntity) {
         ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
@@ -103,5 +106,4 @@ public class AetherMixinHooks {
         }
         return ItemStack.EMPTY;
     }
-
 }

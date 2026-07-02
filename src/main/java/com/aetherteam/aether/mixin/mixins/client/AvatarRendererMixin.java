@@ -9,7 +9,7 @@ import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
-import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.aetherteam.aether.mixin.mixins.client.accessor.LivingEntityRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.aetherteam.nitrogen.ConstantsUtil;
@@ -119,7 +119,7 @@ public abstract class AvatarRendererMixin {
 
     @Unique
     private void aether$renderFirstPersonGloves(Player player, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, ModelPart arm, boolean rightArm, boolean slim) {
-        ItemStack stack = AetherMixinHooks.getVisibleAccessory(player, GlovesItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, GlovesItem.getStaticIdentifier(), 0);
         if (!(stack.getItem() instanceof GlovesItem glovesItem)) {
             return;
         }
@@ -131,12 +131,12 @@ public abstract class AvatarRendererMixin {
         gloveArm.xRot = 0.0F;
         submitNodeCollector.submitModelPart(gloveArm, poseStack, RenderTypes.armorCutoutNoCull(glovesItem.getGlovesTexture()), packedLight, OverlayTexture.NO_OVERLAY, null, DyedItemColor.getOrDefault(stack, -1), null);
 
-        TextureAtlasSprite trimSprite = AetherMixinHooks.getHumanoidArmorTrimSprite(stack, glovesItem);
+        TextureAtlasSprite trimSprite = AccessoryRenderHooks.getHumanoidArmorTrimSprite(stack, glovesItem);
         if (trimSprite != null) {
             ModelPart gloveTrimArm = rightArm ? glovesTrimModel.rightArm : glovesTrimModel.leftArm;
             gloveTrimArm.loadPose(arm.storePose());
             gloveTrimArm.xRot = 0.0F;
-            submitNodeCollector.order(1).submitModelPart(gloveTrimArm, poseStack, AetherMixinHooks.getArmorTrimRenderType(stack), packedLight, OverlayTexture.NO_OVERLAY, trimSprite);
+            submitNodeCollector.order(1).submitModelPart(gloveTrimArm, poseStack, AccessoryRenderHooks.getArmorTrimRenderType(stack), packedLight, OverlayTexture.NO_OVERLAY, trimSprite);
         }
 
         if (stack.hasFoil()) {
@@ -146,7 +146,7 @@ public abstract class AvatarRendererMixin {
 
     @Unique
     private void aether$renderFirstPersonShield(Player player, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, ModelPart arm, boolean rightArm, boolean slim) {
-        ItemStack stack = AetherMixinHooks.getVisibleAccessory(player, ShieldOfRepulsionItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, ShieldOfRepulsionItem.getStaticIdentifier(), 0);
         if (!(stack.getItem() instanceof ShieldOfRepulsionItem shieldItem)) {
             return;
         }

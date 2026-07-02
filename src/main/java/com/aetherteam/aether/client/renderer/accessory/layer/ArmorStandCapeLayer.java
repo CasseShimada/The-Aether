@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.renderer.accessory.layer;
 import com.aetherteam.aether.client.renderer.accessory.model.CapeModel;
 import com.aetherteam.aether.client.renderer.accessory.state.ArmorStandCapeRenderState;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
-import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.object.armorstand.ArmorStandArmorModel;
@@ -33,7 +33,7 @@ public class ArmorStandCapeLayer extends RenderLayer<ArmorStandRenderState, Armo
             return;
         }
 
-        var texture = AetherMixinHooks.getCapeTexture(stack);
+        var texture = AccessoryRenderHooks.getCapeTexture(stack);
         if (texture == null) {
             return;
         }

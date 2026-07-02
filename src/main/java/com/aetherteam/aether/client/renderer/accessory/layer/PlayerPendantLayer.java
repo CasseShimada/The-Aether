@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.renderer.accessory.layer;
 
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.item.accessories.pendant.PendantItem;
-import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.player.PlayerModel;
@@ -31,7 +31,7 @@ public class PlayerPendantLayer extends RenderLayer<AvatarRenderState, PlayerMod
             return;
         }
 
-        ItemStack stack = AetherMixinHooks.getVisibleAccessory(livingEntity, PendantItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, PendantItem.getStaticIdentifier(), 0);
         if (!(stack.getItem() instanceof PendantItem pendantItem)) {
             return;
         }

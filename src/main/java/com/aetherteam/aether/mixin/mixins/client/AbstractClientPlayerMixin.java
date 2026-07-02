@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
-import com.aetherteam.aether.mixin.AetherMixinHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -22,9 +22,9 @@ public class AbstractClientPlayerMixin {
     private PlayerSkin getSkin(Operation<PlayerSkin> original) {
         AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) (Object) this;
         PlayerSkin skin = original.call();
-        ItemStack stack = AetherMixinHooks.isCapeVisible(abstractClientPlayer);
+        ItemStack stack = AccessoryRenderHooks.isCapeVisible(abstractClientPlayer);
         if (!stack.isEmpty()) {
-            Identifier texture = AetherMixinHooks.getCapeTexture(stack);
+            Identifier texture = AccessoryRenderHooks.getCapeTexture(stack);
             if (texture != null) {
                 ClientAsset.ResourceTexture renderedTexture = new ClientAsset.ResourceTexture(texture);
                 return new PlayerSkin(skin.body(), renderedTexture, renderedTexture, skin.model(), skin.secure());
