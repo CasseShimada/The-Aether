@@ -10,7 +10,7 @@ public class AetherCommands {
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         AetherTimeCommand.register(dispatcher);
         EternalDayCommand.register(dispatcher);
-        PlayerCapabilityCommand.register(dispatcher);
+        PlayerAttachmentCommand.register(dispatcher);
         SunAltarWhitelistCommand.register(dispatcher);
     }
 }

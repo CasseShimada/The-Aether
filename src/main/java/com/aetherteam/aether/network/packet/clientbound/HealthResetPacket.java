@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
- * Sets the player's Life Shard data and refreshes the modifier and health values. This is called by {@link com.aetherteam.aether.command.PlayerCapabilityCommand}.
+ * Sets the player's Life Shard data and refreshes the modifier and health values. This is called by {@link com.aetherteam.aether.command.PlayerAttachmentCommand}.
  */
 public record HealthResetPacket(int entityID, int value) implements CustomPacketPayload {
     public static final Type<HealthResetPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "reset_health"));

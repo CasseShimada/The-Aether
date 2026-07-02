@@ -21,7 +21,7 @@ import com.aetherteam.aether.network.PacketDistributor;
 
 import java.util.Collection;
 
-public class PlayerCapabilityCommand {
+public class PlayerAttachmentCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("aether")
                 .then(Commands.literal("player").requires((commandSourceStack) -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
