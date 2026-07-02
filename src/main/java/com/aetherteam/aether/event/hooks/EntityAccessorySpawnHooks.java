@@ -173,7 +173,8 @@ final class EntityAccessorySpawnHooks {
     }
 
     private static boolean isContainerEmpty(AccessoriesContainer accessoriesContainer) {
-        for (SlotEntryReference slotResult : accessoriesContainer.capability().getAllEquipped()) {
+        AccessoriesCapability accessories = accessoriesContainer.capability();
+        for (SlotEntryReference slotResult : accessories.getAllEquipped()) {
             if (!slotResult.stack().isEmpty()) {
                 return false;
             }
