@@ -3,6 +3,7 @@ package com.aetherteam.aether.data.resources.registries;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.item.AetherItems;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -23,6 +24,10 @@ public class AetherMoaTypes {
 
     private static ResourceKey<MoaType> createKey(String name) {
         return ResourceKey.create(AetherMoaTypes.MOA_TYPE_REGISTRY_KEY, Identifier.fromNamespaceAndPath(Aether.MODID, name));
+    }
+
+    public static void registerSynced() {
+        DynamicRegistries.registerSynced(MOA_TYPE_REGISTRY_KEY, MoaType.CODEC);
     }
 
     public static void bootstrap(BootstrapContext<MoaType> context) {
