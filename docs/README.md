@@ -61,7 +61,7 @@ Then load it through your dependencies, with `project.aether_version` specified 
 ```
 dependencies {
   ...
-  implementation fg.deobf("com.aetherteam.aether:aether:${project.aether_version}")
+  modImplementation "com.aetherteam.aether:aether-${project.minecraft_version}-fabric:${project.aether_version}"
   ...
 }
 ```
