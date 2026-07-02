@@ -14,11 +14,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-final class DimensionTravelHooks {
+public final class DimensionTravelHooks {
     private DimensionTravelHooks() {
     }
 
-    static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
+    public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
         if (!(entity instanceof Player player) || player.level().isClientSide()) {
             return;
         }
@@ -43,17 +43,17 @@ final class DimensionTravelHooks {
         updateTravelDisplay(false, DimensionHooks.playerLeavingAether);
     }
 
-    static void removePlayerAerbunny(Entity entity) {
+    public static void removePlayerAerbunny(Entity entity) {
         if (entity instanceof Player player) {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).removeAerbunny();
         }
     }
 
-    static void remountPlayerAerbunny(Player player) {
+    public static void remountPlayerAerbunny(Player player) {
         player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
     }
 
-    static void travelling(Player player) {
+    public static void travelling(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             if (DimensionHooks.teleportationTimer > 0) {
                 ServerGamePacketListenerImplAccessor accessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;

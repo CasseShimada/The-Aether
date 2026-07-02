@@ -8,6 +8,7 @@ import com.aetherteam.aether.event.hooks.DimensionHooks;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
+import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
@@ -68,7 +69,7 @@ public final class AetherFabricEvents {
             AccessoryRuntime.forceSync(newPlayer);
         });
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
-            DimensionHooks.remountPlayerAerbunny(player);
+            DimensionTravelHooks.remountPlayerAerbunny(player);
             syncPlayerAttachment(player);
             syncAetherTime(player);
             AccessoryRuntime.forceSync(player);

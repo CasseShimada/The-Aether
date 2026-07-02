@@ -3,6 +3,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.event.hooks.DimensionHooks;
+import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.world.LevelUtil;
@@ -97,8 +98,8 @@ public class EntityMixin {
     private void aether$onTeleport(TeleportTransition transition, CallbackInfoReturnable<Entity> cir) {
         Entity entity = (Entity) (Object) this;
         if (!entity.level().isClientSide() && entity.level().dimension() != transition.newLevel().dimension()) {
-            DimensionHooks.dimensionTravel(entity, transition.newLevel().dimension());
-            DimensionHooks.removePlayerAerbunny(entity);
+            DimensionTravelHooks.dimensionTravel(entity, transition.newLevel().dimension());
+            DimensionTravelHooks.removePlayerAerbunny(entity);
         }
     }
 
