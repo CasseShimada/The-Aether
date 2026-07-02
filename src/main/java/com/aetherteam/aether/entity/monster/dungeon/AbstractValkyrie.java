@@ -4,8 +4,6 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.entity.EntityUtil;
 import com.aetherteam.aether.entity.NotGrounded;
 import com.aetherteam.aether.entity.ai.goal.MostDamageTargetGoal;
-import com.aetherteam.aether.event.AetherEventDispatch;
-import com.aetherteam.aether.event.ValkyrieTeleportEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -156,11 +154,7 @@ public abstract class AbstractValkyrie extends Monster implements NotGrounded {
      * @return Whether the teleportation succeeded, as a {@link Boolean}.
      */
     protected boolean teleport(double x, double y, double z) {
-        ValkyrieTeleportEvent event = AetherEventDispatch.onValkyrieTeleport(this, x, y, z);
-        if (event.isCanceled()) {
-            return false;
-        }
-        boolean flag = this.randomTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), false);
+        boolean flag = this.randomTeleport(x, y, z, false);
         if (flag) {
             this.spawnExplosionParticles();
         }

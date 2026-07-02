@@ -3,9 +3,6 @@ package com.aetherteam.aether.event;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -15,13 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 
 public class AetherEventDispatch {
-    /**
-     * @see EggLayEvent
-     */
-    public static EggLayEvent onLayEgg(Entity entity, SoundEvent sound, float volume, float pitch, ItemStack item) {
-        return new EggLayEvent(entity, sound, volume, pitch, item);
-    }
-
     /**
      * @see PlacementBanEvent.SpawnParticles
      */
@@ -69,10 +59,4 @@ public class AetherEventDispatch {
         return new ItemUseConvertEvent(player, level, pos, stack, oldState, newState, recipeType);
     }
 
-    /**
-     * @see ValkyrieTeleportEvent
-     */
-    public static ValkyrieTeleportEvent onValkyrieTeleport(LivingEntity entity, double targetX, double targetY, double targetZ) {
-        return new ValkyrieTeleportEvent(entity, targetX, targetY, targetZ);
-    }
 }

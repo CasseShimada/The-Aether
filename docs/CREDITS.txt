@@ -149,6 +149,6 @@ YvanCywan
 
 Zepalesque
 - Fixes to the Slider.
-- Changes to EggLayEvent to use ItemStack.
+- Historical changes to Moa egg-laying item handling.
 - Implementation of a custom Aether Grass bonemeal feature.
 - Implementation of an advancement sound override registry.
