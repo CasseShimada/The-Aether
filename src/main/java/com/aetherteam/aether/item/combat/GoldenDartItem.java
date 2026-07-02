@@ -24,7 +24,7 @@ public class GoldenDartItem extends DartItem {
 
     @Override
     public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
-        GoldenDart dart = new GoldenDart(AetherEntityTypes.GOLDEN_DART.get(), level, pos.x(), pos.y(), pos.z(), stack.copyWithCount(1), null);
+        GoldenDart dart = new GoldenDart(AetherEntityTypes.GOLDEN_DART, level, pos.x(), pos.y(), pos.z(), stack.copyWithCount(1), null);
         dart.pickup = AbstractArrow.Pickup.ALLOWED;
         dart.setNoGravity(true);
         return dart;

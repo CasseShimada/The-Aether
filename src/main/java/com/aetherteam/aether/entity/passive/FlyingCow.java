@@ -115,7 +115,7 @@ public class FlyingCow extends WingedAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
-        return AetherEntityTypes.FLYING_COW.get().create(level, EntitySpawnReason.BREEDING);
+        return AetherEntityTypes.FLYING_COW.create(level, EntitySpawnReason.BREEDING);
     }
 
     @Override

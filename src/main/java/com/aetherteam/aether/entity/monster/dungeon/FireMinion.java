@@ -96,7 +96,7 @@ public class FireMinion extends Monster {
      */
     @Override
     public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
-        return super.isInvulnerableTo(level, source) || source.getEntity() != null && source.getEntity().getType() == AetherEntityTypes.SUN_SPIRIT.get();
+        return super.isInvulnerableTo(level, source) || source.getEntity() != null && source.getEntity().getType() == AetherEntityTypes.SUN_SPIRIT;
     }
 
     @Override

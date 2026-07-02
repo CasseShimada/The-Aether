@@ -26,7 +26,7 @@ public class CloudCrystal extends AbstractCrystal implements WeaknessDamage {
     }
 
     public CloudCrystal(Level level) {
-        super(AetherEntityTypes.CLOUD_CRYSTAL.get(), level);
+        super(AetherEntityTypes.CLOUD_CRYSTAL, level);
     }
 
     /**

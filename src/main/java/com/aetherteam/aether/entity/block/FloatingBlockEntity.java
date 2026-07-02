@@ -82,7 +82,7 @@ public class FloatingBlockEntity extends Entity {
     }
 
     public FloatingBlockEntity(Level level, double x, double y, double z, BlockState state) {
-        this(AetherEntityTypes.FLOATING_BLOCK.get(), level);
+        this(AetherEntityTypes.FLOATING_BLOCK, level);
         this.blockState = state;
         this.blocksBuilding = true;
         this.setPos(x, y + (double) ((1.0F - this.getBbHeight()) / 2.0F), z);

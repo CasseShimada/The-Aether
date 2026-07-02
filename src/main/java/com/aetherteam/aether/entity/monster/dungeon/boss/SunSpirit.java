@@ -368,7 +368,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
             }
             this.setFrozen(true);
             this.setFrozenDuration(SUN_SPIRIT_FROZEN_DURATION);
-            FireMinion minion = new FireMinion(AetherEntityTypes.FIRE_MINION.get(), this.level());
+            FireMinion minion = new FireMinion(AetherEntityTypes.FIRE_MINION, this.level());
             minion.setPos(this.position());
             minion.setTarget(entity);
             this.level().addFreshEntity(minion);

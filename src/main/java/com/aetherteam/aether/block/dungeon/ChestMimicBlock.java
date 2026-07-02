@@ -109,7 +109,7 @@ public class ChestMimicBlock extends BaseEntityBlock implements SimpleWaterlogge
      * @param pos   The {@link BlockPos} used for the Mimic.
      */
     private void spawnMimic(BlockState state, ServerLevel level, BlockPos pos) {
-        Mimic mimic = AetherEntityTypes.MIMIC.get().create(level, EntitySpawnReason.TRIGGERED);
+        Mimic mimic = AetherEntityTypes.MIMIC.create(level, EntitySpawnReason.TRIGGERED);
         if (mimic != null) {
             Direction direction = state.getValue(FACING);
             float angle = direction.toYRot();

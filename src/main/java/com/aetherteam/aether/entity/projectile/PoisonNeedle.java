@@ -19,7 +19,7 @@ public class PoisonNeedle extends AbstractDart {
     }
 
     public PoisonNeedle(Level level, LivingEntity shooter) {
-        super(AetherEntityTypes.POISON_NEEDLE.get(), level, shooter, new ItemStack(Items.ARROW), null);
+        super(AetherEntityTypes.POISON_NEEDLE, level, shooter, new ItemStack(Items.ARROW), null);
         this.setBaseDamage(0.25);
         this.pickup = Pickup.DISALLOWED;
     }

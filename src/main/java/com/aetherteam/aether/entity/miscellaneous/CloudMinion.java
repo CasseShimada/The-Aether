@@ -35,7 +35,7 @@ public class CloudMinion extends PathfinderMob {
     }
 
     public CloudMinion(Level level, Player player, HumanoidArm armSide) {
-        super(AetherEntityTypes.CLOUD_MINION.get(), level);
+        super(AetherEntityTypes.CLOUD_MINION, level);
         this.setOwner(player);
         this.setSide(armSide);
         this.setLifeSpan(3600);

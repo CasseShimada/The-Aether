@@ -471,7 +471,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
     public void remountAerbunny(Player player) {
             if (this.getMountedAerbunnyTag().isPresent()) {
                 if (!player.level().isClientSide()) {
-                    Aerbunny aerbunny = new Aerbunny(AetherEntityTypes.AERBUNNY.get(), player.level());
+                    Aerbunny aerbunny = new Aerbunny(AetherEntityTypes.AERBUNNY, player.level());
                     aerbunny.load(TagValueInput.create(ProblemReporter.DISCARDING, player.registryAccess(), this.getMountedAerbunnyTag().get()));
                     player.level().addFreshEntity(aerbunny);
                     aerbunny.startRiding(player);
@@ -539,9 +539,9 @@ public class AetherPlayerAttachment implements INBTSynchable {
             if (AetherConfig.COMMON.show_patreon_message.get() && this.canShowPatreonMessage) {
                 if (this.loginsUntilPatreonMessage < 0) {
                     if (serverPlayer.level().dimension() == AetherDimensions.AETHER_LEVEL
-                        && (serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.SLIDER.get())) > 0
-                        || serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.VALKYRIE_QUEEN.get())) > 0
-                        || serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.SUN_SPIRIT.get())) > 0)) {
+                        && (serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.SLIDER)) > 0
+                        || serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.VALKYRIE_QUEEN)) > 0
+                        || serverPlayer.getStats().getValue(Stats.ENTITY_KILLED.get(AetherEntityTypes.SUN_SPIRIT)) > 0)) {
                         this.loginsUntilPatreonMessage = serverPlayer.getRandom().nextInt(2);
                     }
                 }

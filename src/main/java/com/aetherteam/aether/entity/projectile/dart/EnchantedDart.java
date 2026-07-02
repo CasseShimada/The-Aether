@@ -16,7 +16,7 @@ public class EnchantedDart extends AbstractDart {
     }
 
     public EnchantedDart(Level level, LivingEntity shooter, ItemStack itemStack, @Nullable ItemStack firedFromWeapon) {
-        super(AetherEntityTypes.ENCHANTED_DART.get(), level, shooter, itemStack, firedFromWeapon);
+        super(AetherEntityTypes.ENCHANTED_DART, level, shooter, itemStack, firedFromWeapon);
         this.setBaseDamage(1.5);
     }
 

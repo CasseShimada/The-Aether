@@ -12,7 +12,7 @@ public class SkyrootChestBoat extends ChestBoat {
     }
 
     public SkyrootChestBoat(Level level, double x, double y, double z) {
-        this(AetherEntityTypes.SKYROOT_CHEST_BOAT.get(), level);
+        this(AetherEntityTypes.SKYROOT_CHEST_BOAT, level);
         this.setInitialPos(x, y, z);
     }
 }

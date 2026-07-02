@@ -12,7 +12,7 @@ public class SkyrootBoat extends Boat {
     }
 
     public SkyrootBoat(Level level, double x, double y, double z) {
-        this(AetherEntityTypes.SKYROOT_BOAT.get(), level);
+        this(AetherEntityTypes.SKYROOT_BOAT, level);
         this.setInitialPos(x, y, z);
     }
 }

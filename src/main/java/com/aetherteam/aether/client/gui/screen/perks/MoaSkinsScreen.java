@@ -387,7 +387,7 @@ public class MoaSkinsScreen extends Screen {
     private void renderMoa(GuiGraphicsExtractor guiGraphics, float partialTicks) {
         if (this.minecraft.level != null) {
             if (this.getPreviewMoa() == null) { // Set up preview Moa if it doesn't exist.
-                Moa moa = AetherEntityTypes.MOA.get().create(this.minecraft.level, EntitySpawnReason.EVENT);
+                Moa moa = AetherEntityTypes.MOA.create(this.minecraft.level, EntitySpawnReason.EVENT);
                 if (moa != null) {
                     moa.generateMoaUUID();
                     moa.setMoaTypeByKey(AetherMoaTypes.BLUE);

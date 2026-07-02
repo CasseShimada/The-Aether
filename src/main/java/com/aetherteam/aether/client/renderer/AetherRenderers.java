@@ -37,49 +37,49 @@ public class AetherRenderers {
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.CHEST_MIMIC, ChestMimicRenderer::new);
         BlockEntityRendererRegistry.register(AetherBlockEntityTypes.TREASURE_CHEST, TreasureChestRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.PHYG.get(), PhygRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.FLYING_COW.get(), FlyingCowRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.SHEEPUFF.get(), SheepuffRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.AERBUNNY.get(), AerbunnyRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.MOA.get(), MoaRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.AERWHALE.get(), AerwhaleRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.PHYG, PhygRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.FLYING_COW, FlyingCowRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.SHEEPUFF, SheepuffRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.AERBUNNY, AerbunnyRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.MOA, MoaRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.AERWHALE, AerwhaleRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.BLUE_SWET.get(), BlueSwetRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_SWET.get(), GoldenSwetRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.WHIRLWIND.get(), WhirlwindRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.EVIL_WHIRLWIND.get(), WhirlwindRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.AECHOR_PLANT.get(), AechorPlantRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.COCKATRICE.get(), CockatriceRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.ZEPHYR.get(), ZephyrRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.BLUE_SWET, BlueSwetRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_SWET, GoldenSwetRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.WHIRLWIND, WhirlwindRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.EVIL_WHIRLWIND, WhirlwindRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.AECHOR_PLANT, AechorPlantRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.COCKATRICE, CockatriceRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.ZEPHYR, ZephyrRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.MIMIC.get(), MimicRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.SENTRY.get(), SentryRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.VALKYRIE.get(), ValkyrieRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.FIRE_MINION.get(), FireMinionRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.MIMIC, MimicRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.SENTRY, SentryRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.VALKYRIE, ValkyrieRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.FIRE_MINION, FireMinionRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.SLIDER.get(), SliderRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.VALKYRIE_QUEEN.get(), ValkyrieQueenRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.SUN_SPIRIT.get(), SunSpiritRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.SLIDER, SliderRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.VALKYRIE_QUEEN, ValkyrieQueenRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.SUN_SPIRIT, SunSpiritRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_BOAT.get(), (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_BOAT, SkyrootBoatRenderer.SKYROOT_BOAT));
-        EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_CHEST_BOAT.get(), (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_CHEST_BOAT, SkyrootBoatRenderer.SKYROOT_CHEST_BOAT));
-        EntityRendererRegistry.register(AetherEntityTypes.CLOUD_MINION.get(), CloudMinionRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.COLD_PARACHUTE.get(), (context) -> new ParachuteRenderer(context, AetherBlocks.COLD_AERCLOUD));
-        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_PARACHUTE.get(), (context) -> new ParachuteRenderer(context, AetherBlocks.GOLDEN_AERCLOUD));
-        EntityRendererRegistry.register(AetherEntityTypes.FLOATING_BLOCK.get(), FloatingBlockRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.TNT_PRESENT.get(), TntPresentRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_BOAT, (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_BOAT, SkyrootBoatRenderer.SKYROOT_BOAT));
+        EntityRendererRegistry.register(AetherEntityTypes.SKYROOT_CHEST_BOAT, (context) -> new SkyrootBoatRenderer(context, AetherModelLayers.SKYROOT_CHEST_BOAT, SkyrootBoatRenderer.SKYROOT_CHEST_BOAT));
+        EntityRendererRegistry.register(AetherEntityTypes.CLOUD_MINION, CloudMinionRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.COLD_PARACHUTE, (context) -> new ParachuteRenderer(context, AetherBlocks.COLD_AERCLOUD));
+        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_PARACHUTE, (context) -> new ParachuteRenderer(context, AetherBlocks.GOLDEN_AERCLOUD));
+        EntityRendererRegistry.register(AetherEntityTypes.FLOATING_BLOCK, FloatingBlockRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.TNT_PRESENT, TntPresentRenderer::new);
 
-        EntityRendererRegistry.register(AetherEntityTypes.ZEPHYR_SNOWBALL.get(), (context) -> new ThrownItemRenderer<>(context, 3.0F, true));
-        EntityRendererRegistry.register(AetherEntityTypes.CLOUD_CRYSTAL.get(), CloudCrystalRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.FIRE_CRYSTAL.get(), FireCrystalRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.ICE_CRYSTAL.get(), IceCrystalRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.THUNDER_CRYSTAL.get(), ThunderCrystalRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_DART.get(), GoldenDartRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.POISON_DART.get(), PoisonDartRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.ENCHANTED_DART.get(), EnchantedDartRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.POISON_NEEDLE.get(), PoisonNeedleRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.LIGHTNING_KNIFE.get(), LightningKnifeRenderer::new);
-        EntityRendererRegistry.register(AetherEntityTypes.HAMMER_PROJECTILE.get(), HammerProjectileRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.ZEPHYR_SNOWBALL, (context) -> new ThrownItemRenderer<>(context, 3.0F, true));
+        EntityRendererRegistry.register(AetherEntityTypes.CLOUD_CRYSTAL, CloudCrystalRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.FIRE_CRYSTAL, FireCrystalRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.ICE_CRYSTAL, IceCrystalRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.THUNDER_CRYSTAL, ThunderCrystalRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.GOLDEN_DART, GoldenDartRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.POISON_DART, PoisonDartRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.ENCHANTED_DART, EnchantedDartRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.POISON_NEEDLE, PoisonNeedleRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.LIGHTNING_KNIFE, LightningKnifeRenderer::new);
+        EntityRendererRegistry.register(AetherEntityTypes.HAMMER_PROJECTILE, HammerProjectileRenderer::new);
     }
 
     public static void registerLayerDefinitions() {

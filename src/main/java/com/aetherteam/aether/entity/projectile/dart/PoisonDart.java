@@ -19,7 +19,7 @@ public class PoisonDart extends AbstractDart {
     }
 
     public PoisonDart(Level level, LivingEntity shooter, ItemStack itemStack, @Nullable ItemStack firedFromWeapon) {
-        super(AetherEntityTypes.POISON_DART.get(), level, shooter, itemStack, firedFromWeapon);
+        super(AetherEntityTypes.POISON_DART, level, shooter, itemStack, firedFromWeapon);
         this.setBaseDamage(0.25);
     }
 

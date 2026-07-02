@@ -35,13 +35,13 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
     }
 
     public HammerProjectile(LivingEntity owner, Level level) {
-        super(AetherEntityTypes.HAMMER_PROJECTILE.get(), level);
+        super(AetherEntityTypes.HAMMER_PROJECTILE, level);
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY(), owner.getZ());
     }
 
     public HammerProjectile(Level level) {
-        super(AetherEntityTypes.HAMMER_PROJECTILE.get(), level);
+        super(AetherEntityTypes.HAMMER_PROJECTILE, level);
     }
 
     @Override

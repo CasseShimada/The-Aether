@@ -35,7 +35,7 @@ public class IceCrystal extends AbstractCrystal implements WeaknessDamage {
     }
 
     public IceCrystal(Level level, Entity shooter) {
-        this(AetherEntityTypes.ICE_CRYSTAL.get(), level);
+        this(AetherEntityTypes.ICE_CRYSTAL, level);
         this.setOwner(shooter);
         this.setPos(shooter.getX(), shooter.getY(), shooter.getZ());
         float rotation = this.random.nextFloat() * 360;

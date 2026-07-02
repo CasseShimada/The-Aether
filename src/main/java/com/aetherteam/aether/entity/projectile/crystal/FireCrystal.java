@@ -36,7 +36,7 @@ public class FireCrystal extends AbstractCrystal {
     }
 
     public FireCrystal(Level level, Entity shooter) {
-        this(AetherEntityTypes.FIRE_CRYSTAL.get(), level);
+        this(AetherEntityTypes.FIRE_CRYSTAL, level);
         this.setOwner(shooter);
         this.setPos(shooter.getX(), shooter.getY() + 1, shooter.getZ());
         // Randomizes motion on spawn.

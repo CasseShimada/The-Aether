@@ -29,10 +29,10 @@ final class EntitySkySpawnHooks {
             }
 
             if (!AetherMobCategory.hasCustomSkyMonsterCategory()) {
-                trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR.get(), 96.0, 4, 20);
+                trySpawnNearPlayer(level, player, AetherEntityTypes.ZEPHYR, 96.0, 4, 20);
             }
             if (!AetherMobCategory.hasCustomAerwhaleCategory() && level.getGameTime() % 240L == 0L) {
-                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE.get(), 128.0, 1, 20);
+                trySpawnNearPlayer(level, player, AetherEntityTypes.AERWHALE, 128.0, 1, 20);
             }
         }
     }

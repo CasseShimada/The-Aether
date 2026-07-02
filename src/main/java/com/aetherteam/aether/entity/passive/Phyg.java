@@ -89,7 +89,7 @@ public class Phyg extends WingedAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
-        return AetherEntityTypes.PHYG.get().create(level, EntitySpawnReason.BREEDING);
+        return AetherEntityTypes.PHYG.create(level, EntitySpawnReason.BREEDING);
     }
 
     /**

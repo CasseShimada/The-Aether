@@ -33,7 +33,7 @@ public class SkyrootBoatDispenseBehavior extends DefaultDispenseItemBehavior {
         Direction direction = source.state().getValue(DispenserBlock.FACING);
         ServerLevel serverLevel = source.level();
         Vec3 vec3 = source.center();
-        double d0 = 0.5625 + (double) AetherEntityTypes.SKYROOT_BOAT.get().getWidth() / 2.0;
+        double d0 = 0.5625 + (double) AetherEntityTypes.SKYROOT_BOAT.getWidth() / 2.0;
         double d1 = vec3.x() + (double) direction.getStepX() * d0;
         double d2 = vec3.y() + (double) ((float) direction.getStepY() * 1.125F);
         double d3 = vec3.z() + (double) direction.getStepZ() * d0;

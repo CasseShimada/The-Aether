@@ -851,7 +851,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
                 double distance = this.mob.distanceTo(this.mob.getTarget());
                 if (distance < this.attackRadius) {
                     if (++this.attackTime >= this.attackInterval) {
-                        ThunderCrystal thunderCrystal = new ThunderCrystal(AetherEntityTypes.THUNDER_CRYSTAL.get(), this.mob.level(), this.mob, this.mob.getTarget());
+                        ThunderCrystal thunderCrystal = new ThunderCrystal(AetherEntityTypes.THUNDER_CRYSTAL, this.mob.level(), this.mob, this.mob.getTarget());
                         this.mob.level().addFreshEntity(thunderCrystal);
                         this.attackTime = this.mob.getRandom().nextInt(40);
                     }

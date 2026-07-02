@@ -389,7 +389,7 @@ public class Sheepuff extends AetherAnimal implements Shearable {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
         Sheepuff parent = (Sheepuff) entity;
-        Sheepuff baby = AetherEntityTypes.SHEEPUFF.get().create(level, EntitySpawnReason.BREEDING);
+        Sheepuff baby = AetherEntityTypes.SHEEPUFF.create(level, EntitySpawnReason.BREEDING);
         if (baby != null) {
             baby.setColor(this.getOffspringColor(level, this, parent));
         }

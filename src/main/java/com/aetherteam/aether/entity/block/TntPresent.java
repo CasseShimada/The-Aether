@@ -30,7 +30,7 @@ public class TntPresent extends Entity implements TraceableEntity {
     }
 
     public TntPresent(Level level, double x, double y, double z, @Nullable LivingEntity owner) {
-        this(AetherEntityTypes.TNT_PRESENT.get(), level);
+        this(AetherEntityTypes.TNT_PRESENT, level);
         this.setPos(x, y, z);
         double d0 = level.getRandom().nextDouble() * Mth.TWO_PI;
         this.setDeltaMovement(-Math.sin(d0) * 0.02, 0.2, -Math.cos(d0) * 0.02);
