@@ -3,15 +3,13 @@ package com.aetherteam.aether.fabric;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.command.AetherCommands;
-import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
+import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
-import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
-import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityGoalHooks;
-import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
+import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.PlayerAttachmentSyncHooks;
 import com.aetherteam.aether.event.hooks.ServerPerkHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
@@ -29,8 +27,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 
 public final class AetherFabricEvents {
@@ -109,40 +105,8 @@ public final class AetherFabricEvents {
     }
 
     private static void registerInteractionEvents() {
-        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
-            if (player == null || hitResult == null) {
-                return InteractionResult.PASS;
-            }
-
-            if (InteractionRecipeHooks.isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
-                return InteractionResult.FAIL;
-            }
-
-            return DimensionPortalHooks.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)
-                    ? InteractionResult.SUCCESS
-                    : InteractionResult.PASS;
-        });
-
-        UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
-            if (level.isClientSide()) {
-                return InteractionResult.PASS;
-            }
-
-            EntityBucketHooks.skyrootBucketMilking(entity, player, hand);
-            var result = EntityBucketHooks.pickupBucketable(entity, player, hand);
-            if (result.isPresent()) {
-                return result.get();
-            }
-
-            if (hitResult != null) {
-                result = EntityArmorStandHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
-                if (result.isPresent()) {
-                    return result.get();
-                }
-            }
-
-            return InteractionResult.PASS;
-        });
+        UseBlockCallback.EVENT.register(BlockInteractionHooks::useBlock);
+        UseEntityCallback.EVENT.register(EntityInteractionHooks::useEntity);
     }
 
 }
