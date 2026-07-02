@@ -49,10 +49,10 @@ public class PortalClientUtil {
     }
 
     public static void playTriggerSound() {
-        Minecraft.getInstance().getSoundManager().play(PortalTriggerSoundInstance.forLocalAmbience(Minecraft.getInstance().player, AetherSoundEvents.BLOCK_AETHER_PORTAL_TRIGGER.get(), Minecraft.getInstance().level.getRandom().nextFloat() * 0.4F + 0.8F, 0.25F));
+        Minecraft.getInstance().getSoundManager().play(PortalTriggerSoundInstance.forLocalAmbience(Minecraft.getInstance().player, AetherSoundEvents.BLOCK_AETHER_PORTAL_TRIGGER, Minecraft.getInstance().level.getRandom().nextFloat() * 0.4F + 0.8F, 0.25F));
     }
 
     public static void playTravelSound() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forLocalAmbience(AetherSoundEvents.BLOCK_AETHER_PORTAL_TRAVEL.get(), Minecraft.getInstance().level.getRandom().nextFloat() * 0.4F + 0.8F, 0.25F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forLocalAmbience(AetherSoundEvents.BLOCK_AETHER_PORTAL_TRAVEL, Minecraft.getInstance().level.getRandom().nextFloat() * 0.4F + 0.8F, 0.25F));
     }
 }

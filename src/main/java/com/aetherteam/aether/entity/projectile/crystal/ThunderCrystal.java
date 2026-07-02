@@ -129,7 +129,7 @@ public class ThunderCrystal extends AbstractCrystal {
     @Nullable
     @Override
     protected SoundEvent getImpactExplosionSoundEvent() {
-        return AetherSoundEvents.ENTITY_THUNDER_CRYSTAL_EXPLODE.get();
+        return AetherSoundEvents.ENTITY_THUNDER_CRYSTAL_EXPLODE;
     }
 
     @Override

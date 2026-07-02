@@ -8,7 +8,6 @@ import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.impl.AccessoriesState;
 import com.aetherteam.aether.block.dispenser.AetherDispenseBehaviors;
 import com.aetherteam.aether.client.AetherSoundEvents;
-import com.aetherteam.aether.registry.DeferredHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
@@ -27,10 +26,6 @@ public class AccessoryItem extends Item implements Accessory {
 
     public AccessoryItem(Properties properties) {
         this(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GENERIC, properties);
-    }
-
-    public AccessoryItem(DeferredHolder<SoundEvent, SoundEvent> soundEventSupplier, Properties properties) {
-        this(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEventSupplier.get()), properties);
     }
 
     public AccessoryItem(SoundEvent soundEvent, Properties properties) {

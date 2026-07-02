@@ -4,9 +4,8 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.sounds.SoundEvent;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public record AdvancementSoundOverride(int priority, Predicate<AdvancementHolder> predicate, Supplier<SoundEvent> sound) {
+public record AdvancementSoundOverride(int priority, Predicate<AdvancementHolder> predicate, SoundEvent sound) {
     /**
      * @return Whether the {@link AdvancementHolder} matches this {@link AdvancementSoundOverride}'s predicate
      */

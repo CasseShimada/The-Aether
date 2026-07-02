@@ -76,7 +76,7 @@ public class DartShooterItem extends ProjectileWeaponItem { //implements Vanisha
                     this.shoot(serverlevel, player, player.getUsedItemHand(), stack, list, 3.1F, 1.2F, false, null);
                 }
 
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), AetherSoundEvents.ITEM_DART_SHOOTER_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), AetherSoundEvents.ITEM_DART_SHOOTER_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }

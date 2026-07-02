@@ -229,7 +229,7 @@ public class Moa extends MountableAnimal implements WingedBird {
             if (!this.isBaby() && this.getPassengers().isEmpty() && --this.eggTime <= 0) {
                 MoaType moaType = this.getMoaType();
                 if (moaType != null) {
-                    EggLayEvent eggLayEvent = AetherEventDispatch.onLayEgg(this, AetherSoundEvents.ENTITY_MOA_EGG.get(), 1.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F, this.getMoaType().egg());
+                    EggLayEvent eggLayEvent = AetherEventDispatch.onLayEgg(this, AetherSoundEvents.ENTITY_MOA_EGG, 1.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F, this.getMoaType().egg());
                     if (!eggLayEvent.isCanceled()) {
                         if (eggLayEvent.getSound() != null) {
                             this.playSound(eggLayEvent.getSound(), eggLayEvent.getVolume(), eggLayEvent.getPitch());
@@ -277,7 +277,7 @@ public class Moa extends MountableAnimal implements WingedBird {
             this.setFlapCooldown(this.getFlapCooldown() - 1);
         } else if (this.getFlapCooldown() == 0) {
             if (!this.onGround() && !Swim.shouldSwim(this)) {
-                this.level().playSound(null, this, AetherSoundEvents.ENTITY_MOA_FLAP.get(), SoundSource.NEUTRAL, 0.15F, Mth.clamp(this.getRandom().nextFloat(), 0.7F, 1.0F) + Mth.clamp(this.getRandom().nextFloat(), 0.0F, 0.3F));
+                this.level().playSound(null, this, AetherSoundEvents.ENTITY_MOA_FLAP, SoundSource.NEUTRAL, 0.15F, Mth.clamp(this.getRandom().nextFloat(), 0.7F, 1.0F) + Mth.clamp(this.getRandom().nextFloat(), 0.0F, 0.3F));
                 this.setFlapCooldown(15);
             }
         }
@@ -734,27 +734,27 @@ public class Moa extends MountableAnimal implements WingedBird {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_MOA_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_MOA_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_MOA_HURT.get();
+        return AetherSoundEvents.ENTITY_MOA_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_MOA_DEATH.get();
+        return AetherSoundEvents.ENTITY_MOA_DEATH;
     }
 
     @Override
     protected SoundEvent getSaddledSound() {
-        return AetherSoundEvents.ENTITY_MOA_SADDLE.get();
+        return AetherSoundEvents.ENTITY_MOA_SADDLE;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(AetherSoundEvents.ENTITY_MOA_STEP.get(), 0.15F, 1.0F);
+        this.playSound(AetherSoundEvents.ENTITY_MOA_STEP, 0.15F, 1.0F);
     }
 
     /**

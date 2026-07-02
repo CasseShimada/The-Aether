@@ -88,7 +88,7 @@ public class Mimic extends Monster {
     public boolean doHurtTarget(ServerLevel level, Entity entity) {
         boolean result = super.doHurtTarget(level, entity);
         if (entity instanceof LivingEntity livingEntity) { // Choose between attack or kill sound depending on remaining target health.
-            SoundEvent sound = livingEntity.getHealth() <= 0.0 ? AetherSoundEvents.ENTITY_MIMIC_KILL.get() : AetherSoundEvents.ENTITY_MIMIC_ATTACK.get();
+            SoundEvent sound = livingEntity.getHealth() <= 0.0 ? AetherSoundEvents.ENTITY_MIMIC_KILL : AetherSoundEvents.ENTITY_MIMIC_ATTACK;
             this.playSound(sound, 1.0F, this.getVoicePitch());
         }
         return result;
@@ -105,12 +105,12 @@ public class Mimic extends Monster {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_MIMIC_HURT.get();
+        return AetherSoundEvents.ENTITY_MIMIC_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_MIMIC_DEATH.get();
+        return AetherSoundEvents.ENTITY_MIMIC_DEATH;
     }
 
     @Override

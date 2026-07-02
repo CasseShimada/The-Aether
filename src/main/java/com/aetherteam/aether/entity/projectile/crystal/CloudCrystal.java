@@ -67,7 +67,7 @@ public class CloudCrystal extends AbstractCrystal implements WeaknessDamage {
     @Nullable
     @Override
     public SoundEvent getImpactExplosionSoundEvent() {
-        return AetherSoundEvents.ENTITY_CLOUD_CRYSTAL_EXPLODE.get();
+        return AetherSoundEvents.ENTITY_CLOUD_CRYSTAL_EXPLODE;
     }
 
     /**

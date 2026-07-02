@@ -162,27 +162,27 @@ public class Sentry extends Slime {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_SENTRY_HURT.get();
+        return AetherSoundEvents.ENTITY_SENTRY_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_SENTRY_DEATH.get();
+        return AetherSoundEvents.ENTITY_SENTRY_DEATH;
     }
 
     @Override
     protected SoundEvent getSquishSound() {
-        return AetherSoundEvents.ENTITY_SENTRY_JUMP.get();
+        return AetherSoundEvents.ENTITY_SENTRY_JUMP;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_SENTRY_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_SENTRY_AMBIENT;
     }
 
     @Override
     protected SoundEvent getJumpSound() {
-        return AetherSoundEvents.ENTITY_SENTRY_SQUISH.get();
+        return AetherSoundEvents.ENTITY_SENTRY_SQUISH;
     }
 
     @Override

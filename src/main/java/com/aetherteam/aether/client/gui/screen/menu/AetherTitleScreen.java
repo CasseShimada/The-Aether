@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AetherTitleScreen extends TitleScreen implements TitleScreenBehavior, CustomBranding {
-    public static final Music MENU = new Music(Holder.direct(AetherSoundEvents.MUSIC_MENU.get()), 20, 600, true);
+    public static final Music MENU = new Music(Holder.direct(AetherSoundEvents.MUSIC_MENU), 20, 600, true);
     private final boolean alignedLeft;
     private Map<Component, AbstractWidget> widgetsByName = new HashMap<>();
 

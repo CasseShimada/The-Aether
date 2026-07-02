@@ -25,7 +25,7 @@ public record PortalTravelSoundPacket() implements CustomPacketPayload {
     public static void execute(PortalTravelSoundPacket payload, AetherPayloadContext context) {
         Player player = context.player();
         if (player != null) {
-            player.playSound(AetherSoundEvents.BLOCK_AETHER_PORTAL_TRAVEL.get(), 0.25F, player.level().getRandom().nextFloat() * 0.4F + 0.8F);
+            player.playSound(AetherSoundEvents.BLOCK_AETHER_PORTAL_TRAVEL, 0.25F, player.level().getRandom().nextFloat() * 0.4F + 0.8F);
         }
     }
 }

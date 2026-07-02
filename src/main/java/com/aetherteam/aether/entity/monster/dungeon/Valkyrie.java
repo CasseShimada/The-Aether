@@ -215,16 +215,16 @@ public class Valkyrie extends AbstractValkyrie implements NeutralMob {
     }
 
     protected SoundEvent getInteractSound() {
-        return AetherSoundEvents.ENTITY_VALKYRIE_INTERACT.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_INTERACT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return AetherSoundEvents.ENTITY_VALKYRIE_HURT.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_VALKYRIE_DEATH.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_DEATH;
     }
 }

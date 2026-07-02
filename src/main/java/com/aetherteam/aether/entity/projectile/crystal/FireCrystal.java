@@ -137,7 +137,7 @@ public class FireCrystal extends AbstractCrystal {
     @Nullable
     @Override
     protected SoundEvent getImpactExplosionSoundEvent() {
-        return AetherSoundEvents.ENTITY_FIRE_CRYSTAL_EXPLODE.get();
+        return AetherSoundEvents.ENTITY_FIRE_CRYSTAL_EXPLODE;
     }
 
     @Override

@@ -89,7 +89,7 @@ public abstract class AbstractDart extends AbstractArrow {
 
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return AetherSoundEvents.ENTITY_DART_HIT.get();
+        return AetherSoundEvents.ENTITY_DART_HIT;
     }
 
     @Override

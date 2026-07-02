@@ -21,7 +21,7 @@ public class AetherAdvancementSoundOverrides {
     public static final AdvancementSoundOverride BRONZE_DUNGEON = register("bronze_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("bronze_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_BRONZE));
     public static final AdvancementSoundOverride SILVER_DUNGEON = register("silver_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("silver_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_SILVER));
     public static final AdvancementSoundOverride GOLD_DUNGEON = register("gold_dungeon", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("gold_dungeon"), AetherSoundEvents.UI_TOAST_AETHER_GOLD));
-    public static final AdvancementSoundOverride EMPTY = register("empty", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("enter_aether"), () -> SoundEvents.EMPTY));
+    public static final AdvancementSoundOverride EMPTY = register("empty", new AdvancementSoundOverride(10, advancement -> advancement.id().getPath().equals("enter_aether"), SoundEvents.EMPTY));
 
     private static AdvancementSoundOverride register(String id, AdvancementSoundOverride override) {
         ADVANCEMENT_SOUND_OVERRIDES.put(Identifier.fromNamespaceAndPath(Aether.MODID, id), override);
@@ -47,7 +47,7 @@ public class AetherAdvancementSoundOverrides {
                 usedOverride = override;
             }
         }
-        return usedOverride == null ? null : usedOverride.sound().get();
+        return usedOverride == null ? null : usedOverride.sound();
     }
 
     /**

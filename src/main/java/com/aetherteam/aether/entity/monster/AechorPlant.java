@@ -295,7 +295,7 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
         x *= distance;
         z *= distance;
         needle.shoot(x, y + 0.5F, z, 0.285F + (float) y * 0.08F, 1.0F);
-        this.playSound(AetherSoundEvents.ENTITY_AECHOR_PLANT_SHOOT.get(), 2.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.playSound(AetherSoundEvents.ENTITY_AECHOR_PLANT_SHOOT, 2.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(needle);
     }
 
@@ -363,12 +363,12 @@ public class AechorPlant extends PathfinderMob implements RangedAttackMob {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_AECHOR_PLANT_HURT.get();
+        return AetherSoundEvents.ENTITY_AECHOR_PLANT_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_AECHOR_PLANT_DEATH.get();
+        return AetherSoundEvents.ENTITY_AECHOR_PLANT_DEATH;
     }
 
     @Override

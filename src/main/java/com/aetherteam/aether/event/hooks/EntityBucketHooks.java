@@ -32,7 +32,7 @@ final class EntityBucketHooks {
 
         ItemStack heldStack = player.getItemInHand(hand);
         if (target instanceof FlyingCow) {
-            player.playSound(AetherSoundEvents.ENTITY_FLYING_COW_MILK.get(), 1.0F, 1.0F);
+            player.playSound(AetherSoundEvents.ENTITY_FLYING_COW_MILK, 1.0F, 1.0F);
         } else {
             player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
         }

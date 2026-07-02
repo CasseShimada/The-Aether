@@ -59,7 +59,7 @@ public class AltarBlock extends AbstractFurnaceBlock {
             level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0, 0.0, 0.0);
             level.addParticle(ParticleTypes.FLAME, x, y, z, 0.0, 0.0, 0.0);
             if (random.nextDouble() < 0.1) {
-                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_ALTAR_CRACKLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_ALTAR_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
             }
         }
     }

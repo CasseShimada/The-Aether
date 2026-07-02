@@ -154,7 +154,7 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
             this.setFlapCooldown(this.getFlapCooldown() - 1);
         } else if (this.getFlapCooldown() == 0) {
             if (!this.onGround()) {
-                this.level().playSound(null, this, AetherSoundEvents.ENTITY_COCKATRICE_FLAP.get(), SoundSource.NEUTRAL, 0.15F, Mth.clamp(this.getRandom().nextFloat(), 0.7F, 1.0F) + Mth.clamp(this.getRandom().nextFloat(), 0.0F, 0.3F));
+                this.level().playSound(null, this, AetherSoundEvents.ENTITY_COCKATRICE_FLAP, SoundSource.NEUTRAL, 0.15F, Mth.clamp(this.getRandom().nextFloat(), 0.7F, 1.0F) + Mth.clamp(this.getRandom().nextFloat(), 0.0F, 0.3F));
                 this.setFlapCooldown(15);
             }
         }
@@ -181,7 +181,7 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
         double d2 = target.getZ() - this.getZ();
         double d3 = Mth.sqrt((float) (Mth.square(d0) + Mth.square(d2)));
         needle.shoot(d0, d1 + d3 * 0.2, d2, 1.0F, (float) (14 - this.level().getDifficulty().getId() * 4));
-        this.playSound(AetherSoundEvents.ENTITY_COCKATRICE_SHOOT.get(), 2.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.playSound(AetherSoundEvents.ENTITY_COCKATRICE_SHOOT, 2.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(needle);
     }
 
@@ -293,17 +293,17 @@ public class Cockatrice extends Monster implements RangedAttackMob, WingedBird, 
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_COCKATRICE_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_COCKATRICE_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_COCKATRICE_HURT.get();
+        return AetherSoundEvents.ENTITY_COCKATRICE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_COCKATRICE_DEATH.get();
+        return AetherSoundEvents.ENTITY_COCKATRICE_DEATH;
     }
 
     /**

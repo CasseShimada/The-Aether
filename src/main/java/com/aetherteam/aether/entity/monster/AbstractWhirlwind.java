@@ -182,7 +182,7 @@ public abstract class AbstractWhirlwind extends Mob {
                 LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(this.getLootLocation());
                 List<ItemStack> list = lootTable.getRandomItems(parameters);
                 for (ItemStack itemstack : list) {
-                    serverLevel.playSound(null, this.blockPosition(), AetherSoundEvents.ENTITY_WHIRLWIND_DROP.get(), SoundSource.HOSTILE, 0.5F, 1.0F);
+                    serverLevel.playSound(null, this.blockPosition(), AetherSoundEvents.ENTITY_WHIRLWIND_DROP, SoundSource.HOSTILE, 0.5F, 1.0F);
                     this.spawnAtLocation(serverLevel, itemstack, 1.0F);
                 }
             }

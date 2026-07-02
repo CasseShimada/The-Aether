@@ -85,7 +85,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     private static final EntityDataAccessor<Integer> DATA_FROZEN_DURATION = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Component> DATA_BOSS_NAME = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.COMPONENT);
     private static final EntityDataAccessor<Boolean> DATA_DISPLAY_WEAK_MESSAGE = SynchedEntityData.defineId(SunSpirit.class, EntityDataSerializers.BOOLEAN);
-    private static final Music SUN_SPIRIT_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SUN_SPIRIT.get()), 0, 0, true);
+    private static final Music SUN_SPIRIT_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SUN_SPIRIT), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
         Map.entry(AetherBlocks.LOCKED_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.HELLFIRE_STONE.get().defaultBlockState()),
         Map.entry(AetherBlocks.LOCKED_LIGHT_HELLFIRE_STONE.get(), (blockState) -> AetherBlocks.LIGHT_HELLFIRE_STONE.get().defaultBlockState()),
@@ -715,31 +715,31 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     protected SoundEvent getInteractSound() {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_INTERACT.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_INTERACT;
     }
 
     protected SoundEvent getActivateSound() {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_ACTIVATE.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_ACTIVATE;
     }
 
     protected SoundEvent getShootFireSound() {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_SHOOT_FIRE.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_SHOOT_FIRE;
     }
 
     protected SoundEvent getShootIceSound() {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_SHOOT_ICE.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_SHOOT_ICE;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_HURT.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_HURT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_SUN_SPIRIT_DEATH.get();
+        return AetherSoundEvents.ENTITY_SUN_SPIRIT_DEATH;
     }
 
     @Override

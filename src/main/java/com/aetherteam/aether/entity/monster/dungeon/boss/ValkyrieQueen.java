@@ -81,7 +81,7 @@ import java.util.function.Predicate;
 public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<ValkyrieQueen>, NpcDialogue {
     private static final EntityDataAccessor<Boolean> DATA_IS_READY = SynchedEntityData.defineId(ValkyrieQueen.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Component> DATA_BOSS_NAME = SynchedEntityData.defineId(ValkyrieQueen.class, EntityDataSerializers.COMPONENT);
-    private static final Music VALKYRIE_QUEEN_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_VALKYRIE_QUEEN.get()), 0, 0, true);
+    private static final Music VALKYRIE_QUEEN_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_VALKYRIE_QUEEN), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
         Map.entry(AetherBlocks.LOCKED_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.ANGELIC_STONE.get().defaultBlockState()),
         Map.entry(AetherBlocks.TRAPPED_ANGELIC_STONE.get(), (blockState) -> AetherBlocks.ANGELIC_STONE.get().defaultBlockState()),
@@ -727,17 +727,17 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     }
 
     protected SoundEvent getInteractSound() {
-        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_INTERACT.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_INTERACT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_HURT.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_DEATH.get();
+        return AetherSoundEvents.ENTITY_VALKYRIE_QUEEN_DEATH;
     }
 
     /**

@@ -89,6 +89,7 @@ public final class Aether {
         Reflection.initialize(AetherPoi.class);
         Reflection.initialize(AetherFeatures.class);
         Reflection.initialize(AetherMenuTypes.class);
+        Reflection.initialize(AetherSoundEvents.class);
         AetherBlocks.registerWoodTypes();
         registerContent();
         AetherCreativeTabs.registerVanillaTabEntries();
@@ -116,7 +117,6 @@ public final class Aether {
         DeferredRegister<?>[] registers = {
                 AetherBlocks.BLOCKS,
                 AetherEntityTypes.ENTITY_TYPES,
-                AetherSoundEvents.SOUNDS,
                 AetherItems.ITEMS,
                 AetherBlockEntityTypes.BLOCK_ENTITY_TYPES,
                 AetherCreativeTabs.CREATIVE_MODE_TABS

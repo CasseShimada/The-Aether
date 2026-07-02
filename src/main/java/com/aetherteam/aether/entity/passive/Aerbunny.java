@@ -254,7 +254,7 @@ public class Aerbunny extends AetherAnimal {
                 this.setDeltaMovement(playerMovement.x() * 5, playerMovement.y() * 0.5 + 0.5, playerMovement.z() * 5);
             } else if (this.startRiding(player)) { // Mount segment.
                 player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setMountedAerbunny(this);
-                this.level().playSound(player, this, AetherSoundEvents.ENTITY_AERBUNNY_LIFT.get(), SoundSource.NEUTRAL, 1.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+                this.level().playSound(player, this, AetherSoundEvents.ENTITY_AERBUNNY_LIFT, SoundSource.NEUTRAL, 1.0F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
             }
             return InteractionResult.SUCCESS;
         }
@@ -372,12 +372,12 @@ public class Aerbunny extends AetherAnimal {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_AERBUNNY_HURT.get();
+        return AetherSoundEvents.ENTITY_AERBUNNY_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_AERBUNNY_DEATH.get();
+        return AetherSoundEvents.ENTITY_AERBUNNY_DEATH;
     }
 
     /**

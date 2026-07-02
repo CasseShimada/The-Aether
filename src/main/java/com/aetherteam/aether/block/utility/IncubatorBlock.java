@@ -105,7 +105,7 @@ public class IncubatorBlock extends BaseEntityBlock {
             level.addParticle(ParticleTypes.SMOKE, f, f1, f2, 0.0, 0.0, 0.0);
             level.addParticle(ParticleTypes.FLAME, f, f1, f2, 0.0, 0.0, 0.0);
             if (random.nextDouble() < 0.1) {
-                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_INCUBATOR_CRACKLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_INCUBATOR_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
             }
         }
     }

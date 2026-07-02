@@ -167,7 +167,7 @@ public class AetherPortalBlock extends Block implements Portal {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0) {
-            Minecraft.getInstance().getSoundManager().play(new FadeOutSoundInstance(AetherSoundEvents.BLOCK_AETHER_PORTAL_AMBIENT.get(), SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, RandomSource.create(random.nextLong()), false, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, false));
+            Minecraft.getInstance().getSoundManager().play(new FadeOutSoundInstance(AetherSoundEvents.BLOCK_AETHER_PORTAL_AMBIENT, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.4F + 0.8F, RandomSource.create(random.nextLong()), false, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, false));
         }
         for (int i = 0; i < 4; ++i) {
             double x = pos.getX() + random.nextDouble();

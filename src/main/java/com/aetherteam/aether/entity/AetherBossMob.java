@@ -89,7 +89,7 @@ public interface AetherBossMob<T extends Mob & AetherBossMob<T>> extends BossMob
      */
     default void evaporateEffects(T entity, BlockPos pos) {
         EntityUtil.spawnRemovalParticles(entity.level(), pos);
-        entity.level().playSound(null, pos, AetherSoundEvents.WATER_EVAPORATE.get(), SoundSource.BLOCKS, 0.5F, 2.6F + (entity.level().getRandom().nextFloat() - entity.level().getRandom().nextFloat()) * 0.8F);
+        entity.level().playSound(null, pos, AetherSoundEvents.WATER_EVAPORATE, SoundSource.BLOCKS, 0.5F, 2.6F + (entity.level().getRandom().nextFloat() - entity.level().getRandom().nextFloat()) * 0.8F);
     }
 
     /**

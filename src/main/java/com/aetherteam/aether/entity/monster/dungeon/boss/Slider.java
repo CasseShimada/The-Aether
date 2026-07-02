@@ -71,7 +71,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_X_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HURT_ANGLE_Z_ID = SynchedEntityData.defineId(Slider.class, EntityDataSerializers.FLOAT);
-    private static final Music SLIDER_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SLIDER.get()), 0, 0, true);
+    private static final Music SLIDER_MUSIC = new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.MUSIC_BOSS_SLIDER), 0, 0, true);
     public static final Map<Block, Function<BlockState, BlockState>> DUNGEON_BLOCK_CONVERSIONS = new HashMap<>(Map.ofEntries(
         Map.entry(AetherBlocks.LOCKED_CARVED_STONE.get(), (blockState) -> AetherBlocks.CARVED_STONE.get().defaultBlockState()),
         Map.entry(AetherBlocks.LOCKED_SENTRY_STONE.get(), (blockState) -> AetherBlocks.SENTRY_STONE.get().defaultBlockState()),
@@ -807,31 +807,31 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     }
 
     protected SoundEvent getAwakenSound() {
-        return AetherSoundEvents.ENTITY_SLIDER_AWAKEN.get();
+        return AetherSoundEvents.ENTITY_SLIDER_AWAKEN;
     }
 
     public SoundEvent getCollideSound() {
-        return AetherSoundEvents.ENTITY_SLIDER_COLLIDE.get();
+        return AetherSoundEvents.ENTITY_SLIDER_COLLIDE;
     }
 
     public SoundEvent getMoveSound() {
-        return AetherSoundEvents.ENTITY_SLIDER_MOVE.get();
+        return AetherSoundEvents.ENTITY_SLIDER_MOVE;
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_SLIDER_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_SLIDER_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_SLIDER_HURT.get();
+        return AetherSoundEvents.ENTITY_SLIDER_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_SLIDER_DEATH.get();
+        return AetherSoundEvents.ENTITY_SLIDER_DEATH;
     }
 
     @Override

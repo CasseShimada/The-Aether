@@ -101,11 +101,11 @@ public class FireMinion extends Monster {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return AetherSoundEvents.ENTITY_FIRE_MINION_HURT.get();
+        return AetherSoundEvents.ENTITY_FIRE_MINION_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_FIRE_MINION_DEATH.get();
+        return AetherSoundEvents.ENTITY_FIRE_MINION_DEATH;
     }
 }

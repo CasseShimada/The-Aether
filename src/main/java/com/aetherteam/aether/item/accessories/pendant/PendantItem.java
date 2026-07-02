@@ -5,7 +5,6 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
-import com.aetherteam.aether.registry.DeferredHolder;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
@@ -18,7 +17,7 @@ public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
         this(Identifier.fromNamespaceAndPath(Aether.MODID, pendantLocation), pendantSound, properties);
     }
 
-    public PendantItem(String pendantLocation, DeferredHolder<SoundEvent, SoundEvent> pendantSound, Properties properties) {
+    public PendantItem(String pendantLocation, SoundEvent pendantSound, Properties properties) {
         this(Identifier.fromNamespaceAndPath(Aether.MODID, pendantLocation), pendantSound, properties);
     }
 
@@ -27,7 +26,7 @@ public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
         this.setRenderTexture(pendantLocation.getNamespace(), pendantLocation.getPath());
     }
 
-    public PendantItem(Identifier pendantLocation, DeferredHolder<SoundEvent, SoundEvent> pendantSound, Properties properties) {
+    public PendantItem(Identifier pendantLocation, SoundEvent pendantSound, Properties properties) {
         super(pendantSound, properties);
         this.setRenderTexture(pendantLocation.getNamespace(), pendantLocation.getPath());
     }

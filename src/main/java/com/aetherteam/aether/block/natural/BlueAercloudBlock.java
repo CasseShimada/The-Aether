@@ -47,7 +47,7 @@ public class BlueAercloudBlock extends AercloudBlock {
                 }
                 if (entity.getDeltaMovement().y() != prevMotion.y()) {
                     if (AetherConfig.CLIENT.blue_aercloud_bounce_sfx.get()) {
-                        level.playSound((entity instanceof Player player ? player : null), pos, AetherSoundEvents.BLOCK_BLUE_AERCLOUD_BOUNCE.get(), SoundSource.BLOCKS, 0.8F, 0.5F + (((float) (Math.pow(level.getRandom().nextDouble(), 2.5))) * 0.5F));
+                        level.playSound((entity instanceof Player player ? player : null), pos, AetherSoundEvents.BLOCK_BLUE_AERCLOUD_BOUNCE, SoundSource.BLOCKS, 0.8F, 0.5F + (((float) (Math.pow(level.getRandom().nextDouble(), 2.5))) * 0.5F));
                     }
                 }
                 for (int count = 0; count < amount; count++) {

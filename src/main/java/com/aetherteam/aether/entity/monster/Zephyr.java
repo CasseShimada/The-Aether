@@ -147,17 +147,17 @@ public class Zephyr extends Mob implements Enemy {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_ZEPHYR_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_ZEPHYR_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_ZEPHYR_HURT.get();
+        return AetherSoundEvents.ENTITY_ZEPHYR_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_ZEPHYR_DEATH.get();
+        return AetherSoundEvents.ENTITY_ZEPHYR_DEATH;
     }
 
     @Override
@@ -290,7 +290,7 @@ public class Zephyr extends Mob implements Enemy {
                         double accelX = livingEntity.getX() - (this.zephyr.getX() + look.x() * 4.0);
                         double accelY = livingEntity.getY(0.5) - (0.5 + this.zephyr.getY(0.5));
                         double accelZ = livingEntity.getZ() - (this.zephyr.getZ() + look.z() * 4.0);
-                        this.zephyr.playSound(AetherSoundEvents.ENTITY_ZEPHYR_SHOOT.get(), this.zephyr.getSoundVolume(), (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
+                        this.zephyr.playSound(AetherSoundEvents.ENTITY_ZEPHYR_SHOOT, this.zephyr.getSoundVolume(), (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
                         ZephyrSnowball snowball = new ZephyrSnowball(level, this.zephyr, accelX, accelY, accelZ);
                         snowball.setPos(this.zephyr.getX() + look.x() * 4.0, this.zephyr.getY(0.5) + 0.5, this.zephyr.getZ() + look.z() * 4.0);
                         level.addFreshEntity(snowball);

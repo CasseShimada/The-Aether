@@ -241,7 +241,7 @@ public class Sheepuff extends AetherAnimal implements Shearable {
      */
     @Override
     public void shear(ServerLevel level, SoundSource source, ItemStack stack) {
-        level.playSound(null, this, AetherSoundEvents.ENTITY_SHEEPUFF_SHEAR.get(), source, 1.0F, 1.0F);
+        level.playSound(null, this, AetherSoundEvents.ENTITY_SHEEPUFF_SHEAR, source, 1.0F, 1.0F);
         int i;
         this.amountEaten = 0;
         if (this.getPuffed()) {
@@ -327,24 +327,24 @@ public class Sheepuff extends AetherAnimal implements Shearable {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_SHEEPUFF_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_SHEEPUFF_AMBIENT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_SHEEPUFF_HURT.get();
+        return AetherSoundEvents.ENTITY_SHEEPUFF_HURT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_SHEEPUFF_DEATH.get();
+        return AetherSoundEvents.ENTITY_SHEEPUFF_DEATH;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), AetherSoundEvents.ENTITY_SHEEPUFF_STEP.get(), SoundSource.NEUTRAL, 0.15F, 1.0F);
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), AetherSoundEvents.ENTITY_SHEEPUFF_STEP, SoundSource.NEUTRAL, 0.15F, 1.0F);
     }
 
     @Override

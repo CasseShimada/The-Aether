@@ -26,12 +26,12 @@ public class AetherJukeboxSongs {
     }
 
     public static void bootstrap(BootstrapContext<JukeboxSong> context) {
-        register(context, AETHER_TUNE, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_AETHER_TUNE.get()), 149, 1);
-        register(context, ASCENDING_DAWN, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_ASCENDING_DAWN.get()), 350, 2);
-        register(context, CHINCHILLA, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_CHINCHILLA.get()), 164, 3);
-        register(context, HIGH, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_HIGH.get()), 186, 4);
-        register(context, KLEPTO, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_KLEPTO.get()), 192, 5);
-        register(context, SLIDERS_WRATH, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_SLIDERS_WRATH.get()), 172, 6);
+        register(context, AETHER_TUNE, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_AETHER_TUNE), 149, 1);
+        register(context, ASCENDING_DAWN, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_ASCENDING_DAWN), 350, 2);
+        register(context, CHINCHILLA, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_CHINCHILLA), 164, 3);
+        register(context, HIGH, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_HIGH), 186, 4);
+        register(context, KLEPTO, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_KLEPTO), 192, 5);
+        register(context, SLIDERS_WRATH, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(AetherSoundEvents.ITEM_MUSIC_DISC_SLIDERS_WRATH), 172, 6);
     }
 
     private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, Holder<SoundEvent> soundEvent, int lengthInSeconds, int comparatorOutput) {

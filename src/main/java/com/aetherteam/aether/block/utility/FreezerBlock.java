@@ -61,7 +61,7 @@ public class FreezerBlock extends AbstractFurnaceBlock {
             for (int i = 0; i < 10; ++i) {
                 level.addParticle(AetherParticleTypes.FROZEN, x, y, z, 0.0, 0.0, 0.0);
             }
-            level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_FREEZER_CRACKLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+            level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, AetherSoundEvents.BLOCK_FREEZER_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         }
     }
 }

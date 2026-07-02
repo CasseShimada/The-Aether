@@ -64,7 +64,7 @@ public class FlyingCow extends WingedAnimal {
     public InteractionResult mobInteract(Player playerEntity, InteractionHand hand) {
         ItemStack itemStack = playerEntity.getItemInHand(hand);
         if (itemStack.is(Items.BUCKET) && !this.isBaby()) {
-            playerEntity.playSound(AetherSoundEvents.ENTITY_FLYING_COW_MILK.get(), 1.0F, 1.0F);
+            playerEntity.playSound(AetherSoundEvents.ENTITY_FLYING_COW_MILK, 1.0F, 1.0F);
             ItemStack itemStack1 = ItemUtils.createFilledResult(itemStack, playerEntity, Items.MILK_BUCKET.getDefaultInstance());
             playerEntity.setItemInHand(hand, itemStack1);
             return this.level().isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
@@ -76,30 +76,30 @@ public class FlyingCow extends WingedAnimal {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return AetherSoundEvents.ENTITY_FLYING_COW_AMBIENT.get();
+        return AetherSoundEvents.ENTITY_FLYING_COW_AMBIENT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_FLYING_COW_HURT.get();
+        return AetherSoundEvents.ENTITY_FLYING_COW_HURT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_FLYING_COW_DEATH.get();
+        return AetherSoundEvents.ENTITY_FLYING_COW_DEATH;
     }
 
     @Nullable
     @Override
     protected SoundEvent getSaddledSound() {
-        return AetherSoundEvents.ENTITY_FLYING_COW_SADDLE.get();
+        return AetherSoundEvents.ENTITY_FLYING_COW_SADDLE;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(AetherSoundEvents.ENTITY_FLYING_COW_STEP.get(), 0.15F, 1.0F);
+        this.playSound(AetherSoundEvents.ENTITY_FLYING_COW_STEP, 0.15F, 1.0F);
     }
 
     @Override

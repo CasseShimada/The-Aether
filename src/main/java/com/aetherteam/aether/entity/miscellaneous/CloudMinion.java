@@ -85,7 +85,7 @@ public class CloudMinion extends PathfinderMob {
                             if (!this.level().isClientSide()) {
                                 this.level().addFreshEntity(crystal);
                             }
-                            this.playSound(AetherSoundEvents.ENTITY_CLOUD_MINION_SHOOT.get(), 0.75F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+                            this.playSound(AetherSoundEvents.ENTITY_CLOUD_MINION_SHOOT, 0.75F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
                             this.setShouldShoot(false); // Finish shoot.
                         }
                     } else { // Approaches owner if not at shoulder.

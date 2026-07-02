@@ -304,7 +304,7 @@ public class Swet extends Slime implements MountableMob {
      * @param livingEntity The {@link LivingEntity} to mount.
      */
     public void consumePassenger(LivingEntity livingEntity) {
-        this.playSound(AetherSoundEvents.ENTITY_SWET_ATTACK.get(), 0.5F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+        this.playSound(AetherSoundEvents.ENTITY_SWET_ATTACK, 0.5F, (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
         EntityUtil.copyRotations(livingEntity, this);
         this.setDeltaMovement(livingEntity.getDeltaMovement());
         livingEntity.startRiding(this, true, false);
@@ -417,17 +417,17 @@ public class Swet extends Slime implements MountableMob {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return AetherSoundEvents.ENTITY_SWET_HURT.get();
+        return AetherSoundEvents.ENTITY_SWET_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return AetherSoundEvents.ENTITY_SWET_DEATH.get();
+        return AetherSoundEvents.ENTITY_SWET_DEATH;
     }
 
     @Override
     protected SoundEvent getSquishSound() {
-        return AetherSoundEvents.ENTITY_SWET_SQUISH.get();
+        return AetherSoundEvents.ENTITY_SWET_SQUISH;
     }
 
     /**
@@ -655,7 +655,7 @@ public class Swet extends Slime implements MountableMob {
             if (this.jumps <= 3) {
                 if (this.swet.onGround()) {
                     this.swet.level().broadcastEntityEvent(this.swet, (byte) 71); // This is to make sure the Swet actually touches the ground on the client.
-                    this.swet.playSound(AetherSoundEvents.ENTITY_SWET_JUMP.get(), 1.0F, ((this.swet.getRandom().nextFloat() - this.swet.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                    this.swet.playSound(AetherSoundEvents.ENTITY_SWET_JUMP, 1.0F, ((this.swet.getRandom().nextFloat() - this.swet.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
 
                     this.chosenDegrees = (float) this.swet.getRandom().nextInt(360);
                     if (this.jumps == 0) {
@@ -828,7 +828,7 @@ public class Swet extends Slime implements MountableMob {
                             this.jumpDelay /= 6;
                         }
                         this.swet.getJumpControl().jump();
-                        this.swet.playSound(AetherSoundEvents.ENTITY_SWET_JUMP.get(), 1.0F, ((this.swet.getRandom().nextFloat() - this.swet.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                        this.swet.playSound(AetherSoundEvents.ENTITY_SWET_JUMP, 1.0F, ((this.swet.getRandom().nextFloat() - this.swet.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
                     } else {
                         this.swet.xxa = 0.0F;
                         this.swet.zza = 0.0F;

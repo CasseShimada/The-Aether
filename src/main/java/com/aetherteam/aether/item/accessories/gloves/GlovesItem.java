@@ -28,16 +28,16 @@ public class GlovesItem extends AccessoryItem implements SlotIdentifierHolder {
         this(material, punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), glovesSound, properties);
     }
 
-    public GlovesItem(Holder<ArmorMaterial> material, double punchDamage, String glovesName, DeferredHolder<SoundEvent, SoundEvent> glovesSound, Properties properties) {
-        this(material.value(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), BuiltInRegistries.SOUND_EVENT.wrapAsHolder(glovesSound.get()), properties);
+    public GlovesItem(Holder<ArmorMaterial> material, double punchDamage, String glovesName, SoundEvent glovesSound, Properties properties) {
+        this(material.value(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), BuiltInRegistries.SOUND_EVENT.wrapAsHolder(glovesSound), properties);
     }
 
     public GlovesItem(Holder<ArmorMaterial> material, double punchDamage, String glovesName, Holder<SoundEvent> glovesSound, Properties properties) {
         this(material.value(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), glovesSound, properties);
     }
 
-    public GlovesItem(DeferredHolder<ArmorMaterial, ArmorMaterial> material, double punchDamage, String glovesName, DeferredHolder<SoundEvent, SoundEvent> glovesSound, Properties properties) {
-        this(material.get(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), BuiltInRegistries.SOUND_EVENT.wrapAsHolder(glovesSound.get()), properties);
+    public GlovesItem(DeferredHolder<ArmorMaterial, ArmorMaterial> material, double punchDamage, String glovesName, SoundEvent glovesSound, Properties properties) {
+        this(material.get(), punchDamage, Identifier.fromNamespaceAndPath(Aether.MODID, glovesName), BuiltInRegistries.SOUND_EVENT.wrapAsHolder(glovesSound), properties);
     }
 
     public GlovesItem(ArmorMaterial material, double punchDamage, String glovesName, SoundEvent glovesSound, Properties properties) {
