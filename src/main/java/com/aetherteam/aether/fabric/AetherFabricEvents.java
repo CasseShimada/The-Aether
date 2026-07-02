@@ -98,8 +98,12 @@ public final class AetherFabricEvents {
                 return InteractionResult.PASS;
             }
 
-            return isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())
-                    ? InteractionResult.FAIL
+            if (isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
+                return InteractionResult.FAIL;
+            }
+
+            return DimensionHooks.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)
+                    ? InteractionResult.SUCCESS
                     : InteractionResult.PASS;
         });
 
