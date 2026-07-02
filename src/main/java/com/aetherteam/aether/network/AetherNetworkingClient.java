@@ -1,5 +1,6 @@
 package com.aetherteam.aether.network;
 
+import com.aetherteam.aether.client.AetherClient;
 import com.aetherteam.aether.client.event.hooks.GuiBossBarHooks;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
@@ -62,7 +63,11 @@ public final class AetherNetworkingClient {
         registerClientReceiver(HealthResetPacket.TYPE, HealthResetPacket::execute);
         registerClientReceiver(LeavingAetherPacket.TYPE, LeavingAetherPacket::execute);
         registerClientReceiver(MoaInteractPacket.TYPE, MoaInteractPacket::execute);
-        registerClientReceiver(OpenSunAltarPacket.TYPE, OpenSunAltarPacket::execute);
+        registerClientReceiver(OpenSunAltarPacket.TYPE, (payload, context) -> {
+            if (context.player() != null) {
+                AetherClient.setToSunAltarScreen(payload.name(), payload.timeScale());
+            }
+        });
         registerClientReceiver(PortalInteractPacket.TYPE, PortalInteractPacket::execute);
         registerClientReceiver(PortalTravelSoundPacket.TYPE, PortalTravelSoundPacket::execute);
         registerClientReceiver(QueenDialoguePacket.TYPE, QueenDialoguePacket::execute);

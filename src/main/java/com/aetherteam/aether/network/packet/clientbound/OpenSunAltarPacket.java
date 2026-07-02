@@ -8,8 +8,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
-import com.aetherteam.aether.util.ClientReflection;
 
 /**
  * Opens {@link SunAltarScreen} from {@link com.aetherteam.aether.block.utility.SunAltarBlock}.
@@ -27,15 +25,5 @@ public record OpenSunAltarPacket(Component name, int timeScale) implements Custo
     @Override
     public Type<OpenSunAltarPacket> type() {
         return TYPE;
-    }
-
-    public static void execute(OpenSunAltarPacket payload, AetherPayloadContext context) {
-        if (context.player() != null) {
-            invokeClientScreen(payload.name(), payload.timeScale());
-        }
-    }
-
-    private static void invokeClientScreen(Component name, int timeScale) {
-        ClientReflection.openSunAltarScreen(name, timeScale);
     }
 }

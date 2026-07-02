@@ -1,6 +1,5 @@
 package com.aetherteam.aether.util;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
@@ -16,8 +15,6 @@ public final class ClientReflection {
     private static boolean minecraftAccessResolved;
     private static Method minecraftGetInstance;
     private static Field minecraftPlayerField;
-    private static boolean aetherClientResolved;
-    private static Method openSunAltarScreen;
 
     private ClientReflection() {
     }
@@ -45,18 +42,6 @@ public final class ClientReflection {
             return player == localPlayer;
         } catch (ReflectiveOperationException ignored) {
             return false;
-        }
-    }
-
-    public static void openSunAltarScreen(Component name, int timeScale) {
-        Method screenSetter = resolveOpenSunAltarScreen();
-        if (screenSetter == null) {
-            return;
-        }
-
-        try {
-            screenSetter.invoke(null, name, timeScale);
-        } catch (ReflectiveOperationException ignored) {
         }
     }
 
@@ -90,20 +75,5 @@ public final class ClientReflection {
             minecraftPlayerField = null;
         }
         return minecraftGetInstance != null && minecraftPlayerField != null;
-    }
-
-    private static Method resolveOpenSunAltarScreen() {
-        if (aetherClientResolved) {
-            return openSunAltarScreen;
-        }
-        aetherClientResolved = true;
-
-        try {
-            Class<?> clientClass = Class.forName("com.aetherteam.aether.client.AetherClient");
-            openSunAltarScreen = clientClass.getMethod("setToSunAltarScreen", Component.class, int.class);
-        } catch (ReflectiveOperationException | LinkageError ignored) {
-            openSunAltarScreen = null;
-        }
-        return openSunAltarScreen;
     }
 }
