@@ -21,11 +21,11 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-final class EntityBucketHooks {
+public final class EntityBucketHooks {
     private EntityBucketHooks() {
     }
 
-    static void skyrootBucketMilking(Entity target, Player player, InteractionHand hand) {
+    public static void skyrootBucketMilking(Entity target, Player player, InteractionHand hand) {
         if (!canMilkWithSkyrootBucket(target, player, hand)) {
             return;
         }
@@ -41,7 +41,7 @@ final class EntityBucketHooks {
         player.setItemInHand(hand, filledBucket);
     }
 
-    static Optional<InteractionResult> pickupBucketable(Entity target, Player player, InteractionHand hand) {
+    public static Optional<InteractionResult> pickupBucketable(Entity target, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         if (!heldStack.is(AetherItems.SKYROOT_WATER_BUCKET)
                 || !(target instanceof Bucketable bucketable)

@@ -23,11 +23,11 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 
-final class EntityArmorStandHooks {
+public final class EntityArmorStandHooks {
     private EntityArmorStandHooks() {
     }
 
-    static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {
+    public static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {
         if (!(target instanceof ArmorStand armorStand)) {
             return Optional.empty();
         }

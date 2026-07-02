@@ -15,8 +15,6 @@ import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -28,11 +26,9 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.*;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public class EntityHooks {
     /**
@@ -112,43 +108,6 @@ public class EntityHooks {
                 }
             }
         }
-    }
-
-    /**
-     * Handles milking cow entities with Skyroot Buckets.
-     *
-     * @param target The target {@link Entity} to milk.
-     * @param player The {@link Player} milking the target.
-     * @param hand   The {@link InteractionHand} with the bucket item.
-     */
-    public static void skyrootBucketMilking(Entity target, Player player, InteractionHand hand) {
-        EntityBucketHooks.skyrootBucketMilking(target, player, hand);
-    }
-
-    /**
-     * Handles picking up aquatic entities with a Skyroot Bucket. This is done by checking for the result bucket that contains the entity and replacing it with a Skyroot equivalent.
-     *
-     * @param target The target {@link Entity}.
-     * @param player The {@link Player}.
-     * @param hand   The {@link InteractionHand} with the bucket item.
-     * @return The {@link Optional} {@link InteractionResult} from this interaction.
-     */
-    public static Optional<InteractionResult> pickupBucketable(Entity target, Player player, InteractionHand hand) {
-        return EntityBucketHooks.pickupBucketable(target, player, hand);
-    }
-
-    /**
-     * Handles the interaction for equipping and unequipping accessories to armor stands.
-     *
-     * @param target The target {@link Entity}.
-     * @param player The {@link Player}.
-     * @param stack  The held {@link ItemStack}.
-     * @param pos    The right-click {@link Vec3} position.
-     * @param hand   The {@link InteractionHand} with the item.
-     * @return The {@link Optional} {@link InteractionResult} from this interaction.
-     */
-    public static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {
-        return EntityArmorStandHooks.interactWithArmorStand(target, player, stack, pos, hand);
     }
 
     /**

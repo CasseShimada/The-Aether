@@ -8,6 +8,8 @@ import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
+import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
+import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
 import com.aetherteam.aether.event.hooks.PerkHooks;
 import com.aetherteam.aether.event.hooks.RecipeHooks;
@@ -128,14 +130,14 @@ public final class AetherFabricEvents {
                 return InteractionResult.PASS;
             }
 
-            EntityHooks.skyrootBucketMilking(entity, player, hand);
-            var result = EntityHooks.pickupBucketable(entity, player, hand);
+            EntityBucketHooks.skyrootBucketMilking(entity, player, hand);
+            var result = EntityBucketHooks.pickupBucketable(entity, player, hand);
             if (result.isPresent()) {
                 return result.get();
             }
 
             if (hitResult != null) {
-                result = EntityHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
+                result = EntityArmorStandHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
                 if (result.isPresent()) {
                     return result.get();
                 }
