@@ -1,7 +1,7 @@
 package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.AetherTags;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
@@ -47,7 +47,7 @@ final class EntityArmorStandHooks {
             return Optional.empty();
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
+        var accessories = AccessoriesAPI.getAccessories(armorStand);
         if (accessories == null) {
             return Optional.empty();
         }
@@ -80,7 +80,7 @@ final class EntityArmorStandHooks {
             return Optional.empty();
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
+        var accessories = AccessoriesAPI.getAccessories(armorStand);
         if (accessories == null) {
             return Optional.empty();
         }
@@ -155,7 +155,7 @@ final class EntityArmorStandHooks {
     }
 
     private static ItemStack getItemByIdentifier(ArmorStand armorStand, SlotTypeReference identifier) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(armorStand);
+        var accessories = AccessoriesAPI.getAccessories(armorStand);
         if (accessories == null) {
             return ItemStack.EMPTY;
         }

@@ -1,7 +1,7 @@
 package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
@@ -103,7 +103,7 @@ final class EntityAccessorySpawnHooks {
             return experience;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return experience;
         }
@@ -156,7 +156,7 @@ final class EntityAccessorySpawnHooks {
     }
 
     private static void equipAccessory(Mob mob, SlotTypeReference identifier, ArmorMaterial armorMaterial) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(mob);
+        var accessories = AccessoriesAPI.getAccessories(mob);
         if (accessories == null) {
             return;
         }
@@ -173,7 +173,7 @@ final class EntityAccessorySpawnHooks {
     }
 
     private static boolean isContainerEmpty(AccessoriesContainer accessoriesContainer) {
-        AccessoriesCapability accessories = accessoriesContainer.owner();
+        var accessories = accessoriesContainer.owner();
         for (SlotEntryReference slotResult : accessories.getAllEquipped()) {
             if (!slotResult.stack().isEmpty()) {
                 return false;
@@ -209,7 +209,7 @@ final class EntityAccessorySpawnHooks {
     private static void enchantAccessories(Mob mob, DifficultyInstance difficulty) {
         RandomSource random = mob.getRandom();
         float chanceMultiplier = difficulty.getSpecialMultiplier();
-        AccessoriesCapability accessories = AccessoriesCapability.get(mob);
+        var accessories = AccessoriesAPI.getAccessories(mob);
         if (accessories == null) {
             return;
         }
