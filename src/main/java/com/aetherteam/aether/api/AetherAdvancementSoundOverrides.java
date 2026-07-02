@@ -28,6 +28,9 @@ public class AetherAdvancementSoundOverrides {
         return override;
     }
 
+    public static void bootstrap() {
+    }
+
     @Nullable
     public static AdvancementSoundOverride get(String id) {
         return ADVANCEMENT_SOUND_OVERRIDES.get(Identifier.parse(id));

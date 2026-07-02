@@ -2,6 +2,7 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
 import com.aetherteam.aether.client.event.hooks.ClientLifecycleHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.ClientTickHooks;
@@ -89,6 +90,7 @@ public class AetherClient {
 
     private static void registerClientContent() {
         CustomizationsOptions.bootstrap();
+        AetherAdvancementSoundOverrides.bootstrap();
         registerVisualContent();
         registerMenuAndInputContent();
         registerTooltipOverrides();
