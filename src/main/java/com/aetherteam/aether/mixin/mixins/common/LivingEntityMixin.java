@@ -3,6 +3,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.AbilityHooks;
+import com.aetherteam.aether.event.hooks.ArmorAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.event.hooks.EntityCombatHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
@@ -157,7 +158,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "causeFallDamage(DFLnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
     private void aether$cancelFallDamage(double fallDistance, float multiplier, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (AbilityHooks.ArmorHooks.fallCancellation((LivingEntity) (Object) this)) {
+        if (ArmorAbilityHooks.fallCancellation((LivingEntity) (Object) this)) {
             cir.setReturnValue(false);
         }
     }
