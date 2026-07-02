@@ -20,6 +20,14 @@ public final class AccessoriesAPI {
     private AccessoriesAPI() {
     }
 
+    public static AccessoriesCapability getAccessories(LivingEntity entity) {
+        return AccessoriesCapability.get(entity);
+    }
+
+    public static void evictAccessories(LivingEntity entity) {
+        AccessoriesCapability.evict(entity);
+    }
+
     public static void registerPredicate(Identifier id, SlotBasedPredicate predicate) {
         AccessoriesState.PREDICATES.put(id, predicate);
     }
@@ -77,7 +85,7 @@ public final class AccessoriesAPI {
             Accessory accessory = getOrDefaultAccessory(current);
             accessory.onUnequip(current, reference);
             reference.setStack(ItemStack.EMPTY);
-            AccessoriesCapability accessories = AccessoriesCapability.get(reference.entity());
+            AccessoriesCapability accessories = getAccessories(reference.entity());
             if (accessories != null) {
                 accessories.handleImmediateUnequip(reference);
             }

@@ -1,6 +1,6 @@
 package com.aetherteam.aether.accessories.impl;
 
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
 import com.aetherteam.aether.util.ClientReflection;
@@ -22,7 +22,7 @@ public final class AccessoryRuntime {
     }
 
     public static void tick(LivingEntity entity) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return;
         }
@@ -39,7 +39,7 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return;
         }
@@ -52,7 +52,7 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             PacketDistributor.sendToPlayer(player, accessories.createSyncPacket());
         }
@@ -63,10 +63,10 @@ public final class AccessoryRuntime {
             return;
         }
 
-        AccessoriesCapability accessories = AccessoriesCapability.get(livingEntity);
+        var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
             accessories.clearRuntimeState(true);
-            AccessoriesCapability.evict(livingEntity);
+            AccessoriesAPI.evictAccessories(livingEntity);
         }
     }
 
