@@ -5,6 +5,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
 import com.aetherteam.aether.event.hooks.EntityHooks;
+import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.world.LevelUtil;
 import net.minecraft.server.MinecraftServer;
@@ -114,7 +115,7 @@ public class EntityMixin {
     @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;ZZ)Z", at = @At("RETURN"))
     private void aether$trackMountStart(Entity vehicle, boolean force, boolean suppressCancellation, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ()) {
-            EntityHooks.trackMount(vehicle, false);
+            EntityMountHooks.trackMount(vehicle, false);
         }
     }
 
@@ -123,11 +124,11 @@ public class EntityMixin {
         Entity rider = (Entity) (Object) this;
         Entity mount = rider.getVehicle();
         if (mount != null) {
-            if (EntityHooks.dismountPrevention(rider, mount, true)) {
+            if (EntityMountHooks.dismountPrevention(rider, mount, true)) {
                 ci.cancel();
                 return;
             }
-            EntityHooks.trackMount(mount, true);
+            EntityMountHooks.trackMount(mount, true);
         }
     }
 }
