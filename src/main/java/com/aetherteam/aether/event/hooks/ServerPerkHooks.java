@@ -5,7 +5,10 @@ import com.aetherteam.nitrogen.api.users.UserData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
-public class PerkHooks {
+public final class ServerPerkHooks {
+    private ServerPerkHooks() {
+    }
+
     /**
      * Removes perks from the player if they don't have a User stored with the server.
      *
