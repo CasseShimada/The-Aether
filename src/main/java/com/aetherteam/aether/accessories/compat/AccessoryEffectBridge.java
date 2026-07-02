@@ -51,12 +51,12 @@ public final class AccessoryEffectBridge {
     }
 
     public static boolean isHoldingEquivalent(LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return false;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             if (predicate.test(reference.stack())) {
                 return true;
             }
@@ -88,12 +88,12 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     public static SlotEntryReference findFirstElytraReference(LivingEntity entity) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return null;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             if (reference.stack().is(Items.ELYTRA)) {
                 return reference;
             }
@@ -104,12 +104,12 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     public static SlotEntryReference findFirstReferenceByEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return null;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             ItemStack stack = reference.stack();
             if (resolveEquipmentSlot(entity, stack) == slot) {
                 return reference;
@@ -124,12 +124,12 @@ public final class AccessoryEffectBridge {
      */
     @Nullable
     public static DeathProtectionResult consumeDeathProtection(LivingEntity entity) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return null;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             ItemStack stack = reference.stack();
             DeathProtection deathProtection = stack.get(DataComponents.DEATH_PROTECTION);
             if (deathProtection == null) {
@@ -165,12 +165,12 @@ public final class AccessoryEffectBridge {
     }
 
     public static void addEnchantedAccessoryCandidates(List<EnchantedItemInUse> candidates, DataComponentType<?> componentType, LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             ItemStack stack = reference.stack();
             if (!predicate.test(stack)) {
                 continue;
@@ -192,12 +192,12 @@ public final class AccessoryEffectBridge {
     }
 
     public static void runEquipmentEnchantmentIteration(LivingEntity entity, Object visitor) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             ItemStack stack = reference.stack();
             EquipmentSlot virtualSlot = resolveEnchantmentEquipmentSlot(entity, stack);
             if (virtualSlot == null) {
@@ -219,12 +219,12 @@ public final class AccessoryEffectBridge {
      * Optional Twilight Forest compatibility path for equipment-slot consumption checks.
      */
     public static boolean consumeAccessoryItem(Player player, EquipmentSlot requestedSlot, ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
-        AccessoriesCapability capability = AccessoriesCapability.get(player);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        if (accessories == null) {
             return false;
         }
 
-        List<SlotEntryReference> equipped = capability.getAllEquipped();
+        List<SlotEntryReference> equipped = accessories.getAllEquipped();
         for (SlotEntryReference reference : equipped) {
             ItemStack stack = reference.stack();
             if (!stack.is(item.asItem())) {
@@ -294,12 +294,12 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     private static SlotEntryReference findReferenceByStackIdentity(LivingEntity entity, ItemStack stack) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return null;
         }
 
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             if (reference.stack() == stack) {
                 return reference;
             }
@@ -318,14 +318,14 @@ public final class AccessoryEffectBridge {
         reference.reference().setStack(removed ? ItemStack.EMPTY : stack);
 
         if (removed) {
-            AccessoriesCapability capability = AccessoriesCapability.get(entity);
-            if (capability != null) {
-                capability.handleImmediateUnequip(reference.reference());
+            AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+            if (accessories != null) {
+                accessories.handleImmediateUnequip(reference.reference());
             }
         } else {
-            AccessoriesCapability capability = AccessoriesCapability.get(entity);
-            if (capability != null) {
-                capability.handleImmediateStackMutation(reference.reference());
+            AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+            if (accessories != null) {
+                accessories.handleImmediateStackMutation(reference.reference());
             }
         }
 
@@ -453,13 +453,13 @@ public final class AccessoryEffectBridge {
     }
 
     private static <T> TriState evaluateAccessoryTriState(LivingEntity entity, Class<T> effectClass, TriStateEvaluator<T> evaluator) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-        if (capability == null) {
+        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        if (accessories == null) {
             return TriState.DEFAULT;
         }
 
         TriState fallback = TriState.DEFAULT;
-        for (SlotEntryReference reference : capability.getAllEquipped()) {
+        for (SlotEntryReference reference : accessories.getAllEquipped()) {
             ItemStack stack = reference.stack();
             T effect = effectClass.isInstance(stack.getItem()) ? effectClass.cast(stack.getItem()) : null;
             if (effect == null) {
