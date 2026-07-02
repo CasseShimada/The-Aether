@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
-import com.aetherteam.aether.event.hooks.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -36,23 +35,18 @@ public class DartShooterItem extends ProjectileWeaponItem { //implements Vanisha
      * @param level  The {@link Level} of the user.
      * @param player The {@link Player} using this item.
      * @param hand   The {@link InteractionHand} in which the item is being used.
-     * @return Consume (cause the item to bob down then up in hand) if the player has ammo or is in creative, or fail (do nothing) if those conditions aren't met, or use a modded hook result if there is one.
+     * @return Consume (cause the item to bob down then up in hand) if the player has ammo or is in creative, or fail (do nothing) if those conditions aren't met.
      */
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
         boolean hasAmmo = !player.getProjectile(heldStack).isEmpty();
 
-        InteractionResult result = EventHooks.onArrowNock(heldStack, level, player, hand, hasAmmo);
-        if (result == null) {
-            if (player.getAbilities().instabuild || hasAmmo) {
-                player.startUsingItem(hand);
-                return InteractionResult.CONSUME;
-            } else {
-                return InteractionResult.FAIL;
-            }
+        if (player.getAbilities().instabuild || hasAmmo) {
+            player.startUsingItem(hand);
+            return InteractionResult.CONSUME;
         } else {
-            return result;
+            return InteractionResult.FAIL;
         }
     }
 
@@ -69,8 +63,6 @@ public class DartShooterItem extends ProjectileWeaponItem { //implements Vanisha
         if (user instanceof Player player) {
             ItemStack itemStack = player.getProjectile(stack);
             if (!itemStack.isEmpty()) {
-                EventHooks.onArrowLoose(stack, level, player, 0, !itemStack.isEmpty());
-
                 List<ItemStack> list = draw(stack, itemStack, player);
                 if (level instanceof ServerLevel serverlevel && !list.isEmpty()) {
                     this.shoot(serverlevel, player, player.getUsedItemHand(), stack, list, 3.1F, 1.2F, false, null);

@@ -13,7 +13,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import com.aetherteam.aether.event.hooks.EventHooks;
 
 import javax.annotation.Nullable;
 
@@ -47,8 +46,7 @@ public abstract class AbstractCrystal extends Projectile {
             }
         }
         HitResult result = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        boolean flag = false;
-        if (result.getType() != HitResult.Type.MISS && !flag && !EventHooks.onProjectileImpact(this, result)) {
+        if (result.getType() != HitResult.Type.MISS) {
             this.onHit(result);
         }
         this.tickMovement();

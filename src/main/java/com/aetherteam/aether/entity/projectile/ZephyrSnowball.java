@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import com.aetherteam.aether.event.hooks.EventHooks;
 import com.aetherteam.aether.network.PacketDistributor;
 
 public class ZephyrSnowball extends Fireball implements ItemSupplier {
@@ -58,7 +57,7 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
         }
         if (this.level().isClientSide() || (this.getOwner() == null || this.getOwner().isAlive()) && this.level().hasChunkAt(this.blockPosition())) {
             HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            if (hitResult.getType() != HitResult.Type.MISS && !EventHooks.onProjectileImpact(this, hitResult)) {
+            if (hitResult.getType() != HitResult.Type.MISS) {
                 this.onHit(hitResult);
             }
 
