@@ -1,6 +1,5 @@
 package com.aetherteam.aether.accessories.compat;
 
-import com.aetherteam.aether.accessories.api.AccessoriesCapability;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
 import com.aetherteam.aether.accessories.api.events.extra.PiglinNeutralInducer;
@@ -51,7 +50,7 @@ public final class AccessoryEffectBridge {
     }
 
     public static boolean isHoldingEquivalent(LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return false;
         }
@@ -88,7 +87,7 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     public static SlotEntryReference findFirstElytraReference(LivingEntity entity) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return null;
         }
@@ -104,7 +103,7 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     public static SlotEntryReference findFirstReferenceByEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return null;
         }
@@ -124,7 +123,7 @@ public final class AccessoryEffectBridge {
      */
     @Nullable
     public static DeathProtectionResult consumeDeathProtection(LivingEntity entity) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return null;
         }
@@ -165,7 +164,7 @@ public final class AccessoryEffectBridge {
     }
 
     public static void addEnchantedAccessoryCandidates(List<EnchantedItemInUse> candidates, DataComponentType<?> componentType, LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return;
         }
@@ -192,7 +191,7 @@ public final class AccessoryEffectBridge {
     }
 
     public static void runEquipmentEnchantmentIteration(LivingEntity entity, Object visitor) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return;
         }
@@ -219,7 +218,7 @@ public final class AccessoryEffectBridge {
      * Optional Twilight Forest compatibility path for equipment-slot consumption checks.
      */
     public static boolean consumeAccessoryItem(Player player, EquipmentSlot requestedSlot, ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(player);
+        var accessories = AccessoriesAPI.getAccessories(player);
         if (accessories == null) {
             return false;
         }
@@ -294,7 +293,7 @@ public final class AccessoryEffectBridge {
 
     @Nullable
     private static SlotEntryReference findReferenceByStackIdentity(LivingEntity entity, ItemStack stack) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return null;
         }
@@ -318,12 +317,12 @@ public final class AccessoryEffectBridge {
         reference.reference().setStack(removed ? ItemStack.EMPTY : stack);
 
         if (removed) {
-            AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+            var accessories = AccessoriesAPI.getAccessories(entity);
             if (accessories != null) {
                 accessories.handleImmediateUnequip(reference.reference());
             }
         } else {
-            AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+            var accessories = AccessoriesAPI.getAccessories(entity);
             if (accessories != null) {
                 accessories.handleImmediateStackMutation(reference.reference());
             }
@@ -453,7 +452,7 @@ public final class AccessoryEffectBridge {
     }
 
     private static <T> TriState evaluateAccessoryTriState(LivingEntity entity, Class<T> effectClass, TriStateEvaluator<T> evaluator) {
-        AccessoriesCapability accessories = AccessoriesCapability.get(entity);
+        var accessories = AccessoriesAPI.getAccessories(entity);
         if (accessories == null) {
             return TriState.DEFAULT;
         }
