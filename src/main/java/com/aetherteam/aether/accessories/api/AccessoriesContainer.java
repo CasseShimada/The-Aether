@@ -25,7 +25,7 @@ public class AccessoriesContainer {
         Arrays.fill(this.renderFlags, true);
     }
 
-    public AccessoriesCapability owner() {
+    public AccessoriesStorage owner() {
         return this.owner;
     }
 
