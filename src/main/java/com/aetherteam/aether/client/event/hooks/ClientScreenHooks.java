@@ -1,7 +1,7 @@
 package com.aetherteam.aether.client.event.hooks;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
+import com.aetherteam.aether.integration.jei.AetherJeiBridge;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.fabricmc.loader.api.FabricLoader;
@@ -12,13 +12,9 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 
-import java.lang.reflect.Method;
-
 public final class ClientScreenHooks {
     private static final boolean JEI_LOADED = FabricLoader.getInstance().isModLoaded("jei");
     private static final boolean TIPS_MOD_LOADED = FabricLoader.getInstance().isModLoaded("tipsmod");
-    private static boolean jeiOverlayLoggerResolved;
-    private static Method jeiOverlayLogger;
 
     private ClientScreenHooks() {
     }
@@ -78,26 +74,6 @@ public final class ClientScreenHooks {
         if (!JEI_LOADED) {
             return;
         }
-
-        if (!jeiOverlayLoggerResolved) {
-            jeiOverlayLoggerResolved = true;
-            try {
-                Class<?> pluginClass = Class.forName("com.aetherteam.aether.integration.jei.AetherJEIPlugin");
-                jeiOverlayLogger = pluginClass.getMethod("logVisibleOverlayState", Screen.class);
-            } catch (ReflectiveOperationException | LinkageError exception) {
-                Aether.LOGGER.debug("Failed to resolve JEI overlay logger", exception);
-                jeiOverlayLogger = null;
-            }
-        }
-
-        if (jeiOverlayLogger == null) {
-            return;
-        }
-
-        try {
-            jeiOverlayLogger.invoke(null, screen);
-        } catch (ReflectiveOperationException exception) {
-            Aether.LOGGER.debug("Failed to query JEI overlay state", exception);
-        }
+        AetherJeiBridge.logVisibleOverlayState(screen);
     }
 }

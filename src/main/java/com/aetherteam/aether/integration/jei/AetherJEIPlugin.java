@@ -116,6 +116,7 @@ public class AetherJEIPlugin implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         runtime = jeiRuntime;
         lastOverlayLogState = null;
+        AetherJeiBridge.registerOverlayLogger(AetherJEIPlugin::logVisibleOverlayState);
         AetherJeiRuntimeLogger.logRuntimeAvailability(LOGGER, jeiRuntime);
     }
 
@@ -123,6 +124,7 @@ public class AetherJEIPlugin implements IModPlugin {
     public void onRuntimeUnavailable() {
         runtime = null;
         lastOverlayLogState = null;
+        AetherJeiBridge.clearOverlayLogger();
     }
 
     public static void logVisibleOverlayState(Screen screen) {
