@@ -1,10 +1,8 @@
 package com.aetherteam.aether.event;
 
 import com.aetherteam.aether.event.hooks.RecipeHooks;
-import com.aetherteam.nitrogen.entity.BossRoomTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,34 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 
 public class AetherEventDispatch {
-    /**
-     * @see BossFightEvent.Start
-     */
-    public static BossFightEvent.Start onBossFightStart(Entity entity, BossRoomTracker<?> dungeon) {
-        return new BossFightEvent.Start(entity, dungeon);
-    }
-
-    /**
-     * @see BossFightEvent.Stop
-     */
-    public static BossFightEvent.Stop onBossFightStop(Entity entity, BossRoomTracker<?> dungeon) {
-        return new BossFightEvent.Stop(entity, dungeon);
-    }
-
-    /**
-     * @see BossFightEvent.AddPlayer
-     */
-    public static BossFightEvent.AddPlayer onBossFightPlayerAdd(Entity entity, BossRoomTracker<?> dungeon, ServerPlayer player) {
-        return new BossFightEvent.AddPlayer(entity, dungeon, player);
-    }
-
-    /**
-     * @see BossFightEvent.RemovePlayer
-     */
-    public static BossFightEvent.RemovePlayer onBossFightPlayerRemove(Entity entity, BossRoomTracker<?> dungeon, ServerPlayer player) {
-        return new BossFightEvent.RemovePlayer(entity, dungeon, player);
-    }
-
     /**
      * @see EggLayEvent
      */
