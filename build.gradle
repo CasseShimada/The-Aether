@@ -28,10 +28,6 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
-sourceSets.main.java {
-    exclude 'com/aetherteam/aether/integration/rei/**'
-}
-
 processResources {
     exclude '.cache/'
 
