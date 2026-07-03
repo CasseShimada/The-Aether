@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public final class RegistryConstructionContext {
     private static final ThreadLocal<Context> CURRENT = new ThreadLocal<>();
@@ -18,6 +19,15 @@ public final class RegistryConstructionContext {
      */
     public static void push(ResourceKey<? extends Registry<?>> registryKey, Identifier id) {
         CURRENT.set(new Context(registryKey, id));
+    }
+
+    public static <T> T construct(ResourceKey<? extends Registry<?>> registryKey, Identifier id, Supplier<T> supplier) {
+        push(registryKey, id);
+        try {
+            return supplier.get();
+        } finally {
+            clear();
+        }
     }
 
     public static void clear() {
