@@ -1,9 +1,9 @@
 package com.aetherteam.aether.recipe.serializer;
 
 import com.aetherteam.aether.recipe.recipes.block.AbstractBiomeParameterRecipe;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockStateRecipeUtil;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

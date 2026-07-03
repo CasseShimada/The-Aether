@@ -1,8 +1,8 @@
-package com.aetherteam.nitrogen.recipe.recipes;
+package com.aetherteam.aether.recipe.blockstate.recipes;
 
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.input.BlockStateRecipeInput;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.input.BlockStateRecipeInput;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;

@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.recipe.input;
+package com.aetherteam.aether.recipe.blockstate.input;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;

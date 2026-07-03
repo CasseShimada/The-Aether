@@ -1,9 +1,9 @@
-package com.aetherteam.nitrogen.recipe.serializer;
+package com.aetherteam.aether.recipe.blockstate.serializer;
 
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
-import com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockStateRecipeUtil;
+import com.aetherteam.aether.recipe.blockstate.recipes.AbstractBlockStateRecipe;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;

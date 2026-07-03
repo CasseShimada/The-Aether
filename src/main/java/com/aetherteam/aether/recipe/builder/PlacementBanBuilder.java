@@ -1,6 +1,6 @@
 package com.aetherteam.aether.recipe.builder;
 
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;

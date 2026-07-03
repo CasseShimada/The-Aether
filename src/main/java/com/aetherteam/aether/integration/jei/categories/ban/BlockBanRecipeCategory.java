@@ -2,9 +2,9 @@ package com.aetherteam.aether.integration.jei.categories.ban;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.recipe.recipes.ban.BlockBanRecipe;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.input.BlockStateRecipeInput;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.input.BlockStateRecipeInput;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;

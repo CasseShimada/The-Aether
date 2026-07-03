@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.recipe;
+package com.aetherteam.aether.recipe.blockstate;
 
 import com.aetherteam.aether.Aether;
 import com.mojang.datafixers.util.Either;

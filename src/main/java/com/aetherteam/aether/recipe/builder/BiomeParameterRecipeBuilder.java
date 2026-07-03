@@ -2,8 +2,8 @@ package com.aetherteam.aether.recipe.builder;
 
 import com.aetherteam.aether.recipe.recipes.block.AbstractBiomeParameterRecipe;
 import com.aetherteam.aether.recipe.serializer.BiomeParameterRecipeSerializer;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.advancements.triggers.Criterion;

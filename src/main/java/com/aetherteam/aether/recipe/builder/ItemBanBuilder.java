@@ -1,7 +1,7 @@
 package com.aetherteam.aether.recipe.builder;
 
 import com.aetherteam.aether.recipe.recipes.ban.ItemBanRecipe;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;

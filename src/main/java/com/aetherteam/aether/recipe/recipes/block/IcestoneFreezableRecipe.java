@@ -2,11 +2,11 @@ package com.aetherteam.aether.recipe.recipes.block;
 
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.input.BlockStateRecipeInput;
-import com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe;
-import com.aetherteam.nitrogen.recipe.serializer.BlockStateRecipeSerializer;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.input.BlockStateRecipeInput;
+import com.aetherteam.aether.recipe.blockstate.recipes.AbstractBlockStateRecipe;
+import com.aetherteam.aether.recipe.blockstate.serializer.BlockStateRecipeSerializer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.crafting.RecipeBookCategory;

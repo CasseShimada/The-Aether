@@ -1,8 +1,8 @@
 package com.aetherteam.aether.recipe.serializer;
 
 import com.aetherteam.aether.recipe.recipes.ban.AbstractPlacementBanRecipe;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
-import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockStateRecipeUtil;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.MapCodec;

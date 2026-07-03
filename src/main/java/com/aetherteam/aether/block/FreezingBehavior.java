@@ -1,6 +1,6 @@
 package com.aetherteam.aether.block;
 
-import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;
+import com.aetherteam.aether.recipe.blockstate.BlockStateRecipeUtil;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;

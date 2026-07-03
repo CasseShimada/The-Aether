@@ -4,7 +4,7 @@ import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.materials.behavior.ItemUseConversion;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.MatchEventRecipe;
-import com.aetherteam.nitrogen.recipe.recipes.BlockStateRecipe;
+import com.aetherteam.aether.recipe.blockstate.recipes.BlockStateRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;

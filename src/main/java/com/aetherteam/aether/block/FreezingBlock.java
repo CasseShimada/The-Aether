@@ -3,7 +3,7 @@ package com.aetherteam.aether.block;
 import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.IcestoneFreezableRecipe;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import net.minecraft.commands.CacheableFunction;

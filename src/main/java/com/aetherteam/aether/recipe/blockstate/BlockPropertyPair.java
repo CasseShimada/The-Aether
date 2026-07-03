@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.recipe;
+package com.aetherteam.aether.recipe.blockstate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;

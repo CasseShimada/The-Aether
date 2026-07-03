@@ -4,8 +4,8 @@ import com.aetherteam.aether.event.hooks.PlacementRecipeHooks;
 import com.aetherteam.aether.recipe.AetherRecipeSerializers;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.serializer.BiomeParameterRecipeSerializer;
-import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
-import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
+import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
+import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -28,7 +28,7 @@ public class PlacementConversionRecipe extends AbstractBiomeParameterRecipe {
     }
 
     /**
-     * Replaces an old {@link BlockState} with a new one from {@link com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe#getResultState(BlockState)}.
+     * Replaces an old {@link BlockState} with a new one from {@link com.aetherteam.aether.recipe.blockstate.recipes.AbstractBlockStateRecipe#getResultState(BlockState)}.
      *
      * @param level    The {@link Level} the recipe is performed in.
      * @param pos      The {@link BlockPos} the recipe is performed at.
