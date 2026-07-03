@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.event.listeners;
+package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.client.ClientCompat;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -13,11 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TooltipListeners {
-    private static final String NITROGEN_MOD_ID = "nitrogen_internals";
+public final class AbilityTooltipHooks {
+    private static final String ABILITY_TOOLTIP_NAMESPACE = "nitrogen_internals";
     private static boolean callbackRegistered;
 
     public static final Map<Holder.Reference<Item>, TooltipPredicate> PREDICATES = new HashMap<>();
+
+    private AbilityTooltipHooks() {
+    }
 
     public static void onTooltipCreationLowPriority() {
         if (callbackRegistered) {
@@ -31,7 +34,7 @@ public class TooltipListeners {
 
     public static void addAbilityTooltips(Player player, ItemStack stack, List<Component> components, Item.TooltipContext context) {
         for (int i = 1; i <= 5; i++) {
-            String key = stack.getItem().getDescriptionId() + "." + NITROGEN_MOD_ID + ".ability.tooltip." + i;
+            String key = stack.getItem().getDescriptionId() + "." + ABILITY_TOOLTIP_NAMESPACE + ".ability.tooltip." + i;
             if (ClientCompat.hasTranslation(key)) {
                 Component component = Component.translatable(key);
                 TooltipPredicate predicate = PREDICATES.get(stack.getItem().builtInRegistryHolder());

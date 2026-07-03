@@ -7,6 +7,7 @@ import com.aetherteam.aether.client.event.hooks.ClientLifecycleHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.ClientTickHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
+import com.aetherteam.aether.client.event.hooks.AbilityTooltipHooks;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -18,7 +19,6 @@ import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.perk.CustomizationsOptions;
-import com.aetherteam.nitrogen.event.listeners.TooltipListeners;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -56,14 +56,14 @@ public class AetherClient {
     }
 
     public static void registerTooltipOverrides() {
-        TooltipListeners.onTooltipCreationLowPriority();
+        AbilityTooltipHooks.onTooltipCreationLowPriority();
         registerHealingGummySwetOverride(AetherItems.BLUE_GUMMY_SWET.builtInRegistryHolder());
         registerHealingGummySwetOverride(AetherItems.GOLDEN_GUMMY_SWET.builtInRegistryHolder());
         registerLifeShardOverride();
     }
 
     private static void registerHealingGummySwetOverride(net.minecraft.core.Holder.Reference<net.minecraft.world.item.Item> itemHolder) {
-        TooltipListeners.PREDICATES.put(itemHolder, (player, stack, components, context, component) -> {
+        AbilityTooltipHooks.PREDICATES.put(itemHolder, (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
             }
@@ -72,7 +72,7 @@ public class AetherClient {
     }
 
     private static void registerLifeShardOverride() {
-        TooltipListeners.PREDICATES.put(AetherItems.LIFE_SHARD.builtInRegistryHolder(), (player, stack, components, context, component) -> {
+        AbilityTooltipHooks.PREDICATES.put(AetherItems.LIFE_SHARD.builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey(), AetherConfig.SERVER.maximum_life_shards.get());
             }
