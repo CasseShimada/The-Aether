@@ -13,7 +13,7 @@ import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
-import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
+import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

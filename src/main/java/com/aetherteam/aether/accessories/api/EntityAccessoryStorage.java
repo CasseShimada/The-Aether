@@ -1,7 +1,7 @@
 package com.aetherteam.aether.accessories.api;
 
 import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilder;
-import com.aetherteam.aether.accessories.compat.AccessoryEffectBridge;
+import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.equip.EquipAction;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;

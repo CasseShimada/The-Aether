@@ -18,5 +18,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved accessory slot resolution out of the compatibility package while keeping current tag-based slot behavior unchanged.
 - Replaced fog color triples with client render vectors.
 - Replaced perk color triples with render vectors.
+- Moved the current accessory effect bridge out of the compatibility package.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.compat;
+package com.aetherteam.aether.accessories.effect;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
