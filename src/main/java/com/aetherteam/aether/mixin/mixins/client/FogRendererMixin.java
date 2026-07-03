@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.FogRenderer;
 import com.aetherteam.aether.mixin.mixins.client.accessor.FogDataAccessor;
-import org.apache.commons.lang3.tuple.Triple;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,14 +41,14 @@ public class FogRendererMixin {
 
     @Inject(method = "computeFogColor", at = @At("TAIL"))
     private void aether$computeFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistanceChunks, float darkenWorldAmount, Vector4f color, CallbackInfo ci) {
-        Triple<Float, Float, Float> renderFogColors = DimensionFogClientHooks.renderFogColors(camera, color.x(), color.y(), color.z());
+        Vector3f renderFogColors = DimensionFogClientHooks.renderFogColors(camera, color.x(), color.y(), color.z());
         if (renderFogColors != null) {
-            color.set(renderFogColors.getLeft(), renderFogColors.getMiddle(), renderFogColors.getRight(), color.w());
+            color.set(renderFogColors.x(), renderFogColors.y(), renderFogColors.z(), color.w());
         }
 
-        Triple<Float, Float, Float> adjustWeatherFogColors = DimensionFogClientHooks.adjustWeatherFogColors(camera, color.x(), color.y(), color.z());
+        Vector3f adjustWeatherFogColors = DimensionFogClientHooks.adjustWeatherFogColors(camera, color.x(), color.y(), color.z());
         if (adjustWeatherFogColors != null) {
-            color.set(adjustWeatherFogColors.getLeft(), adjustWeatherFogColors.getMiddle(), adjustWeatherFogColors.getRight(), color.w());
+            color.set(adjustWeatherFogColors.x(), adjustWeatherFogColors.y(), adjustWeatherFogColors.z(), color.w());
         }
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.tuple.Triple;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
@@ -68,10 +68,10 @@ public final class DimensionFogClientHooks {
      * @param red    The red value of the fog color, as a {@link Float}.
      * @param green  The green value of the fog color, as a {@link Float}.
      * @param blue   The blue value of the fog color, as a {@link Float}.
-     * @return A {@link Triple} of {@link Float}s, containing the RGB values for the fog color.
+     * @return A {@link Vector3f} containing the RGB values for the fog color.
      */
     @Nullable
-    public static Triple<Float, Float, Float> renderFogColors(Camera camera, float red, float green, float blue) {
+    public static Vector3f renderFogColors(Camera camera, float red, float green, float blue) {
         if (camera.entity().level() instanceof ClientLevel clientLevel) {
             if (clientLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
                 ClientLevel.ClientLevelData worldInfo = clientLevel.getLevelData();
@@ -83,7 +83,7 @@ public final class DimensionFogClientHooks {
                     }
                     d0 = d0 * d0;
                     if (d0 != 0.0) {
-                        return Triple.of((float) ((double) red / d0), (float) ((double) green / d0), (float) ((double) blue / d0));
+                        return new Vector3f((float) ((double) red / d0), (float) ((double) green / d0), (float) ((double) blue / d0));
                     }
                 }
             }
@@ -98,10 +98,10 @@ public final class DimensionFogClientHooks {
      * @param red    The red value of the fog color, as a {@link Float}.
      * @param green  The green value of the fog color, as a {@link Float}.
      * @param blue   The blue value of the fog color, as a {@link Float}.
-     * @return A {@link Triple} of {@link Float}s, containing the RGB values for the fog color.
+     * @return A {@link Vector3f} containing the RGB values for the fog color.
      */
     @Nullable
-    public static Triple<Float, Float, Float> adjustWeatherFogColors(Camera camera, float red, float green, float blue) {
+    public static Vector3f adjustWeatherFogColors(Camera camera, float red, float green, float blue) {
         if (camera.entity().level() instanceof ClientLevel clientLevel) {
             if (clientLevel.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
                 FogType fluidState = camera.getFluidInCamera();
@@ -130,7 +130,7 @@ public final class DimensionFogClientHooks {
                         defaultFogColor = fogColor;
                     }
                     Vec3 defaultFog = new Vec3(ARGB.redFloat(defaultFogColor), ARGB.greenFloat(defaultFogColor), ARGB.blueFloat(defaultFogColor));
-                    return Triple.of(
+                    return new Vector3f(
                             Mth.clamp((float) Math.min(red, defaultFog.x()), 0.0F, 1.0F),
                             Mth.clamp((float) Math.min(green, defaultFog.y()), 0.0F, 1.0F),
                             Mth.clamp((float) Math.min(blue, defaultFog.z()), 0.0F, 1.0F)
