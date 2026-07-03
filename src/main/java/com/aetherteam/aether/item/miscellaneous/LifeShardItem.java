@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.miscellaneous;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

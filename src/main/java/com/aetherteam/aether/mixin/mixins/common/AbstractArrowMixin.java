@@ -1,7 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;

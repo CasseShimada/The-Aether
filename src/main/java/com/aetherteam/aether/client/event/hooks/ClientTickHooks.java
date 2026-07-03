@@ -5,7 +5,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Input;

@@ -2,7 +2,7 @@ package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.network.packet.clientbound.HealthResetPacket;
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;

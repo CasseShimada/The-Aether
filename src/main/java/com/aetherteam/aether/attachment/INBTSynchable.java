@@ -1,7 +1,7 @@
-package com.aetherteam.nitrogen.attachment;
+package com.aetherteam.aether.attachment;
 
 import com.aetherteam.aether.network.PacketDistributor;
-import com.aetherteam.nitrogen.network.packet.SyncPacket;
+import com.aetherteam.aether.network.packet.SyncPacket;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

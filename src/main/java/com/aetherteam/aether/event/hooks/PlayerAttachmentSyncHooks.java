@@ -1,7 +1,7 @@
 package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import net.minecraft.world.entity.player.Player;
 
 public final class PlayerAttachmentSyncHooks {

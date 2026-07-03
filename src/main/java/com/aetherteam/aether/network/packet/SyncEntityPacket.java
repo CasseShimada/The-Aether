@@ -1,6 +1,6 @@
-package com.aetherteam.nitrogen.network.packet;
+package com.aetherteam.aether.network.packet;
 
-import com.aetherteam.nitrogen.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.INBTSynchable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
