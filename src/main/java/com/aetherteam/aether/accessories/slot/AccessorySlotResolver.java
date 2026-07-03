@@ -145,10 +145,6 @@ public final class AccessorySlotResolver {
         return hasDeathProtection(stack) || matchesHead(stack);
     }
 
-    public static boolean isCompatibleAccessory(ItemStack stack) {
-        return resolveSlotType(stack) != null;
-    }
-
     @Nullable
     public static SlotTypeReference resolveSlotType(ItemStack stack) {
         SlotTypeReference headSlot = AetherAccessorySlots.getHeadSlotType();
