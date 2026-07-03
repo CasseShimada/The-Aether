@@ -4,7 +4,6 @@ import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -20,8 +19,8 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         this.value = value;
     }
 
-    protected SyncPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
-        this(values.getLeft(), values.getMiddle(), values.getRight());
+    protected SyncPacket(SyncValues values) {
+        this(values.key(), values.valueType(), values.value());
     }
 
     public abstract Supplier<AttachmentType<T>> getAttachment();
@@ -48,12 +47,14 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         attachment.executeSynced(this.key, this.valueType, this.value);
     }
 
-    protected static Triple<String, AttachmentSyncable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
+    protected static SyncValues decodeValues(RegistryFriendlyByteBuf buf) {
         String key = buf.readUtf();
         AttachmentSyncable.Type type = buf.readEnum(AttachmentSyncable.Type.class);
         Object value = readValue(buf, type);
-        return Triple.of(key, type, value);
+        return new SyncValues(key, type, value);
     }
+
+    public record SyncValues(String key, AttachmentSyncable.Type valueType, Object value) { }
 
     private static void writeValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.Type type, Object value) {
         switch (type) {

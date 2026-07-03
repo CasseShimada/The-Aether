@@ -3,7 +3,6 @@ package com.aetherteam.aether.network.packet;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 
@@ -12,11 +11,11 @@ public abstract class SyncLevelPacket<T extends AttachmentSyncable> extends Sync
         super(key, valueType, value);
     }
 
-    protected SyncLevelPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
+    protected SyncLevelPacket(SyncValues values) {
         super(values);
     }
 
-    public static Triple<String, AttachmentSyncable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
+    public static SyncValues decodeValues(RegistryFriendlyByteBuf buf) {
         return SyncPacket.decodeValues(buf);
     }
 

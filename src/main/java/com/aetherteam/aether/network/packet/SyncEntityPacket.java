@@ -4,8 +4,6 @@ import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import oshi.util.tuples.Quartet;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 
@@ -17,8 +15,8 @@ public abstract class SyncEntityPacket<T extends AttachmentSyncable> extends Syn
         this.entityID = entityID;
     }
 
-    protected SyncEntityPacket(Quartet<Integer, String, AttachmentSyncable.Type, Object> values) {
-        this(values.getA(), values.getB(), values.getC(), values.getD());
+    protected SyncEntityPacket(EntitySyncValues values) {
+        this(values.entityID(), values.key(), values.valueType(), values.value());
     }
 
     public int entityID() {
@@ -31,11 +29,13 @@ public abstract class SyncEntityPacket<T extends AttachmentSyncable> extends Syn
         super.write(buf);
     }
 
-    public static Quartet<Integer, String, AttachmentSyncable.Type, Object> decodeEntityValues(RegistryFriendlyByteBuf buf) {
+    public static EntitySyncValues decodeEntityValues(RegistryFriendlyByteBuf buf) {
         int entityID = buf.readVarInt();
-        Triple<String, AttachmentSyncable.Type, Object> values = decodeValues(buf);
-        return new Quartet<>(entityID, values.getLeft(), values.getMiddle(), values.getRight());
+        SyncValues values = decodeValues(buf);
+        return new EntitySyncValues(entityID, values.key(), values.valueType(), values.value());
     }
+
+    public record EntitySyncValues(int entityID, String key, AttachmentSyncable.Type valueType, Object value) { }
 
     public static <T extends AttachmentSyncable> void execute(SyncEntityPacket<T> payload, @Nullable Player player) {
         if (player == null) {

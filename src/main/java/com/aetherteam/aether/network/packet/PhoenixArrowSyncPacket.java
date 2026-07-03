@@ -10,7 +10,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
-import oshi.util.tuples.Quartet;
 
 import java.util.function.Supplier;
 
@@ -24,7 +23,7 @@ public class PhoenixArrowSyncPacket extends SyncEntityPacket<PhoenixArrowAttachm
         PhoenixArrowSyncPacket::write,
         PhoenixArrowSyncPacket::decode);
 
-    public PhoenixArrowSyncPacket(Quartet<Integer, String, AttachmentSyncable.Type, Object> values) {
+    public PhoenixArrowSyncPacket(EntitySyncValues values) {
         super(values);
     }
 

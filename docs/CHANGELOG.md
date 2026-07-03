@@ -14,5 +14,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed the attachment sync interface away from its old NBT-oriented name.
 - Normalized attachment sync API method names to the current `Synced` spelling.
 - Replaced attachment sync field triples with explicit sync field records.
+- Replaced attachment sync packet value tuples with explicit sync value records.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

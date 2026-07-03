@@ -10,7 +10,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
-import oshi.util.tuples.Quartet;
 
 import java.util.function.Supplier;
 
@@ -24,7 +23,7 @@ public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachm
         AetherPlayerSyncPacket::write,
         AetherPlayerSyncPacket::decode);
 
-    public AetherPlayerSyncPacket(Quartet<Integer, String, AttachmentSyncable.Type, Object> values) {
+    public AetherPlayerSyncPacket(EntitySyncValues values) {
         super(values);
     }
 

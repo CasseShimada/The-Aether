@@ -10,7 +10,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.function.Supplier;
 
@@ -24,7 +23,7 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
         AetherTimeSyncPacket::write,
         AetherTimeSyncPacket::decode);
 
-    public AetherTimeSyncPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
+    public AetherTimeSyncPacket(SyncValues values) {
         super(values);
     }
 
