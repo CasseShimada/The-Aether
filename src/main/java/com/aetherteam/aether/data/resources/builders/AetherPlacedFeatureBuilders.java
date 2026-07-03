@@ -20,6 +20,15 @@ public class AetherPlacedFeatureBuilders {
                 new DungeonBlacklistFilter());
     }
 
+    public static List<PlacementModifier> commonOrePlacement(int count, PlacementModifier heightRange) {
+        return List.of(
+                CountPlacement.of(count),
+                InSquarePlacement.spread(),
+                heightRange,
+                BiomeFilter.biome()
+        );
+    }
+
     /**
      * [CODE COPY] - {@link net.minecraft.data.worldgen.placement.VegetationPlacements#treePlacement(PlacementModifier)}
      */

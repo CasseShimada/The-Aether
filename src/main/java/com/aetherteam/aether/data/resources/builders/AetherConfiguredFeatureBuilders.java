@@ -6,6 +6,7 @@ import com.aetherteam.aether.world.configuration.AetherLakeConfiguration;
 import net.minecraft.core.HolderSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.FluidState;
@@ -17,6 +18,14 @@ public class AetherConfiguredFeatureBuilders {
 
     public static AetherLakeConfiguration lake(BlockStateProvider fluid, BlockStateProvider top) {
         return new AetherLakeConfiguration(fluid, top);
+    }
+
+    public static SimpleBlockConfiguration grassPatch(BlockStateProvider block, int tries) {
+        return new SimpleBlockConfiguration(block);
+    }
+
+    public static SimpleBlockConfiguration tallGrassPatch(BlockStateProvider block) {
+        return new SimpleBlockConfiguration(block);
     }
 
     public static SpringConfiguration spring(FluidState fluid, boolean requiresBlocksBelow, int rockCount, int holeCount, HolderSet<Block> validBlocks) {
