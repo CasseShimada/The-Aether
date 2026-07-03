@@ -18,7 +18,7 @@ import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.network.packet.clientbound.BossInfoPacket;
 import com.aetherteam.aether.network.packet.clientbound.QueenDialoguePacket;
 import com.aetherteam.aether.network.packet.serverbound.NpcPlayerInteractPacket;
-import com.aetherteam.nitrogen.entity.BossRoomTracker;
+import com.aetherteam.aether.entity.boss.BossRoomTracker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -744,7 +744,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
     public void addAdditionalSaveData(ValueOutput output) {
@@ -765,7 +765,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
     public void readAdditionalSaveData(ValueInput input) {
@@ -795,7 +795,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         CompoundTag tag = new CompoundTag();
@@ -804,7 +804,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         CompoundTag tag = additionalData.readNbt();

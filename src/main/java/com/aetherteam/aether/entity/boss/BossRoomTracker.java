@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.entity;
+package com.aetherteam.aether.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

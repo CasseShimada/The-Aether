@@ -1,7 +1,7 @@
 package com.aetherteam.aether.world.structure;
 
 import com.aetherteam.aether.entity.AetherBossMob;
-import com.aetherteam.nitrogen.entity.BossRoomTracker;
+import com.aetherteam.aether.entity.boss.BossRoomTracker;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;

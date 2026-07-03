@@ -17,7 +17,7 @@ import com.aetherteam.aether.entity.projectile.crystal.IceCrystal;
 import com.aetherteam.aether.mixin.mixins.common.accessor.LookAtPlayerGoalAccessor;
 import com.aetherteam.aether.network.packet.clientbound.BossInfoPacket;
 import com.aetherteam.aether.attachment.INBTSynchable;
-import com.aetherteam.nitrogen.entity.BossRoomTracker;
+import com.aetherteam.aether.entity.boss.BossRoomTracker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -757,7 +757,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#addBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
     public void addAdditionalSaveData(ValueOutput output) {
@@ -772,7 +772,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
+     * @see com.aetherteam.aether.entity.boss.BossMob#readBossSaveData(CompoundTag, HolderLookup.Provider)
      */
     @Override
     public void readAdditionalSaveData(ValueInput input) {
@@ -792,7 +792,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#addBossSaveData(CompoundTag)
+     * @see com.aetherteam.aether.entity.boss.BossMob#addBossSaveData(CompoundTag)
      */
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
         CompoundTag tag = new CompoundTag();
@@ -801,7 +801,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     }
 
     /**
-     * @see com.aetherteam.nitrogen.entity.BossMob#readBossSaveData(CompoundTag)
+     * @see com.aetherteam.aether.entity.boss.BossMob#readBossSaveData(CompoundTag)
      */
     public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
         CompoundTag tag = additionalData.readNbt();

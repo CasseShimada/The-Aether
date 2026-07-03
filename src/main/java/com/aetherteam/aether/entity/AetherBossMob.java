@@ -2,7 +2,7 @@ package com.aetherteam.aether.entity;
 
 import com.aetherteam.aether.block.dungeon.DoorwayBlock;
 import com.aetherteam.aether.client.AetherSoundEvents;
-import com.aetherteam.nitrogen.entity.BossMob;
+import com.aetherteam.aether.entity.boss.BossMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.Music;
