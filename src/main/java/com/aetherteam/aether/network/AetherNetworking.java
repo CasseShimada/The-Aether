@@ -37,7 +37,7 @@ import com.aetherteam.aether.network.packet.serverbound.ServerHaloPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.network.packet.serverbound.StepHeightPacket;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
-import com.aetherteam.nitrogen.network.packet.serverbound.TriggerUpdateInfoPacket;
+import com.aetherteam.aether.network.packet.serverbound.TriggerUpdateInfoPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;

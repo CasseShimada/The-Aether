@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.network.packet.serverbound;
+package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
