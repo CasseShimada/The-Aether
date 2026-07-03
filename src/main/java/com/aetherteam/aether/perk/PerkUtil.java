@@ -1,7 +1,7 @@
 package com.aetherteam.aether.perk;
 
 import com.aetherteam.aether.perk.data.User;
-import org.apache.commons.lang3.tuple.Triple;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
@@ -102,17 +102,17 @@ public final class PerkUtil {
      * Converts a hex code to RGB values stored as decimals from 0 to 1.
      *
      * @param hex The color hex code as a {@link String}.
-     * @return A {@link Triple} storing three {@link Float}s for RGB values.
+     * @return A {@link Vector3f} storing RGB values.
      */
     @Nullable
-    public static Triple<Float, Float, Float> getPerkColor(@Nullable String hex) {
+    public static Vector3f getPerkColor(@Nullable String hex) {
         if (hex != null && !hex.isEmpty()) {
             try {
                 int decimal = Integer.parseInt(hex, 16);
                 int r = (decimal & 16711680) >> 16;
                 int g = (decimal & '\uff00') >> 8;
                 int b = (decimal & 255);
-                return Triple.of((float) r / 255.0F, (float) g / 255.0F, (float) b / 255.0F);
+                return new Vector3f((float) r / 255.0F, (float) g / 255.0F, (float) b / 255.0F);
             } catch (NumberFormatException exception) {
                 return null;
             }
