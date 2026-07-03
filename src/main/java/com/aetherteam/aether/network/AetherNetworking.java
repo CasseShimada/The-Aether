@@ -60,7 +60,7 @@ public final class AetherNetworking {
 
         registerPayloadTypes();
         registerServerReceivers();
-        PacketDistributor.init();
+        AetherPacketSender.init();
     }
 
     private static void registerPayloadTypes() {

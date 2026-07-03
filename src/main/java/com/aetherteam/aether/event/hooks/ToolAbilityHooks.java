@@ -7,7 +7,7 @@ import com.aetherteam.aether.item.tools.abilities.HolystoneTool;
 import com.aetherteam.aether.item.tools.abilities.ZaniteTool;
 import com.aetherteam.aether.loot.AetherLoot;
 import com.aetherteam.aether.loot.AetherLootContexts;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.ToolDebuffPacket;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -149,11 +149,11 @@ public final class ToolAbilityHooks {
      */
     public static void setDebuffToolsState(ServerPlayer player) {
         if (debuffTools) {
-            PacketDistributor.sendToPlayer(player, new ToolDebuffPacket(true));
+            AetherPacketSender.sendToPlayer(player, new ToolDebuffPacket(true));
         } else if (AetherConfig.SERVER.tools_debuff.get()) {
             debuffTools = true;
 
-            PacketDistributor.sendToAllPlayers(new ToolDebuffPacket(true));
+            AetherPacketSender.sendToAllPlayers(new ToolDebuffPacket(true));
         }
     }
 

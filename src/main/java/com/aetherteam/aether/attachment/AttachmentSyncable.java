@@ -1,6 +1,6 @@
 package com.aetherteam.aether.attachment;
 
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.SyncPacket;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerLevel;
@@ -46,7 +46,7 @@ public interface AttachmentSyncable {
 
     private void sendPacket(SyncPacket packet, Direction direction, Object... context) {
         switch (direction) {
-            case SERVER -> PacketDistributor.sendToServer(packet);
+            case SERVER -> AetherPacketSender.sendToServer(packet);
             case CLIENT -> this.sendToClients(packet, context);
             case PLAYER -> this.sendToPlayer(packet, context);
             case DIMENSION -> this.sendToDimension(packet, context);
@@ -55,15 +55,15 @@ public interface AttachmentSyncable {
 
     private void sendToClients(SyncPacket packet, Object... context) {
         if (context.length > 0 && context[0] instanceof ServerPlayer player) {
-            PacketDistributor.sendToPlayer(player, packet);
+            AetherPacketSender.sendToPlayer(player, packet);
             return;
         }
-        PacketDistributor.sendToAllPlayers(packet);
+        AetherPacketSender.sendToAllPlayers(packet);
     }
 
     private void sendToPlayer(SyncPacket packet, Object... context) {
         if (context.length > 0 && context[0] instanceof ServerPlayer player) {
-            PacketDistributor.sendToPlayer(player, packet);
+            AetherPacketSender.sendToPlayer(player, packet);
         }
     }
 
@@ -72,7 +72,7 @@ public interface AttachmentSyncable {
             return;
         }
         for (ServerPlayer player : PlayerLookup.level(serverLevel)) {
-            PacketDistributor.sendToPlayer(player, packet);
+            AetherPacketSender.sendToPlayer(player, packet);
         }
     }
 

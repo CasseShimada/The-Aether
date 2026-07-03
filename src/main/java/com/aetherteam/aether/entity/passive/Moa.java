@@ -61,7 +61,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -385,7 +385,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setBaby(false);
             }
             this.setHungry(false);
-            PacketDistributor.sendToAllPlayers(new MoaInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND)); // Packet necessary to play animation because this code segment is server-side only, so no animations.
+            AetherPacketSender.sendToAllPlayers(new MoaInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND)); // Packet necessary to play animation because this code segment is server-side only, so no animations.
             return InteractionResult.CONSUME;
         } else if (this.isPlayerGrown() && !this.isBaby() && this.getHealth() < this.getMaxHealth() && itemStack.is(AetherTags.Items.MOA_FOOD_ITEMS)) { // Heals a tamed Moa.
             if (!player.getAbilities().instabuild) {

@@ -1,6 +1,6 @@
 package com.aetherteam.aether.accessories.networking;
 
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public final class AccessoriesNetworking {
@@ -9,7 +9,7 @@ public final class AccessoriesNetworking {
 
     public static void sendToServer(Object payload) {
         if (payload instanceof CustomPacketPayload customPacketPayload) {
-            PacketDistributor.sendToServer(customPacketPayload);
+            AetherPacketSender.sendToServer(customPacketPayload);
         }
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public class ServerPerkData<T> {
      */
     public void syncFromServer(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, this.getSyncPacket(this.getServerPerkData(serverPlayer.level().getServer()))); // Send to client.
+            AetherPacketSender.sendToPlayer(serverPlayer, this.getSyncPacket(this.getServerPerkData(serverPlayer.level().getServer()))); // Send to client.
         }
     }
 
@@ -114,7 +114,7 @@ public class ServerPerkData<T> {
             User user = storedUsers.get(uuid);
             try {
                 if (user != null && this.getVerificationPredicate(perk).test(user)) { // Checks verification requirement to have the perk that is trying to be applied.
-                    PacketDistributor.sendToAllPlayers(this.getApplyPacket(uuid, perk)); // Send to clients.
+                    AetherPacketSender.sendToAllPlayers(this.getApplyPacket(uuid, perk)); // Send to clients.
                     this.modifySavedData(server, uuid, perk); // Save to world.
                 }
             } catch (RuntimeException e) {
@@ -130,7 +130,7 @@ public class ServerPerkData<T> {
      * @param uuid   The {@link UUID} of the player.
      */
     public void removePerk(MinecraftServer server, UUID uuid) {
-        PacketDistributor.sendToAllPlayers(this.getRemovePacket(uuid)); // Send to clients.
+        AetherPacketSender.sendToAllPlayers(this.getRemovePacket(uuid)); // Send to clients.
         this.removeSavedData(server, uuid); // Save to world.
     }
 

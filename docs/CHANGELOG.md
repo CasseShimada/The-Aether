@@ -23,5 +23,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed the client compatibility helper to describe its direct client access role.
 - Clarified the combined resource pack helper comment for current classic resource packs.
 - Renamed the client service helper to describe its current client runtime access role.
+- Renamed the packet sender helper away from the old distributor-style name.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

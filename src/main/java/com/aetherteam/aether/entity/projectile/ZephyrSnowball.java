@@ -24,7 +24,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 public class ZephyrSnowball extends Fireball implements ItemSupplier {
     private int ticksInAir;
@@ -107,7 +107,7 @@ public class ZephyrSnowball extends Fireball implements ItemSupplier {
                 entity.setDeltaMovement(entity.getDeltaMovement().x() + (this.getDeltaMovement().x() * 1.5), entity.getDeltaMovement().y(), entity.getDeltaMovement().z() + (this.getDeltaMovement().z() * 1.5));
                 if (livingEntity instanceof ServerPlayer player) {
                     if (!this.level().isClientSide()) { // Properly communicates the knockback to the client.
-                        PacketDistributor.sendToPlayer(player, new ZephyrSnowballHitPacket(livingEntity.getId(), this.getDeltaMovement().x(), this.getDeltaMovement().z()));
+                        AetherPacketSender.sendToPlayer(player, new ZephyrSnowballHitPacket(livingEntity.getId(), this.getDeltaMovement().x(), this.getDeltaMovement().z()));
                     }
                 }
             }

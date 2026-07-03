@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 public class ValkyrieQueenDialogueScreen extends Screen {
     private final DialogueAnswerComponent dialogueAnswer;
@@ -116,7 +116,7 @@ public class ValkyrieQueenDialogueScreen extends Screen {
      * @see ValkyrieQueen#handleNpcInteraction(Player, byte)
      */
     private void finishChat(byte interactionID) {
-        PacketDistributor.sendToServer(new NpcPlayerInteractPacket(this.valkyrieQueen.getId(), interactionID));
+        AetherPacketSender.sendToServer(new NpcPlayerInteractPacket(this.valkyrieQueen.getId(), interactionID));
         super.onClose();
     }
 

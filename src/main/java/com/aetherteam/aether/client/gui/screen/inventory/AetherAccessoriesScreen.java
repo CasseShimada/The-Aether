@@ -9,7 +9,7 @@ import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
 import com.aetherteam.aether.mixin.mixins.client.accessor.ScreenAccessor;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.serverbound.ClearItemPacket;
 import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.data.User;
@@ -333,7 +333,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
                     } else {
                         if (slot == this.destroyItemSlot && this.destroyItemSlot != null) {
                             this.getMenu().setCarried(ItemStack.EMPTY);
-                            PacketDistributor.sendToServer(new ClearItemPacket(this.minecraft.player.getId()));
+                            AetherPacketSender.sendToServer(new ClearItemPacket(this.minecraft.player.getId()));
                         }
                     }
                 }

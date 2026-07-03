@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
 public record OpenAccessoriesPacket(ItemStack carryStack) implements CustomPacketPayload {
@@ -40,7 +40,7 @@ public record OpenAccessoriesPacket(ItemStack carryStack) implements CustomPacke
             serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, player) -> new AetherAccessoriesMenu(id, inventory), Component.translatable("container.crafting")));
             if (!itemStack.isEmpty()) {
                 serverPlayer.containerMenu.setCarried(itemStack);
-                PacketDistributor.sendToPlayer(serverPlayer, new ClientGrabItemPacket(itemStack));
+                AetherPacketSender.sendToPlayer(serverPlayer, new ClientGrabItemPacket(itemStack));
             }
         }
     }

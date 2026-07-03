@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 /**
  * This interface has several methods for handling the movement for mounted mobs.
@@ -113,7 +113,7 @@ public interface MountableMob {
                     stepHeight.addTransientModifier(vehicle.getMountStepHeightModifier());
                 }
                 if (vehicle.level().isClientSide()) {
-                    PacketDistributor.sendToServer(new StepHeightPacket(vehicle.getId()));
+                    AetherPacketSender.sendToServer(new StepHeightPacket(vehicle.getId()));
                 }
             }
             // Handles movement.

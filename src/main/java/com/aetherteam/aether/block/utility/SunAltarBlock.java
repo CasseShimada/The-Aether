@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 public class SunAltarBlock extends BaseEntityBlock {
 
@@ -90,7 +90,7 @@ public class SunAltarBlock extends BaseEntityBlock {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof SunAltarBlockEntity sunAltar) {
-                PacketDistributor.sendToPlayer(serverPlayer, new OpenSunAltarPacket(sunAltar.getName(), timeScale));
+                AetherPacketSender.sendToPlayer(serverPlayer, new OpenSunAltarPacket(sunAltar.getName(), timeScale));
             }
         }
     }

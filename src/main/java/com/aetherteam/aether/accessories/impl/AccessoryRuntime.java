@@ -1,7 +1,7 @@
 package com.aetherteam.aether.accessories.impl;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
 import com.aetherteam.aether.util.ClientRuntimeAccess;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -54,7 +54,7 @@ public final class AccessoryRuntime {
 
         var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
-            PacketDistributor.sendToPlayer(player, accessories.createSyncPacket());
+            AetherPacketSender.sendToPlayer(player, accessories.createSyncPacket());
         }
     }
 
@@ -75,11 +75,11 @@ public final class AccessoryRuntime {
 
         for (ServerPlayer trackingPlayer : PlayerLookup.tracking(entity)) {
             recipients.add(trackingPlayer.getUUID());
-            PacketDistributor.sendToPlayer(trackingPlayer, packet);
+            AetherPacketSender.sendToPlayer(trackingPlayer, packet);
         }
 
         if (entity instanceof ServerPlayer serverPlayer && recipients.add(serverPlayer.getUUID())) {
-            PacketDistributor.sendToPlayer(serverPlayer, packet);
+            AetherPacketSender.sendToPlayer(serverPlayer, packet);
         }
     }
 

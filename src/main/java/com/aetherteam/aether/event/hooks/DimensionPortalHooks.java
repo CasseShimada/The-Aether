@@ -3,7 +3,7 @@ package com.aetherteam.aether.event.hooks;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.portal.AetherPortalShape;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.PortalInteractPacket;
 import com.aetherteam.aether.world.LevelUtil;
 import net.fabricmc.loader.api.FabricLoader;
@@ -35,7 +35,7 @@ public final class DimensionPortalHooks {
             return false;
         }
 
-        PacketDistributor.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
+        AetherPacketSender.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
         optional.get().createPortalBlocks();
         consumePortalActivationItem(player, stack, hand);
         return true;

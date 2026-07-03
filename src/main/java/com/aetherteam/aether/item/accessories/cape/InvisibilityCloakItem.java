@@ -11,7 +11,7 @@ import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 /**
  * Additional invisibility behavior is handled by the client and ability event listeners.
@@ -53,7 +53,7 @@ public class InvisibilityCloakItem extends AccessoryItem {
                     var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                     if (data.isWearingInvisibilityCloak()) {
                         player.setInvisible(true);
-                        PacketDistributor.sendToAllPlayers(new SetInvisibilityPacket(player.getId(), true));
+                        AetherPacketSender.sendToAllPlayers(new SetInvisibilityPacket(player.getId(), true));
                     }
                 } else {
                     livingEntity.setInvisible(true);
@@ -63,7 +63,7 @@ public class InvisibilityCloakItem extends AccessoryItem {
                     var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
                     if (!data.isWearingInvisibilityCloak()) {
                         player.setInvisible(false);
-                        PacketDistributor.sendToAllPlayers(new SetInvisibilityPacket(player.getId(), false));
+                        AetherPacketSender.sendToAllPlayers(new SetInvisibilityPacket(player.getId(), false));
                     }
                 }
             }

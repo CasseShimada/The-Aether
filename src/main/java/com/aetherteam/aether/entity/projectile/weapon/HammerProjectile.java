@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.List;
 
@@ -106,7 +106,7 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
             this.launchTarget(target);
             this.level().broadcastEntityEvent(this, (byte) 70);
         } else {
-            PacketDistributor.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
+            AetherPacketSender.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
             this.spawnParticles();
         }
     }
@@ -124,7 +124,7 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
             if (!this.level().isClientSide()) {
                 this.launchTarget(target);
             } else {
-                PacketDistributor.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
+                AetherPacketSender.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
             }
         }
         if (!this.level().isClientSide()) {

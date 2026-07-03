@@ -5,7 +5,7 @@ import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,11 +32,11 @@ public class ClientDeveloperGlowPerkData extends ClientPerkData<DeveloperGlow> {
             if (developerGlowEnabled) { // Checks whether the Developer Glow is enabled in the options.
                 if (!userDeveloperGlowData.containsKey(uuid) || userDeveloperGlowData.get(uuid) == null || (developerGlowColor != null && !userDeveloperGlowData.get(uuid).hexColor().equals(developerGlowColor))) { // A check to see if any options have changed.
                     if (PerkUtil.hasDeveloperGlow().test(user)) { // Verifies whether the User can have the Developer Glow.
-                        PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Apply(player.getUUID(), new DeveloperGlow(developerGlowColor))); // Send a modification packet to the server.
+                        AetherPacketSender.sendToServer(new ServerDeveloperGlowPacket.Apply(player.getUUID(), new DeveloperGlow(developerGlowColor))); // Send a modification packet to the server.
                     }
                 }
             } else { // Removes the Halo if it isn't enabled in the options.
-                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Remove(player.getUUID())); // Send a removal packet to the server.
+                AetherPacketSender.sendToServer(new ServerDeveloperGlowPacket.Remove(player.getUUID())); // Send a removal packet to the server.
             }
         }
     }

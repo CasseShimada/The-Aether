@@ -41,7 +41,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -192,7 +192,7 @@ public class Aerbunny extends AetherAnimal {
                         // The player is only able to jump if the Aerbunny's position is below the last tracked falling position, to avoid infinite jump exploits.
                         if (!player.onGround() && data.isJumping() && player.getDeltaMovement().y() <= 0.0 && this.position().y() < this.lastPos.y() - 1.1) {
                             player.setDeltaMovement(player.getDeltaMovement().x(), 0.125, player.getDeltaMovement().z());
-                            PacketDistributor.sendToServer(new AerbunnyPuffPacket(this.getId())); // Calls Aerbunny#puff() on the server.
+                            AetherPacketSender.sendToServer(new AerbunnyPuffPacket(this.getId())); // Calls Aerbunny#puff() on the server.
                             this.spawnExplosionParticle();
                             this.lastPos = null;
                         }

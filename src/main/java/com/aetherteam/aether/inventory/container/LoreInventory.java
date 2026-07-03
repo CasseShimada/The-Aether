@@ -3,7 +3,7 @@ package com.aetherteam.aether.inventory.container;
 import com.aetherteam.aether.advancement.AetherAdvancementTriggers;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.network.packet.serverbound.LoreExistsPacket;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
@@ -35,7 +35,7 @@ public class LoreInventory extends SimpleContainer {
         if (!stack.isEmpty()) {
             if (this.player.level().isClientSide() && this.player instanceof LocalPlayer) {
                 if (this.menu != null) {
-                    PacketDistributor.sendToServer(new LoreExistsPacket(this.player.getId(), stack, this.menu.loreEntryKeyExists(stack)));
+                    AetherPacketSender.sendToServer(new LoreExistsPacket(this.player.getId(), stack, this.menu.loreEntryKeyExists(stack)));
                 }
             } else if (this.player instanceof ServerPlayer serverPlayer && this.menu != null && this.menu.getLoreEntryExists()) {
                 AetherAdvancementTriggers.LORE_ENTRY.trigger(serverPlayer, stack);

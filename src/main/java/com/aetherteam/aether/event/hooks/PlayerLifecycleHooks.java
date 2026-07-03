@@ -2,7 +2,7 @@ package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import net.minecraft.core.BlockPos;
@@ -22,7 +22,7 @@ public final class PlayerLifecycleHooks {
         ServerPerkHooks.refreshPerks(player);
         ToolAbilityHooks.setDebuffToolsState(player);
         MoaSkins.registerMoaSkins(player.level());
-        PacketDistributor.sendToPlayer(player, new RegisterMoaSkinsPacket());
+        AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
         DimensionSpawnHooks.startInAether(player);
         AccessoryRuntime.forceSync(player);
     }

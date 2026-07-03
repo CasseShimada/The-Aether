@@ -9,7 +9,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
 public record OpenInventoryPacket(ItemStack carryStack) implements CustomPacketPayload {
@@ -34,7 +34,7 @@ public record OpenInventoryPacket(ItemStack carryStack) implements CustomPacketP
             if (!itemStack.isEmpty()) {
                 if (!serverPlayer.isCreative()) {
                     serverPlayer.containerMenu.setCarried(itemStack);
-                    PacketDistributor.sendToPlayer(serverPlayer, new ClientGrabItemPacket(itemStack));
+                    AetherPacketSender.sendToPlayer(serverPlayer, new ClientGrabItemPacket(itemStack));
                 }
             }
         }

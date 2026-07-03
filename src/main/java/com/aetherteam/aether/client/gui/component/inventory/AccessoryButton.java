@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 /**
  * Opens the {@link AetherAccessoriesScreen} instead.
@@ -34,9 +34,9 @@ public class AccessoryButton extends ImageButton {
                             InventoryScreen inventory = new InventoryScreen(player);
                             ClientAccess.setScreen(minecraft, inventory);
                             player.inventoryMenu.setCarried(stack);
-                            PacketDistributor.sendToServer(new OpenInventoryPacket(stack));
+                            AetherPacketSender.sendToServer(new OpenInventoryPacket(stack));
                         } else {
-                            PacketDistributor.sendToServer(new OpenAccessoriesPacket(stack));
+                            AetherPacketSender.sendToServer(new OpenAccessoriesPacket(stack));
                         }
                     }
                 });

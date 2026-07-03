@@ -9,7 +9,7 @@ import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.passive.Moa;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.network.packet.serverbound.TriggerUpdateInfoPacket;
 import com.aetherteam.aether.perk.CustomizationsOptions;
@@ -120,7 +120,7 @@ public class MoaSkinsScreen extends Screen {
             // Button for saving a selected skin as the one that will be applied to the player's Moa.
             this.applyButton = this.addRenderableWidget(new ChangeSkinButton(ChangeSkinButton.ButtonType.APPLY, Button.builder(Component.translatable("gui.aether.moa_skins.button.apply"),
                     (pressed) -> {
-                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), this.getSelectedSkin())));
+                        AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), this.getSelectedSkin())));
                         this.customizations.setMoaSkin(this.getSelectedSkin().getId());
                         this.customizations.save();
                         this.customizations.load();
@@ -130,7 +130,7 @@ public class MoaSkinsScreen extends Screen {
             // Button for removing the player's currently applied Moa Skin.
             this.removeButton = this.addRenderableWidget(new ChangeSkinButton(ChangeSkinButton.ButtonType.REMOVE, Button.builder(Component.translatable("gui.aether.moa_skins.button.remove"),
                     (pressed) -> {
-                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
+                        AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
                         this.customizations.setMoaSkin("");
                         this.customizations.save();
                         this.customizations.load();
@@ -141,7 +141,7 @@ public class MoaSkinsScreen extends Screen {
             this.addRenderableWidget(new RefreshButton(Button.builder(Component.literal(""),
                     (pressed) -> {
                         if (RefreshButton.reboundTimer == 0) {
-                            PacketDistributor.sendToServer(new TriggerUpdateInfoPacket(this.minecraft.player.getId()));
+                            AetherPacketSender.sendToServer(new TriggerUpdateInfoPacket(this.minecraft.player.getId()));
                             RefreshButton.reboundTimer = RefreshButton.reboundMax;
                         }
                     }
@@ -418,10 +418,10 @@ public class MoaSkinsScreen extends Screen {
         User user = UserData.Client.getClientUser();
         if (this.minecraft.player != null) {
             if (user == null && this.userConnectionExists) { // Remove skin data if the user no longer exists.
-                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
+                AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Remove(this.minecraft.player.getUUID()));
                 this.userConnectionExists = false;
             } else if (user != null && !this.userConnectionExists && MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()) != null) { // Add skin data if the user has started existing.
-                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()))));
+                AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Apply(this.minecraft.player.getUUID(), new MoaData(this.minecraft.player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).getLastRiddenMoa(), MoaSkins.getMoaSkins().get(this.customizations.getMoaSkin()))));
                 this.userConnectionExists = true;
             }
         }

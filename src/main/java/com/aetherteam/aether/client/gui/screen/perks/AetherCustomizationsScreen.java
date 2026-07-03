@@ -20,7 +20,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 /**
  * A screen for changing perk-related options in-game.
@@ -139,11 +139,11 @@ public class AetherCustomizationsScreen extends Screen {
                         // Propagate changes to the server for other players to see.
                         if (this.haloEnabled) {
                             if (this.minecraft.player != null) {
-                                PacketDistributor.sendToServer(new ServerHaloPacket.Apply(this.minecraft.player.getUUID(), new Halo(this.haloColor)));
+                                AetherPacketSender.sendToServer(new ServerHaloPacket.Apply(this.minecraft.player.getUUID(), new Halo(this.haloColor)));
                             }
                         } else {
                             if (this.minecraft.player != null) {
-                                PacketDistributor.sendToServer(new ServerHaloPacket.Remove(this.minecraft.player.getUUID()));
+                                AetherPacketSender.sendToServer(new ServerHaloPacket.Remove(this.minecraft.player.getUUID()));
                             }
                         }
                         this.customizations.save();
@@ -210,11 +210,11 @@ public class AetherCustomizationsScreen extends Screen {
                         // Propagate changes to the server for other players to see.
                         if (this.developerGlowEnabled) {
                             if (this.minecraft.player != null) {
-                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Apply(this.minecraft.player.getUUID(), new DeveloperGlow(this.developerGlowColor)));
+                                AetherPacketSender.sendToServer(new ServerDeveloperGlowPacket.Apply(this.minecraft.player.getUUID(), new DeveloperGlow(this.developerGlowColor)));
                             }
                         } else {
                             if (this.minecraft.player != null) {
-                                PacketDistributor.sendToServer(new ServerDeveloperGlowPacket.Remove(this.minecraft.player.getUUID()));
+                                AetherPacketSender.sendToServer(new ServerDeveloperGlowPacket.Remove(this.minecraft.player.getUUID()));
                             }
                         }
                         this.customizations.save();

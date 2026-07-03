@@ -4,7 +4,7 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListenerImplAccessor;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
 import com.aetherteam.aether.network.packet.clientbound.LeavingAetherPacket;
 import com.aetherteam.aether.world.LevelUtil;
@@ -72,9 +72,9 @@ public final class DimensionTravelHooks {
         if (visible) {
             DimensionTravelState.playerLeavingAether = leavingAether;
         }
-        PacketDistributor.sendToAllPlayers(new AetherTravelPacket(visible));
+        AetherPacketSender.sendToAllPlayers(new AetherTravelPacket(visible));
         if (visible) {
-            PacketDistributor.sendToAllPlayers(new LeavingAetherPacket(leavingAether));
+            AetherPacketSender.sendToAllPlayers(new LeavingAetherPacket(leavingAether));
         }
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.Collection;
 
@@ -60,7 +60,7 @@ public class PlayerAttachmentCommand {
                     attribute.removeModifier(data.getLifeShardHealthAttributeModifier().id());
                 }
                 player.setHealth(player.getMaxHealth());
-                PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 5.0, new HealthResetPacket(player.getId(), value)); // Sync to client.
+                AetherPacketSender.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 5.0, new HealthResetPacket(player.getId(), value)); // Sync to client.
                 source.sendSuccess(() -> Component.translatable("commands.aether.capability.player.life_shards.set", player.getDisplayName(), value), true);
             }
         }

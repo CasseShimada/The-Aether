@@ -6,7 +6,7 @@ import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,11 +42,11 @@ public class ClientMoaSkinPerkData extends ClientPerkData<MoaData> {
                         || (userSkinsData.get(uuid).moaUUID() != null && moaData.moaUUID() != null && !Objects.equals(userSkinsData.get(uuid).moaUUID(), moaData.moaUUID()))
                         || (userSkinsData.get(uuid).moaSkin() != null && moaData.moaSkin() != null && !Objects.equals(userSkinsData.get(uuid).moaSkin(), moaData.moaSkin()))) {
                     if (moaSkin.getUserPredicate().test(user)) { // Verifies whether the User can have the Moa Skin.
-                        PacketDistributor.sendToServer(new ServerMoaSkinPacket.Apply(player.getUUID(), new MoaData(lastRiddenMoa, moaSkin))); // Send a modification packet to the server.
+                        AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Apply(player.getUUID(), new MoaData(lastRiddenMoa, moaSkin))); // Send a modification packet to the server.
                     }
                 }
             } else if ((moaSkinName == null || moaSkinName.isEmpty()) && userSkinsData.containsKey(uuid) && userSkinsData.get(uuid) != null && (userSkinsData.get(uuid).moaUUID() != null || userSkinsData.get(uuid).moaSkin() != null)) {
-                PacketDistributor.sendToServer(new ServerMoaSkinPacket.Remove(player.getUUID())); // Send a removal packet to the server if the player had a Moa Skin but the skin in the options is set to blank.
+                AetherPacketSender.sendToServer(new ServerMoaSkinPacket.Remove(player.getUUID())); // Send a removal packet to the server if the player had a Moa Skin but the skin in the options is set to blank.
             }
         }
     }

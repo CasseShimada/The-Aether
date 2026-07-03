@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.gui.component.inventory;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 public class SunAltarSlider extends AbstractSliderButton {
     private final Component title;
@@ -19,7 +19,7 @@ public class SunAltarSlider extends AbstractSliderButton {
     @Override
     protected void applyValue() {
         long time = (long) (this.value * this.timeScale);
-        PacketDistributor.sendToServer(new SunAltarUpdatePacket(time, this.timeScale));
+        AetherPacketSender.sendToServer(new SunAltarUpdatePacket(time, this.timeScale));
     }
 
     @Override

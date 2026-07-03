@@ -68,7 +68,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import com.aetherteam.aether.event.hooks.EntityGriefingRules;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -282,7 +282,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
                     if (player instanceof ServerPlayer serverPlayer) {
                         if (this.getConversingPlayer() == null) {
                             this.playSound(this.getInteractSound(), 1.0F, this.getVoicePitch());
-                            PacketDistributor.sendToPlayer(serverPlayer, new QueenDialoguePacket(this.getId()));
+                            AetherPacketSender.sendToPlayer(serverPlayer, new QueenDialoguePacket(this.getId()));
                             this.setConversingPlayer(serverPlayer);
                         }
                     }
@@ -524,7 +524,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
-        PacketDistributor.sendToPlayer(player, new BossInfoPacket.Display(this.bossFight.getId(), this.getId()));
+        AetherPacketSender.sendToPlayer(player, new BossInfoPacket.Display(this.bossFight.getId(), this.getId()));
         if (this.getDungeon() == null || this.getDungeon().isPlayerTracked(player)) {
             this.bossFight.addPlayer(player);
         }
@@ -538,7 +538,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
-        PacketDistributor.sendToPlayer(player, new BossInfoPacket.Remove(this.bossFight.getId(), this.getId()));
+        AetherPacketSender.sendToPlayer(player, new BossInfoPacket.Remove(this.bossFight.getId(), this.getId()));
         this.bossFight.removePlayer(player);
     }
 

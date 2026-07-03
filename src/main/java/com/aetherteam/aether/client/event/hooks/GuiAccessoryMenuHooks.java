@@ -9,7 +9,7 @@ import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.inventory.menu.AetherAccessoriesMenu;
 import com.aetherteam.aether.mixin.mixins.client.accessor.AbstractContainerScreenAccessor;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
@@ -64,7 +64,7 @@ public final class GuiAccessoryMenuHooks {
             return;
         }
 
-        PacketDistributor.sendToServer(new OpenAccessoriesPacket(ItemStack.EMPTY));
+        AetherPacketSender.sendToServer(new OpenAccessoriesPacket(ItemStack.EMPTY));
         shouldAddButton = false;
     }
 

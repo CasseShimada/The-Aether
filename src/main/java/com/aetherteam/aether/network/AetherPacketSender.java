@@ -14,12 +14,12 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public final class PacketDistributor {
+public final class AetherPacketSender {
     @Nullable
     private static MinecraftServer serverInstance;
     private static boolean initialized;
 
-    private PacketDistributor() {
+    private AetherPacketSender() {
     }
 
     public static void init() {

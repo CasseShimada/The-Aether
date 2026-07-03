@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.portal.TeleportTransition;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class AetherPortalForcer {
 
     private static void playPortalSound(Entity entity) {
         if (entity instanceof ServerPlayer serverplayer) {
-            PacketDistributor.sendToPlayer(serverplayer, new PortalTravelSoundPacket());
+            AetherPacketSender.sendToPlayer(serverplayer, new PortalTravelSoundPacket());
         }
     }
 

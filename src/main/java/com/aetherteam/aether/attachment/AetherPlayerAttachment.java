@@ -46,7 +46,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
-import com.aetherteam.aether.network.PacketDistributor;
+import com.aetherteam.aether.network.AetherPacketSender;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -471,7 +471,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
                     aerbunny.startRiding(player);
                     this.setMountedAerbunny(aerbunny);
                 if (player instanceof ServerPlayer serverPlayer) {
-                    PacketDistributor.sendToPlayer(serverPlayer, new RemountAerbunnyPacket(player.getId(), aerbunny.getId()));
+                    AetherPacketSender.sendToPlayer(serverPlayer, new RemountAerbunnyPacket(player.getId(), aerbunny.getId()));
                 }
             }
             this.setMountedAerbunnyTag(Optional.empty());
@@ -946,7 +946,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
      */
     private void sendCloudMinionPacket(Player player, CloudMinion cloudMinionRight, CloudMinion cloudMinionLeft) {
         if (player instanceof ServerPlayer serverPlayer && !player.level().isClientSide()) {
-            PacketDistributor.sendToPlayer(serverPlayer, new CloudMinionPacket(player.getId(), cloudMinionRight.getId(), cloudMinionLeft.getId()));
+            AetherPacketSender.sendToPlayer(serverPlayer, new CloudMinionPacket(player.getId(), cloudMinionRight.getId(), cloudMinionLeft.getId()));
         }
     }
 
