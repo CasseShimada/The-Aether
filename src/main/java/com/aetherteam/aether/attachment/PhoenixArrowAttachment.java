@@ -27,7 +27,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> synchableFunctions = Map.ofEntries(
+    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
             Map.entry("setPhoenixArrow", Triple.of(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
     );
 
@@ -46,8 +46,8 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSynchableFunctions() {
-        return this.synchableFunctions;
+    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+        return this.syncFields;
     }
 
     public void setPhoenixArrow(boolean isPhoenixArrow) {

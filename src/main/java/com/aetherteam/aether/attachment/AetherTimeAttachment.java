@@ -29,7 +29,7 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> synchableFunctions = Map.ofEntries(
+    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
             Map.entry("setEternalDay", Triple.of(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
             Map.entry("setShouldWait", Triple.of(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
     );
@@ -51,8 +51,8 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSynchableFunctions() {
-        return this.synchableFunctions;
+    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+        return this.syncFields;
     }
 
     /**
@@ -77,10 +77,10 @@ public class AetherTimeAttachment implements AttachmentSyncable {
                 if (!level.isClientSide() && level.getLevelData() instanceof AetherLevelData aetherLevelData) {
                     if (AetherConfig.SERVER.sync_aether_time.get()) {
                         if (aetherLevelData.getOverworldDayTime() == aetherLevelData.getDayTime()) {
-                            this.setSynched(-1, Direction.DIMENSION, "setShouldWait", false, level);
+                            this.setSynced(-1, Direction.DIMENSION, "setShouldWait", false, level);
                         }
                     } else if (this.getShouldWait()) {
-                        this.setSynched(-1, Direction.DIMENSION, "setShouldWait", false, level);
+                        this.setSynced(-1, Direction.DIMENSION, "setShouldWait", false, level);
                     }
                 }
             } else {
@@ -103,14 +103,14 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Sends the eternal day value to the client dimension.
      */
     public void updateEternalDay(Level level) {
-        this.setSynched(-1, Direction.DIMENSION, "setEternalDay", this.isEternalDay, level);
+        this.setSynced(-1, Direction.DIMENSION, "setEternalDay", this.isEternalDay, level);
     }
 
     /**
      * Sends the eternal day value to the client player.
      */
     public void updateEternalDay(ServerPlayer player) {
-        this.setSynched(player.getId(), Direction.PLAYER, "setEternalDay", this.isEternalDay, player);
+        this.setSynced(player.getId(), Direction.PLAYER, "setEternalDay", this.isEternalDay, player);
     }
 
     public void setDayTime(long time) {

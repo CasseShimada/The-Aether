@@ -32,7 +32,7 @@ public class EternalDayCommand {
             data.setEternalDay(value);
             data.updateEternalDay(level); // Syncs to client.
             if (AetherConfig.SERVER.sync_aether_time.get()) {
-                data.setSynched(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, level);
+                data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, level);
             }
             source.sendSuccess(() -> Component.translatable("commands.aether.capability.time.eternal_day.set", value), true);
         }

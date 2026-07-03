@@ -406,7 +406,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                 data.setEternalDay(false);
                 data.updateEternalDay(this.level());
                 if (AetherConfig.SERVER.sync_aether_time.get()) {
-                    data.setSynched(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, this.level());
+                    data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, this.level());
                 }
             }
         }

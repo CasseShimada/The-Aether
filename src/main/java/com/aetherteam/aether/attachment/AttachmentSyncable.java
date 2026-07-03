@@ -14,31 +14,31 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface AttachmentSyncable {
-    Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSynchableFunctions();
+    Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields();
 
     SyncPacket getSyncPacket(int entityID, String key, Type type, Object value);
 
     default void forceSync(int entityID, Direction direction) {
-        for (Map.Entry<String, Triple<Type, Consumer<Object>, Supplier<Object>>> entry : this.getSynchableFunctions().entrySet()) {
+        for (Map.Entry<String, Triple<Type, Consumer<Object>, Supplier<Object>>> entry : this.getSyncFields().entrySet()) {
             Triple<Type, Consumer<Object>, Supplier<Object>> value = entry.getValue();
-            this.setSynched(entityID, direction, entry.getKey(), value.getLeft(), value.getRight().get());
+            this.setSynced(entityID, direction, entry.getKey(), value.getLeft(), value.getRight().get());
         }
     }
 
-    default void setSynched(int entityID, Direction direction, String key, @Nullable Object value, Object... context) {
-        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSynchableFunctions().get(key);
+    default void setSynced(int entityID, Direction direction, String key, @Nullable Object value, Object... context) {
+        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSyncFields().get(key);
         if (data == null) {
             return;
         }
-        this.setSynched(entityID, direction, key, data.getLeft(), value, context);
+        this.setSynced(entityID, direction, key, data.getLeft(), value, context);
     }
 
-    default void setSynched(int entityID, Direction direction, String key, Type type, @Nullable Object value, Object... context) {
+    default void setSynced(int entityID, Direction direction, String key, Type type, @Nullable Object value, Object... context) {
         this.sendPacket(this.getSyncPacket(entityID, key, type, value), direction, context);
     }
 
-    default void executeSynched(String key, Type type, @Nullable Object value) {
-        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSynchableFunctions().get(key);
+    default void executeSynced(String key, Type type, @Nullable Object value) {
+        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSyncFields().get(key);
         if (data == null || data.getLeft() != type) {
             return;
         }

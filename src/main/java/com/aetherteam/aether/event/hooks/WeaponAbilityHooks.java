@@ -46,11 +46,11 @@ public final class WeaponAbilityHooks {
             Entity sourceEntity = source.getDirectEntity();
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (sourceEntity instanceof GoldenDart) {
-                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", data.getGoldenDartCount() + 1);
+                data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", data.getGoldenDartCount() + 1);
             } else if (sourceEntity instanceof PoisonDart || sourceEntity instanceof PoisonNeedle) {
-                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", data.getPoisonDartCount() + 1);
+                data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", data.getPoisonDartCount() + 1);
             } else if (sourceEntity instanceof EnchantedDart) {
-                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", data.getEnchantedDartCount() + 1);
+                data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", data.getEnchantedDartCount() + 1);
             }
         }
     }

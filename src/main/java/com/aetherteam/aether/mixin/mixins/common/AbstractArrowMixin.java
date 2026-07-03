@@ -32,7 +32,7 @@ public abstract class AbstractArrowMixin {
         if (arrow.hasAttached(AetherDataAttachments.PHOENIX_ARROW)) {
             var attachment = arrow.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW);
             if (attachment.isPhoenixArrow() && !arrow.level().isClientSide()) {
-                attachment.setSynched(arrow.getId(), AttachmentSyncable.Direction.CLIENT, "setPhoenixArrow", true); // Sync Phoenix Arrow variable to client.
+                attachment.setSynced(arrow.getId(), AttachmentSyncable.Direction.CLIENT, "setPhoenixArrow", true); // Sync Phoenix Arrow variable to client.
                 if (this.isInGround()) { // Spawn less particles when the arrow is in the ground.
                     if (this.inGroundTime % 5 == 0) {
                         this.spawnParticles(arrow);

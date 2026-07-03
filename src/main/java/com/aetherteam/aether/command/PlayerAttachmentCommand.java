@@ -54,7 +54,7 @@ public class PlayerAttachmentCommand {
             ServerPlayer player = playerList.getPlayer(gameProfile.id());
             if (player != null) {
                 var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setLifeShardCount", value);
+                data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setLifeShardCount", value);
                 AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
                 if (attribute != null) {
                     attribute.removeModifier(data.getLifeShardHealthAttributeModifier().id());

@@ -39,22 +39,22 @@ public final class ClientTickHooks {
 
         boolean isJumping = keys.jump();
         if (isJumping != aetherPlayer.isJumping()) {
-            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setJumping", isJumping);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setJumping", isJumping);
         }
 
         boolean isMoving = isJumping || keys.forward() || keys.backward() || keys.left() || keys.right() || player.isFallFlying();
         if (isMoving != aetherPlayer.isMoving()) {
-            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setMoving", isMoving);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setMoving", isMoving);
         }
 
         boolean isHitting = client.options.keyAttack.isDown();
         if (isHitting != aetherPlayer.isHitting()) {
-            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setHitting", isHitting);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setHitting", isHitting);
         }
 
         boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
         if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
-            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
         }
     }
 

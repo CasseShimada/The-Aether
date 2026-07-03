@@ -45,7 +45,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
     }
 
     protected void applySync(T attachment) {
-        attachment.executeSynched(this.key, this.valueType, this.value);
+        attachment.executeSynced(this.key, this.valueType, this.value);
     }
 
     protected static Triple<String, AttachmentSyncable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {

@@ -124,7 +124,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> synchableFunctions = Map.ofEntries(
+    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
         Map.entry("setHitting", Triple.of(Type.BOOLEAN, (object) -> this.setHitting((boolean) object), this::isHitting)),
         Map.entry("setMoving", Triple.of(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
         Map.entry("setJumping", Triple.of(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
@@ -173,8 +173,8 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         this.loginsUntilPatreonMessage = loginUntilMessage;
     }
 
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSynchableFunctions() {
-        return this.synchableFunctions;
+    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+        return this.syncFields;
     }
 
     /**
@@ -203,7 +203,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public void onJoinLevel(Player player) {
         if (player.level().isClientSide() && player.isLocalPlayer()) {
             CustomizationsOptions.INSTANCE.load();
-            this.setSynched(player.getId(), Direction.SERVER, "setShouldSyncBetweenClients", true);
+            this.setSynced(player.getId(), Direction.SERVER, "setShouldSyncBetweenClients", true);
         }
     }
 
@@ -350,7 +350,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeGoldenDartTime;
                 if (this.removeGoldenDartTime <= 0) {
-                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", this.getGoldenDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", this.getGoldenDartCount() - 1);
                 }
             }
             if (this.getPoisonDartCount() > 0) {
@@ -360,7 +360,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removePoisonDartTime;
                 if (this.removePoisonDartTime <= 0) {
-                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", this.getPoisonDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", this.getPoisonDartCount() - 1);
                 }
             }
             if (this.getEnchantedDartCount() > 0) {
@@ -370,7 +370,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeEnchantedDartTime;
                 if (this.removeEnchantedDartTime <= 0) {
-                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", this.getEnchantedDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", this.getEnchantedDartCount() - 1);
                 }
             }
         }
@@ -420,7 +420,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
             if (this.attackedWithInvisibility()) {
                 --this.invisibilityAttackCooldown;
                 if (this.invisibilityAttackCooldown <= 0) {
-                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setAttackedWithInvisibility", false);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setAttackedWithInvisibility", false);
                 }
             } else {
                 this.invisibilityAttackCooldown = AetherConfig.SERVER.invisibility_visibility_time.get();
