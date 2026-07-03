@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.gui.screen.inventory;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
 import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
@@ -148,7 +148,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      */
     private ImageButton createSkinsButton() {
         ImageButton skinsButton = new ImageButton(this.leftPos - 22, this.topPos + 2, 20, 20, SKINS_BUTTON,
-                (pressed) -> ClientCompat.setScreen(this.minecraft, new MoaSkinsScreen(this)),
+                (pressed) -> ClientAccess.setScreen(this.minecraft, new MoaSkinsScreen(this)),
                 Component.translatable("gui.aether.accessories.skins_button"));
         skinsButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.skins_button")));
         return skinsButton;
@@ -161,7 +161,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
      */
     private ImageButton createCustomizationButton() {
         ImageButton customizationButton = new ImageButton(this.leftPos - 22, this.topPos + 24, 20, 20, CUSTOMIZATION_BUTTON,
-                (pressed) -> ClientCompat.setScreen(this.minecraft, new AetherCustomizationsScreen(this)),
+                (pressed) -> ClientAccess.setScreen(this.minecraft, new AetherCustomizationsScreen(this)),
                 Component.translatable("gui.aether.accessories.customization_button"));
         customizationButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.customization_button")));
         return customizationButton;

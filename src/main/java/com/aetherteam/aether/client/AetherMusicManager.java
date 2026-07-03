@@ -149,7 +149,7 @@ public class AetherMusicManager {
      */
     @Nullable
     public static <T extends LivingEntity & AetherBossMob<?>> Music getSituationalMusic() {
-        if (!(ClientCompat.screen(minecraft) instanceof WinScreen)) {
+        if (!(ClientAccess.screen(minecraft) instanceof WinScreen)) {
             if (minecraft.player != null) { // Otherwise replace creative music with biome music in the Aether.
                 if (isAetherBossMusicActive()) {
                     T boss = getBossFromFight();

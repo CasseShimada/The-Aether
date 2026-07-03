@@ -1,6 +1,6 @@
 package com.aetherteam.aether.client.event.hooks;
 
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -35,7 +35,7 @@ public final class AbilityTooltipHooks {
     public static void addAbilityTooltips(Player player, ItemStack stack, List<Component> components, Item.TooltipContext context) {
         for (int i = 1; i <= 5; i++) {
             String key = stack.getItem().getDescriptionId() + "." + ABILITY_TOOLTIP_NAMESPACE + ".ability.tooltip." + i;
-            if (ClientCompat.hasTranslation(key)) {
+            if (ClientAccess.hasTranslation(key)) {
                 Component component = Component.translatable(key);
                 TooltipPredicate predicate = PREDICATES.get(stack.getItem().builtInRegistryHolder());
                 if (predicate != null) {

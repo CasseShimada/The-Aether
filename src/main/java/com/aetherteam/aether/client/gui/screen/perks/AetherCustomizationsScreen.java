@@ -1,7 +1,7 @@
 package com.aetherteam.aether.client.gui.screen.perks;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.component.customization.*;
 import com.aetherteam.aether.network.packet.serverbound.ServerDeveloperGlowPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerHaloPacket;
@@ -255,6 +255,6 @@ public class AetherCustomizationsScreen extends Screen {
 
     @Override
     public void onClose() {
-        ClientCompat.setScreen(this.minecraft, this.lastScreen);
+        ClientAccess.setScreen(this.minecraft, this.lastScreen);
     }
 }

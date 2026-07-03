@@ -9,13 +9,13 @@ public class AetherMenuUtil {
      * @return Whether the currently active menu is an Aether menu, as a {@link Boolean}.
      */
     public static boolean isAetherMenu() {
-        return ClientCompat.screen(Minecraft.getInstance()) instanceof AetherTitleScreen;
+        return ClientAccess.screen(Minecraft.getInstance()) instanceof AetherTitleScreen;
     }
 
     /**
      * @return Whether the currently active menu is a Minecraft menu, as a {@link Boolean}.
      */
     public static boolean isMinecraftMenu() {
-        return ClientCompat.screen(Minecraft.getInstance()) instanceof TitleScreen && !isAetherMenu();
+        return ClientAccess.screen(Minecraft.getInstance()) instanceof TitleScreen && !isAetherMenu();
     }
 }

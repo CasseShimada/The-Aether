@@ -1,6 +1,6 @@
 package com.aetherteam.aether.client.gui.component.inventory;
 
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.mixin.mixins.client.accessor.AbstractContainerScreenAccessor;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
@@ -32,7 +32,7 @@ public class AccessoryButton extends ImageButton {
 
                         if (parentScreen instanceof AetherAccessoriesScreen) {
                             InventoryScreen inventory = new InventoryScreen(player);
-                            ClientCompat.setScreen(minecraft, inventory);
+                            ClientAccess.setScreen(minecraft, inventory);
                             player.inventoryMenu.setCarried(stack);
                             PacketDistributor.sendToServer(new OpenInventoryPacket(stack));
                         } else {

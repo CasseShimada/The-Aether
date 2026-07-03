@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.gui.screen.perks;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.component.skins.ChangeSkinButton;
 import com.aetherteam.aether.client.gui.component.skins.PatreonButton;
 import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
@@ -149,21 +149,21 @@ public class MoaSkinsScreen extends Screen {
 
             // Button that opens a screen with a redirect to Patreon.
             this.addRenderableWidget(new PatreonButton(Button.builder(Component.translatable("gui.aether.moa_skins.button.donate"),
-                    (pressed) -> ClientCompat.setScreen(this.minecraft, new ConfirmLinkScreen((callback) -> {
+                    (pressed) -> ClientAccess.setScreen(this.minecraft, new ConfirmLinkScreen((callback) -> {
                         if (callback) {
                             Util.getPlatform().openUri(PATREON_LINK);
                         }
-                        ClientCompat.setScreen(this.minecraft, this);
+                        ClientAccess.setScreen(this.minecraft, this);
                     }, PATREON_LINK, true))
             ).bounds(this.leftPos + (this.imageWidth / 2) - (54 / 2), this.topPos + this.imageHeight - 25, 54, 18)));
 
             // Button that opens a screen with a redirect to a guide for how to connect a UUID.
             this.addRenderableWidget(new PatreonButton(Button.builder(Component.literal("?"),
-                    (pressed) -> ClientCompat.setScreen(this.minecraft, new ConfirmLinkScreen((callback) -> {
+                    (pressed) -> ClientAccess.setScreen(this.minecraft, new ConfirmLinkScreen((callback) -> {
                         if (callback) {
                             Util.getPlatform().openUri(HELP_LINK);
                         }
-                        ClientCompat.setScreen(this.minecraft, this);
+                        ClientAccess.setScreen(this.minecraft, this);
                     }, HELP_LINK, true))
             ).bounds(this.leftPos + (this.imageWidth / 2) + 63, this.topPos + this.imageHeight - 25, 18, 18).tooltip(Tooltip.create(Component.translatable("gui.aether.moa_skins.button.help"))), true));
         }
@@ -603,7 +603,7 @@ public class MoaSkinsScreen extends Screen {
 
     @Override
     public void onClose() {
-        ClientCompat.setScreen(this.minecraft, this.lastScreen);
+        ClientAccess.setScreen(this.minecraft, this.lastScreen);
     }
 
     @Override

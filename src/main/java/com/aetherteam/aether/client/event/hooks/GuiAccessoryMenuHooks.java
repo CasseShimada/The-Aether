@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.client.gui.component.inventory.ScreenOffset;
@@ -49,7 +49,7 @@ public final class GuiAccessoryMenuHooks {
 
     public static void openAccessoryMenu() {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player == null || ClientCompat.overlay(minecraft) != null || ClientCompat.screen(minecraft) != null) {
+        if (minecraft.player == null || ClientAccess.overlay(minecraft) != null || ClientAccess.screen(minecraft) != null) {
             return;
         }
 
@@ -70,7 +70,7 @@ public final class GuiAccessoryMenuHooks {
 
     public static void closeContainerMenu(int key, int action) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(ClientCompat.screen(minecraft) instanceof AbstractContainerScreen<?> abstractContainerScreen)) {
+        if (!(ClientAccess.screen(minecraft) instanceof AbstractContainerScreen<?> abstractContainerScreen)) {
             return;
         }
 

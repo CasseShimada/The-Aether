@@ -1,6 +1,6 @@
 package com.aetherteam.aether.client.renderer.entity.layers;
 
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.client.renderer.entity.model.MoaModel;
 import com.aetherteam.aether.client.renderer.entity.state.MoaRenderState;
@@ -56,7 +56,7 @@ public class MoaHatLayer extends RenderLayer<MoaRenderState, MoaModel> {
         UUID lastRiderUUID = renderState.lastRider;
         UUID moaUUID = renderState.moaUUID;
         Map<UUID, MoaData> userSkinsData = ClientMoaSkinPerkData.INSTANCE.getClientPerkData();
-        if (ClientCompat.screen(Minecraft.getInstance()) instanceof MoaSkinsScreen moaSkinsScreen && moaSkinsScreen.getSelectedSkin() != null && moaSkinsScreen.getPreviewMoa() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID().equals(moaUUID)) {
+        if (ClientAccess.screen(Minecraft.getInstance()) instanceof MoaSkinsScreen moaSkinsScreen && moaSkinsScreen.getSelectedSkin() != null && moaSkinsScreen.getPreviewMoa() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID() != null && moaSkinsScreen.getPreviewMoa().getMoaUUID().equals(moaUUID)) {
             return moaSkinsScreen.getSelectedSkin().getHatLocation();
         } else if (userSkinsData.containsKey(lastRiderUUID) && userSkinsData.get(lastRiderUUID).moaSkin() != null && userSkinsData.get(lastRiderUUID).moaUUID() != null && userSkinsData.get(lastRiderUUID).moaUUID().equals(moaUUID)) {
             return userSkinsData.get(lastRiderUUID).moaSkin().getHatLocation();

@@ -24,7 +24,7 @@ public class TriviaGenerator {
         this.getTrivia().clear();
         for (int i = 0; i < 512; i++) {
             String key = "aether.pro_tips.line." + i;
-            if (ClientCompat.hasTranslation(key)) {
+            if (ClientAccess.hasTranslation(key)) {
                 this.getTrivia().add(Component.translatable(key));
             }
         }

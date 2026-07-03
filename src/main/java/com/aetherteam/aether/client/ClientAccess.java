@@ -7,8 +7,8 @@ import net.minecraft.locale.Language;
 
 import javax.annotation.Nullable;
 
-public final class ClientCompat {
-    private ClientCompat() {
+public final class ClientAccess {
+    private ClientAccess() {
     }
 
     @Nullable

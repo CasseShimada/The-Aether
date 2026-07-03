@@ -6,7 +6,7 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.client.gui.screen.ValkyrieQueenDialogueScreen;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.data.resources.registries.AetherStructures;
 import com.aetherteam.aether.entity.AetherBossMob;
 import com.aetherteam.aether.entity.AetherEntityTypes;
@@ -301,7 +301,7 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     @Environment(EnvType.CLIENT)
     public void openDialogueScreen() {
-        ClientCompat.setScreen(Minecraft.getInstance(), new ValkyrieQueenDialogueScreen(this));
+        ClientAccess.setScreen(Minecraft.getInstance(), new ValkyrieQueenDialogueScreen(this));
     }
 
     /**

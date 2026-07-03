@@ -2,7 +2,7 @@ package com.aetherteam.aether.block.portal;
 
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.client.sound.PortalTriggerSoundInstance;
 import net.minecraft.client.Minecraft;
@@ -18,19 +18,19 @@ import net.minecraft.world.entity.player.Player;
 public class PortalClientUtil {
     public static void handleAetherPortal(Player player, AetherPlayerAttachment attachment) {
         if (player instanceof LocalPlayer localPlayer) {
-            if (!(ClientCompat.screen(Minecraft.getInstance()) instanceof LevelLoadingScreen)) {
+            if (!(ClientAccess.screen(Minecraft.getInstance()) instanceof LevelLoadingScreen)) {
                 attachment.oPortalIntensity = attachment.portalIntensity;
                 float f = 0.0F;
                 if (localPlayer.portalProcess != null && localPlayer.portalProcess.isInsidePortalThisTick() && localPlayer.portalProcess.isSamePortal(AetherBlocks.AETHER_PORTAL)) {
-                    if (ClientCompat.screen(Minecraft.getInstance()) != null
-                        && !ClientCompat.screen(Minecraft.getInstance()).isPauseScreen()
-                        && !(ClientCompat.screen(Minecraft.getInstance()) instanceof DeathScreen)
-                        && !(ClientCompat.screen(Minecraft.getInstance()) instanceof WinScreen)) {
-                        if (ClientCompat.screen(Minecraft.getInstance()) instanceof AbstractContainerScreen) {
+                    if (ClientAccess.screen(Minecraft.getInstance()) != null
+                        && !ClientAccess.screen(Minecraft.getInstance()).isPauseScreen()
+                        && !(ClientAccess.screen(Minecraft.getInstance()) instanceof DeathScreen)
+                        && !(ClientAccess.screen(Minecraft.getInstance()) instanceof WinScreen)) {
+                        if (ClientAccess.screen(Minecraft.getInstance()) instanceof AbstractContainerScreen) {
                             localPlayer.closeContainer();
                         }
 
-                        ClientCompat.setScreen(Minecraft.getInstance(), null);
+                        ClientAccess.setScreen(Minecraft.getInstance(), null);
                     }
 
                     if (attachment.portalIntensity == 0.0F) {

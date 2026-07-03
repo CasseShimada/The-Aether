@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.event.hooks;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.AetherKeys;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.client.Minecraft;
@@ -59,7 +59,7 @@ public final class ClientTickHooks {
     }
 
     private static void handleAccessoryHotkey(Minecraft client) {
-        if (!(ClientCompat.screen(client) instanceof AbstractContainerScreen<?> containerScreen)) {
+        if (!(ClientAccess.screen(client) instanceof AbstractContainerScreen<?> containerScreen)) {
             return;
         }
         if (AetherConfig.CLIENT.disable_accessory_button.get() || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {

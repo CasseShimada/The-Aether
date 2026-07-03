@@ -1,7 +1,7 @@
 package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.client.ClientCompat;
+import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
@@ -76,7 +76,7 @@ public final class GuiPerkScreenHooks {
 
     private static void createSkinsButton(Screen screen, GridLayout.RowHelper rowHelper) {
         ImageButton skinsButton = new ImageButton(0, 0, 20, 20, AetherAccessoriesScreen.SKINS_BUTTON,
-                pressed -> ClientCompat.setScreen(Minecraft.getInstance(), new MoaSkinsScreen(screen)),
+                pressed -> ClientAccess.setScreen(Minecraft.getInstance(), new MoaSkinsScreen(screen)),
                 Component.translatable("gui.aether.accessories.skins_button"));
         skinsButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.skins_button")));
         rowHelper.addChild(skinsButton);
@@ -84,7 +84,7 @@ public final class GuiPerkScreenHooks {
 
     private static void createCustomizationsButton(Screen screen, GridLayout.RowHelper rowHelper) {
         ImageButton customizationButton = new ImageButton(0, 0, 20, 20, AetherAccessoriesScreen.CUSTOMIZATION_BUTTON,
-                pressed -> ClientCompat.setScreen(Minecraft.getInstance(), new AetherCustomizationsScreen(screen)),
+                pressed -> ClientAccess.setScreen(Minecraft.getInstance(), new AetherCustomizationsScreen(screen)),
                 Component.translatable("gui.aether.accessories.customization_button"));
         customizationButton.setTooltip(Tooltip.create(Component.translatable("gui.aether.accessories.customization_button")));
         rowHelper.addChild(customizationButton);
