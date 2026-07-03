@@ -7,11 +7,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.HitResult;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Fabric attachment state storing whether a shot {@link AbstractArrow} was fired from a Phoenix Bow. This attachment works for all arrow types.
@@ -27,8 +24,8 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
-            Map.entry("setPhoenixArrow", Triple.of(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
+    private final Map<String, SyncField> syncFields = Map.ofEntries(
+            Map.entry("setPhoenixArrow", new SyncField(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
     );
 
     public static final Codec<PhoenixArrowAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -46,7 +43,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+    public Map<String, SyncField> getSyncFields() {
         return this.syncFields;
     }
 

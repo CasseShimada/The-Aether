@@ -10,11 +10,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Fabric attachment state for the Aether's custom day/night cycle.
@@ -29,9 +26,9 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
-            Map.entry("setEternalDay", Triple.of(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
-            Map.entry("setShouldWait", Triple.of(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
+    private final Map<String, SyncField> syncFields = Map.ofEntries(
+            Map.entry("setEternalDay", new SyncField(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
+            Map.entry("setShouldWait", new SyncField(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
     );
 
     public static final Codec<AetherTimeAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -51,7 +48,7 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+    public Map<String, SyncField> getSyncFields() {
         return this.syncFields;
     }
 

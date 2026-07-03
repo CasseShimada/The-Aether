@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -14,23 +13,23 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface AttachmentSyncable {
-    Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields();
+    Map<String, SyncField> getSyncFields();
 
     SyncPacket getSyncPacket(int entityID, String key, Type type, Object value);
 
     default void forceSync(int entityID, Direction direction) {
-        for (Map.Entry<String, Triple<Type, Consumer<Object>, Supplier<Object>>> entry : this.getSyncFields().entrySet()) {
-            Triple<Type, Consumer<Object>, Supplier<Object>> value = entry.getValue();
-            this.setSynced(entityID, direction, entry.getKey(), value.getLeft(), value.getRight().get());
+        for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
+            SyncField value = entry.getValue();
+            this.setSynced(entityID, direction, entry.getKey(), value.type(), value.getter().get());
         }
     }
 
     default void setSynced(int entityID, Direction direction, String key, @Nullable Object value, Object... context) {
-        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSyncFields().get(key);
+        SyncField data = this.getSyncFields().get(key);
         if (data == null) {
             return;
         }
-        this.setSynced(entityID, direction, key, data.getLeft(), value, context);
+        this.setSynced(entityID, direction, key, data.type(), value, context);
     }
 
     default void setSynced(int entityID, Direction direction, String key, Type type, @Nullable Object value, Object... context) {
@@ -38,11 +37,11 @@ public interface AttachmentSyncable {
     }
 
     default void executeSynced(String key, Type type, @Nullable Object value) {
-        Triple<Type, Consumer<Object>, Supplier<Object>> data = this.getSyncFields().get(key);
-        if (data == null || data.getLeft() != type) {
+        SyncField data = this.getSyncFields().get(key);
+        if (data == null || data.type() != type) {
             return;
         }
-        data.getMiddle().accept(value);
+        data.setter().accept(value);
     }
 
     private void sendPacket(SyncPacket packet, Direction direction, Object... context) {
@@ -83,6 +82,8 @@ public interface AttachmentSyncable {
         PLAYER,
         DIMENSION
     }
+
+    record SyncField(Type type, Consumer<Object> setter, Supplier<Object> getter) { }
 
     enum Type {
         BOOLEAN,

@@ -47,12 +47,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
 import com.aetherteam.aether.network.PacketDistributor;
-import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Fabric attachment state for handling {@link Player} behavior for the Aether.
@@ -124,21 +121,21 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     /**
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
-    private final Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> syncFields = Map.ofEntries(
-        Map.entry("setHitting", Triple.of(Type.BOOLEAN, (object) -> this.setHitting((boolean) object), this::isHitting)),
-        Map.entry("setMoving", Triple.of(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
-        Map.entry("setJumping", Triple.of(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
-        Map.entry("setGravititeJumpActive", Triple.of(Type.BOOLEAN, (object) -> this.setGravititeJumpActive((boolean) object), this::isGravititeJumpActive)),
-        Map.entry("setGoldenDartCount", Triple.of(Type.INT, (object) -> this.setGoldenDartCount((int) object), this::getGoldenDartCount)),
-        Map.entry("setPoisonDartCount", Triple.of(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
-        Map.entry("setEnchantedDartCount", Triple.of(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),
-        Map.entry("setRemedyStartDuration", Triple.of(Type.INT, (object) -> this.setRemedyStartDuration((int) object), this::getRemedyStartDuration)),
-        Map.entry("setAttackedWithInvisibility", Triple.of(Type.BOOLEAN, (object) -> this.setAttackedWithInvisibility((boolean) object), this::attackedWithInvisibility)),
-        Map.entry("setInvisibilityEnabled", Triple.of(Type.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
-        Map.entry("setWearingInvisibilityCloak", Triple.of(Type.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
-        Map.entry("setLifeShardCount", Triple.of(Type.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
-        Map.entry("setLastRiddenMoa", Triple.of(Type.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
-        Map.entry("setShouldSyncBetweenClients", Triple.of(Type.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
+    private final Map<String, SyncField> syncFields = Map.ofEntries(
+        Map.entry("setHitting", new SyncField(Type.BOOLEAN, (object) -> this.setHitting((boolean) object), this::isHitting)),
+        Map.entry("setMoving", new SyncField(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
+        Map.entry("setJumping", new SyncField(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
+        Map.entry("setGravititeJumpActive", new SyncField(Type.BOOLEAN, (object) -> this.setGravititeJumpActive((boolean) object), this::isGravititeJumpActive)),
+        Map.entry("setGoldenDartCount", new SyncField(Type.INT, (object) -> this.setGoldenDartCount((int) object), this::getGoldenDartCount)),
+        Map.entry("setPoisonDartCount", new SyncField(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
+        Map.entry("setEnchantedDartCount", new SyncField(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),
+        Map.entry("setRemedyStartDuration", new SyncField(Type.INT, (object) -> this.setRemedyStartDuration((int) object), this::getRemedyStartDuration)),
+        Map.entry("setAttackedWithInvisibility", new SyncField(Type.BOOLEAN, (object) -> this.setAttackedWithInvisibility((boolean) object), this::attackedWithInvisibility)),
+        Map.entry("setInvisibilityEnabled", new SyncField(Type.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
+        Map.entry("setWearingInvisibilityCloak", new SyncField(Type.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
+        Map.entry("setLifeShardCount", new SyncField(Type.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
+        Map.entry("setLastRiddenMoa", new SyncField(Type.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
+        Map.entry("setShouldSyncBetweenClients", new SyncField(Type.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
     );
     private boolean shouldSyncAfterJoin;
     private boolean shouldSyncBetweenClients;
@@ -173,7 +170,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         this.loginsUntilPatreonMessage = loginUntilMessage;
     }
 
-    public Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSyncFields() {
+    public Map<String, SyncField> getSyncFields() {
         return this.syncFields;
     }
 
