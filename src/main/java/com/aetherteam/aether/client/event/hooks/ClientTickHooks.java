@@ -5,7 +5,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.ClientCompat;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.entity.player.Input;
@@ -39,22 +39,22 @@ public final class ClientTickHooks {
 
         boolean isJumping = keys.jump();
         if (isJumping != aetherPlayer.isJumping()) {
-            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setJumping", isJumping);
+            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setJumping", isJumping);
         }
 
         boolean isMoving = isJumping || keys.forward() || keys.backward() || keys.left() || keys.right() || player.isFallFlying();
         if (isMoving != aetherPlayer.isMoving()) {
-            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setMoving", isMoving);
+            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setMoving", isMoving);
         }
 
         boolean isHitting = client.options.keyAttack.isDown();
         if (isHitting != aetherPlayer.isHitting()) {
-            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setHitting", isHitting);
+            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setHitting", isHitting);
         }
 
         boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
         if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
-            aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
+            aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
         }
     }
 

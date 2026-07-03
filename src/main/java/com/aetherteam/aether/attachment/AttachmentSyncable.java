@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public interface INBTSynchable {
+public interface AttachmentSyncable {
     Map<String, Triple<Type, Consumer<Object>, Supplier<Object>>> getSynchableFunctions();
 
     SyncPacket getSyncPacket(int entityID, String key, Type type, Object value);

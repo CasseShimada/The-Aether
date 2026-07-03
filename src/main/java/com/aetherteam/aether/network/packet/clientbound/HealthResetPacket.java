@@ -2,7 +2,7 @@ package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,7 +35,7 @@ public record HealthResetPacket(int entityID, int value) implements CustomPacket
         Player contextPlayer = context.player();
         if (contextPlayer != null && contextPlayer.level().getEntity(payload.entityID()) instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-            data.setSynched(player.getId(), INBTSynchable.Direction.SERVER, "setLifeShardCount", payload.value());
+            data.setSynched(player.getId(), AttachmentSyncable.Direction.SERVER, "setLifeShardCount", payload.value());
             AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
             if (attribute != null) {
                 attribute.removeModifier(data.getLifeShardHealthAttributeModifier().id());

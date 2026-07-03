@@ -11,5 +11,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved client packet effects for custom boss bars and the Sun Altar screen into the Fabric client networking entrypoint.
 - Moved block-state recipe support classes into the Aether recipe namespace.
 - Replaced block-state recipe mcfunction reflection with direct Minecraft function manager calls.
+- Renamed the attachment sync interface away from its old NBT-oriented name.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

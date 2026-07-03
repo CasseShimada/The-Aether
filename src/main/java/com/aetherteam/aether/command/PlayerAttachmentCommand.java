@@ -2,7 +2,7 @@ package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.network.packet.clientbound.HealthResetPacket;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -54,7 +54,7 @@ public class PlayerAttachmentCommand {
             ServerPlayer player = playerList.getPlayer(gameProfile.id());
             if (player != null) {
                 var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                data.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setLifeShardCount", value);
+                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setLifeShardCount", value);
                 AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
                 if (attribute != null) {
                     attribute.removeModifier(data.getLifeShardHealthAttributeModifier().id());

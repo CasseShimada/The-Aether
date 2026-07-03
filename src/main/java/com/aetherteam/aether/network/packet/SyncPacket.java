@@ -1,6 +1,6 @@
 package com.aetherteam.aether.network.packet;
 
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -9,18 +9,18 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public abstract class SyncPacket<T extends INBTSynchable> implements CustomPacketPayload {
+public abstract class SyncPacket<T extends AttachmentSyncable> implements CustomPacketPayload {
     private final String key;
-    private final INBTSynchable.Type valueType;
+    private final AttachmentSyncable.Type valueType;
     private final Object value;
 
-    protected SyncPacket(String key, INBTSynchable.Type valueType, Object value) {
+    protected SyncPacket(String key, AttachmentSyncable.Type valueType, Object value) {
         this.key = key;
         this.valueType = valueType;
         this.value = value;
     }
 
-    protected SyncPacket(Triple<String, INBTSynchable.Type, Object> values) {
+    protected SyncPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
         this(values.getLeft(), values.getMiddle(), values.getRight());
     }
 
@@ -30,7 +30,7 @@ public abstract class SyncPacket<T extends INBTSynchable> implements CustomPacke
         return this.key;
     }
 
-    public INBTSynchable.Type valueType() {
+    public AttachmentSyncable.Type valueType() {
         return this.valueType;
     }
 
@@ -48,14 +48,14 @@ public abstract class SyncPacket<T extends INBTSynchable> implements CustomPacke
         attachment.executeSynched(this.key, this.valueType, this.value);
     }
 
-    protected static Triple<String, INBTSynchable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
+    protected static Triple<String, AttachmentSyncable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
         String key = buf.readUtf();
-        INBTSynchable.Type type = buf.readEnum(INBTSynchable.Type.class);
+        AttachmentSyncable.Type type = buf.readEnum(AttachmentSyncable.Type.class);
         Object value = readValue(buf, type);
         return Triple.of(key, type, value);
     }
 
-    private static void writeValue(RegistryFriendlyByteBuf buf, INBTSynchable.Type type, Object value) {
+    private static void writeValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.Type type, Object value) {
         switch (type) {
             case BOOLEAN -> buf.writeBoolean((Boolean) value);
             case INT -> buf.writeInt((Integer) value);
@@ -83,7 +83,7 @@ public abstract class SyncPacket<T extends INBTSynchable> implements CustomPacke
         }
     }
 
-    private static Object readValue(RegistryFriendlyByteBuf buf, INBTSynchable.Type type) {
+    private static Object readValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.Type type) {
         return switch (type) {
             case BOOLEAN -> buf.readBoolean();
             case INT -> buf.readInt();

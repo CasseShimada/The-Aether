@@ -3,7 +3,7 @@ package com.aetherteam.aether.network.packet;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.PhoenixArrowAttachment;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -24,11 +24,11 @@ public class PhoenixArrowSyncPacket extends SyncEntityPacket<PhoenixArrowAttachm
         PhoenixArrowSyncPacket::write,
         PhoenixArrowSyncPacket::decode);
 
-    public PhoenixArrowSyncPacket(Quartet<Integer, String, INBTSynchable.Type, Object> values) {
+    public PhoenixArrowSyncPacket(Quartet<Integer, String, AttachmentSyncable.Type, Object> values) {
         super(values);
     }
 
-    public PhoenixArrowSyncPacket(int playerID, String key, INBTSynchable.Type type, Object value) {
+    public PhoenixArrowSyncPacket(int playerID, String key, AttachmentSyncable.Type type, Object value) {
         super(playerID, key, type, value);
     }
 

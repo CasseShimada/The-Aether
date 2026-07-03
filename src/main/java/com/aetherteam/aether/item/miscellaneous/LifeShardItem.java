@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.miscellaneous;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +32,7 @@ public class LifeShardItem extends Item implements ConsumableItem {
                 player.swing(hand);
                 if (!level.isClientSide()) {
                     this.consume(this, heldStack, player);
-                    aetherPlayer.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setLifeShardCount", aetherPlayer.getLifeShardCount() + 1);
+                    aetherPlayer.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setLifeShardCount", aetherPlayer.getLifeShardCount() + 1);
                     return InteractionResult.CONSUME;
                 } else {
                     return InteractionResult.SUCCESS;

@@ -9,7 +9,7 @@ import com.aetherteam.aether.entity.projectile.PoisonNeedle;
 import com.aetherteam.aether.entity.projectile.dart.EnchantedDart;
 import com.aetherteam.aether.entity.projectile.dart.GoldenDart;
 import com.aetherteam.aether.entity.projectile.dart.PoisonDart;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -46,11 +46,11 @@ public final class WeaponAbilityHooks {
             Entity sourceEntity = source.getDirectEntity();
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (sourceEntity instanceof GoldenDart) {
-                data.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setGoldenDartCount", data.getGoldenDartCount() + 1);
+                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", data.getGoldenDartCount() + 1);
             } else if (sourceEntity instanceof PoisonDart || sourceEntity instanceof PoisonNeedle) {
-                data.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setPoisonDartCount", data.getPoisonDartCount() + 1);
+                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", data.getPoisonDartCount() + 1);
             } else if (sourceEntity instanceof EnchantedDart) {
-                data.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setEnchantedDartCount", data.getEnchantedDartCount() + 1);
+                data.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", data.getEnchantedDartCount() + 1);
             }
         }
     }

@@ -3,7 +3,7 @@ package com.aetherteam.aether.network.packet;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -24,11 +24,11 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
         AetherTimeSyncPacket::write,
         AetherTimeSyncPacket::decode);
 
-    public AetherTimeSyncPacket(Triple<String, INBTSynchable.Type, Object> values) {
+    public AetherTimeSyncPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
         super(values);
     }
 
-    public AetherTimeSyncPacket(String key, INBTSynchable.Type type, Object value) {
+    public AetherTimeSyncPacket(String key, AttachmentSyncable.Type type, Object value) {
         super(key, type, value);
     }
 

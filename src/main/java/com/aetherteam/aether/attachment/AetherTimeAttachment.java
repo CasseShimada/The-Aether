@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * Fabric attachment state for the Aether's custom day/night cycle.
  * This attachment only has an effect on levels where the dimension type's effects are set to the Aether's.
  */
-public class AetherTimeAttachment implements INBTSynchable {
+public class AetherTimeAttachment implements AttachmentSyncable {
     private static int ticksPerDayMultiplier = -1;
     private long dayTime = -1;
     private boolean isEternalDay = true;

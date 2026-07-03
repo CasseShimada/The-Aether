@@ -57,7 +57,7 @@ import java.util.function.Supplier;
 /**
  * Fabric attachment state for handling {@link Player} behavior for the Aether.
  */
-public class AetherPlayerAttachment implements INBTSynchable {
+public class AetherPlayerAttachment implements AttachmentSyncable {
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
     private boolean canGetPortal = true;
@@ -245,7 +245,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
 
     private void syncAfterJoin(Player player) {
         if (this.shouldSyncAfterJoin) {
-            this.forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
+            this.forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
             this.shouldSyncAfterJoin = false;
         }
     }
@@ -258,7 +258,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
                     PlayerList playerList = server.getPlayerList();
                     for (ServerPlayer serverPlayer : playerList.getPlayers()) {
                         if (!serverPlayer.getUUID().equals(player.getUUID())) {
-                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), INBTSynchable.Direction.CLIENT);
+                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
                         }
                     }
                 }
@@ -350,7 +350,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
 
                 --this.removeGoldenDartTime;
                 if (this.removeGoldenDartTime <= 0) {
-                    this.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setGoldenDartCount", this.getGoldenDartCount() - 1);
+                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", this.getGoldenDartCount() - 1);
                 }
             }
             if (this.getPoisonDartCount() > 0) {
@@ -360,7 +360,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
 
                 --this.removePoisonDartTime;
                 if (this.removePoisonDartTime <= 0) {
-                    this.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setPoisonDartCount", this.getPoisonDartCount() - 1);
+                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", this.getPoisonDartCount() - 1);
                 }
             }
             if (this.getEnchantedDartCount() > 0) {
@@ -370,7 +370,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
 
                 --this.removeEnchantedDartTime;
                 if (this.removeEnchantedDartTime <= 0) {
-                    this.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setEnchantedDartCount", this.getEnchantedDartCount() - 1);
+                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", this.getEnchantedDartCount() - 1);
                 }
             }
         }
@@ -420,7 +420,7 @@ public class AetherPlayerAttachment implements INBTSynchable {
             if (this.attackedWithInvisibility()) {
                 --this.invisibilityAttackCooldown;
                 if (this.invisibilityAttackCooldown <= 0) {
-                    this.setSynched(player.getId(), INBTSynchable.Direction.CLIENT, "setAttackedWithInvisibility", false);
+                    this.setSynched(player.getId(), AttachmentSyncable.Direction.CLIENT, "setAttackedWithInvisibility", false);
                 }
             } else {
                 this.invisibilityAttackCooldown = AetherConfig.SERVER.invisibility_visibility_time.get();

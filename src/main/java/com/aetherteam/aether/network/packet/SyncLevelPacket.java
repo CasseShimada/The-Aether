@@ -1,26 +1,26 @@
 package com.aetherteam.aether.network.packet;
 
-import com.aetherteam.aether.attachment.INBTSynchable;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 
-public abstract class SyncLevelPacket<T extends INBTSynchable> extends SyncPacket<T> {
-    protected SyncLevelPacket(String key, INBTSynchable.Type valueType, Object value) {
+public abstract class SyncLevelPacket<T extends AttachmentSyncable> extends SyncPacket<T> {
+    protected SyncLevelPacket(String key, AttachmentSyncable.Type valueType, Object value) {
         super(key, valueType, value);
     }
 
-    protected SyncLevelPacket(Triple<String, INBTSynchable.Type, Object> values) {
+    protected SyncLevelPacket(Triple<String, AttachmentSyncable.Type, Object> values) {
         super(values);
     }
 
-    public static Triple<String, INBTSynchable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
+    public static Triple<String, AttachmentSyncable.Type, Object> decodeValues(RegistryFriendlyByteBuf buf) {
         return SyncPacket.decodeValues(buf);
     }
 
-    public static <T extends INBTSynchable> void execute(SyncLevelPacket<T> payload, @Nullable Player player) {
+    public static <T extends AttachmentSyncable> void execute(SyncLevelPacket<T> payload, @Nullable Player player) {
         if (player == null) {
             return;
         }
