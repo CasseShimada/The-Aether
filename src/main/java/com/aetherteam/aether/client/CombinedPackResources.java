@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 /**
- * Used to create built-in resource packs by merging two separate resource folders. Used for the legacy resource packs.
+ * Used to create built-in resource packs by merging two separate resource folders. Used for the classic resource packs.
  */
 public class CombinedPackResources extends AbstractPackResources {
 

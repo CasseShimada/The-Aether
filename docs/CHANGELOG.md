@@ -21,5 +21,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved the current accessory effect bridge out of the compatibility package.
 - Updated the accessory core audit to reflect the current Fabric attachment and compatibility boundaries.
 - Renamed the client compatibility helper to describe its direct client access role.
+- Clarified the combined resource pack helper comment for current classic resource packs.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
