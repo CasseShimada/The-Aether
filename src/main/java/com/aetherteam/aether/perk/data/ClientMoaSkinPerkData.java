@@ -5,8 +5,6 @@ import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.aether.perk.types.MoaSkins;
-import com.aetherteam.nitrogen.api.users.User;
-import com.aetherteam.nitrogen.api.users.UserData;
 import net.minecraft.world.entity.player.Player;
 import com.aetherteam.aether.network.PacketDistributor;
 
@@ -16,7 +14,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ClientMoaSkinPerkData extends ClientPerkData<MoaData> {
-    public static final ClientMoaSkinPerkData INSTANCE = new com.aetherteam.aether.perk.data.ClientMoaSkinPerkData();
+    public static final ClientMoaSkinPerkData INSTANCE = new ClientMoaSkinPerkData();
     private static final Map<UUID, MoaData> CLIENT_USER_SKIN_DATA = new HashMap<>();
 
     /**

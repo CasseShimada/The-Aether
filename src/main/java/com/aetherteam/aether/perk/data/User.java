@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.api.users;
+package com.aetherteam.aether.perk.data;
 
 import net.minecraft.network.chat.Component;
 
@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Minimal local replacement of Nitrogen's user model used by Aether perk logic.
+ * Local user model used by Aether perk logic.
  */
 public final class User {
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

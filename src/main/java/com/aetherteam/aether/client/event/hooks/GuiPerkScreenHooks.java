@@ -7,8 +7,8 @@ import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen
 import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
 import com.aetherteam.aether.perk.PerkUtil;
-import com.aetherteam.nitrogen.api.users.User;
-import com.aetherteam.nitrogen.api.users.UserData;
+import com.aetherteam.aether.perk.data.User;
+import com.aetherteam.aether.perk.data.UserData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;

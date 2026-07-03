@@ -8,8 +8,6 @@ import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.aether.perk.types.MoaData;
-import com.aetherteam.nitrogen.api.users.User;
-import com.aetherteam.nitrogen.api.users.UserData;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;

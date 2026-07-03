@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.api.users;
+package com.aetherteam.aether.perk.data;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Minimal local storage for Nitrogen user data used by Aether perk checks.
+ * Local user data storage used by Aether perk checks.
  */
 public final class UserData {
     private UserData() {

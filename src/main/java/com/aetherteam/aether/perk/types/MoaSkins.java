@@ -4,7 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
 import com.aetherteam.aether.perk.PerkUtil;
-import com.aetherteam.nitrogen.api.users.User;
+import com.aetherteam.aether.perk.data.User;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -492,7 +492,7 @@ public class MoaSkins {
         }
 
         /**
-         * @return The Patreon {@link com.aetherteam.nitrogen.api.users.User.Tier} and lifetime {@link Boolean} {@link Info} of the {@link MoaSkin}.
+         * @return The Patreon {@link com.aetherteam.aether.perk.data.User.Tier} and lifetime {@link Boolean} {@link Info} of the {@link MoaSkin}.
          */
         public Info getInfo() {
             return this.info;
@@ -596,7 +596,7 @@ public class MoaSkins {
         }
 
         /**
-         * Stores the Patreon {@link com.aetherteam.nitrogen.api.users.User.Tier} and a {@link Boolean} for whether the skin is lifetime or not.
+         * Stores the Patreon {@link com.aetherteam.aether.perk.data.User.Tier} and a {@link Boolean} for whether the skin is lifetime or not.
          */
         public record Info(User.Tier tier, boolean lifetime) { }
     }

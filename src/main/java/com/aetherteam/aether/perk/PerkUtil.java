@@ -1,6 +1,6 @@
 package com.aetherteam.aether.perk;
 
-import com.aetherteam.nitrogen.api.users.User;
+import com.aetherteam.aether.perk.data.User;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;

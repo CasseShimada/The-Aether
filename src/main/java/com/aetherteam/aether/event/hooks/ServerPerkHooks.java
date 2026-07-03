@@ -1,7 +1,7 @@
 package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.perk.data.ServerPerkData;
-import com.aetherteam.nitrogen.api.users.UserData;
+import com.aetherteam.aether.perk.data.UserData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
