@@ -2,7 +2,7 @@ package com.aetherteam.aether.integration.jei.categories.fuel;
 
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.data.resources.registries.AetherDataMaps;
-import com.aetherteam.nitrogen.integration.jei.categories.fuel.FuelRecipe;
+import com.aetherteam.aether.integration.jei.categories.fuel.FuelRecipe;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;

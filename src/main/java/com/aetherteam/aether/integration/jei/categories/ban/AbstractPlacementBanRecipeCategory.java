@@ -2,7 +2,7 @@ package com.aetherteam.aether.integration.jei.categories.ban;
 
 import com.aetherteam.aether.integration.jei.categories.BiomeTooltip;
 import com.aetherteam.aether.recipe.recipes.ban.AbstractPlacementBanRecipe;
-import com.aetherteam.nitrogen.integration.jei.categories.AbstractRecipeCategory;
+import com.aetherteam.aether.integration.jei.categories.AbstractRecipeCategory;
 import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
 import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.aetherteam.nitrogen.recipe.BlockStateRecipeUtil;

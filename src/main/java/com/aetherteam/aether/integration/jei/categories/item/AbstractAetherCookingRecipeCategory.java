@@ -2,7 +2,7 @@ package com.aetherteam.aether.integration.jei.categories.item;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.recipe.recipes.item.AbstractAetherCookingRecipe;
-import com.aetherteam.nitrogen.integration.jei.categories.AbstractRecipeCategory;
+import com.aetherteam.aether.integration.jei.categories.AbstractRecipeCategory;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.recipe.types.IRecipeType;

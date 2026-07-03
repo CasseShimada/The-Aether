@@ -1,11 +1,11 @@
-package com.aetherteam.nitrogen.integration.jei.categories;
+package com.aetherteam.aether.integration.jei.categories;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 

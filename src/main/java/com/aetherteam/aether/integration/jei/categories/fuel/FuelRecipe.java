@@ -1,4 +1,4 @@
-package com.aetherteam.nitrogen.integration.jei.categories.fuel;
+package com.aetherteam.aether.integration.jei.categories.fuel;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;

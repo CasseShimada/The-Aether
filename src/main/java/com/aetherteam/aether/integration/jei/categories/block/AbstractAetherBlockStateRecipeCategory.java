@@ -1,6 +1,6 @@
 package com.aetherteam.aether.integration.jei.categories.block;
 
-import com.aetherteam.nitrogen.integration.jei.categories.block.AbstractBlockStateRecipeCategory;
+import com.aetherteam.aether.integration.jei.categories.block.AbstractBlockStateRecipeCategory;
 import com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IPlatformFluidHelper;

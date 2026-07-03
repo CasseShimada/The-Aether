@@ -2,8 +2,8 @@ package com.aetherteam.aether.integration.jei.categories.fuel;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.nitrogen.integration.jei.categories.fuel.AbstractFuelCategory;
-import com.aetherteam.nitrogen.integration.jei.categories.fuel.FuelRecipe;
+import com.aetherteam.aether.integration.jei.categories.fuel.AbstractFuelCategory;
+import com.aetherteam.aether.integration.jei.categories.fuel.FuelRecipe;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;

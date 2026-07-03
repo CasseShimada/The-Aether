@@ -1,6 +1,6 @@
-package com.aetherteam.nitrogen.integration.jei.categories.block;
+package com.aetherteam.aether.integration.jei.categories.block;
 
-import com.aetherteam.nitrogen.integration.jei.categories.AbstractRecipeCategory;
+import com.aetherteam.aether.integration.jei.categories.AbstractRecipeCategory;
 import com.aetherteam.nitrogen.recipe.BlockPropertyPair;
 import com.aetherteam.nitrogen.recipe.BlockStateIngredient;
 import com.aetherteam.nitrogen.recipe.recipes.AbstractBlockStateRecipe;
