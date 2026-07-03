@@ -22,5 +22,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Updated the accessory core audit to reflect the current Fabric attachment and compatibility boundaries.
 - Renamed the client compatibility helper to describe its direct client access role.
 - Clarified the combined resource pack helper comment for current classic resource packs.
+- Renamed the client service helper to describe its current client runtime access role.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

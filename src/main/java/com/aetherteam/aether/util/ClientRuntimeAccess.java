@@ -8,14 +8,14 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Common-side access to behavior supplied by the Fabric client entrypoint.
+ * Common-side access to current client runtime behavior supplied by the Fabric client entrypoint.
  */
-public final class ClientServices {
+public final class ClientRuntimeAccess {
     private static Consumer<CustomPacketPayload> serverPacketSender = payload -> {
     };
     private static Predicate<Player> localPlayerPredicate = player -> false;
 
-    private ClientServices() {
+    private ClientRuntimeAccess() {
     }
 
     public static void registerServerPacketSender(Consumer<CustomPacketPayload> sender) {

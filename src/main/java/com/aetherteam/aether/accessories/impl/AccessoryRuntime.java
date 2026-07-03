@@ -3,7 +3,7 @@ package com.aetherteam.aether.accessories.impl;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.network.PacketDistributor;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
-import com.aetherteam.aether.util.ClientServices;
+import com.aetherteam.aether.util.ClientRuntimeAccess;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -90,6 +90,6 @@ public final class AccessoryRuntime {
         if (!(entity instanceof Player player)) {
             return false;
         }
-        return ClientServices.isLocalPlayer(player);
+        return ClientRuntimeAccess.isLocalPlayer(player);
     }
 }
