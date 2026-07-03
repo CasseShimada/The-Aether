@@ -1,6 +1,5 @@
 package com.aetherteam.aether.recipe.blockstate;
 
-import com.aetherteam.aether.Aether;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -12,6 +11,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.ServerFunctionManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
@@ -73,19 +73,14 @@ public final class BlockStateRecipeUtil {
     }
 
     public static void executeFunction(LevelAccessor levelAccessor, BlockPos pos, Optional<CacheableFunction> function) {
-        if (function.isEmpty() || !(levelAccessor instanceof net.minecraft.server.level.ServerLevel serverLevel)) {
+        if (function.isEmpty() || !(levelAccessor instanceof ServerLevel serverLevel)) {
             return;
         }
         if (serverLevel.getServer() == null) {
             return;
         }
-        Object functionManager = serverLevel.getServer().getFunctions();
-        Optional<?> resolvedFunction = resolveFunction(function.get(), functionManager);
-        if (resolvedFunction.isEmpty()) {
-            return;
-        }
-        Object source = serverLevel.getServer().createCommandSourceStack();
-        invokeExecute(functionManager, resolvedFunction.get(), source, pos);
+        ServerFunctionManager functionManager = serverLevel.getServer().getFunctions();
+        function.get().get(functionManager).ifPresent(commandFunction -> functionManager.execute(commandFunction, serverLevel.getServer().createCommandSourceStack()));
     }
 
     private static Either<ResourceKey<Biome>, TagKey<Biome>> fromNetwork(RegistryFriendlyByteBuf buffer) {
@@ -123,36 +118,6 @@ public final class BlockStateRecipeUtil {
             return "#" + biomeKey.right().get().location();
         }
         return biomeKey.left().orElseThrow().identifier().toString();
-    }
-
-    private static Optional<?> resolveFunction(CacheableFunction cacheableFunction, Object functionManager) {
-        try {
-            for (Method method : cacheableFunction.getClass().getMethods()) {
-                if ("get".equals(method.getName()) && method.getParameterCount() == 1 && method.getParameterTypes()[0].isAssignableFrom(functionManager.getClass())) {
-                    Object result = method.invoke(cacheableFunction, functionManager);
-                    if (result instanceof Optional<?> optional) {
-                        return optional;
-                    }
-                }
-            }
-        } catch (ReflectiveOperationException exception) {
-            Aether.LOGGER.warn("Failed to resolve cacheable function for block state recipe", exception);
-        }
-        return Optional.empty();
-    }
-
-    private static void invokeExecute(Object functionManager, Object commandFunction, Object source, BlockPos pos) {
-        try {
-            for (Method method : functionManager.getClass().getMethods()) {
-                if ("execute".equals(method.getName()) && method.getParameterCount() == 2 && method.getParameterTypes()[0].isInstance(commandFunction) && method.getParameterTypes()[1].isInstance(source)) {
-                    method.invoke(functionManager, commandFunction, source);
-                    return;
-                }
-            }
-            Aether.LOGGER.warn("Could not invoke server function at {} because no compatible execute method was found", pos);
-        } catch (ReflectiveOperationException exception) {
-            Aether.LOGGER.warn("Failed to execute server function at {}", pos, exception);
-        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

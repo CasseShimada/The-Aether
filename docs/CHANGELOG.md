@@ -10,5 +10,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Replaced reflective registry bootstrap paths with explicit registration bootstrap calls where safe.
 - Moved client packet effects for custom boss bars and the Sun Altar screen into the Fabric client networking entrypoint.
 - Moved block-state recipe support classes into the Aether recipe namespace.
+- Replaced block-state recipe mcfunction reflection with direct Minecraft function manager calls.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
