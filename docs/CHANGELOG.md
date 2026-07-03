@@ -15,5 +15,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Normalized attachment sync API method names to the current `Synced` spelling.
 - Replaced attachment sync field triples with explicit sync field records.
 - Replaced attachment sync packet value tuples with explicit sync value records.
+- Moved accessory slot resolution out of the compatibility package while keeping current tag-based slot behavior unchanged.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

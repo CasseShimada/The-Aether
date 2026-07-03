@@ -5,7 +5,7 @@ import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
-import com.aetherteam.aether.accessories.compat.AccessorySlotResolver;
+import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
 import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;

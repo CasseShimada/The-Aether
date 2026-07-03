@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common.compat.twilight;
 
-import com.aetherteam.aether.accessories.compat.AccessorySlotResolver;
+import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

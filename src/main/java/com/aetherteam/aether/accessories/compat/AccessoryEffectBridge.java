@@ -4,6 +4,7 @@ import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
 import com.aetherteam.aether.accessories.api.events.extra.PiglinNeutralInducer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
+import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.core.component.DataComponentType;

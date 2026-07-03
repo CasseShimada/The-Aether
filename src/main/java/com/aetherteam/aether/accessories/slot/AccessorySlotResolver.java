@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.compat;
+package com.aetherteam.aether.accessories.slot;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;

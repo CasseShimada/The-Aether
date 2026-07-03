@@ -3,7 +3,7 @@ package com.aetherteam.aether.inventory;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.compat.AccessorySlotResolver;
+import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.accessories.api.slot.SlotBasedPredicate;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
