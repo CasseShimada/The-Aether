@@ -5,9 +5,9 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.nitrogen.ConstantsUtil;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
+import com.aetherteam.aether.util.EntityMotionUtil;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Input;
@@ -35,7 +35,7 @@ public interface ShieldOfRepulsionAccessory {
                         Vec3 motion = impactedLiving.getDeltaMovement();
                         if (impactedLiving instanceof Player player) {
                             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                            if (!data.isMoving() || (data.isMoving() && motion.x() == 0.0 && (motion.y() == ConstantsUtil.DEFAULT_DELTA_MOVEMENT_Y || motion.y() == 0.0) && motion.z() == 0.0)) {
+                            if (!data.isMoving() || EntityMotionUtil.isStationary(motion)) {
                                 if (player.level().isClientSide()) { // Values used by the Shield of Repulsion screen overlay vignette.
                                     data.setProjectileImpactedMaximum(150);
                                     data.setProjectileImpactedTimer(150);
@@ -43,7 +43,7 @@ public interface ShieldOfRepulsionAccessory {
                                 return handleDeflection(projectile, player, slotResult);
                             }
                         } else {
-                            if (motion.x() == 0.0 && (motion.y() == ConstantsUtil.DEFAULT_DELTA_MOVEMENT_Y || motion.y() == 0.0) && motion.z() == 0.0) {
+                            if (EntityMotionUtil.isStationary(motion)) {
                                 return handleDeflection(projectile, impactedLiving, slotResult);
                             }
                         }

@@ -5,7 +5,7 @@ import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
 import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
-import com.aetherteam.nitrogen.ConstantsUtil;
+import com.aetherteam.aether.util.EntityMotionUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.player.PlayerModel;
@@ -19,7 +19,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 
 public class PlayerShieldOfRepulsionLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     private final PlayerModel shieldModel;
@@ -63,14 +62,9 @@ public class PlayerShieldOfRepulsionLayer extends RenderLayer<AvatarRenderState,
     }
 
     private boolean isShieldActive(LivingEntity livingEntity) {
-        Vec3 motion = livingEntity.getDeltaMovement();
         if (livingEntity instanceof Player player) {
-            return !player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isMoving() || isStationary(motion);
+            return !player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isMoving() || EntityMotionUtil.isStationary(livingEntity.getDeltaMovement());
         }
-        return isStationary(motion);
-    }
-
-    private static boolean isStationary(Vec3 motion) {
-        return motion.x() == 0.0 && (motion.y() == ConstantsUtil.DEFAULT_DELTA_MOVEMENT_Y || motion.y() == 0.0) && motion.z() == 0.0;
+        return EntityMotionUtil.isStationary(livingEntity.getDeltaMovement());
     }
 }

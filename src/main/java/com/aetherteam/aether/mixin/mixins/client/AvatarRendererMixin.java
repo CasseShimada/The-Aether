@@ -12,7 +12,7 @@ import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionIte
 import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
 import com.aetherteam.aether.mixin.mixins.client.accessor.LivingEntityRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
-import com.aetherteam.nitrogen.ConstantsUtil;
+import com.aetherteam.aether.util.EntityMotionUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -29,7 +29,6 @@ import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -167,8 +166,7 @@ public abstract class AvatarRendererMixin {
 
     @Unique
     private boolean aether$isShieldActive(Player player) {
-        Vec3 motion = player.getDeltaMovement();
         return !player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isMoving()
-            || (motion.x() == 0.0 && (motion.y() == ConstantsUtil.DEFAULT_DELTA_MOVEMENT_Y || motion.y() == 0.0) && motion.z() == 0.0);
+            || EntityMotionUtil.isStationary(player.getDeltaMovement());
     }
 }
