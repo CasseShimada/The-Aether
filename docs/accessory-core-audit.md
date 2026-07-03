@@ -1,6 +1,6 @@
 # Aether Accessory Core Audit (Stage 1)
 
-This checklist tracks the self-written Aether accessory core built on Fabric attachments before any vanilla/twilight held/equipped compatibility work.
+This checklist tracks the self-written Aether accessory core built on Fabric attachments. Current slot resolution lives under the Aether accessory slot boundary, current effect bridging lives under the Aether accessory effect boundary, and optional Twilight Forest hooks remain isolated in the Twilight compatibility mixin package.
 
 ## Legacy Migration Decision
 
@@ -21,7 +21,7 @@ Old save migration support for Curios data, Forge capability data, and `neoforge
 | Server-authoritative sync state | No dedicated accessory payload sync path | Add client sync packet for accessory slot snapshots and server dirty-flush path | DONE |
 | Residual state cleanup | No guaranteed cleanup on entity unload/logout | Add runtime cleanup hooks for entity unload/logout | DONE |
 
-## Stage 2: Compatibility Matrix (to start only after Stage 1 is stable)
+## Stage 2: Current Compatibility Matrix
 
 | Trigger Path | Bridge Entry | Status |
 |---|---|---|

@@ -19,5 +19,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Replaced fog color triples with client render vectors.
 - Replaced perk color triples with render vectors.
 - Moved the current accessory effect bridge out of the compatibility package.
+- Updated the accessory core audit to reflect the current Fabric attachment and compatibility boundaries.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
