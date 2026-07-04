@@ -148,7 +148,7 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public SyncPacket getSyncPacket(int entityID, String key, Type type, Object value) {
+    public SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value) {
         return new AetherTimeSyncPacket(key, type, value);
     }
 

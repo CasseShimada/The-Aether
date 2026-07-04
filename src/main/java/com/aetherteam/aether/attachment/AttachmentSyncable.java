@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public interface AttachmentSyncable {
     Map<String, SyncField> getSyncFields();
 
-    SyncPacket getSyncPacket(int entityID, String key, Type type, Object value);
+    SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value);
 
     default void forceSync(int entityID, Direction direction) {
         for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
@@ -44,7 +44,7 @@ public interface AttachmentSyncable {
         data.setter().accept(value);
     }
 
-    private void sendPacket(SyncPacket packet, Direction direction, Object... context) {
+    private void sendPacket(SyncPacket<?> packet, Direction direction, Object... context) {
         switch (direction) {
             case SERVER -> AetherPacketSender.sendToServer(packet);
             case CLIENT -> this.sendToClients(packet, context);
@@ -53,7 +53,7 @@ public interface AttachmentSyncable {
         }
     }
 
-    private void sendToClients(SyncPacket packet, Object... context) {
+    private void sendToClients(SyncPacket<?> packet, Object... context) {
         if (context.length > 0 && context[0] instanceof ServerPlayer player) {
             AetherPacketSender.sendToPlayer(player, packet);
             return;
@@ -61,13 +61,13 @@ public interface AttachmentSyncable {
         AetherPacketSender.sendToAllPlayers(packet);
     }
 
-    private void sendToPlayer(SyncPacket packet, Object... context) {
+    private void sendToPlayer(SyncPacket<?> packet, Object... context) {
         if (context.length > 0 && context[0] instanceof ServerPlayer player) {
             AetherPacketSender.sendToPlayer(player, packet);
         }
     }
 
-    private void sendToDimension(SyncPacket packet, Object... context) {
+    private void sendToDimension(SyncPacket<?> packet, Object... context) {
         if (context.length == 0 || !(context[0] instanceof Level level) || !(level instanceof ServerLevel serverLevel)) {
             return;
         }

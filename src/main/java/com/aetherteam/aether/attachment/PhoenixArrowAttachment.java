@@ -70,7 +70,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public SyncPacket getSyncPacket(int entityID, String key, Type type, Object value) {
+    public SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value) {
         return new PhoenixArrowSyncPacket(entityID, key, type, value);
     }
 }
