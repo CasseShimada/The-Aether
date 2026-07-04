@@ -4,7 +4,6 @@ import com.aetherteam.aether.recipe.recipes.ban.AbstractPlacementBanRecipe;
 import com.aetherteam.aether.recipe.blockstate.BlockStateIngredient;
 import com.aetherteam.aether.recipe.blockstate.BlockStateRecipeUtil;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -38,8 +37,8 @@ public final class PlacementBanRecipeSerializer {
         return buffer.readOptional(buf -> BlockStateIngredient.CONTENTS_STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf));
     }
 
-    public interface CookieBaker<T, S extends Predicate<T>, R extends RecipeInput, F extends AbstractPlacementBanRecipe<T, S, R>> extends Function3<Either<ResourceKey<Biome>, TagKey<Biome>>, Optional<BlockStateIngredient>, S, F> {
-        @Override
+    @FunctionalInterface
+    public interface CookieBaker<T, S extends Predicate<T>, R extends RecipeInput, F extends AbstractPlacementBanRecipe<T, S, R>> {
         F apply(Either<ResourceKey<Biome>, TagKey<Biome>> biome, Optional<BlockStateIngredient> bypassBlock, S ingredient);
     }
 }
