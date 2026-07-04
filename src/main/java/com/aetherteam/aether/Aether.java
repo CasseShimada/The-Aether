@@ -110,19 +110,11 @@ public final class Aether {
         AetherItems.registerAccessories();
         AetherItems.setupBucketReplacements();
 
-        registerDispenserBehaviors();
-        registerCauldronInteractions();
-
-        AetherAccessorySlots.register();
-    }
-
-    private static void registerDispenserBehaviors() {
         SkyrootBoatDispenseBehavior.registerDispenserBehaviors();
         AetherDispenseBehaviors.registerDispenserBehaviors();
         DispenseUsableItemBehavior.registerDispenserBehaviors();
-    }
-
-    private static void registerCauldronInteractions() {
         AetherCauldronInteractions.registerCauldronInteractions();
+
+        AetherAccessorySlots.register();
     }
 }
