@@ -74,13 +74,13 @@ public final class EntityAccessorySpawnHooks {
             return itemStacks;
         }
 
-        for (SlotTypeReference identifier : ALL_ACCESSORY_SLOTS) {
+        for (SlotTypeReference slotType : ALL_ACCESSORY_SLOTS) {
             if (itemStacks.isEmpty()) {
                 break;
             }
 
             ItemStack itemStack = itemStacks.getFirst();
-            float chance = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier);
+            float chance = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(slotType);
             boolean guaranteedDrop = chance > 1.0F;
             if (!itemStack.isEmpty()) {
                 itemStacks.removeIf(stack -> ItemStack.isSameItemSameComponents(stack, itemStack));
@@ -108,14 +108,14 @@ public final class EntityAccessorySpawnHooks {
             return experience;
         }
 
-        for (SlotTypeReference identifier : ALL_ACCESSORY_SLOTS) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        for (SlotTypeReference slotType : ALL_ACCESSORY_SLOTS) {
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
             if (accessoriesContainer == null) {
                 continue;
             }
 
             ItemStack stack = accessoriesContainer.getAccessories().getItem(0);
-            if (!stack.isEmpty() && mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(identifier) <= 1.0F) {
+            if (!stack.isEmpty() && mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).getEquipmentDropChance(slotType) <= 1.0F) {
                 experience += 1 + mob.getRandom().nextInt(3);
             }
         }
@@ -127,9 +127,9 @@ public final class EntityAccessorySpawnHooks {
             return;
         }
 
-        for (SlotTypeReference identifier : ALL_ACCESSORY_SLOTS) {
+        for (SlotTypeReference slotType : ALL_ACCESSORY_SLOTS) {
             if (random.nextFloat() < 0.1F) {
-                equipAccessory(mob, identifier, ArmorMaterials.GOLD);
+                equipAccessory(mob, slotType, ArmorMaterials.GOLD);
             }
         }
     }
@@ -140,8 +140,8 @@ public final class EntityAccessorySpawnHooks {
         }
 
         if (mob.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ArmorItem armorItem) {
-            for (SlotTypeReference identifier : GLOVE_SLOTS) {
-                equipAccessory(mob, identifier, armorItem.getMaterial());
+            for (SlotTypeReference slotType : GLOVE_SLOTS) {
+                equipAccessory(mob, slotType, armorItem.getMaterial());
             }
         }
     }
@@ -155,18 +155,18 @@ public final class EntityAccessorySpawnHooks {
         return true;
     }
 
-    private static void equipAccessory(Mob mob, SlotTypeReference identifier, ArmorMaterial armorMaterial) {
+    private static void equipAccessory(Mob mob, SlotTypeReference slotType, ArmorMaterial armorMaterial) {
         var accessories = AccessoriesAPI.getAccessories(mob);
         if (accessories == null) {
             return;
         }
 
-        AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
         if (accessoriesContainer == null || !isContainerEmpty(accessoriesContainer)) {
             return;
         }
 
-        Item item = getEquipmentForSlot(identifier, armorMaterial);
+        Item item = getEquipmentForSlot(slotType, armorMaterial);
         if (item != null) {
             accessoriesContainer.getAccessories().setItem(0, new ItemStack(item));
         }
@@ -183,8 +183,8 @@ public final class EntityAccessorySpawnHooks {
     }
 
     @Nullable
-    private static Item getEquipmentForSlot(SlotTypeReference identifier, ArmorMaterial armorMaterial) {
-        if (identifier.equals(GlovesItem.getStaticIdentifier())) {
+    private static Item getEquipmentForSlot(SlotTypeReference slotType, ArmorMaterial armorMaterial) {
+        if (slotType.equals(GlovesItem.getStaticIdentifier())) {
             if (armorMaterial == ArmorMaterials.LEATHER) {
                 return AetherItems.LEATHER_GLOVES;
             } else if (armorMaterial == ArmorMaterials.GOLD) {
@@ -196,7 +196,7 @@ public final class EntityAccessorySpawnHooks {
             } else if (armorMaterial == ArmorMaterials.DIAMOND) {
                 return AetherItems.DIAMOND_GLOVES;
             }
-        } else if (identifier.equals(PendantItem.getStaticIdentifier())) {
+        } else if (slotType.equals(PendantItem.getStaticIdentifier())) {
             if (armorMaterial == ArmorMaterials.IRON) {
                 return AetherItems.IRON_PENDANT;
             } else if (armorMaterial == ArmorMaterials.GOLD) {
@@ -214,8 +214,8 @@ public final class EntityAccessorySpawnHooks {
             return;
         }
 
-        for (SlotTypeReference identifier : ALL_ACCESSORY_SLOTS) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        for (SlotTypeReference slotType : ALL_ACCESSORY_SLOTS) {
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
             if (accessoriesContainer == null) {
                 continue;
             }
