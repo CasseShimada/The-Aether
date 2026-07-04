@@ -3,8 +3,6 @@ package com.aetherteam.aether.inventory.menu;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.gui.screen.inventory.*;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -24,15 +22,11 @@ public final class AetherMenuTypes {
     }
 
     public static void registerMenuScreens() {
-        AetherMenuTypes.<AetherAccessoriesMenu, AetherAccessoriesScreen>registerScreen(AetherMenuTypes.ACCESSORIES, AetherAccessoriesScreen::new);
-        registerScreen(AetherMenuTypes.BOOK_OF_LORE, LoreBookScreen::new);
-        registerScreen(AetherMenuTypes.ALTAR, AltarScreen::new);
-        registerScreen(AetherMenuTypes.FREEZER, FreezerScreen::new);
-        registerScreen(AetherMenuTypes.INCUBATOR, IncubatorScreen::new);
-    }
-
-    private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerScreen(MenuType<M> menuType, MenuScreens.ScreenConstructor<M, U> constructor) {
-        MenuScreens.register(menuType, constructor);
+        MenuScreens.<AetherAccessoriesMenu, AetherAccessoriesScreen>register(AetherMenuTypes.ACCESSORIES, AetherAccessoriesScreen::new);
+        MenuScreens.register(AetherMenuTypes.BOOK_OF_LORE, LoreBookScreen::new);
+        MenuScreens.register(AetherMenuTypes.ALTAR, AltarScreen::new);
+        MenuScreens.register(AetherMenuTypes.FREEZER, FreezerScreen::new);
+        MenuScreens.register(AetherMenuTypes.INCUBATOR, IncubatorScreen::new);
     }
 
     private AetherMenuTypes() {
