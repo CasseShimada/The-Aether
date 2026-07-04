@@ -1,6 +1,7 @@
 package com.aetherteam.aether.perk.data;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.ClientDeveloperGlowPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientHaloPacket;
 import com.aetherteam.aether.network.packet.clientbound.ClientMoaSkinPacket;
@@ -12,8 +13,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPacketSender;
-import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class ServerPerkData<T> {
     );
 
     private final Function<MinecraftServer, Map<UUID, T>> savedMap;
-    private final TriConsumer<MinecraftServer, UUID, T> modify;
+    private final PerkDataModifier<T> modify;
     private final BiConsumer<MinecraftServer, UUID> remove;
     private final BiFunction<UUID, T, CustomPacketPayload> applyPacket;
     private final Function<UUID, CustomPacketPayload> removePacket;
@@ -73,7 +72,7 @@ public class ServerPerkData<T> {
     private final Function<T, Predicate<User>> verificationPredicate;
 
     public ServerPerkData(Function<ServerPerkData<T>, Function<MinecraftServer, Map<UUID, T>>> savedMap,
-                          Function<ServerPerkData<T>, TriConsumer<MinecraftServer, UUID, T>> modify,
+                          Function<ServerPerkData<T>, PerkDataModifier<T>> modify,
                           Function<ServerPerkData<T>, BiConsumer<MinecraftServer, UUID>> remove,
                           Function<ServerPerkData<T>, BiFunction<UUID, T, CustomPacketPayload>> applyPacket,
                           Function<ServerPerkData<T>, Function<UUID, CustomPacketPayload>> removePacket,
@@ -236,5 +235,10 @@ public class ServerPerkData<T> {
      */
     protected Predicate<User> getVerificationPredicate(T perk) {
         return this.verificationPredicate.apply(perk);
+    }
+
+    @FunctionalInterface
+    public interface PerkDataModifier<T> {
+        void accept(MinecraftServer server, UUID uuid, T perk);
     }
 }
