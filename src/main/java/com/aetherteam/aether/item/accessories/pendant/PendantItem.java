@@ -3,14 +3,14 @@ package com.aetherteam.aether.item.accessories.pendant;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import com.aetherteam.aether.item.accessories.AccessorySlotProvider;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
-import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
-public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
+public class PendantItem extends AccessoryItem implements AccessorySlotProvider {
     protected Identifier PENDANT_LOCATION;
 
     public PendantItem(String pendantLocation, Holder<SoundEvent> pendantSound, Properties properties) {
@@ -40,11 +40,11 @@ public class PendantItem extends AccessoryItem implements SlotIdentifierHolder {
     }
 
     /**
-     * @return {@link PendantItem}'s own identifier for its accessory slot,
+     * @return {@link PendantItem}'s own accessory slot type,
      * using a static method as it is used in other conditions without access to an instance.
      */
     @Override
-    public SlotTypeReference getIdentifier() {
+    public SlotTypeReference getSlotType() {
         return getStaticIdentifier();
     }
 

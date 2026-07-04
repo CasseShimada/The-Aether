@@ -40,19 +40,19 @@ public final class EntityAccessoryEquipHooks {
         return false;
     }
 
-    public static SlotTypeReference getIdentifierForItem(LivingEntity livingEntity, ItemStack stack) {
+    public static SlotTypeReference getSlotTypeForItem(LivingEntity livingEntity, ItemStack stack) {
         if (stack.getItem() instanceof GlovesItem glovesItem) {
-            return glovesItem.getIdentifier();
+            return glovesItem.getSlotType();
         } else if (stack.getItem() instanceof PendantItem pendantItem && (livingEntity.getType() == EntityTypes.PIGLIN || livingEntity.getType() == EntityTypes.ZOMBIFIED_PIGLIN)) {
-            return pendantItem.getIdentifier();
+            return pendantItem.getSlotType();
         }
         return null;
     }
 
-    public static ItemStack getItemByIdentifier(LivingEntity livingEntity, SlotTypeReference identifier) {
+    public static ItemStack getItemBySlotType(LivingEntity livingEntity, SlotTypeReference slotType) {
         var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
             if (accessoriesContainer != null) {
                 return accessoriesContainer.getAccessories().getItem(0);
             }
@@ -60,10 +60,10 @@ public final class EntityAccessoryEquipHooks {
         return ItemStack.EMPTY;
     }
 
-    public static void setItemByIdentifier(LivingEntity livingEntity, ItemStack itemStack, SlotTypeReference identifier) {
+    public static void setItemBySlotType(LivingEntity livingEntity, ItemStack itemStack, SlotTypeReference slotType) {
         var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
             if (accessoriesContainer != null) {
                 accessoriesContainer.getAccessories().setItem(0, itemStack);
             }

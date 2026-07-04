@@ -32,9 +32,9 @@ public class MobMixin {
     private boolean canTakeItem(boolean original, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
         if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
-            SlotTypeReference identifier = EntityAccessoryEquipHooks.getIdentifierForItem(mob, stack);
-            if (identifier != null) {
-                ItemStack accessory = EntityAccessoryEquipHooks.getItemByIdentifier(mob, identifier);
+            SlotTypeReference slotType = EntityAccessoryEquipHooks.getSlotTypeForItem(mob, stack);
+            if (slotType != null) {
+                ItemStack accessory = EntityAccessoryEquipHooks.getItemBySlotType(mob, slotType);
                 if (accessory.isEmpty()) return true;
             }
         }
@@ -51,17 +51,17 @@ public class MobMixin {
     private ItemStack equipItemIfPossible(ItemStack original, ServerLevel serverLevel, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
         var data = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY);
-        SlotTypeReference identifier = EntityAccessoryEquipHooks.getIdentifierForItem(mob, stack);
-        if (identifier != null) {
-            ItemStack accessory = EntityAccessoryEquipHooks.getItemByIdentifier(mob, identifier);
+        SlotTypeReference slotType = EntityAccessoryEquipHooks.getSlotTypeForItem(mob, stack);
+        if (slotType != null) {
+            ItemStack accessory = EntityAccessoryEquipHooks.getItemBySlotType(mob, slotType);
             boolean flag = EntityAccessoryEquipHooks.canReplaceCurrentAccessory(mob, stack, accessory);
             if (flag && mob.canHoldItem(stack)) {
-                double dropChance = data.getEquipmentDropChance(identifier);
+                double dropChance = data.getEquipmentDropChance(slotType);
                 if (!accessory.isEmpty() && Math.max(mob.getRandom().nextFloat() - 0.1F, 0.0F) < dropChance) {
                     mob.spawnAtLocation(serverLevel, accessory);
                 }
-                EntityAccessoryEquipHooks.setItemByIdentifier(mob, stack, identifier);
-                data.setGuaranteedDrop(identifier);
+                EntityAccessoryEquipHooks.setItemBySlotType(mob, stack, slotType);
+                data.setGuaranteedDrop(slotType);
                 mob.setPersistenceRequired();
                 return stack;
             }

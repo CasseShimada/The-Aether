@@ -7,7 +7,7 @@ import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
-import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
+import com.aetherteam.aether.item.accessories.AccessorySlotProvider;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
@@ -42,8 +42,8 @@ public final class EntityArmorStandHooks {
     }
 
     private static Optional<InteractionResult> equipAccessory(ArmorStand armorStand, Player player, ItemStack stack, InteractionHand hand) {
-        SlotTypeReference identifier = resolveAccessorySlot(stack);
-        if (identifier == null) {
+        SlotTypeReference slotType = resolveAccessorySlot(stack);
+        if (slotType == null) {
             return Optional.empty();
         }
 
@@ -52,16 +52,16 @@ public final class EntityArmorStandHooks {
             return Optional.empty();
         }
 
-        AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
         if (accessoriesContainer == null) {
             return Optional.empty();
         }
 
         ItemStack equippedStack = accessoriesContainer.getAccessories().getItem(0);
-        SlotReference slotContext = SlotReference.of(armorStand, identifier.slotName(), 0);
+        SlotReference slotContext = SlotReference.of(armorStand, slotType.slotName(), 0);
         accessoriesContainer.getAccessories().setItem(0, stack.copy());
         playEquipSound(armorStand, stack, slotContext);
-        if (identifier.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
+        if (slotType.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
             armorStand.setShowArms(true);
         }
 
@@ -75,8 +75,8 @@ public final class EntityArmorStandHooks {
     }
 
     private static Optional<InteractionResult> unequipAccessory(ArmorStand armorStand, Player player, Vec3 pos, InteractionHand hand) {
-        SlotTypeReference identifier = slotToUnequip(armorStand, pos);
-        if (identifier == null) {
+        SlotTypeReference slotType = slotToUnequip(armorStand, pos);
+        if (slotType == null) {
             return Optional.empty();
         }
 
@@ -85,7 +85,7 @@ public final class EntityArmorStandHooks {
             return Optional.empty();
         }
 
-        AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
         if (accessoriesContainer == null) {
             return Optional.empty();
         }
@@ -101,8 +101,8 @@ public final class EntityArmorStandHooks {
     }
 
     private static SlotTypeReference resolveAccessorySlot(ItemStack stack) {
-        if (stack.is(AetherTags.Items.ACCESSORIES) && stack.getItem() instanceof SlotIdentifierHolder slotIdentifierHolder) {
-            return slotIdentifierHolder.getIdentifier();
+        if (stack.is(AetherTags.Items.ACCESSORIES) && stack.getItem() instanceof AccessorySlotProvider accessorySlotProvider) {
+            return accessorySlotProvider.getSlotType();
         }
         return AccessorySlotResolver.resolveSlotType(stack);
     }
@@ -125,27 +125,27 @@ public final class EntityArmorStandHooks {
         boolean isSmall = armorStand.isSmall();
         double front = armorStand.getDirection().getAxis() == net.minecraft.core.Direction.Axis.X ? scaleForSmallStand(pos.z, isSmall) : scaleForSmallStand(pos.x, isSmall);
         double vertical = scaleForSmallStand(pos.y, isSmall);
-        SlotTypeReference glovesIdentifier = GlovesItem.getStaticIdentifier();
-        SlotTypeReference pendantIdentifier = PendantItem.getStaticIdentifier();
-        SlotTypeReference capeIdentifier = CapeItem.getStaticIdentifier();
-        SlotTypeReference shieldIdentifier = ShieldOfRepulsionItem.getStaticIdentifier();
-        if (!getItemByIdentifier(armorStand, glovesIdentifier).isEmpty()
+        SlotTypeReference glovesSlot = GlovesItem.getStaticIdentifier();
+        SlotTypeReference pendantSlot = PendantItem.getStaticIdentifier();
+        SlotTypeReference capeSlot = CapeItem.getStaticIdentifier();
+        SlotTypeReference shieldSlot = ShieldOfRepulsionItem.getStaticIdentifier();
+        if (!getItemBySlotType(armorStand, glovesSlot).isEmpty()
                 && Math.abs(front) >= (isSmall ? 0.15 : 0.2)
                 && vertical >= (isSmall ? 0.65 : 0.75)
                 && vertical < 1.15) {
-            return glovesIdentifier;
-        } else if (!getItemByIdentifier(armorStand, pendantIdentifier).isEmpty()
+            return glovesSlot;
+        } else if (!getItemBySlotType(armorStand, pendantSlot).isEmpty()
                 && vertical >= (isSmall ? 1.2 : 1.3)
                 && vertical < 0.9 + (isSmall ? 0.8 : 0.6)) {
-            return pendantIdentifier;
-        } else if (!getItemByIdentifier(armorStand, capeIdentifier).isEmpty()
+            return pendantSlot;
+        } else if (!getItemBySlotType(armorStand, capeSlot).isEmpty()
                 && vertical >= (isSmall ? 1.0 : 1.1)
                 && vertical < (isSmall ? 1.7 : 1.4)) {
-            return capeIdentifier;
-        } else if (!getItemByIdentifier(armorStand, shieldIdentifier).isEmpty()
+            return capeSlot;
+        } else if (!getItemBySlotType(armorStand, shieldSlot).isEmpty()
                 && vertical >= (isSmall ? 0.9 : 1.0)
                 && vertical < (isSmall ? 1.5 : 1.2)) {
-            return shieldIdentifier;
+            return shieldSlot;
         }
         return null;
     }
@@ -154,13 +154,13 @@ public final class EntityArmorStandHooks {
         return isSmall ? value * 2.0 : value;
     }
 
-    private static ItemStack getItemByIdentifier(ArmorStand armorStand, SlotTypeReference identifier) {
+    private static ItemStack getItemBySlotType(ArmorStand armorStand, SlotTypeReference slotType) {
         var accessories = AccessoriesAPI.getAccessories(armorStand);
         if (accessories == null) {
             return ItemStack.EMPTY;
         }
 
-        AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+        AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
         return accessoriesContainer != null
                 ? accessoriesContainer.getAccessories().getItem(0)
                 : ItemStack.EMPTY;

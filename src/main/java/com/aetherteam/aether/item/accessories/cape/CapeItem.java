@@ -4,12 +4,12 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import com.aetherteam.aether.item.accessories.AccessorySlotProvider;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
-import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import net.minecraft.resources.Identifier;
 
-public class CapeItem extends AccessoryItem implements SlotIdentifierHolder {
+public class CapeItem extends AccessoryItem implements AccessorySlotProvider {
     protected Identifier CAPE_LOCATION;
 
     public CapeItem(String capeLocation, Properties properties) {
@@ -31,11 +31,11 @@ public class CapeItem extends AccessoryItem implements SlotIdentifierHolder {
 
 
     /**
-     * @return {@link CapeItem}'s own identifier for its accessory slot,
+     * @return {@link CapeItem}'s own accessory slot type,
      * using a static method as it is used in other conditions without access to an instance.
      */
     @Override
-    public SlotTypeReference getIdentifier() {
+    public SlotTypeReference getSlotType() {
         return getStaticIdentifier();
     }
 

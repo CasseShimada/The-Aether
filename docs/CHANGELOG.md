@@ -26,5 +26,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed the packet sender helper away from the old distributor-style name.
 - Scoped registry construction id binding through a single helper call.
 - Removed an unused accessory compatibility-name helper from slot resolution.
+- Renamed internal accessory slot identifier helpers to slot type providers.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

@@ -3,8 +3,8 @@ package com.aetherteam.aether.item.accessories.gloves;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import com.aetherteam.aether.item.accessories.AccessorySlotProvider;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
-import com.aetherteam.aether.item.accessories.SlotIdentifierHolder;
 import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilder;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 
-public class GlovesItem extends AccessoryItem implements SlotIdentifierHolder {
+public class GlovesItem extends AccessoryItem implements AccessorySlotProvider {
     public static final Identifier BASE_PUNCH_DAMAGE_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "base_punch_damage");
     protected final ArmorMaterial material;
     protected final double damage;
@@ -76,11 +76,11 @@ public class GlovesItem extends AccessoryItem implements SlotIdentifierHolder {
     }
 
     /**
-     * @return {@link GlovesItem}'s own identifier for its accessory slot,
+     * @return {@link GlovesItem}'s own accessory slot type,
      * using a static method as it is used in other conditions without access to an instance.
      */
     @Override
-    public SlotTypeReference getIdentifier() {
+    public SlotTypeReference getSlotType() {
         return getStaticIdentifier();
     }
 
