@@ -7,9 +7,7 @@ public final class AccessoriesNetworking {
     private AccessoriesNetworking() {
     }
 
-    public static void sendToServer(Object payload) {
-        if (payload instanceof CustomPacketPayload customPacketPayload) {
-            AetherPacketSender.sendToServer(customPacketPayload);
-        }
+    public static void sendToServer(CustomPacketPayload payload) {
+        AetherPacketSender.sendToServer(payload);
     }
 }
