@@ -32,5 +32,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed the visible cape accessory render helper to match its returned stack.
 - Replaced boss room bounds pairs with an explicit bounds record.
 - Replaced accessory equip pair results with an explicit equip result record.
+- Replaced Fabric config builder pairs with an explicit configured result record.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

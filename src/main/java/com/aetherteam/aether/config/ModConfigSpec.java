@@ -1,7 +1,5 @@
 package com.aetherteam.aether.config;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,9 +83,9 @@ public final class ModConfigSpec {
             return this.define(name, List.copyOf(sanitized));
         }
 
-        public <O> Pair<O, ModConfigSpec> configure(Function<Builder, O> factory) {
+        public <O> Configured<O> configure(Function<Builder, O> factory) {
             O instance = factory.apply(this);
-            return Pair.of(instance, new ModConfigSpec(Collections.unmodifiableMap(this.values)));
+            return new Configured<>(instance, new ModConfigSpec(Collections.unmodifiableMap(this.values)));
         }
 
         private List<String> currentPath(String leaf) {
@@ -95,6 +93,9 @@ public final class ModConfigSpec {
             path.add(leaf);
             return List.copyOf(path);
         }
+    }
+
+    public record Configured<T>(T instance, ModConfigSpec spec) {
     }
 
     public static class ConfigValue<T> {

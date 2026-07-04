@@ -4,7 +4,6 @@ import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.config.ModConfigSpec;
 import net.minecraft.world.level.Level;
 import com.aetherteam.aether.config.ModConfigSpec.ConfigValue;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -418,20 +417,20 @@ public class AetherConfig {
     public static final Client CLIENT;
 
     static {
-        final Pair<Startup, ModConfigSpec> startupSpecPair = new ModConfigSpec.Builder().configure(Startup::new);
-        STARTUP_SPEC = startupSpecPair.getRight();
-        STARTUP = startupSpecPair.getLeft();
+        final ModConfigSpec.Configured<Startup> startupConfig = new ModConfigSpec.Builder().configure(Startup::new);
+        STARTUP_SPEC = startupConfig.spec();
+        STARTUP = startupConfig.instance();
 
-        final Pair<Server, ModConfigSpec> serverSpecPair = new ModConfigSpec.Builder().configure(Server::new);
-        SERVER_SPEC = serverSpecPair.getRight();
-        SERVER = serverSpecPair.getLeft();
+        final ModConfigSpec.Configured<Server> serverConfig = new ModConfigSpec.Builder().configure(Server::new);
+        SERVER_SPEC = serverConfig.spec();
+        SERVER = serverConfig.instance();
 
-        final Pair<Common, ModConfigSpec> commonSpecPair = new ModConfigSpec.Builder().configure(Common::new);
-        COMMON_SPEC = commonSpecPair.getRight();
-        COMMON = commonSpecPair.getLeft();
+        final ModConfigSpec.Configured<Common> commonConfig = new ModConfigSpec.Builder().configure(Common::new);
+        COMMON_SPEC = commonConfig.spec();
+        COMMON = commonConfig.instance();
 
-        final Pair<Client, ModConfigSpec> clientSpecPair = new ModConfigSpec.Builder().configure(Client::new);
-        CLIENT_SPEC = clientSpecPair.getRight();
-        CLIENT = clientSpecPair.getLeft();
+        final ModConfigSpec.Configured<Client> clientConfig = new ModConfigSpec.Builder().configure(Client::new);
+        CLIENT_SPEC = clientConfig.spec();
+        CLIENT = clientConfig.instance();
     }
 }
