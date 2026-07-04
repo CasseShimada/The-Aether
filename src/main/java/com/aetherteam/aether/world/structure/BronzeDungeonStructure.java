@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.Optional;
 
@@ -63,9 +62,9 @@ public class BronzeDungeonStructure extends Structure {
         int height = findStartingHeight(chunkGenerator, heightAccessor, chunkPos, randomState, templateManager, this.aboveBottom, this.belowTop);
         // To make structure placement more reliable, we check the surrounding 8 chunks for suitable locations.
         if (height <= heightAccessor.getMinY()) {
-            MutableInt y = new MutableInt(height);
-            chunkPos = searchNearbyChunks(chunkPos, y, chunkGenerator, heightAccessor, randomState, templateManager, this.aboveBottom, this.belowTop);
-            height = y.getValue();
+            SearchResult searchResult = searchNearbyChunks(chunkPos, chunkGenerator, heightAccessor, randomState, templateManager, this.aboveBottom, this.belowTop);
+            chunkPos = searchResult.chunkPos();
+            height = searchResult.height();
             if (height <= heightAccessor.getMinY()) {
                 return Optional.empty();
             }
@@ -83,28 +82,28 @@ public class BronzeDungeonStructure extends Structure {
      * Check the surrounding chunks for bronze dungeon placement.
      *
      * @param chunkPos        The {@link ChunkPos}.
-     * @param height          The {@link MutableInt} for the height to check.
      * @param generator       The {@link ChunkGenerator} for generation.
      * @param heightAccessor  The {@link LevelHeightAccessor} to place in.
      * @param randomState     The {@link RandomState} for the structure.
      * @param templateManager The {@link StructureTemplateManager}.
-     * @return A {@link ChunkPos} for placement.
+     * @return The chunk and height for placement.
      */
-    private static ChunkPos searchNearbyChunks(ChunkPos chunkPos, MutableInt height, ChunkGenerator generator, LevelHeightAccessor heightAccessor, RandomState randomState, StructureTemplateManager templateManager, int aboveBottom, int belowTop) {
-        int y;
+    private static SearchResult searchNearbyChunks(ChunkPos chunkPos, ChunkGenerator generator, LevelHeightAccessor heightAccessor, RandomState randomState, StructureTemplateManager templateManager, int aboveBottom, int belowTop) {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 if (x != 0 || z != 0) {
                     ChunkPos offset = new ChunkPos(chunkPos.x() + x, chunkPos.z() + z);
-                    y = BronzeDungeonStructure.findStartingHeight(generator, heightAccessor, offset, randomState, templateManager, aboveBottom, belowTop);
+                    int y = BronzeDungeonStructure.findStartingHeight(generator, heightAccessor, offset, randomState, templateManager, aboveBottom, belowTop);
                     if (y > heightAccessor.getMinY()) {
-                        height.setValue(y);
-                        return offset;
+                        return new SearchResult(offset, y);
                     }
                 }
             }
         }
-        return chunkPos;
+        return new SearchResult(chunkPos, heightAccessor.getMinY());
+    }
+
+    private record SearchResult(ChunkPos chunkPos, int height) {
     }
 
     /**
