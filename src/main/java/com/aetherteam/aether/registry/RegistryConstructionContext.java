@@ -17,7 +17,7 @@ public final class RegistryConstructionContext {
      * Carries the id from direct {@code Registry.register} calls into vanilla constructors that need
      * {@code Properties#setId}. This is not a deferred registration layer.
      */
-    public static void push(ResourceKey<? extends Registry<?>> registryKey, Identifier id) {
+    private static void push(ResourceKey<? extends Registry<?>> registryKey, Identifier id) {
         CURRENT.set(new Context(registryKey, id));
     }
 
@@ -30,7 +30,7 @@ public final class RegistryConstructionContext {
         }
     }
 
-    public static void clear() {
+    private static void clear() {
         CURRENT.remove();
     }
 
