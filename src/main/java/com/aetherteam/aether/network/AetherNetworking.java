@@ -65,63 +65,63 @@ public final class AetherNetworking {
 
     private static void registerPayloadTypes() {
         // CLIENTBOUND
-        registerS2C(AetherTravelPacket.TYPE, AetherTravelPacket.STREAM_CODEC);
-        registerS2C(AccessorySyncPacket.TYPE, AccessorySyncPacket.STREAM_CODEC);
-        registerS2C(BossInfoPacket.Display.TYPE, BossInfoPacket.Display.STREAM_CODEC);
-        registerS2C(BossInfoPacket.Remove.TYPE, BossInfoPacket.Remove.STREAM_CODEC);
-        registerS2C(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply.STREAM_CODEC);
-        registerS2C(ClientDeveloperGlowPacket.Remove.TYPE, ClientDeveloperGlowPacket.Remove.STREAM_CODEC);
-        registerS2C(ClientDeveloperGlowPacket.Sync.TYPE, ClientDeveloperGlowPacket.Sync.STREAM_CODEC);
-        registerS2C(ClientGrabItemPacket.TYPE, ClientGrabItemPacket.STREAM_CODEC);
-        registerS2C(ClientHaloPacket.Apply.TYPE, ClientHaloPacket.Apply.STREAM_CODEC);
-        registerS2C(ClientHaloPacket.Remove.TYPE, ClientHaloPacket.Remove.STREAM_CODEC);
-        registerS2C(ClientHaloPacket.Sync.TYPE, ClientHaloPacket.Sync.STREAM_CODEC);
-        registerS2C(ClientMoaSkinPacket.Apply.TYPE, ClientMoaSkinPacket.Apply.STREAM_CODEC);
-        registerS2C(ClientMoaSkinPacket.Remove.TYPE, ClientMoaSkinPacket.Remove.STREAM_CODEC);
-        registerS2C(ClientMoaSkinPacket.Sync.TYPE, ClientMoaSkinPacket.Sync.STREAM_CODEC);
-        registerS2C(CloudMinionPacket.TYPE, CloudMinionPacket.STREAM_CODEC);
-        registerS2C(HealthResetPacket.TYPE, HealthResetPacket.STREAM_CODEC);
-        registerS2C(LeavingAetherPacket.TYPE, LeavingAetherPacket.STREAM_CODEC);
-        registerS2C(MoaInteractPacket.TYPE, MoaInteractPacket.STREAM_CODEC);
-        registerS2C(OpenSunAltarPacket.TYPE, OpenSunAltarPacket.STREAM_CODEC);
-        registerS2C(PortalInteractPacket.TYPE, PortalInteractPacket.STREAM_CODEC);
-        registerS2C(PortalTravelSoundPacket.TYPE, PortalTravelSoundPacket.STREAM_CODEC);
-        registerS2C(QueenDialoguePacket.TYPE, QueenDialoguePacket.STREAM_CODEC);
-        registerS2C(RegisterMoaSkinsPacket.TYPE, RegisterMoaSkinsPacket.STREAM_CODEC);
-        registerS2C(RemountAerbunnyPacket.TYPE, RemountAerbunnyPacket.STREAM_CODEC);
-        registerS2C(SetInvisibilityPacket.TYPE, SetInvisibilityPacket.STREAM_CODEC);
-        registerS2C(ToolDebuffPacket.TYPE, ToolDebuffPacket.STREAM_CODEC);
-        registerS2C(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket.STREAM_CODEC);
+        registerClientbound(AetherTravelPacket.TYPE, AetherTravelPacket.STREAM_CODEC);
+        registerClientbound(AccessorySyncPacket.TYPE, AccessorySyncPacket.STREAM_CODEC);
+        registerClientbound(BossInfoPacket.Display.TYPE, BossInfoPacket.Display.STREAM_CODEC);
+        registerClientbound(BossInfoPacket.Remove.TYPE, BossInfoPacket.Remove.STREAM_CODEC);
+        registerClientbound(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply.STREAM_CODEC);
+        registerClientbound(ClientDeveloperGlowPacket.Remove.TYPE, ClientDeveloperGlowPacket.Remove.STREAM_CODEC);
+        registerClientbound(ClientDeveloperGlowPacket.Sync.TYPE, ClientDeveloperGlowPacket.Sync.STREAM_CODEC);
+        registerClientbound(ClientGrabItemPacket.TYPE, ClientGrabItemPacket.STREAM_CODEC);
+        registerClientbound(ClientHaloPacket.Apply.TYPE, ClientHaloPacket.Apply.STREAM_CODEC);
+        registerClientbound(ClientHaloPacket.Remove.TYPE, ClientHaloPacket.Remove.STREAM_CODEC);
+        registerClientbound(ClientHaloPacket.Sync.TYPE, ClientHaloPacket.Sync.STREAM_CODEC);
+        registerClientbound(ClientMoaSkinPacket.Apply.TYPE, ClientMoaSkinPacket.Apply.STREAM_CODEC);
+        registerClientbound(ClientMoaSkinPacket.Remove.TYPE, ClientMoaSkinPacket.Remove.STREAM_CODEC);
+        registerClientbound(ClientMoaSkinPacket.Sync.TYPE, ClientMoaSkinPacket.Sync.STREAM_CODEC);
+        registerClientbound(CloudMinionPacket.TYPE, CloudMinionPacket.STREAM_CODEC);
+        registerClientbound(HealthResetPacket.TYPE, HealthResetPacket.STREAM_CODEC);
+        registerClientbound(LeavingAetherPacket.TYPE, LeavingAetherPacket.STREAM_CODEC);
+        registerClientbound(MoaInteractPacket.TYPE, MoaInteractPacket.STREAM_CODEC);
+        registerClientbound(OpenSunAltarPacket.TYPE, OpenSunAltarPacket.STREAM_CODEC);
+        registerClientbound(PortalInteractPacket.TYPE, PortalInteractPacket.STREAM_CODEC);
+        registerClientbound(PortalTravelSoundPacket.TYPE, PortalTravelSoundPacket.STREAM_CODEC);
+        registerClientbound(QueenDialoguePacket.TYPE, QueenDialoguePacket.STREAM_CODEC);
+        registerClientbound(RegisterMoaSkinsPacket.TYPE, RegisterMoaSkinsPacket.STREAM_CODEC);
+        registerClientbound(RemountAerbunnyPacket.TYPE, RemountAerbunnyPacket.STREAM_CODEC);
+        registerClientbound(SetInvisibilityPacket.TYPE, SetInvisibilityPacket.STREAM_CODEC);
+        registerClientbound(ToolDebuffPacket.TYPE, ToolDebuffPacket.STREAM_CODEC);
+        registerClientbound(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket.STREAM_CODEC);
 
         // SERVERBOUND
-        registerC2S(AerbunnyPuffPacket.TYPE, AerbunnyPuffPacket.STREAM_CODEC);
-        registerC2S(ClearItemPacket.TYPE, ClearItemPacket.STREAM_CODEC);
-        registerC2S(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket.STREAM_CODEC);
-        registerC2S(LoreExistsPacket.TYPE, LoreExistsPacket.STREAM_CODEC);
-        registerC2S(NukeAccessories.TYPE, NukeAccessories.STREAM_CODEC);
-        registerC2S(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket.STREAM_CODEC);
-        registerC2S(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket.STREAM_CODEC);
-        registerC2S(OpenInventoryPacket.TYPE, OpenInventoryPacket.STREAM_CODEC);
-        registerC2S(ServerDeveloperGlowPacket.Apply.TYPE, ServerDeveloperGlowPacket.Apply.STREAM_CODEC);
-        registerC2S(ServerDeveloperGlowPacket.Remove.TYPE, ServerDeveloperGlowPacket.Remove.STREAM_CODEC);
-        registerC2S(ServerHaloPacket.Apply.TYPE, ServerHaloPacket.Apply.STREAM_CODEC);
-        registerC2S(ServerHaloPacket.Remove.TYPE, ServerHaloPacket.Remove.STREAM_CODEC);
-        registerC2S(ServerMoaSkinPacket.Apply.TYPE, ServerMoaSkinPacket.Apply.STREAM_CODEC);
-        registerC2S(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove.STREAM_CODEC);
-        registerC2S(StepHeightPacket.TYPE, StepHeightPacket.STREAM_CODEC);
-        registerC2S(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
-        registerC2S(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket.STREAM_CODEC);
-        registerC2S(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket.STREAM_CODEC);
+        registerServerbound(AerbunnyPuffPacket.TYPE, AerbunnyPuffPacket.STREAM_CODEC);
+        registerServerbound(ClearItemPacket.TYPE, ClearItemPacket.STREAM_CODEC);
+        registerServerbound(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket.STREAM_CODEC);
+        registerServerbound(LoreExistsPacket.TYPE, LoreExistsPacket.STREAM_CODEC);
+        registerServerbound(NukeAccessories.TYPE, NukeAccessories.STREAM_CODEC);
+        registerServerbound(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket.STREAM_CODEC);
+        registerServerbound(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket.STREAM_CODEC);
+        registerServerbound(OpenInventoryPacket.TYPE, OpenInventoryPacket.STREAM_CODEC);
+        registerServerbound(ServerDeveloperGlowPacket.Apply.TYPE, ServerDeveloperGlowPacket.Apply.STREAM_CODEC);
+        registerServerbound(ServerDeveloperGlowPacket.Remove.TYPE, ServerDeveloperGlowPacket.Remove.STREAM_CODEC);
+        registerServerbound(ServerHaloPacket.Apply.TYPE, ServerHaloPacket.Apply.STREAM_CODEC);
+        registerServerbound(ServerHaloPacket.Remove.TYPE, ServerHaloPacket.Remove.STREAM_CODEC);
+        registerServerbound(ServerMoaSkinPacket.Apply.TYPE, ServerMoaSkinPacket.Apply.STREAM_CODEC);
+        registerServerbound(ServerMoaSkinPacket.Remove.TYPE, ServerMoaSkinPacket.Remove.STREAM_CODEC);
+        registerServerbound(StepHeightPacket.TYPE, StepHeightPacket.STREAM_CODEC);
+        registerServerbound(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
+        registerServerbound(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket.STREAM_CODEC);
+        registerServerbound(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket.STREAM_CODEC);
 
         // BIDIRECTIONAL
-        registerS2C(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
-        registerC2S(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
+        registerClientbound(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
+        registerServerbound(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
 
-        registerS2C(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
-        registerC2S(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
+        registerClientbound(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
+        registerServerbound(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
 
-        registerS2C(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
-        registerC2S(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
+        registerClientbound(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
+        registerServerbound(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
     }
 
     private static void registerServerReceivers() {
@@ -149,11 +149,11 @@ public final class AetherNetworking {
         registerServerReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
     }
 
-    private static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
+    private static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
         PayloadTypeRegistry.clientboundPlay().register(type, codec);
     }
 
-    private static <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
+    private static <T extends CustomPacketPayload> void registerServerbound(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
         PayloadTypeRegistry.serverboundPlay().register(type, codec);
     }
 
