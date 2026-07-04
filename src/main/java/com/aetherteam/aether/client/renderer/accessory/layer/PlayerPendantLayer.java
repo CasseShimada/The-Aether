@@ -31,7 +31,7 @@ public class PlayerPendantLayer extends RenderLayer<AvatarRenderState, PlayerMod
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, PendantItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, PendantItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof PendantItem pendantItem)) {
             return;
         }

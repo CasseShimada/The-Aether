@@ -42,7 +42,7 @@ public class PlayerGlovesLayer extends RenderLayer<AvatarRenderState, PlayerMode
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, GlovesItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, GlovesItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof GlovesItem glovesItem)) {
             return;
         }

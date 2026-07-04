@@ -26,6 +26,6 @@ public abstract class ArmorStandRendererMixin {
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/decoration/ArmorStand;Lnet/minecraft/client/renderer/entity/state/ArmorStandRenderState;F)V", at = @At("TAIL"), require = 0)
     private void aether$extractCapeAccessory(ArmorStand armorStand, ArmorStandRenderState renderState, float partialTick, CallbackInfo ci) {
-        ((ArmorStandCapeRenderState) renderState).aether$setCapeAccessory(AccessoryRenderHooks.getVisibleAccessory(armorStand, CapeItem.getStaticIdentifier(), 0).copy());
+        ((ArmorStandCapeRenderState) renderState).aether$setCapeAccessory(AccessoryRenderHooks.getVisibleAccessory(armorStand, CapeItem.getStaticSlotType(), 0).copy());
     }
 }

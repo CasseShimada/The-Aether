@@ -88,7 +88,7 @@ public class AetherDispenseBehaviors {
             accessory.onEquipFromUse(itemStack, equipReference.left());
             equipReference.second().equipStack(itemStack.copy());
             if (livingEntity instanceof ArmorStand armorStand) {
-                if (equipReference.first().slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
+                if (equipReference.first().slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
                     armorStand.setShowArms(true);
                 }
             } else if (livingEntity instanceof Mob mob && EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {

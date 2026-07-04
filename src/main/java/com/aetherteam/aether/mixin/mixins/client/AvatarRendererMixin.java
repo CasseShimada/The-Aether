@@ -118,7 +118,7 @@ public abstract class AvatarRendererMixin {
 
     @Unique
     private void aether$renderFirstPersonGloves(Player player, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, ModelPart arm, boolean rightArm, boolean slim) {
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, GlovesItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, GlovesItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof GlovesItem glovesItem)) {
             return;
         }
@@ -145,7 +145,7 @@ public abstract class AvatarRendererMixin {
 
     @Unique
     private void aether$renderFirstPersonShield(Player player, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, ModelPart arm, boolean rightArm, boolean slim) {
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, ShieldOfRepulsionItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(player, ShieldOfRepulsionItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof ShieldOfRepulsionItem shieldItem)) {
             return;
         }

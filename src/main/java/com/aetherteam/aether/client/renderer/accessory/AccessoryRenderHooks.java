@@ -34,7 +34,7 @@ public final class AccessoryRenderHooks {
      * @see com.aetherteam.aether.mixin.mixins.client.AbstractClientPlayerMixin
      */
     public static ItemStack isCapeVisible(LivingEntity livingEntity) {
-        ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticIdentifier(), 0);
+        ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticSlotType(), 0);
         return getCapeTexture(stack) != null ? stack : ItemStack.EMPTY;
     }
 
@@ -86,10 +86,10 @@ public final class AccessoryRenderHooks {
         return trim != null ? Sheets.armorTrimsSheet(trim.pattern().value().decal()) : null;
     }
 
-    public static ItemStack getVisibleAccessory(LivingEntity livingEntity, SlotTypeReference identifier, int slotIndex) {
+    public static ItemStack getVisibleAccessory(LivingEntity livingEntity, SlotTypeReference slotType, int slotIndex) {
         var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
-            AccessoriesContainer accessoriesContainer = accessories.getContainer(identifier);
+            AccessoriesContainer accessoriesContainer = accessories.getContainer(slotType);
             return getVisibleAccessory(accessoriesContainer, slotIndex);
         }
         return ItemStack.EMPTY;

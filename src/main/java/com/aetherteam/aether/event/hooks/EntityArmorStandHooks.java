@@ -61,7 +61,7 @@ public final class EntityArmorStandHooks {
         SlotReference slotContext = SlotReference.of(armorStand, slotType.slotName(), 0);
         accessoriesContainer.getAccessories().setItem(0, stack.copy());
         playEquipSound(armorStand, stack, slotContext);
-        if (slotType.slotName().equals(GlovesItem.getStaticIdentifier().slotName())) {
+        if (slotType.slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
             armorStand.setShowArms(true);
         }
 
@@ -125,10 +125,10 @@ public final class EntityArmorStandHooks {
         boolean isSmall = armorStand.isSmall();
         double front = armorStand.getDirection().getAxis() == net.minecraft.core.Direction.Axis.X ? scaleForSmallStand(pos.z, isSmall) : scaleForSmallStand(pos.x, isSmall);
         double vertical = scaleForSmallStand(pos.y, isSmall);
-        SlotTypeReference glovesSlot = GlovesItem.getStaticIdentifier();
-        SlotTypeReference pendantSlot = PendantItem.getStaticIdentifier();
-        SlotTypeReference capeSlot = CapeItem.getStaticIdentifier();
-        SlotTypeReference shieldSlot = ShieldOfRepulsionItem.getStaticIdentifier();
+        SlotTypeReference glovesSlot = GlovesItem.getStaticSlotType();
+        SlotTypeReference pendantSlot = PendantItem.getStaticSlotType();
+        SlotTypeReference capeSlot = CapeItem.getStaticSlotType();
+        SlotTypeReference shieldSlot = ShieldOfRepulsionItem.getStaticSlotType();
         if (!getItemBySlotType(armorStand, glovesSlot).isEmpty()
                 && Math.abs(front) >= (isSmall ? 0.15 : 0.2)
                 && vertical >= (isSmall ? 0.65 : 0.75)

@@ -28,5 +28,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed an unused accessory compatibility-name helper from slot resolution.
 - Renamed internal accessory slot identifier helpers to slot type providers.
 - Renamed mob accessory spawn slot variables to slot type terminology.
+- Renamed static accessory slot helpers to slot type terminology.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

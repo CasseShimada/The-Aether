@@ -40,7 +40,7 @@ public class PlayerShieldOfRepulsionLayer extends RenderLayer<AvatarRenderState,
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, ShieldOfRepulsionItem.getStaticIdentifier(), 0);
+        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, ShieldOfRepulsionItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof ShieldOfRepulsionItem shieldItem)) {
             return;
         }

@@ -81,10 +81,10 @@ public class GlovesItem extends AccessoryItem implements AccessorySlotProvider {
      */
     @Override
     public SlotTypeReference getSlotType() {
-        return getStaticIdentifier();
+        return getStaticSlotType();
     }
 
-    public static SlotTypeReference getStaticIdentifier() {
+    public static SlotTypeReference getStaticSlotType() {
         return AetherConfig.COMMON.use_default_accessories_menu.get() ? () -> "hand" : AetherAccessorySlots.getGlovesSlotType();
     }
 }

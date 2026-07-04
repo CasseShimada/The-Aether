@@ -34,11 +34,11 @@ import java.util.Optional;
 
 public final class EntityAccessorySpawnHooks {
     private static final SlotTypeReference[] ALL_ACCESSORY_SLOTS = {
-            GlovesItem.getStaticIdentifier(),
-            PendantItem.getStaticIdentifier()
+            GlovesItem.getStaticSlotType(),
+            PendantItem.getStaticSlotType()
     };
     private static final SlotTypeReference[] GLOVE_SLOTS = {
-            GlovesItem.getStaticIdentifier()
+            GlovesItem.getStaticSlotType()
     };
 
     private EntityAccessorySpawnHooks() {
@@ -184,7 +184,7 @@ public final class EntityAccessorySpawnHooks {
 
     @Nullable
     private static Item getEquipmentForSlot(SlotTypeReference slotType, ArmorMaterial armorMaterial) {
-        if (slotType.equals(GlovesItem.getStaticIdentifier())) {
+        if (slotType.equals(GlovesItem.getStaticSlotType())) {
             if (armorMaterial == ArmorMaterials.LEATHER) {
                 return AetherItems.LEATHER_GLOVES;
             } else if (armorMaterial == ArmorMaterials.GOLD) {
@@ -196,7 +196,7 @@ public final class EntityAccessorySpawnHooks {
             } else if (armorMaterial == ArmorMaterials.DIAMOND) {
                 return AetherItems.DIAMOND_GLOVES;
             }
-        } else if (slotType.equals(PendantItem.getStaticIdentifier())) {
+        } else if (slotType.equals(PendantItem.getStaticSlotType())) {
             if (armorMaterial == ArmorMaterials.IRON) {
                 return AetherItems.IRON_PENDANT;
             } else if (armorMaterial == ArmorMaterials.GOLD) {

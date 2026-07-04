@@ -40,10 +40,10 @@ public class ShieldOfRepulsionItem extends AccessoryItem implements AccessorySlo
      */
     @Override
     public SlotTypeReference getSlotType() {
-        return getStaticIdentifier();
+        return getStaticSlotType();
     }
 
-    public static SlotTypeReference getStaticIdentifier() {
+    public static SlotTypeReference getStaticSlotType() {
         return AetherConfig.COMMON.use_default_accessories_menu.get() ? () -> "back" : AetherAccessorySlots.getShieldSlotType();
     }
 }
