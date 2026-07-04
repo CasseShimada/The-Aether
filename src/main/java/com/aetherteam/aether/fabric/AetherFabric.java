@@ -11,6 +11,6 @@ public class AetherFabric implements ModInitializer {
         AetherMoaTypes.registerSynced();
         Aether.init();
         AetherNetworking.registerCommon();
-        AetherFabricEvents.register();
+        AetherFabricEvents.registerCallbacks();
     }
 }

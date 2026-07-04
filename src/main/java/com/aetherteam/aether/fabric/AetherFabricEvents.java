@@ -23,7 +23,7 @@ public final class AetherFabricEvents {
     private AetherFabricEvents() {
     }
 
-    public static void register() {
+    public static void registerCallbacks() {
         registerPlayerEvents();
         registerEntityEvents();
         registerLevelEvents();
