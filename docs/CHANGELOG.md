@@ -34,5 +34,10 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Replaced accessory equip pair results with an explicit equip result record.
 - Replaced Fabric config builder pairs with an explicit configured result record.
 - Replaced bronze dungeon nearby chunk mutable height output with an explicit search result record.
+- Replaced Guava collection helpers in Aether code with JDK collection APIs.
+- Replaced remaining external functional utility callbacks with local functional interfaces.
+- Tightened attachment sync packet typing without changing the sync payload format.
+- Collapsed thin sound event and menu screen registration helpers into direct Minecraft registration calls.
+- Narrowed the registry construction context helper API to its required entrypoints.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
