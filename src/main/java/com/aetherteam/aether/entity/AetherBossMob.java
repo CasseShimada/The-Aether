@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import com.aetherteam.aether.event.hooks.EntityGriefingRules;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
@@ -96,13 +95,16 @@ public interface AetherBossMob<T extends Mob & AetherBossMob<T>> extends BossMob
      * The default minimum and maximum positions for expanded entity bounds.
      *
      * @param entity The boss entity.
-     * @return A {@link Pair} of the minimum {@link BlockPos} and the maximum {@link BlockPos}.
+     * @return The minimum and maximum {@link BlockPos} bounds.
      */
-    default Pair<BlockPos, BlockPos> getDefaultBounds(T entity) {
+    default Bounds getDefaultBounds(T entity) {
         AABB boundingBox = entity.getBoundingBox();
         BlockPos min = BlockPos.containing(boundingBox.minX - 1, boundingBox.minY - 1, boundingBox.minZ - 1);
         BlockPos max = BlockPos.containing(Math.ceil(boundingBox.maxX - 1) + 1, Math.ceil(boundingBox.maxY - 1) + 1, Math.ceil(boundingBox.maxZ - 1) + 1);
-        return Pair.of(min, max);
+        return new Bounds(min, max);
+    }
+
+    record Bounds(BlockPos min, BlockPos max) {
     }
 
     /**

@@ -55,7 +55,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import com.aetherteam.aether.network.AetherPacketSender;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -176,8 +175,8 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
      * @see AetherBossMob#evaporate(Mob, BlockPos, BlockPos, Predicate)
      */
     private void evaporate() {
-        Pair<BlockPos, BlockPos> minMax = this.getDefaultBounds(this);
-        AetherBossMob.super.evaporate(this, minMax.getLeft(), minMax.getRight(), (blockState) -> true);
+        AetherBossMob.Bounds bounds = this.getDefaultBounds(this);
+        AetherBossMob.super.evaporate(this, bounds.min(), bounds.max(), (blockState) -> true);
     }
 
     /**

@@ -69,7 +69,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import com.aetherteam.aether.event.hooks.EntityGriefingRules;
 import com.aetherteam.aether.network.AetherPacketSender;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -222,8 +221,8 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
      * @see AetherBossMob#evaporate(Mob, BlockPos, BlockPos, Predicate)
      */
     private void evaporate() {
-        Pair<BlockPos, BlockPos> minMax = this.getDefaultBounds(this);
-        AetherBossMob.super.evaporate(this, minMax.getLeft(), minMax.getRight(), (blockState) -> !blockState.is(AetherTags.Blocks.VALKYRIE_QUEEN_UNBREAKABLE));
+        AetherBossMob.Bounds bounds = this.getDefaultBounds(this);
+        AetherBossMob.super.evaporate(this, bounds.min(), bounds.max(), (blockState) -> !blockState.is(AetherTags.Blocks.VALKYRIE_QUEEN_UNBREAKABLE));
     }
 
     /**
