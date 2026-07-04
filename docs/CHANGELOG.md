@@ -29,5 +29,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed internal accessory slot identifier helpers to slot type providers.
 - Renamed mob accessory spawn slot variables to slot type terminology.
 - Renamed static accessory slot helpers to slot type terminology.
+- Renamed the visible cape accessory render helper to match its returned stack.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

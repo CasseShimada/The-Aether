@@ -26,14 +26,7 @@ public final class AccessoryRenderHooks {
     private AccessoryRenderHooks() {
     }
 
-    /**
-     * Checks whether a cape accessory is visible.
-     *
-     * @param livingEntity The {@link LivingEntity} wearing the cape.
-     * @return Whether the cape is visible, as a {@link Boolean}.
-     * @see com.aetherteam.aether.mixin.mixins.client.AbstractClientPlayerMixin
-     */
-    public static ItemStack isCapeVisible(LivingEntity livingEntity) {
+    public static ItemStack getVisibleCapeAccessory(LivingEntity livingEntity) {
         ItemStack stack = getVisibleAccessory(livingEntity, CapeItem.getStaticSlotType(), 0);
         return getCapeTexture(stack) != null ? stack : ItemStack.EMPTY;
     }

@@ -22,7 +22,7 @@ public class AbstractClientPlayerMixin {
     private PlayerSkin getSkin(Operation<PlayerSkin> original) {
         AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) (Object) this;
         PlayerSkin skin = original.call();
-        ItemStack stack = AccessoryRenderHooks.isCapeVisible(abstractClientPlayer);
+        ItemStack stack = AccessoryRenderHooks.getVisibleCapeAccessory(abstractClientPlayer);
         if (!stack.isEmpty()) {
             Identifier texture = AccessoryRenderHooks.getCapeTexture(stack);
             if (texture != null) {
