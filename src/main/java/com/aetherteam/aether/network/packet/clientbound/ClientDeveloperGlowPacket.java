@@ -3,7 +3,6 @@ package com.aetherteam.aether.network.packet.clientbound;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.perk.data.ClientDeveloperGlowPerkData;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
-import com.google.common.collect.Maps;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,6 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -71,7 +71,7 @@ public class ClientDeveloperGlowPacket {
         public static final Type<ClientDeveloperGlowPacket.Sync> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "sync_developer_glow"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientDeveloperGlowPacket.Sync> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.map(Maps::newHashMapWithExpectedSize, UUIDUtil.STREAM_CODEC, DeveloperGlow.STREAM_CODEC),
+            ByteBufCodecs.map(HashMap::new, UUIDUtil.STREAM_CODEC, DeveloperGlow.STREAM_CODEC),
             ClientDeveloperGlowPacket.Sync::developerGlows,
             ClientDeveloperGlowPacket.Sync::new);
 

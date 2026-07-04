@@ -9,7 +9,6 @@ import com.aetherteam.aether.loot.AetherLoot;
 import com.aetherteam.aether.loot.AetherLootContexts;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.ToolDebuffPacket;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,31 +38,28 @@ public final class ToolAbilityHooks {
     /**
      * Blocks able to be stripped, and the equivalent result block.
      */
-    public static final Map<Block, Block> STRIPPABLES = (new ImmutableMap.Builder<Block, Block>())
-            .put(AetherBlocks.SKYROOT_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG)
-            .put(AetherBlocks.GOLDEN_OAK_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG)
-            .put(AetherBlocks.SKYROOT_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD)
-            .put(AetherBlocks.GOLDEN_OAK_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD)
-            .build();
+    public static final Map<Block, Block> STRIPPABLES = Map.of(
+            AetherBlocks.SKYROOT_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG,
+            AetherBlocks.GOLDEN_OAK_LOG, AetherBlocks.STRIPPED_SKYROOT_LOG,
+            AetherBlocks.SKYROOT_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD,
+            AetherBlocks.GOLDEN_OAK_WOOD, AetherBlocks.STRIPPED_SKYROOT_WOOD);
 
     /**
      * Blocks able to be flattened, and the equivalent result block.
      */
-    public static final Map<Block, Block> FLATTENABLES = (new ImmutableMap.Builder<Block, Block>())
-            .put(AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH)
-            .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH)
-            .put(AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_DIRT_PATH)
-            .build();
+    public static final Map<Block, Block> FLATTENABLES = Map.of(
+            AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH,
+            AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_DIRT_PATH,
+            AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_DIRT_PATH);
 
     /**
      * Blocks able to be tilled, and the equivalent result block.
      */
-    public static final Map<Block, Block> TILLABLES = (new ImmutableMap.Builder<Block, Block>())
-            .put(AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_FARMLAND)
-            .put(AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND)
-            .put(AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND)
-            .put(AetherBlocks.AETHER_DIRT_PATH, AetherBlocks.AETHER_FARMLAND)
-            .build();
+    public static final Map<Block, Block> TILLABLES = Map.of(
+            AetherBlocks.AETHER_DIRT, AetherBlocks.AETHER_FARMLAND,
+            AetherBlocks.AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND,
+            AetherBlocks.ENCHANTED_AETHER_GRASS_BLOCK, AetherBlocks.AETHER_FARMLAND,
+            AetherBlocks.AETHER_DIRT_PATH, AetherBlocks.AETHER_FARMLAND);
 
     public static boolean debuffTools;
 

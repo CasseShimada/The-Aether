@@ -1,12 +1,13 @@
 package com.aetherteam.aether.client.renderer.entity.model;
 
 import com.aetherteam.aether.client.renderer.entity.state.AechorPlantRenderState;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+
+import java.util.List;
 
 public class AechorPlantModel extends EntityModel<AechorPlantRenderState> {
     public final ModelPart stem;
@@ -106,15 +107,15 @@ public class AechorPlantModel extends EntityModel<AechorPlantRenderState> {
     }
 
     public Iterable<ModelPart> stamenStemParts() {
-        return ImmutableList.of(this.stamenStem1, this.stamenStem2, this.stamenStem3);
+        return List.of(this.stamenStem1, this.stamenStem2, this.stamenStem3);
     }
 
     public Iterable<ModelPart> leafParts() {
-        return ImmutableList.of(this.leaf1, this.leaf2, this.leaf3, this.leaf4, this.leaf5, this.leaf6, this.leaf7, this.leaf8, this.leaf9, this.leaf10);
+        return List.of(this.leaf1, this.leaf2, this.leaf3, this.leaf4, this.leaf5, this.leaf6, this.leaf7, this.leaf8, this.leaf9, this.leaf10);
     }
 
     public Iterable<ModelPart> petalParts() {
-        return ImmutableList.of(this.upperPetal1, this.lowerPetal1, this.upperPetal2, this.lowerPetal2, this.upperPetal3, this.lowerPetal3, this.upperPetal4, this.lowerPetal4, this.upperPetal5, this.lowerPetal5);
+        return List.of(this.upperPetal1, this.lowerPetal1, this.upperPetal2, this.lowerPetal2, this.upperPetal3, this.lowerPetal3, this.upperPetal4, this.lowerPetal4, this.upperPetal5, this.lowerPetal5);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.aetherteam.aether.world.trunkplacer;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -54,6 +53,6 @@ public class CrystalTreeTrunkPlacer extends StraightTrunkPlacer {
                 f += 0.25F * Mth.TWO_PI;
             }
         }
-        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(pos.above(height), 0, false));
+        return List.of(new FoliagePlacer.FoliageAttachment(pos.above(height), 0, false));
     }
 }

@@ -1,7 +1,6 @@
 package com.aetherteam.aether.world.processor;
 
 import com.aetherteam.aether.block.AetherBlocks;
-import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +24,7 @@ import java.util.Map;
 public class HolystoneReplaceProcessor implements StructureProcessor {
     public static final MapCodec<HolystoneReplaceProcessor> CODEC = MapCodec.unit(() -> HolystoneReplaceProcessor.INSTANCE);
     public static final HolystoneReplaceProcessor INSTANCE = new HolystoneReplaceProcessor();
-    private final Map<Block, Block> replacements = Util.make(Maps.newHashMap(), (map) -> {
+    private final Map<Block, Block> replacements = Util.make(new HashMap<>(), (map) -> {
         map.put(Blocks.COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS);
         map.put(Blocks.MOSSY_COBBLESTONE, AetherBlocks.HOLYSTONE_BRICKS);
         map.put(Blocks.COBBLESTONE_STAIRS, AetherBlocks.HOLYSTONE_BRICK_STAIRS);

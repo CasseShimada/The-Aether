@@ -3,7 +3,6 @@ package com.aetherteam.aether.network.packet.clientbound;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.perk.data.ClientMoaSkinPerkData;
 import com.aetherteam.aether.perk.types.MoaData;
-import com.google.common.collect.Maps;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,6 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -71,7 +71,7 @@ public abstract class ClientMoaSkinPacket {
         public static final Type<ClientMoaSkinPacket.Sync> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "sync_moa_skin"));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientMoaSkinPacket.Sync> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.map(Maps::newHashMapWithExpectedSize, UUIDUtil.STREAM_CODEC, MoaData.STREAM_CODEC),
+            ByteBufCodecs.map(HashMap::new, UUIDUtil.STREAM_CODEC, MoaData.STREAM_CODEC),
             ClientMoaSkinPacket.Sync::moaSkinsData,
             ClientMoaSkinPacket.Sync::new);
 

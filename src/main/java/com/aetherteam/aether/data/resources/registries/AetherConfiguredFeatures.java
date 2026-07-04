@@ -13,7 +13,6 @@ import com.aetherteam.aether.world.foliageplacer.HolidayFoliagePlacer;
 import com.aetherteam.aether.world.treedecorator.HolidayTreeDecorator;
 import com.aetherteam.aether.world.trunkplacer.CrystalTreeTrunkPlacer;
 import com.aetherteam.aether.world.trunkplacer.GoldenOakTrunkPlacer;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -119,7 +118,7 @@ public class AetherConfiguredFeatures {
                         new HolidayFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), ConstantInt.of(8)),
                         new TwoLayersFeatureSize(1, 0, 1),
                         BlockStateProvider.simple(AetherFeatureStates.AETHER_DIRT)).ignoreVines()
-                        .decorators(ImmutableList.of(new HolidayTreeDecorator(new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
+                        .decorators(List.of(new HolidayTreeDecorator(new WeightedStateProvider(new WeightedList.Builder<BlockState>().add(AetherFeatureStates.SNOW, 10).add(AetherFeatureStates.PRESENT, 1).build()))))
                         .build());
         register(context, GRASS_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK, AetherConfiguredFeatureBuilders.grassPatch(BlockStateProvider.simple(Blocks.SHORT_GRASS), 32));
         register(context, TALL_GRASS_PATCH_CONFIGURATION, Feature.SIMPLE_BLOCK, AetherConfiguredFeatureBuilders.tallGrassPatch(BlockStateProvider.simple(Blocks.TALL_GRASS)));

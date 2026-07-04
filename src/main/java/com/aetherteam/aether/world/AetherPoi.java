@@ -3,7 +3,6 @@ package com.aetherteam.aether.world;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.mixin.mixins.common.accessor.PoiTypesAccessor;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,7 +27,7 @@ public final class AetherPoi {
     }
 
     private static Set<BlockState> getBlockStates(Block block) {
-        return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
+        return Set.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
     private static Holder<PoiType> getPortalHolder() {

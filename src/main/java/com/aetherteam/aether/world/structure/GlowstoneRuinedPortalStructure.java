@@ -3,7 +3,6 @@ package com.aetherteam.aether.world.structure;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.world.structurepiece.GlowstoneRuinedPortalPiece;
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -139,7 +138,7 @@ public class GlowstoneRuinedPortalStructure extends Structure {
             i = height;
         }
 
-        List<BlockPos> positions = ImmutableList.of(new BlockPos(box.minX(), 0, box.minZ()), new BlockPos(box.maxX(), 0, box.minZ()), new BlockPos(box.minX(), 0, box.maxZ()), new BlockPos(box.maxX(), 0, box.maxZ()));
+        List<BlockPos> positions = List.of(new BlockPos(box.minX(), 0, box.minZ()), new BlockPos(box.maxX(), 0, box.minZ()), new BlockPos(box.minX(), 0, box.maxZ()), new BlockPos(box.maxX(), 0, box.maxZ()));
         List<NoiseColumn> noiseColumns = positions.stream().map((pos) -> chunkGenerator.getBaseColumn(pos.getX(), pos.getZ(), heightAccessor, randomState)).toList();
         Heightmap.Types heightmap$types = verticalPlacement == GlowstoneRuinedPortalPiece.VerticalPlacement.ON_OCEAN_FLOOR ? Heightmap.Types.OCEAN_FLOOR : Heightmap.Types.WORLD_SURFACE;
 

@@ -7,7 +7,6 @@ import com.aetherteam.aether.blockentity.TreasureChestBlockEntity;
 import com.aetherteam.aether.loot.AetherLoot;
 import com.aetherteam.aether.world.processor.BorderBoxPosTest;
 import com.aetherteam.aether.world.structurepiece.AetherStructurePieceTypes;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -23,6 +22,8 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+
+import java.util.List;
 
 /**
  * This is the throne room for fighting the Valkyrie Queen.
@@ -47,7 +48,7 @@ public class SilverBossRoom extends SilverDungeonPiece {
     private static StructureProcessor makeBoxProcessor(StructureTemplateManager templateManager, Identifier id) {
         Vec3i template = templateManager.getOrCreate(id).getSize();
         BorderBoxPosTest borderTest = new BorderBoxPosTest(0, 1, 0, template.getX() - 1, template.getY() - 1, template.getZ() - 1);
-        return new RuleProcessor(ImmutableList.of(
+        return new RuleProcessor(List.of(
                 new ProcessorRule(new RandomBlockMatchTest(AetherBlocks.LOCKED_ANGELIC_STONE, 0.05F), AlwaysTrueTest.INSTANCE, borderTest, AetherBlocks.LOCKED_LIGHT_ANGELIC_STONE.defaultBlockState())
         ));
     }

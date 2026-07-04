@@ -5,7 +5,6 @@ import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
 import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.data.User;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,6 +17,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -356,7 +356,7 @@ public class MoaSkins {
     }
 
     public static Map<String, MoaSkin> getMoaSkins() {
-        return ImmutableMap.copyOf(MOA_SKINS);
+        return Collections.unmodifiableMap(new LinkedHashMap<>(MOA_SKINS));
     }
 
     public static class MoaSkin {

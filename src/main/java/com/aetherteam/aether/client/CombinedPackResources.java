@@ -1,7 +1,5 @@
 package com.aetherteam.aether.client;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.*;
 import net.minecraft.server.packs.metadata.MetadataSectionType;
@@ -30,7 +28,7 @@ public class CombinedPackResources extends AbstractPackResources {
     public CombinedPackResources(PackLocationInfo id, PackMetadataSection packInfo, List<? extends PackResources> packs, Path sourcePack) {
         super(id);
         this.packInfo = packInfo;
-        this.packs = ImmutableList.copyOf(packs);
+        this.packs = List.copyOf(packs);
         this.assets = this.buildNamespaceMap(PackType.CLIENT_RESOURCES, packs);
         this.data = this.buildNamespaceMap(PackType.SERVER_DATA, packs);
         this.source = sourcePack;
@@ -43,8 +41,8 @@ public class CombinedPackResources extends AbstractPackResources {
                 map.computeIfAbsent(namespace, k -> new ArrayList<>()).add(pack);
             }
         }
-        map.replaceAll((k, list) -> ImmutableList.copyOf(list));
-        return ImmutableMap.copyOf(map);
+        map.replaceAll((k, list) -> List.copyOf(list));
+        return Map.copyOf(map);
     }
 
     public Path getSource() {

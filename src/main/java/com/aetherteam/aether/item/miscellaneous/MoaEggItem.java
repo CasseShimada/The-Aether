@@ -4,7 +4,6 @@ import com.aetherteam.aether.api.registers.MoaType;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.aether.mixin.mixins.common.accessor.BaseSpawnerAccessor;
-import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -33,6 +32,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -188,6 +188,6 @@ public class MoaEggItem extends Item {
      * @return An {@link Iterable} list of all {@link MoaEggItem}s.
      */
     public static Iterable<MoaEggItem> moaEggs() {
-        return Iterables.unmodifiableIterable(BY_ID.values());
+        return Collections.unmodifiableCollection(BY_ID.values());
     }
 }

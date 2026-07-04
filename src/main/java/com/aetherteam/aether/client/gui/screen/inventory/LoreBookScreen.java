@@ -3,7 +3,6 @@ package com.aetherteam.aether.client.gui.screen.inventory;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.client.gui.component.inventory.LorePageButton;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
-import com.google.common.collect.Lists;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -171,10 +170,8 @@ public class LoreBookScreen extends AbstractContainerScreen<LoreBookMenu> {
 
             List<String> remainingPages = formattedText.subList(6, formattedText.size()); // Gets the text for the remaining pages.
 
-            final List<List<String>> list = Lists.partition(remainingPages, 8); // Splits up the text for the remaining pages to have 8 lines per page.
-
-            for (int i = 1; i < list.size() + 1; i++) {
-                this.pages.put(i, list.get(i - 1)); // Sets up the remaining pages with text.
+            for (int start = 0, page = 1; start < remainingPages.size(); start += 8, page++) {
+                this.pages.put(page, remainingPages.subList(start, Math.min(start + 8, remainingPages.size()))); // Sets up the remaining pages with text.
             }
         }
     }

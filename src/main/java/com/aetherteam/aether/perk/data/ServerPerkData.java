@@ -8,7 +8,6 @@ import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.aether.perk.types.MoaData;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -156,7 +155,7 @@ public class ServerPerkData<T> {
                 }
             }
         }
-        return ImmutableMap.copyOf(verifiedPerkData);
+        return Map.copyOf(verifiedPerkData);
     }
 
     /**

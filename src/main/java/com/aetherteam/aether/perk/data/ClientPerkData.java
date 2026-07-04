@@ -1,6 +1,5 @@
 package com.aetherteam.aether.perk.data;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -32,7 +31,7 @@ public abstract class ClientPerkData<T> {
      * @return A map of player {@link UUID}s paired with perks on the client.
      */
     public Map<UUID, T> getClientPerkData() {
-        return ImmutableMap.copyOf(this.getMap());
+        return Map.copyOf(this.getMap());
     }
 
     /**

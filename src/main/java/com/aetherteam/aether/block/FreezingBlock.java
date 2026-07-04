@@ -4,8 +4,6 @@ import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.IcestoneFreezableRecipe;
 import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import net.minecraft.commands.CacheableFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -28,9 +26,9 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
     float SQRT_8 = Mth.sqrt(8);
 
     /**
-     * Table of cached {@link AetherRecipeTypes#ICESTONE_FREEZABLE} recipes, searchable with associated {@link Block}s and {@link BlockPropertyPair}s.
+     * Cache of {@link AetherRecipeTypes#ICESTONE_FREEZABLE} recipes, searchable with associated {@link Block}s and {@link BlockPropertyPair}s.
      */
-    Table<Block, BlockPropertyPair, IcestoneFreezableRecipe> cachedBlocks = HashBasedTable.create();
+    Map<Block, Map<BlockPropertyPair, IcestoneFreezableRecipe>> cachedBlocks = new HashMap<>();
     List<Block> cachedResults = new ArrayList<>();
 
     /**
@@ -52,7 +50,7 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
             if (fluidState.isEmpty() || oldBlockState.is(fluidState.createLegacyBlock().getBlock())) { // Default freezing behavior.
                 BlockPropertyPair pair = matchesCache(oldBlock, oldBlockState);
                 if (pair != null) {
-                    IcestoneFreezableRecipe freezableRecipe = cachedBlocks.get(oldBlock, pair);
+                    IcestoneFreezableRecipe freezableRecipe = cachedBlocks.getOrDefault(oldBlock, Map.of()).get(pair);
                     if (freezableRecipe != null) {
                         BlockState newBlockState = freezableRecipe.getResultState(oldBlockState);
                         Optional<CacheableFunction> function = freezableRecipe.getFunction();
@@ -64,7 +62,7 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
                 oldBlock = fluidState.createLegacyBlock().getBlock();
                 BlockPropertyPair pair = matchesCache(oldBlock, oldBlockState);
                 if (pair != null) {
-                    IcestoneFreezableRecipe freezableRecipe = cachedBlocks.get(oldBlock, pair);
+                    IcestoneFreezableRecipe freezableRecipe = cachedBlocks.getOrDefault(oldBlock, Map.of()).get(pair);
                     if (freezableRecipe != null) {
                         level.destroyBlock(pos, true);
                         BlockState newBlockState = freezableRecipe.getResultState(oldBlockState);
@@ -93,7 +91,7 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
                 if (recipe.value().getType() == AetherRecipeTypes.ICESTONE_FREEZABLE && recipe.value() instanceof IcestoneFreezableRecipe freezableRecipe) {
                     BlockPropertyPair[] pairs = freezableRecipe.getIngredient().getPairs();
                     if (pairs != null) {
-                        Arrays.stream(pairs).forEach(pair -> cachedBlocks.put(pair.block(), pair, freezableRecipe));
+                        Arrays.stream(pairs).forEach(pair -> cachedBlocks.computeIfAbsent(pair.block(), block -> new HashMap<>()).put(pair, freezableRecipe));
                     }
                     cachedResults.add(freezableRecipe.getResult().block());
                 }
@@ -110,9 +108,10 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
      */
     @Nullable
     static BlockPropertyPair matchesCache(Block block, BlockState blockState) {
-        if (cachedBlocks.containsRow(block)) {
+        Map<BlockPropertyPair, IcestoneFreezableRecipe> cachedBlockRecipes = cachedBlocks.get(block);
+        if (cachedBlockRecipes != null) {
             BlockPropertyPair pair = null;
-            for (Map.Entry<BlockPropertyPair, IcestoneFreezableRecipe> entry : cachedBlocks.row(block).entrySet()) {
+            for (Map.Entry<BlockPropertyPair, IcestoneFreezableRecipe> entry : cachedBlockRecipes.entrySet()) {
                 if (entry.getKey().matches(blockState)) {
                     pair = entry.getKey();
                 }

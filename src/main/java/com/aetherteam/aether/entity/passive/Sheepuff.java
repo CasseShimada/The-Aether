@@ -8,7 +8,6 @@ import com.aetherteam.aether.entity.ai.goal.EatAetherGrassGoal;
 import com.aetherteam.aether.entity.ai.goal.FallingRandomStrollGoal;
 import com.aetherteam.aether.entity.ai.navigator.FallPathNavigation;
 import com.aetherteam.aether.loot.AetherLoot;
-import com.google.common.collect.Maps;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
@@ -51,12 +50,10 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * [CODE COPY] - {@link net.minecraft.world.entity.animal.sheep.Sheep}.<br><br>
@@ -73,9 +70,11 @@ public class Sheepuff extends AetherAnimal implements Shearable {
             map.put(color, Blocks.WOOL.pick(color));
         }
     });
-    private static final Map<DyeColor, Integer> COLOR_BY_DYE = Maps.<DyeColor, Integer>newEnumMap( // Do not remove these explicit type arguments even if your dev environment says they can be removed.
-        Arrays.stream(DyeColor.values()).collect(Collectors.toMap(p_29868_ -> p_29868_, Sheepuff::createSheepColor))
-    );
+    private static final Map<DyeColor, Integer> COLOR_BY_DYE = Util.make(new EnumMap<>(DyeColor.class), (map) -> {
+        for (DyeColor color : DyeColor.values()) {
+            map.put(color, createSheepColor(color));
+        }
+    });
     private int eatAnimationTick, amountEaten;
     private EatAetherGrassGoal eatBlockGoal;
 

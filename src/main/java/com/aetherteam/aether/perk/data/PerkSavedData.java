@@ -5,7 +5,6 @@ import com.aetherteam.aether.perk.types.DeveloperGlow;
 import com.aetherteam.aether.perk.types.Halo;
 import com.aetherteam.aether.perk.types.MoaData;
 import com.aetherteam.aether.perk.types.MoaSkins;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -139,7 +138,7 @@ public class PerkSavedData extends SavedData {
      * @return A {@link Map} of player {@link UUID}s and {@link MoaData} retrieved from "perks.dat".
      */
     Map<UUID, MoaData> getStoredSkinData() {
-        return ImmutableMap.copyOf(this.storedSkinData);
+        return Map.copyOf(this.storedSkinData);
     }
 
     /**
@@ -167,7 +166,7 @@ public class PerkSavedData extends SavedData {
      * @return A {@link Map} of player {@link UUID}s and {@link Halo} info retrieved from "perks.dat".
      */
     Map<UUID, Halo> getStoredHaloData() {
-        return ImmutableMap.copyOf(this.storedHaloData);
+        return Map.copyOf(this.storedHaloData);
     }
 
     /**
@@ -195,7 +194,7 @@ public class PerkSavedData extends SavedData {
      * @return A {@link Map} of player {@link UUID}s and {@link DeveloperGlow} info retrieved from "perks.dat".
      */
     Map<UUID, DeveloperGlow> getStoredDeveloperGlowData() {
-        return ImmutableMap.copyOf(this.storedDeveloperGlowData);
+        return Map.copyOf(this.storedDeveloperGlowData);
     }
 
     /**
