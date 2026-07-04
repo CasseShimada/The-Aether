@@ -297,7 +297,7 @@ public class AetherAccessoriesMenu extends InventoryMenu {
             return -1;
         }
 
-        return this.getMenuIndexForAccessorySlot(equipReference.first().slotName(), equipReference.first().slot());
+        return this.getMenuIndexForAccessorySlot(equipReference.reference().slotName(), equipReference.reference().slot());
     }
 
     private int getMenuIndexForAccessorySlot(String slotName, int slotIndex) {

@@ -3,6 +3,7 @@ package com.aetherteam.aether.accessories.api;
 import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilder;
 import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.api.core.Accessory;
+import com.aetherteam.aether.accessories.api.equip.AccessoryEquipResult;
 import com.aetherteam.aether.accessories.api.equip.EquipAction;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
@@ -12,7 +13,6 @@ import com.aetherteam.aether.accessories.impl.AccessoriesState;
 import com.aetherteam.aether.attachment.AccessoryInventoryAttachment;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,12 +61,12 @@ final class EntityAccessoryStorage implements AccessoriesContainerOwner {
     }
 
     @Nullable
-    public synchronized Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot) {
+    public synchronized AccessoryEquipResult canEquipAccessory(ItemStack stack, boolean requireEmptySlot) {
         return this.canEquipAccessory(stack, requireEmptySlot, reference -> true);
     }
 
     @Nullable
-    public synchronized Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter) {
+    public synchronized AccessoryEquipResult canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter) {
         List<SlotType> validSlots = AccessoriesAPI.getValidSlotTypes(this.entity, stack);
         for (SlotType slotType : validSlots) {
             AccessoriesContainer container = this.getOrCreateContainer(slotType.name(), slotType.size());
@@ -79,7 +79,7 @@ final class EntityAccessoryStorage implements AccessoriesContainerOwner {
                         continue;
                     }
                     EquipAction action = EquipAction.of(equippedStack -> container.getAccessories().setItem(index, equippedStack));
-                    return Pair.of(reference, action);
+                    return new AccessoryEquipResult(reference, action);
                 }
             }
         }

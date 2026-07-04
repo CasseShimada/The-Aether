@@ -8,10 +8,8 @@ import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.core.Accessory;
-import com.aetherteam.aether.accessories.api.equip.EquipAction;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -78,17 +76,18 @@ public class AetherDispenseBehaviors {
                 continue;
             }
 
-            Pair<SlotReference, EquipAction> equipReference = accessories.canEquipAccessory(candidateStack, true);
-            if (equipReference == null || !accessory.canEquip(candidateStack, equipReference.first())) {
+            var equipReference = accessories.canEquipAccessory(candidateStack, true);
+            if (equipReference == null || !accessory.canEquip(candidateStack, equipReference.reference())) {
                 continue;
             }
 
             ItemStack itemStack = stack.split(1);
-            SlotTypeReference slotTypeReference = SlotTypeReference.of(equipReference.first().slotName());
-            accessory.onEquipFromUse(itemStack, equipReference.left());
-            equipReference.second().equipStack(itemStack.copy());
+            SlotReference reference = equipReference.reference();
+            SlotTypeReference slotTypeReference = SlotTypeReference.of(reference.slotName());
+            accessory.onEquipFromUse(itemStack, reference);
+            equipReference.action().equipStack(itemStack.copy());
             if (livingEntity instanceof ArmorStand armorStand) {
-                if (equipReference.first().slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
+                if (reference.slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
                     armorStand.setShowArms(true);
                 }
             } else if (livingEntity instanceof Mob mob && EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {

@@ -1,11 +1,10 @@
 package com.aetherteam.aether.accessories.api;
 
-import com.aetherteam.aether.accessories.api.equip.EquipAction;
+import com.aetherteam.aether.accessories.api.equip.AccessoryEquipResult;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -21,10 +20,10 @@ public interface AccessoriesStorage {
     AccessoriesContainer getContainer(SlotTypeReference slotTypeReference);
 
     @Nullable
-    Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot);
+    AccessoryEquipResult canEquipAccessory(ItemStack stack, boolean requireEmptySlot);
 
     @Nullable
-    Pair<SlotReference, EquipAction> canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter);
+    AccessoryEquipResult canEquipAccessory(ItemStack stack, boolean requireEmptySlot, Predicate<SlotReference> slotFilter);
 
     List<SlotEntryReference> getEquipped(Item item);
 
