@@ -166,18 +166,14 @@ public final class AetherSoundEvents {
     public static final SoundEvent UI_TOAST_AETHER_SILVER = register("ui.toast.aether_silver");
     public static final SoundEvent UI_TOAST_AETHER_GOLD = register("ui.toast.aether_gold");
 
-    public static final SoundEvent MUSIC_MENU = registerHolder("music.menu");
-    public static final SoundEvent MUSIC_AETHER = registerHolder("music.aether");
+    public static final SoundEvent MUSIC_MENU = register("music.menu");
+    public static final SoundEvent MUSIC_AETHER = register("music.aether");
 
-    public static final SoundEvent MUSIC_BOSS_SLIDER = registerHolder("music.boss.slider");
-    public static final SoundEvent MUSIC_BOSS_VALKYRIE_QUEEN = registerHolder("music.boss.valkyrie_queen");
-    public static final SoundEvent MUSIC_BOSS_SUN_SPIRIT = registerHolder("music.boss.sun_spirit");
+    public static final SoundEvent MUSIC_BOSS_SLIDER = register("music.boss.slider");
+    public static final SoundEvent MUSIC_BOSS_VALKYRIE_QUEEN = register("music.boss.valkyrie_queen");
+    public static final SoundEvent MUSIC_BOSS_SUN_SPIRIT = register("music.boss.sun_spirit");
 
     private static SoundEvent register(String location) {
-        return registerHolder(location);
-    }
-
-    private static SoundEvent registerHolder(String location) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, location);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
     }
