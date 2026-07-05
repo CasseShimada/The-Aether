@@ -15,7 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class AetherCreativeTabs {
-    public static final CreativeModeTab AETHER_BUILDING_BLOCKS = register("building_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+    public static final CreativeModeTab AETHER_BUILDING_BLOCKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "building_blocks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .icon(() -> new ItemStack(AetherBlocks.HOLYSTONE_BRICKS))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".building_blocks"))
             .displayItems((features, output) -> {
@@ -62,7 +65,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.AEROGEL_SLAB);
                 output.accept(AetherBlocks.AEROGEL_WALL);
             }).build());
-    public static final CreativeModeTab AETHER_DUNGEON_BLOCKS = register("dungeon_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+    public static final CreativeModeTab AETHER_DUNGEON_BLOCKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "dungeon_blocks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .icon(() -> new ItemStack(AetherBlocks.LIGHT_ANGELIC_STONE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".dungeon_blocks"))
             .displayItems((features, output) -> {
@@ -110,7 +116,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.TREASURE_CHEST);
                 output.accept(AetherBlocks.CHEST_MIMIC);
             }).build());
-    public static final CreativeModeTab AETHER_NATURAL_BLOCKS = register("natural_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+    public static final CreativeModeTab AETHER_NATURAL_BLOCKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "natural_blocks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .icon(() -> new ItemStack(AetherBlocks.AETHER_GRASS_BLOCK))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".natural_blocks"))
             .displayItems((features, output) -> {
@@ -145,7 +154,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.GOLDEN_AERCLOUD);
                 output.accept(AetherBlocks.PRESENT);
             }).build());
-    public static final CreativeModeTab AETHER_FUNCTIONAL_BLOCKS = register("functional_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 3)
+    public static final CreativeModeTab AETHER_FUNCTIONAL_BLOCKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "functional_blocks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.TOP, 3)
             .icon(() -> new ItemStack(AetherBlocks.SKYROOT_SIGN))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".functional_blocks"))
             .displayItems((features, output) -> {
@@ -164,7 +176,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.createSwetBannerItemStack(features.holders().lookupOrThrow(Registries.BANNER_PATTERN)));
                 output.accept(AetherItems.AETHER_PORTAL_FRAME);
             }).build());
-    public static final CreativeModeTab AETHER_REDSTONE_BLOCKS = register("redstone_blocks", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 4)
+    public static final CreativeModeTab AETHER_REDSTONE_BLOCKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "redstone_blocks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.TOP, 4)
             .icon(() -> new ItemStack(AetherBlocks.SKYROOT_FENCE_GATE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".redstone_blocks"))
             .displayItems((features, output) -> {
@@ -182,7 +197,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherBlocks.SKYROOT_TRAPDOOR);
                 output.accept(AetherBlocks.ENCHANTED_GRAVITITE);
             }).build());
-    public static final CreativeModeTab AETHER_EQUIPMENT_AND_UTILITIES = register("equipment_and_utilities", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 0)
+    public static final CreativeModeTab AETHER_EQUIPMENT_AND_UTILITIES = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "equipment_and_utilities"),
+            CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 0)
             .icon(() -> new ItemStack(AetherItems.GRAVITITE_PICKAXE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".equipment_and_utilities"))
             .displayItems((features, output) -> {
@@ -258,7 +276,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.MUSIC_DISC_ASCENDING_DAWN);
                 output.accept(AetherItems.MUSIC_DISC_SLIDERS_WRATH);
             }).build());
-    public static final CreativeModeTab AETHER_ARMOR_AND_ACCESSORIES = register("armor_and_accessories", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 1)
+    public static final CreativeModeTab AETHER_ARMOR_AND_ACCESSORIES = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "armor_and_accessories"),
+            CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 1)
             .icon(() -> new ItemStack(AetherItems.VALKYRIE_CHESTPLATE))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".armor_and_accessories"))
             .displayItems((features, output) -> {
@@ -318,7 +339,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.IRON_BUBBLE);
                 output.accept(AetherItems.SHIELD_OF_REPULSION);
             }).build());
-    public static final CreativeModeTab AETHER_FOOD_AND_DRINKS = register("food_and_drinks", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 2)
+    public static final CreativeModeTab AETHER_FOOD_AND_DRINKS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "food_and_drinks"),
+            CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 2)
             .icon(() -> new ItemStack(AetherItems.BLUE_GUMMY_SWET))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".food_and_drinks"))
             .displayItems((features, output) -> {
@@ -338,7 +362,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.SKYROOT_POISON_BUCKET);
                 output.accept(AetherItems.LIFE_SHARD);
             }).build());
-    public static final CreativeModeTab AETHER_INGREDIENTS = register("ingredients", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 3)
+    public static final CreativeModeTab AETHER_INGREDIENTS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "ingredients"),
+            CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 3)
             .icon(() -> new ItemStack(AetherItems.AMBROSIUM_SHARD))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".ingredients"))
             .displayItems((features, output) -> {
@@ -351,7 +378,10 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.SKYROOT_POISON_BUCKET);
                 output.accept(AetherItems.SWET_BALL);
             }).build());
-    public static final CreativeModeTab AETHER_SPAWN_EGGS = register("spawn_eggs", CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 4)
+    public static final CreativeModeTab AETHER_SPAWN_EGGS = Registry.register(
+            BuiltInRegistries.CREATIVE_MODE_TAB,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "spawn_eggs"),
+            CreativeModeTab.builder(CreativeModeTab.Row.BOTTOM, 4)
             .icon(() -> new ItemStack(AetherItems.AERBUNNY_SPAWN_EGG))
             .title(Component.translatable("itemGroup." + Aether.MODID + ".spawn_eggs"))
             .displayItems((features, output) -> {
@@ -376,10 +406,6 @@ public class AetherCreativeTabs {
                 output.accept(AetherItems.VALKYRIE_SPAWN_EGG);
                 output.accept(AetherItems.ZEPHYR_SPAWN_EGG);
             }).build());
-
-    private static CreativeModeTab register(String name, CreativeModeTab tab) {
-        return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(Aether.MODID, name), tab);
-    }
 
     public static void bootstrap() {
     }
