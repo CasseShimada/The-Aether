@@ -41,6 +41,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Collapsed additional small loot, worldgen type, feature, and data component registration helpers into direct Minecraft registry calls.
 - Collapsed menu type, POI, structure type, structure processor, pos rule, and particle registration helpers into direct Minecraft registry calls.
 - Collapsed recipe type, recipe serializer, and recipe book category registration helpers into direct Minecraft registry calls.
+- Collapsed block entity type and structure piece type registration helpers into direct Minecraft registry calls.
 - Narrowed the registry construction context helper API to its required entrypoints.
 - Inlined simple mod initializer registration forwarding methods.
 - Clarified Fabric event callback registration naming.

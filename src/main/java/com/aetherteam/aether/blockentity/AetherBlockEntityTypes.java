@@ -9,42 +9,60 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class AetherBlockEntityTypes {
-    public static final BlockEntityType<AetherFlowerBlockEntity> FLOWER = register("flower",
+    public static final BlockEntityType<AetherFlowerBlockEntity> FLOWER = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "flower"),
             FabricBlockEntityTypeBuilder.create(AetherFlowerBlockEntity::new, AetherBlocks.PURPLE_FLOWER, AetherBlocks.WHITE_FLOWER).build());
 
-    public static final BlockEntityType<IcestoneBlockEntity> ICESTONE = register("icestone",
-        FabricBlockEntityTypeBuilder.create(IcestoneBlockEntity::new, AetherBlocks.ICESTONE, AetherBlocks.ICESTONE_SLAB, AetherBlocks.ICESTONE_STAIRS, AetherBlocks.ICESTONE_WALL).build());
+    public static final BlockEntityType<IcestoneBlockEntity> ICESTONE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "icestone"),
+            FabricBlockEntityTypeBuilder.create(IcestoneBlockEntity::new, AetherBlocks.ICESTONE, AetherBlocks.ICESTONE_SLAB, AetherBlocks.ICESTONE_STAIRS, AetherBlocks.ICESTONE_WALL).build());
 
-    public static final BlockEntityType<AltarBlockEntity> ALTAR = register("altar",
+    public static final BlockEntityType<AltarBlockEntity> ALTAR = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "altar"),
             FabricBlockEntityTypeBuilder.create(AltarBlockEntity::new, AetherBlocks.ALTAR).build());
 
-    public static final BlockEntityType<FreezerBlockEntity> FREEZER = register("freezer",
+    public static final BlockEntityType<FreezerBlockEntity> FREEZER = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "freezer"),
             FabricBlockEntityTypeBuilder.create(FreezerBlockEntity::new, AetherBlocks.FREEZER).build());
 
-    public static final BlockEntityType<IncubatorBlockEntity> INCUBATOR = register("incubator",
+    public static final BlockEntityType<IncubatorBlockEntity> INCUBATOR = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "incubator"),
             FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new, AetherBlocks.INCUBATOR).build());
 
-    public static final BlockEntityType<ChestMimicBlockEntity> CHEST_MIMIC = register("chest_mimic",
+    public static final BlockEntityType<ChestMimicBlockEntity> CHEST_MIMIC = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "chest_mimic"),
             FabricBlockEntityTypeBuilder.create(ChestMimicBlockEntity::new, AetherBlocks.CHEST_MIMIC).build());
 
-    public static final BlockEntityType<TreasureChestBlockEntity> TREASURE_CHEST = register("treasure_chest",
+    public static final BlockEntityType<TreasureChestBlockEntity> TREASURE_CHEST = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "treasure_chest"),
             FabricBlockEntityTypeBuilder.create(TreasureChestBlockEntity::new, AetherBlocks.TREASURE_CHEST).build());
 
-    public static final BlockEntityType<SkyrootBedBlockEntity> SKYROOT_BED = register("skyroot_bed",
+    public static final BlockEntityType<SkyrootBedBlockEntity> SKYROOT_BED = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "skyroot_bed"),
             FabricBlockEntityTypeBuilder.create(SkyrootBedBlockEntity::new, AetherBlocks.SKYROOT_BED).build());
 
-    public static final BlockEntityType<SkyrootSignBlockEntity> SKYROOT_SIGN = register("skyroot_sign",
+    public static final BlockEntityType<SkyrootSignBlockEntity> SKYROOT_SIGN = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "skyroot_sign"),
             FabricBlockEntityTypeBuilder.create(SkyrootSignBlockEntity::new, AetherBlocks.SKYROOT_WALL_SIGN, AetherBlocks.SKYROOT_SIGN).build());
 
-    public static final BlockEntityType<SkyrootHangingSignBlockEntity> SKYROOT_HANGING_SIGN = register("skyroot_hanging_sign",
+    public static final BlockEntityType<SkyrootHangingSignBlockEntity> SKYROOT_HANGING_SIGN = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "skyroot_hanging_sign"),
             FabricBlockEntityTypeBuilder.create(SkyrootHangingSignBlockEntity::new, AetherBlocks.SKYROOT_WALL_HANGING_SIGN, AetherBlocks.SKYROOT_HANGING_SIGN).build());
 
-    public static final BlockEntityType<SunAltarBlockEntity> SUN_ALTAR = register("sun_altar",
+    public static final BlockEntityType<SunAltarBlockEntity> SUN_ALTAR = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "sun_altar"),
             FabricBlockEntityTypeBuilder.create(SunAltarBlockEntity::new, AetherBlocks.SUN_ALTAR).build());
-
-    private static <T extends net.minecraft.world.level.block.entity.BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
-        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
-    }
 
     private AetherBlockEntityTypes() {
     }
