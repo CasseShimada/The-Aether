@@ -14,20 +14,46 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public final class AetherRecipeTypes {
-    public static final RecipeType<? extends AbstractAetherCookingRecipe> ENCHANTING = register("enchanting");
-    public static final RecipeType<FreezingRecipe> FREEZING = register("freezing");
-    public static final RecipeType<IncubationRecipe> INCUBATION = register("incubation");
-    public static final RecipeType<AmbrosiumRecipe> AMBROSIUM_ENCHANTING = register("ambrosium_enchanting");
-    public static final RecipeType<SwetBallRecipe> SWET_BALL_CONVERSION = register("swet_ball_conversion");
-    public static final RecipeType<IcestoneFreezableRecipe> ICESTONE_FREEZABLE = register("icestone_freezable");
-    public static final RecipeType<AccessoryFreezableRecipe> ACCESSORY_FREEZABLE = register("accessory_freezable");
-    public static final RecipeType<PlacementConversionRecipe> PLACEMENT_CONVERSION = register("placement_conversion");
-    public static final RecipeType<ItemBanRecipe> ITEM_PLACEMENT_BAN = register("item_placement_ban");
-    public static final RecipeType<BlockBanRecipe> BLOCK_PLACEMENT_BAN = register("block_placement_ban");
-
-    private static <T extends Recipe<?>> RecipeType<T> register(String name) {
-        return Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), createType(name));
-    }
+    public static final RecipeType<? extends AbstractAetherCookingRecipe> ENCHANTING = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "enchanting"),
+            createType("enchanting"));
+    public static final RecipeType<FreezingRecipe> FREEZING = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "freezing"),
+            createType("freezing"));
+    public static final RecipeType<IncubationRecipe> INCUBATION = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "incubation"),
+            createType("incubation"));
+    public static final RecipeType<AmbrosiumRecipe> AMBROSIUM_ENCHANTING = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "ambrosium_enchanting"),
+            createType("ambrosium_enchanting"));
+    public static final RecipeType<SwetBallRecipe> SWET_BALL_CONVERSION = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "swet_ball_conversion"),
+            createType("swet_ball_conversion"));
+    public static final RecipeType<IcestoneFreezableRecipe> ICESTONE_FREEZABLE = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "icestone_freezable"),
+            createType("icestone_freezable"));
+    public static final RecipeType<AccessoryFreezableRecipe> ACCESSORY_FREEZABLE = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_freezable"),
+            createType("accessory_freezable"));
+    public static final RecipeType<PlacementConversionRecipe> PLACEMENT_CONVERSION = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "placement_conversion"),
+            createType("placement_conversion"));
+    public static final RecipeType<ItemBanRecipe> ITEM_PLACEMENT_BAN = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "item_placement_ban"),
+            createType("item_placement_ban"));
+    public static final RecipeType<BlockBanRecipe> BLOCK_PLACEMENT_BAN = Registry.register(
+            BuiltInRegistries.RECIPE_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "block_placement_ban"),
+            createType("block_placement_ban"));
 
     private static <T extends Recipe<?>> RecipeType<T> createType(String name) {
         return new RecipeType<>() {
