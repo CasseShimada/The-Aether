@@ -16,7 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Set;
 
 public final class AetherPoi {
-    public static final PoiType AETHER_PORTAL = register("aether_portal", new PoiType(getBlockStates(AetherBlocks.AETHER_PORTAL), 0, 1));
+    public static final PoiType AETHER_PORTAL = Registry.register(
+            BuiltInRegistries.POINT_OF_INTEREST_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "aether_portal"),
+            new PoiType(getBlockStates(AetherBlocks.AETHER_PORTAL), 0, 1));
 
     public static void registerBlockStateMappings() {
         PoiTypesAccessor.aether$registerBlockStates(getPortalHolder(), getBlockStates(AetherBlocks.AETHER_PORTAL));
@@ -32,10 +35,6 @@ public final class AetherPoi {
 
     private static Holder<PoiType> getPortalHolder() {
         return BuiltInRegistries.POINT_OF_INTEREST_TYPE.wrapAsHolder(AETHER_PORTAL);
-    }
-
-    private static PoiType register(String name, PoiType poiType) {
-        return Registry.register(BuiltInRegistries.POINT_OF_INTEREST_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), poiType);
     }
 
     private AetherPoi() {

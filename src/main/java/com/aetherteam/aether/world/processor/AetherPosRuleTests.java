@@ -7,11 +7,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.PosRuleTestType;
 
 public final class AetherPosRuleTests {
-    public static final PosRuleTestType<BorderBoxPosTest> BORDER_BOX = register("border_box", () -> BorderBoxPosTest.CODEC);
-
-    private static <T extends PosRuleTestType<?>> T register(String name, T type) {
-        return Registry.register(BuiltInRegistries.POS_RULE_TEST, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
-    }
+    public static final PosRuleTestType<BorderBoxPosTest> BORDER_BOX = Registry.register(
+            BuiltInRegistries.POS_RULE_TEST,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "border_box"),
+            () -> BorderBoxPosTest.CODEC);
 
     private AetherPosRuleTests() {
     }
