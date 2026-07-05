@@ -38,6 +38,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Replaced remaining external functional utility callbacks with local functional interfaces.
 - Tightened attachment sync packet typing without changing the sync payload format.
 - Collapsed thin sound event and menu screen registration helpers into direct Minecraft registration calls.
+- Collapsed additional small loot, worldgen type, feature, and data component registration helpers into direct Minecraft registry calls.
 - Narrowed the registry construction context helper API to its required entrypoints.
 - Inlined simple mod initializer registration forwarding methods.
 - Clarified Fabric event callback registration naming.

@@ -7,11 +7,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 
 public final class AetherTreeDecoratorTypes {
-    public static final TreeDecoratorType<HolidayTreeDecorator> HOLIDAY_TREE_DECORATOR = register("holiday_tree_decorator", new TreeDecoratorType<>(HolidayTreeDecorator.CODEC));
-
-    private static <T extends TreeDecoratorType<?>> T register(String name, T type) {
-        return Registry.register(BuiltInRegistries.TREE_DECORATOR_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
-    }
+    public static final TreeDecoratorType<HolidayTreeDecorator> HOLIDAY_TREE_DECORATOR = Registry.register(
+            BuiltInRegistries.TREE_DECORATOR_TYPE,
+            Identifier.fromNamespaceAndPath(Aether.MODID, "holiday_tree_decorator"),
+            new TreeDecoratorType<>(HolidayTreeDecorator.CODEC));
 
     private AetherTreeDecoratorTypes() {
     }
