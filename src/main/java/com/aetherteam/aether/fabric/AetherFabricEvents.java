@@ -4,7 +4,8 @@ import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
-import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
+import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
+import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
 import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
@@ -80,7 +81,26 @@ public final class AetherFabricEvents {
                     ? InteractionResult.SUCCESS
                     : InteractionResult.PASS;
         });
-        UseEntityCallback.EVENT.register(EntityInteractionHooks::useEntity);
+        UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
+            if (level.isClientSide()) {
+                return InteractionResult.PASS;
+            }
+
+            EntityBucketHooks.skyrootBucketMilking(entity, player, hand);
+            var result = EntityBucketHooks.pickupBucketable(entity, player, hand);
+            if (result.isPresent()) {
+                return result.get();
+            }
+
+            if (hitResult != null) {
+                result = EntityArmorStandHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
+                if (result.isPresent()) {
+                    return result.get();
+                }
+            }
+
+            return InteractionResult.PASS;
+        });
     }
 
 }

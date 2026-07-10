@@ -66,5 +66,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use accessory menu slot generator while preserving slot order, coordinates, and container lookups.
 - Registered the Remedy/Inebriation check directly in Fabric's mob-effect callback and removed its single-use hook.
 - Registered block interaction recipes and portal creation directly in Fabric's use-block callback, removing its adapter hook.
+- Registered bucket and armor-stand interactions directly in Fabric's use-entity callback, removing its adapter hook.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
