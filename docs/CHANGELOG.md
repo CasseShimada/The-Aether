@@ -59,5 +59,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed single-use Accessories-style cosmetic config and networking facades; rendering and packet sending now use direct Aether behavior.
 - Removed the single-listener accessory slot event container while preserving the existing slot callback and builder behavior.
 - Inlined the remaining single-use accessory slot builder into Aether's slot registration and removed its callback facade.
+- Removed the single-implementation accessory container owner interface while preserving the current storage and change-notification boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

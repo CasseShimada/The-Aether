@@ -9,18 +9,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AccessoriesContainer {
-    private final AccessoriesContainerOwner owner;
+    private final EntityAccessoryStorage owner;
     private final SlotType slotType;
     private final TrackedSimpleContainer accessories;
     private final TrackedSimpleContainer cosmeticAccessories;
     private final boolean[] renderFlags;
     private boolean suppressUpdates;
 
-    static AccessoriesContainer create(AccessoriesContainerOwner owner, SlotType slotType) {
+    static AccessoriesContainer create(EntityAccessoryStorage owner, SlotType slotType) {
         return new AccessoriesContainer(owner, slotType);
     }
 
-    private AccessoriesContainer(AccessoriesContainerOwner owner, SlotType slotType) {
+    private AccessoriesContainer(EntityAccessoryStorage owner, SlotType slotType) {
         this.owner = owner;
         this.slotType = slotType;
         this.accessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
@@ -91,7 +91,7 @@ public class AccessoriesContainer {
 
     private void onContainerChanged() {
         if (!this.suppressUpdates) {
-            this.owner.onContainerChanged(this.slotType.name());
+            this.owner.onContainerChanged();
         }
     }
 

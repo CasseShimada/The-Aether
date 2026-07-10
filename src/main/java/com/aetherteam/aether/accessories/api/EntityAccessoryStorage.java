@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-final class EntityAccessoryStorage implements AccessoriesContainerOwner {
+final class EntityAccessoryStorage implements AccessoriesStorage {
     private final LivingEntity entity;
     private final Map<String, AccessoriesContainer> containers = new LinkedHashMap<>();
     private final Map<String, ItemStack> previousEquipped = new HashMap<>();
@@ -201,7 +201,7 @@ final class EntityAccessoryStorage implements AccessoriesContainerOwner {
         }
     }
 
-    public synchronized void onContainerChanged(String slotName) {
+    synchronized void onContainerChanged() {
         this.ensureContainers();
         this.persistToAttachment();
         if (this.isServerSide()) {
