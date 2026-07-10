@@ -4,7 +4,7 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 
 ## Legacy Migration Decision
 
-Old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data has been intentionally removed from this Fabric branch. Current Aether accessory storage remains backed by the mod's Fabric attachment data and current network sync path.
+Old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data has been intentionally removed from this Fabric branch. Curios item tags are no longer used as slot fallbacks; current Aether and `accessories:*` item tags remain supported. Current Aether accessory storage remains backed by the mod's Fabric attachment data and current network sync path.
 
 ## Stage 1: Core Attachment Matrix
 

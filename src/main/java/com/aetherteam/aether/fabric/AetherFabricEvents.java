@@ -1,11 +1,11 @@
 package com.aetherteam.aether.fabric;
 
+import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
-import com.aetherteam.aether.event.hooks.CommandRegistrationHooks;
+import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
-import com.aetherteam.aether.event.hooks.LevelLifecycleHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
@@ -44,12 +44,16 @@ public final class AetherFabricEvents {
     private static void registerEntityEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(EntityLifecycleHooks::load);
         ServerEntityEvents.ENTITY_UNLOAD.register(EntityLifecycleHooks::unload);
-        ServerMobEffectEvents.ALLOW_ADD.register(EntityEffectHooks::allowAdd);
+        ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, livingEntity, context) ->
+                !EntityEffectHooks.preventInebriation(livingEntity, effectInstance));
     }
 
     private static void registerLevelEvents() {
-        ServerLevelEvents.LOAD.register(LevelLifecycleHooks::load);
-        ServerTickEvents.END_LEVEL_TICK.register(LevelLifecycleHooks::endTick);
+        ServerLevelEvents.LOAD.register((server, level) -> DimensionTimeHooks.initializeLevelData(level));
+        ServerTickEvents.END_LEVEL_TICK.register(level -> {
+            DimensionTimeHooks.tickTime(level);
+            DimensionTimeHooks.checkEternalDayConfig(level);
+        });
     }
 
     private static void registerTrackingEvents() {
@@ -57,7 +61,7 @@ public final class AetherFabricEvents {
     }
 
     private static void registerCommandEvents() {
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationHooks::register);
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> AetherCommands.registerCommands(dispatcher));
     }
 
     private static void registerInteractionEvents() {

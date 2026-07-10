@@ -25,13 +25,6 @@ public final class AccessorySlotResolver {
     private static final TagKey<Item> ACCESSORIES_CHARM = tag("accessories", "charm");
     private static final TagKey<Item> ACCESSORIES_HEAD = tag("accessories", "head");
     private static final TagKey<Item> ACCESSORIES_HAND = tag("accessories", "hand");
-    private static final TagKey<Item> CURIOS_RING = tag("curios", "ring");
-    private static final TagKey<Item> CURIOS_NECKLACE = tag("curios", "necklace");
-    private static final TagKey<Item> CURIOS_CAPE = tag("curios", "cape");
-    private static final TagKey<Item> CURIOS_BACK = tag("curios", "back");
-    private static final TagKey<Item> CURIOS_CHARM = tag("curios", "charm");
-    private static final TagKey<Item> CURIOS_HEAD = tag("curios", "head");
-    private static final TagKey<Item> CURIOS_HAND = tag("curios", "hand");
     private static final TagKey<Item> COMMON_SHIELDS = tag("c", "tools/shield");
     private static final TagKey<Item> TWILIGHT_SCEPTERS = tag("twilightforest", "scepters");
     private static final Identifier TWILIGHT_KNIGHTMETAL_RING = Identifier.fromNamespaceAndPath("twilightforest", "knightmetal_ring");
@@ -52,7 +45,7 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean matchesGloves(ItemStack stack) {
-        return hasDeathProtection(stack) || stack.is(AetherTags.Items.ACCESSORIES_GLOVES) || stack.is(ACCESSORIES_HAND) || stack.is(CURIOS_HAND);
+        return hasDeathProtection(stack) || stack.is(AetherTags.Items.ACCESSORIES_GLOVES) || stack.is(ACCESSORIES_HAND);
     }
 
     public static boolean matchesRing(Item item) {
@@ -63,7 +56,6 @@ public final class AccessorySlotResolver {
         return hasDeathProtection(stack)
             || stack.is(AetherTags.Items.ACCESSORIES_RINGS)
             || stack.is(ACCESSORIES_RING)
-            || stack.is(CURIOS_RING)
             || TWILIGHT_KNIGHTMETAL_RING.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()));
     }
 
@@ -72,7 +64,7 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean matchesPendant(ItemStack stack) {
-        return hasDeathProtection(stack) || stack.is(AetherTags.Items.ACCESSORIES_PENDANTS) || stack.is(ACCESSORIES_NECKLACE) || stack.is(CURIOS_NECKLACE);
+        return hasDeathProtection(stack) || stack.is(AetherTags.Items.ACCESSORIES_PENDANTS) || stack.is(ACCESSORIES_NECKLACE);
     }
 
     public static boolean matchesCape(Item item) {
@@ -87,8 +79,7 @@ public final class AccessorySlotResolver {
     public static boolean matchesCapeSlot(ItemStack stack) {
         return hasDeathProtection(stack)
             || stack.is(AetherTags.Items.ACCESSORIES_CAPES)
-            || stack.is(ACCESSORIES_CAPE)
-            || stack.is(CURIOS_CAPE);
+            || stack.is(ACCESSORIES_CAPE);
     }
 
     public static boolean matchesBack(ItemStack stack) {
@@ -132,13 +123,12 @@ public final class AccessorySlotResolver {
         return hasDeathProtection(stack)
             || stack.is(AetherTags.Items.ACCESSORIES_MISCELLANEOUS)
             || stack.is(ACCESSORIES_CHARM)
-            || stack.is(CURIOS_CHARM)
             || stack.is(TWILIGHT_SCEPTERS)
             || TWILIGHT_CHARM_ITEMS.contains(id);
     }
 
     public static boolean matchesHead(ItemStack stack) {
-        return stack.is(ACCESSORIES_HEAD) || stack.is(CURIOS_HEAD);
+        return stack.is(ACCESSORIES_HEAD);
     }
 
     public static boolean matchesHeadSlot(ItemStack stack) {
@@ -181,7 +171,7 @@ public final class AccessorySlotResolver {
     }
 
     private static boolean isBackAccessory(ItemStack stack) {
-        return stack.is(ACCESSORIES_BACK) || stack.is(CURIOS_BACK);
+        return stack.is(ACCESSORIES_BACK);
     }
 
     private static boolean hasDeathProtection(ItemStack stack) {

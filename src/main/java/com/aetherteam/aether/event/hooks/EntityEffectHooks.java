@@ -9,10 +9,6 @@ public final class EntityEffectHooks {
     private EntityEffectHooks() {
     }
 
-    public static boolean allowAdd(MobEffectInstance effectInstance, LivingEntity livingEntity, Object context) {
-        return !preventInebriation(livingEntity, effectInstance);
-    }
-
     /**
      * Prevents an entity from being inflicted with {@link AetherEffects#INEBRIATION} if it has {@link AetherEffects#REMEDY} applied.
      *

@@ -5,6 +5,8 @@ This branch tracks Fabric-specific development notes for the current codebase.
 ## Fabric Native Refactor
 
 - Removed old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data.
+- Removed the remaining Curios item-tag fallbacks from current accessory slot resolution.
+- Removed stale NeoForge furnace fuel and compostable data maps from the Fabric resource output.
 - Removed legacy boss room NBT fallback reads for the old nested `Dungeon`/`OriginX` format.
 - Kept current Fabric attachment storage, accessory synchronization, networking, dimensions, entities, blocks, items, and world generation behavior intact.
 - Replaced reflective registry bootstrap paths with explicit registration bootstrap calls where safe.
@@ -47,5 +49,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined simple mod initializer registration forwarding methods.
 - Clarified Fabric event callback registration naming.
 - Typed the accessory client packet send helper with `CustomPacketPayload`.
+- Registered command, level lifecycle, and mob-effect callbacks directly from the Fabric event entrypoint, removing single-use adapter hooks.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
