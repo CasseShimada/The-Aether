@@ -64,6 +64,11 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public static final String ENCHANTED_DART_COUNT_SYNC_KEY = "setEnchantedDartCount";
     public static final String REMEDY_START_DURATION_SYNC_KEY = "setRemedyStartDuration";
     public static final String LIFE_SHARD_COUNT_SYNC_KEY = "setLifeShardCount";
+    public static final String ATTACKED_WITH_INVISIBILITY_SYNC_KEY = "setAttackedWithInvisibility";
+    public static final String INVISIBILITY_ENABLED_SYNC_KEY = "setInvisibilityEnabled";
+    public static final String WEARING_INVISIBILITY_CLOAK_SYNC_KEY = "setWearingInvisibilityCloak";
+    public static final String LAST_RIDDEN_MOA_SYNC_KEY = "setLastRiddenMoa";
+    public static final String SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY = "setShouldSyncBetweenClients";
 
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
@@ -140,12 +145,12 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         Map.entry(POISON_DART_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
         Map.entry(ENCHANTED_DART_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),
         Map.entry(REMEDY_START_DURATION_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setRemedyStartDuration((int) object), this::getRemedyStartDuration)),
-        Map.entry("setAttackedWithInvisibility", new SyncField(Type.BOOLEAN, (object) -> this.setAttackedWithInvisibility((boolean) object), this::attackedWithInvisibility)),
-        Map.entry("setInvisibilityEnabled", new SyncField(Type.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
-        Map.entry("setWearingInvisibilityCloak", new SyncField(Type.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
+        Map.entry(ATTACKED_WITH_INVISIBILITY_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setAttackedWithInvisibility((boolean) object), this::attackedWithInvisibility)),
+        Map.entry(INVISIBILITY_ENABLED_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
+        Map.entry(WEARING_INVISIBILITY_CLOAK_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
         Map.entry(LIFE_SHARD_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
-        Map.entry("setLastRiddenMoa", new SyncField(Type.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
-        Map.entry("setShouldSyncBetweenClients", new SyncField(Type.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
+        Map.entry(LAST_RIDDEN_MOA_SYNC_KEY, new SyncField(Type.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
+        Map.entry(SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
     );
     private boolean shouldSyncAfterJoin;
     private boolean shouldSyncBetweenClients;
@@ -210,7 +215,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public void onJoinLevel(Player player) {
         if (player.level().isClientSide() && player.isLocalPlayer()) {
             CustomizationsOptions.INSTANCE.load();
-            this.setSynced(player.getId(), Direction.SERVER, "setShouldSyncBetweenClients", true);
+            this.setSynced(player.getId(), Direction.SERVER, SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, true);
         }
     }
 
@@ -427,7 +432,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
             if (this.attackedWithInvisibility()) {
                 --this.invisibilityAttackCooldown;
                 if (this.invisibilityAttackCooldown <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setAttackedWithInvisibility", false);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, ATTACKED_WITH_INVISIBILITY_SYNC_KEY, false);
                 }
             } else {
                 this.invisibilityAttackCooldown = AetherConfig.SERVER.invisibility_visibility_time.get();
