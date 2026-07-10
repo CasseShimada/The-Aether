@@ -63,5 +63,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use per-entity accessory storage cache into `AccessoriesAPI` without changing Fabric attachment persistence.
 - Removed the package-local accessory container factory and construct containers directly from their owning storage.
 - Replaced the single-use accessory equip callback wrapper with the JDK `Consumer` used by the existing container closure.
+- Inlined the single-use accessory menu slot generator while preserving slot order, coordinates, and container lookups.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

@@ -1,11 +1,11 @@
 package com.aetherteam.aether.inventory.menu;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
+import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.mixin.mixins.common.accessor.AbstractContainerMenuAccessor;
 import com.aetherteam.aether.mixin.mixins.common.accessor.CraftingMenuAccessor;
-import com.aetherteam.aether.accessories.api.menu.AccessoriesSlotGenerator;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -80,10 +80,10 @@ public class AetherAccessoriesMenu extends InventoryMenu {
         int x = ACCESSORY_LEFT_X, y = ACCESSORY_TOP_Y;
 
         this.accessoryStart = this.slots.size();
-        AccessoriesSlotGenerator.of(this::addSlot, x, y, this.owner, AetherAccessorySlots.getPendantSlotType(), AetherAccessorySlots.getCapeSlotType(), AetherAccessorySlots.getShieldSlotType()).column();
-        AccessoriesSlotGenerator.of(this::addSlot, x + 18, y, this.owner, AetherAccessorySlots.getRingSlotType(), AetherAccessorySlots.getGlovesSlotType()).column();
-        AccessoriesSlotGenerator.of(this::addSlot, ACCESSORY_SLOT_BACKGROUND_X, ACCESSORY_SLOT_BACKGROUND_Y, this.owner, AetherAccessorySlots.getAccessorySlotType()).row();
-        AccessoriesSlotGenerator.of(this::addSlot, BACK_SLOT_X, BACK_SLOT_Y, this.owner, AetherAccessorySlots.getBackSlotType()).row();
+        this.addAccessorySlots(x, y, 0, 18, AetherAccessorySlots.getPendantSlotType(), AetherAccessorySlots.getCapeSlotType(), AetherAccessorySlots.getShieldSlotType());
+        this.addAccessorySlots(x + 18, y, 0, 18, AetherAccessorySlots.getRingSlotType(), AetherAccessorySlots.getGlovesSlotType());
+        this.addAccessorySlots(ACCESSORY_SLOT_BACKGROUND_X, ACCESSORY_SLOT_BACKGROUND_Y, 18, 0, AetherAccessorySlots.getAccessorySlotType());
+        this.addAccessorySlots(BACK_SLOT_X, BACK_SLOT_Y, 18, 0, AetherAccessorySlots.getBackSlotType());
         this.accessoryEnd = this.slots.size();
 
         this.hasButton = hasButton;
@@ -143,6 +143,28 @@ public class AetherAccessoriesMenu extends InventoryMenu {
                 return InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD;
             }
         });
+    }
+
+    private void addAccessorySlots(int startX, int startY, int xStep, int yStep, SlotTypeReference... slotTypes) {
+        var accessories = AccessoriesAPI.getAccessories(this.owner);
+        if (accessories == null) {
+            return;
+        }
+
+        int offset = 0;
+        for (SlotTypeReference slotType : slotTypes) {
+            if (slotType == null) {
+                continue;
+            }
+            var container = accessories.getContainer(slotType);
+            if (container == null) {
+                continue;
+            }
+            for (int slotIndex = 0; slotIndex < container.getAccessories().getContainerSize(); slotIndex++) {
+                this.addSlot(new AccessoriesBasedSlot(this.owner, container, slotIndex, startX + (offset * xStep), startY + (offset * yStep)));
+                offset++;
+            }
+        }
     }
 
     /**
