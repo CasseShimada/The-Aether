@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.client.gui;
+package com.aetherteam.aether.client.gui.component;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;

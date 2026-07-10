@@ -79,5 +79,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the single-use accessory render-button factory, unused depth argument, and unused slot accessor.
 - Removed the unimplemented accessory-screen compatibility marker and its unreachable UI branches.
 - Moved the single-use accessory render button into its owning Aether accessories screen.
+- Moved the shared button-render callback out of the accessories namespace into the general Aether GUI component boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

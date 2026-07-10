@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.gui.component.inventory;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.mixin.mixins.client.accessor.ButtonBuilderAccessor;
-import com.aetherteam.aether.accessories.client.gui.ButtonEvents;
+import com.aetherteam.aether.client.gui.component.ButtonEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
