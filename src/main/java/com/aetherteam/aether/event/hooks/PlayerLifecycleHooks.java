@@ -5,6 +5,8 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
+import com.aetherteam.aether.perk.data.ServerPerkData;
+import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +22,13 @@ public final class PlayerLifecycleHooks {
     public static void login(ServerPlayer player) {
         player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
         DimensionTimeHooks.syncAetherTime(player);
-        ServerPerkHooks.refreshPerks(player);
+        var playerId = player.getGameProfile().id();
+        if (!UserData.Server.getStoredUsers().containsKey(playerId)) {
+            var server = player.level().getServer();
+            ServerPerkData.MOA_SKIN_INSTANCE.removePerk(server, playerId);
+            ServerPerkData.HALO_INSTANCE.removePerk(server, playerId);
+            ServerPerkData.DEVELOPER_GLOW_INSTANCE.removePerk(server, playerId);
+        }
         ToolAbilityHooks.setDebuffToolsState(player);
         MoaSkins.registerMoaSkins(player.level());
         AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
