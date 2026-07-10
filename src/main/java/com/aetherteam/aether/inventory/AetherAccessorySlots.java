@@ -77,7 +77,7 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
     }
 
     public static void register() {
-        UniqueSlotHandling.EVENT.register(INSTANCE);
+        UniqueSlotHandling.register(INSTANCE);
     }
 
     @Override

@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 public final class UniqueSlotHandling {
-    public static final Event EVENT = new Event();
-
     private UniqueSlotHandling() {
+    }
+
+    public static void register(RegistrationCallback callback) {
+        callback.registerSlots(Builder::new);
     }
 
     public interface RegistrationCallback {
@@ -33,19 +35,6 @@ public final class UniqueSlotHandling {
         UniqueSlotBuilder allowEquipFromUse(boolean value);
 
         SlotTypeReference build();
-    }
-
-    public static final class Event {
-        private final List<RegistrationCallback> callbacks = new ArrayList<>();
-
-        public void register(RegistrationCallback callback) {
-            this.callbacks.add(callback);
-            callback.registerSlots((id, size) -> new Builder(id, size));
-        }
-
-        public List<RegistrationCallback> callbacks() {
-            return Collections.unmodifiableList(this.callbacks);
-        }
     }
 
     private static final class Builder implements UniqueSlotBuilder {
