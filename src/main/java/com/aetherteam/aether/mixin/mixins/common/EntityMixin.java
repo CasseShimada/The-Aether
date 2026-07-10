@@ -1,10 +1,11 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.DimensionTravelState;
 import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
-import com.aetherteam.aether.event.hooks.EntityLightningHooks;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.world.LevelUtil;
@@ -107,7 +108,10 @@ public class EntityMixin {
     @Inject(method = "thunderHit(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LightningBolt;)V", at = @At("HEAD"), cancellable = true)
     private void aether$preventLightningDamage(ServerLevel level, LightningBolt lightningBolt, CallbackInfo ci) {
         Entity entity = (Entity) (Object) this;
-        if (EntityLightningHooks.lightningHitKeys(entity) || EntityLightningHooks.thunderCrystalHitItems(entity, lightningBolt)) {
+        if (entity instanceof ItemEntity itemEntity
+                && (itemEntity.getItem().is(AetherTags.Items.DUNGEON_KEYS)
+                    || (lightningBolt.hasAttached(AetherDataAttachments.LIGHTNING_TRACKER)
+                        && lightningBolt.getAttachedOrCreate(AetherDataAttachments.LIGHTNING_TRACKER).getOwner(lightningBolt.level()) instanceof ValkyrieQueen))) {
             ci.cancel();
         }
     }

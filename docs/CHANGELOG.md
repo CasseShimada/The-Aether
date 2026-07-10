@@ -71,5 +71,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use Slider shield and armor fall-cancellation conditions into their `LivingEntity` mixin injection points.
 - Inlined the single-use Swet split tag check into the `Slime` mixin condition.
 - Inlined the single-use unhookable entity tag check into the `FishingHook` mixin.
+- Inlined the single-use dungeon-key and tracked-lightning item protections into the `Entity` mixin.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
