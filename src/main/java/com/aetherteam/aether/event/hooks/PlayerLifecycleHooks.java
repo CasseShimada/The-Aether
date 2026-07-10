@@ -2,6 +2,7 @@ package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.types.MoaSkins;
@@ -43,7 +44,9 @@ public final class PlayerLifecycleHooks {
 
     public static void changeLevel(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
         DimensionTravelHooks.remountPlayerAerbunny(player);
-        PlayerAttachmentSyncHooks.syncPlayerAttachment(player);
+        if (!player.level().isClientSide()) {
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
+        }
         DimensionTimeHooks.syncAetherTime(player);
         AccessoryRuntime.forceSync(player);
     }

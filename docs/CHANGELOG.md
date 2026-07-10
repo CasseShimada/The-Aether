@@ -67,5 +67,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered the Remedy/Inebriation check directly in Fabric's mob-effect callback and removed its single-use hook.
 - Registered block interaction recipes and portal creation directly in Fabric's use-block callback, removing its adapter hook.
 - Registered bucket and armor-stand interactions directly in Fabric's use-entity callback, removing its adapter hook.
+- Inlined the single-use player attachment level-change sync helper while preserving its clientbound direction and timing.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
