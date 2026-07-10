@@ -3,7 +3,7 @@ package com.aetherteam.aether.client;
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
-import com.aetherteam.aether.client.event.hooks.ClientLifecycleHooks;
+import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.ClientTickHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
@@ -15,6 +15,7 @@ import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
 import com.aetherteam.aether.event.hooks.ItemTooltipHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
@@ -128,7 +129,7 @@ public class AetherClient {
     }
 
     private static void registerLifecycleCallbacks() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(ClientLifecycleHooks::started);
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> AetherColorResolvers.registerBlockColor(client.getBlockColors()));
 
         ItemTooltipCallback.EVENT.register(ItemTooltipHooks::addItemTooltip);
     }
@@ -142,7 +143,10 @@ public class AetherClient {
     }
 
     private static void registerConnectionCallbacks() {
-        ClientPlayConnectionEvents.DISCONNECT.register(ClientLifecycleHooks::disconnect);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            ClientMusicHooks.stop();
+            ToolAbilityHooks.resetDebuffToolsState();
+        });
     }
 
     private static void registerLevelRenderCallbacks() {

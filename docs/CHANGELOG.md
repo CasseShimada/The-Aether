@@ -50,5 +50,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Clarified Fabric event callback registration naming.
 - Typed the accessory client packet send helper with `CustomPacketPayload`.
 - Registered command, level lifecycle, and mob-effect callbacks directly from the Fabric event entrypoint, removing single-use adapter hooks.
+- Registered client startup and disconnect callbacks directly from the Fabric client initializer, removing their single-use lifecycle adapter.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
