@@ -285,7 +285,7 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
 
     private synchronized void ensureContainers() {
         for (AccessoriesState.SlotDefinition definition : AccessoriesState.slots()) {
-            this.containers.computeIfAbsent(definition.type().name(), key -> AccessoriesContainer.create(this, definition.type()));
+            this.containers.computeIfAbsent(definition.type().name(), key -> new AccessoriesContainer(this, definition.type()));
         }
 
         if (!this.initializedFromAttachment) {
@@ -318,7 +318,7 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
             slotType = new SlotType(slotName, Math.max(1, fallbackSize), "slot." + normalized);
         }
 
-        AccessoriesContainer created = AccessoriesContainer.create(this, slotType);
+        AccessoriesContainer created = new AccessoriesContainer(this, slotType);
         this.containers.put(slotName, created);
         return created;
     }

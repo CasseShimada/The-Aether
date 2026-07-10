@@ -16,11 +16,7 @@ public class AccessoriesContainer {
     private final boolean[] renderFlags;
     private boolean suppressUpdates;
 
-    static AccessoriesContainer create(EntityAccessoryStorage owner, SlotType slotType) {
-        return new AccessoriesContainer(owner, slotType);
-    }
-
-    private AccessoriesContainer(EntityAccessoryStorage owner, SlotType slotType) {
+    AccessoriesContainer(EntityAccessoryStorage owner, SlotType slotType) {
         this.owner = owner;
         this.slotType = slotType;
         this.accessories = new TrackedSimpleContainer(slotType.size(), this::onContainerChanged);
