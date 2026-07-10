@@ -1,7 +1,6 @@
 package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
 import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
@@ -85,7 +84,6 @@ public final class GuiAccessoryMenuHooks {
     @Nullable
     private static AbstractContainerScreen<?> canCreateAccessoryButtonForScreen(Screen screen) {
         if (screen instanceof InventoryScreen
-                || screen instanceof AccessoriesScreen
                 || screen instanceof CreativeModeInventoryScreen
                 || (screen instanceof AetherAccessoriesScreen && shouldAddButton)) {
             return (AbstractContainerScreen<?>) screen;

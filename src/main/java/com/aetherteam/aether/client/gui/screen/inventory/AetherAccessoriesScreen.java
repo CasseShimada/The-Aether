@@ -15,7 +15,6 @@ import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.data.User;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
-import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
 import com.aetherteam.aether.accessories.client.gui.ToggleButton;
 import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
 import net.minecraft.client.Minecraft;
@@ -379,7 +378,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
     public static ScreenOffset getButtonOffset(Screen screen) {
         int x = 0;
         int y = 0;
-        if (screen instanceof InventoryScreen || screen instanceof AccessoriesScreen) {
+        if (screen instanceof InventoryScreen) {
             x = AetherConfig.CLIENT.button_inventory_x.get();
             y = AetherConfig.CLIENT.button_inventory_y.get();
         }
