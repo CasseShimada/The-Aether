@@ -76,5 +76,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use Bee and Fox goal registration helper into the entity-load lifecycle.
 - Registered creative dungeon-loot tooltips directly in Fabric's client tooltip callback and removed their adapter hook.
 - Registered entity load, unload, and tracking behavior directly in Fabric callbacks, removing the lifecycle adapter hook.
+- Removed the single-use accessory render-button factory, unused depth argument, and unused slot accessor.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

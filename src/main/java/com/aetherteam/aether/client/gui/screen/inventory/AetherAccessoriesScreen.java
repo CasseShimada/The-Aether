@@ -173,7 +173,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
         this.cosmeticButtons.clear();
         for (Slot slot : this.menu.slots) {
             if (slot instanceof AccessoriesBasedSlot accessoriesSlot) {
-                ToggleButton slotButton = ToggleButton.ofSlot(slot.x + this.leftPos + 13, slot.y + this.topPos - 2, 0, accessoriesSlot);
+                ToggleButton slotButton = new ToggleButton(slot.x + this.leftPos + 13, slot.y + this.topPos - 2, accessoriesSlot);
 
                 slotButton.visible = accessoriesSlot.isActive();
                 slotButton.active = accessoriesSlot.isActive();

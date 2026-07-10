@@ -8,23 +8,12 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
 public class ToggleButton extends Button {
-    private final AccessoriesBasedSlot slot;
-
-    private ToggleButton(int x, int y, AccessoriesBasedSlot slot) {
+    public ToggleButton(int x, int y, AccessoriesBasedSlot slot) {
         super(x, y, 12, 12, Component.empty(), (button) -> {
             boolean shouldRender = !slot.shouldRender();
             slot.setRender(shouldRender);
             AetherPacketSender.sendToServer(new ToggleAccessoryRenderPacket(slot.slotName(), slot.slotIndex(), shouldRender));
         }, DEFAULT_NARRATION);
-        this.slot = slot;
-    }
-
-    public static ToggleButton ofSlot(int x, int y, int z, AccessoriesBasedSlot slot) {
-        return new ToggleButton(x, y, slot);
-    }
-
-    public AccessoriesBasedSlot slot() {
-        return this.slot;
     }
 
     @Override
