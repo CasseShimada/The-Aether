@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.EntityFishingHooks;
+import com.aetherteam.aether.AetherTags;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.phys.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class FishingHookMixin {
     @Inject(method = "onHitEntity(Lnet/minecraft/world/phys/EntityHitResult;)V", at = @At("HEAD"), cancellable = true)
     private void aether$preventHookingUnhookable(EntityHitResult hitResult, CallbackInfo ci) {
-        FishingHook fishingHook = (FishingHook) (Object) this;
-        if (EntityFishingHooks.preventEntityHooked(fishingHook, hitResult)) {
+        if (hitResult.getEntity().getType().builtInRegistryHolder().is(AetherTags.Entities.UNHOOKABLE)) {
             ci.cancel();
         }
     }

@@ -70,5 +70,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use player attachment level-change sync helper while preserving its clientbound direction and timing.
 - Inlined the single-use Slider shield and armor fall-cancellation conditions into their `LivingEntity` mixin injection points.
 - Inlined the single-use Swet split tag check into the `Slime` mixin condition.
+- Inlined the single-use unhookable entity tag check into the `FishingHook` mixin.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
