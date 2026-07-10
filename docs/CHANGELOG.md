@@ -64,5 +64,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the package-local accessory container factory and construct containers directly from their owning storage.
 - Replaced the single-use accessory equip callback wrapper with the JDK `Consumer` used by the existing container closure.
 - Inlined the single-use accessory menu slot generator while preserving slot order, coordinates, and container lookups.
+- Registered the Remedy/Inebriation check directly in Fabric's mob-effect callback and removed its single-use hook.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

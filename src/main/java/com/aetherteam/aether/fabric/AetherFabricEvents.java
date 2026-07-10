@@ -1,9 +1,9 @@
 package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.command.AetherCommands;
+import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
-import com.aetherteam.aether.event.hooks.EntityEffectHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -45,7 +46,8 @@ public final class AetherFabricEvents {
         ServerEntityEvents.ENTITY_LOAD.register(EntityLifecycleHooks::load);
         ServerEntityEvents.ENTITY_UNLOAD.register(EntityLifecycleHooks::unload);
         ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, livingEntity, context) ->
-                !EntityEffectHooks.preventInebriation(livingEntity, effectInstance));
+                !(livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY))
+                        && effectInstance.getEffect().value() == AetherEffects.INEBRIATION));
     }
 
     private static void registerLevelEvents() {
