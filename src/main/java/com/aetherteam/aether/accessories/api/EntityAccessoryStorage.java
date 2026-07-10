@@ -4,7 +4,6 @@ import com.aetherteam.aether.accessories.api.attributes.AccessoryAttributeBuilde
 import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.equip.AccessoryEquipResult;
-import com.aetherteam.aether.accessories.api.equip.EquipAction;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
@@ -78,8 +77,7 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
                     if (!slotFilter.test(reference)) {
                         continue;
                     }
-                    EquipAction action = EquipAction.of(equippedStack -> container.getAccessories().setItem(index, equippedStack));
-                    return new AccessoryEquipResult(reference, action);
+                    return new AccessoryEquipResult(reference, equippedStack -> container.getAccessories().setItem(index, equippedStack));
                 }
             }
         }

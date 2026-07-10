@@ -62,5 +62,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the single-implementation accessory container owner interface while preserving the current storage and change-notification boundary.
 - Inlined the single-use per-entity accessory storage cache into `AccessoriesAPI` without changing Fabric attachment persistence.
 - Removed the package-local accessory container factory and construct containers directly from their owning storage.
+- Replaced the single-use accessory equip callback wrapper with the JDK `Consumer` used by the existing container closure.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

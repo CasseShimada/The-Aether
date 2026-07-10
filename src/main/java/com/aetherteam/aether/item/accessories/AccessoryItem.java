@@ -62,7 +62,7 @@ public class AccessoryItem extends Item implements Accessory {
         ItemStack equippedStack = player.getAbilities().instabuild ? heldStack.copyWithCount(1) : heldStack.split(1);
         SlotReference reference = equipReference.reference();
         accessory.onEquipFromUse(equippedStack, reference);
-        equipReference.action().equipStack(equippedStack.copy());
+        equipReference.action().accept(equippedStack.copy());
 
         SoundEventData equipSound = accessory.getEquipSound(equippedStack, reference);
         if (equipSound != null) {

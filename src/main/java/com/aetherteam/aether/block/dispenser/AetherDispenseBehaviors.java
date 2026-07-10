@@ -85,7 +85,7 @@ public class AetherDispenseBehaviors {
             SlotReference reference = equipReference.reference();
             SlotTypeReference slotTypeReference = SlotTypeReference.of(reference.slotName());
             accessory.onEquipFromUse(itemStack, reference);
-            equipReference.action().equipStack(itemStack.copy());
+            equipReference.action().accept(itemStack.copy());
             if (livingEntity instanceof ArmorStand armorStand) {
                 if (reference.slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
                     armorStand.setShowArms(true);
