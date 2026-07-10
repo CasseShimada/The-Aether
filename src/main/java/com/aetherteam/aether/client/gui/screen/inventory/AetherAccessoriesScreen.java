@@ -15,12 +15,13 @@ import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.data.User;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
-import com.aetherteam.aether.accessories.client.gui.ToggleButton;
 import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
+import com.aetherteam.aether.accessories.networking.server.ToggleAccessoryRenderPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -391,5 +392,19 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
             y = AetherConfig.CLIENT.button_accessories_y.get();
         }
         return new ScreenOffset(x, y);
+    }
+
+    private static final class ToggleButton extends Button {
+        private ToggleButton(int x, int y, AccessoriesBasedSlot slot) {
+            super(x, y, 12, 12, Component.empty(), button -> {
+                boolean shouldRender = !slot.shouldRender();
+                slot.setRender(shouldRender);
+                AetherPacketSender.sendToServer(new ToggleAccessoryRenderPacket(slot.slotName(), slot.slotIndex(), shouldRender));
+            }, DEFAULT_NARRATION);
+        }
+
+        @Override
+        protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        }
     }
 }

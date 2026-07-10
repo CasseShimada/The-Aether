@@ -78,5 +78,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered entity load, unload, and tracking behavior directly in Fabric callbacks, removing the lifecycle adapter hook.
 - Removed the single-use accessory render-button factory, unused depth argument, and unused slot accessor.
 - Removed the unimplemented accessory-screen compatibility marker and its unreachable UI branches.
+- Moved the single-use accessory render button into its owning Aether accessories screen.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
