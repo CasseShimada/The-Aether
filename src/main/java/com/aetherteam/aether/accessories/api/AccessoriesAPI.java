@@ -13,19 +13,29 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 public final class AccessoriesAPI {
+    private static final Map<LivingEntity, EntityAccessoryStorage> STORAGE_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
+
     private AccessoriesAPI() {
     }
 
     public static AccessoriesStorage getAccessories(LivingEntity entity) {
-        return EntityAccessories.get(entity);
+        if (entity == null) {
+            return null;
+        }
+        EntityAccessoryStorage storage = STORAGE_BY_ENTITY.computeIfAbsent(entity, EntityAccessoryStorage::new);
+        storage.ensureReady();
+        return storage;
     }
 
     public static void evictAccessories(LivingEntity entity) {
-        EntityAccessories.evict(entity);
+        STORAGE_BY_ENTITY.remove(entity);
     }
 
     public static void registerPredicate(Identifier id, SlotBasedPredicate predicate) {
