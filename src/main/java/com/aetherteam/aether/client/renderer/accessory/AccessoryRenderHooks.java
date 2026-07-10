@@ -1,7 +1,6 @@
 package com.aetherteam.aether.client.renderer.accessory;
 
 import com.aetherteam.aether.client.AetherClient;
-import com.aetherteam.aether.accessories.Accessories;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
@@ -92,7 +91,7 @@ public final class AccessoryRenderHooks {
         if (accessoriesContainer != null && accessoriesContainer.shouldRender(slotIndex)) {
             ItemStack stack = accessoriesContainer.getAccessories().getItem(slotIndex);
             ItemStack cosmeticStack = accessoriesContainer.getCosmeticAccessories().getItem(slotIndex);
-            if (!cosmeticStack.isEmpty() && Accessories.config().clientOptions.showCosmeticAccessories()) {
+            if (!cosmeticStack.isEmpty()) {
                 stack = cosmeticStack;
             }
             return stack;

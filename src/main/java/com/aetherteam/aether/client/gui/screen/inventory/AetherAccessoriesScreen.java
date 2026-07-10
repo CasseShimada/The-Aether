@@ -17,7 +17,6 @@ import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
 import com.aetherteam.aether.accessories.client.gui.AccessoriesScreen;
 import com.aetherteam.aether.accessories.client.gui.ToggleButton;
-import com.aetherteam.aether.accessories.networking.AccessoriesNetworking;
 import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
@@ -325,7 +324,7 @@ public class AetherAccessoriesScreen extends AbstractRecipeBookScreen<AetherAcce
                     if (slot == this.destroyItemSlot && this.destroyItemSlot != null && flag) {
                         for (int j = 0; j < this.minecraft.player.inventoryMenu.getItems().size(); ++j) {
                             if (this.nukeCoolDown <= 0) {
-                                AccessoriesNetworking.sendToServer(new NukeAccessories());
+                                AetherPacketSender.sendToServer(new NukeAccessories());
                                 this.nukeCoolDown = 10;
                             }
                             this.minecraft.gameMode.handleCreativeModeItemAdd(ItemStack.EMPTY, j);

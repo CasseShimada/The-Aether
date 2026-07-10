@@ -56,5 +56,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Centralized Aether player input-state sync keys without changing their network string values or directions.
 - Centralized Aether player dart, Remedy, and Life Shard sync keys without changing their network string values or directions.
 - Centralized the remaining Aether player invisibility, Moa, and client-forwarding sync keys without changing their network values or directions.
+- Removed single-use Accessories-style cosmetic config and networking facades; rendering and packet sending now use direct Aether behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
