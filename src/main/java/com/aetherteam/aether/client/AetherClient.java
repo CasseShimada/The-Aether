@@ -2,6 +2,7 @@ package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
 import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
@@ -14,7 +15,6 @@ import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
-import com.aetherteam.aether.event.hooks.ItemTooltipHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
@@ -131,7 +131,30 @@ public class AetherClient {
     private static void registerLifecycleCallbacks() {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> AetherColorResolvers.registerBlockColor(client.getBlockColors()));
 
-        ItemTooltipCallback.EVENT.register(ItemTooltipHooks::addItemTooltip);
+        ItemTooltipCallback.EVENT.register((stack, context, flag, components) -> {
+            if (!flag.isCreative()) {
+                return;
+            }
+
+            int position = components.size();
+            Component itemName = stack.getItem().getName(stack);
+            for (int i = 0; i < position; i++) {
+                Component component = components.get(i);
+                if (component.getString().equals(itemName.getString())) {
+                    position = i + 1;
+                    break;
+                }
+            }
+            if (stack.is(AetherTags.Items.BRONZE_DUNGEON_LOOT)) {
+                components.add(position, AetherItems.BRONZE_DUNGEON_TOOLTIP);
+            }
+            if (stack.is(AetherTags.Items.SILVER_DUNGEON_LOOT)) {
+                components.add(position, AetherItems.SILVER_DUNGEON_TOOLTIP);
+            }
+            if (stack.is(AetherTags.Items.GOLD_DUNGEON_LOOT)) {
+                components.add(position, AetherItems.GOLD_DUNGEON_TOOLTIP);
+            }
+        });
     }
 
     private static void registerScreenCallbacks() {
