@@ -11,8 +11,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
-import java.util.function.Supplier;
-
 /**
  * Sync packet for values in the {@link AetherTimeAttachment} class.
  */
@@ -41,8 +39,8 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
     }
 
     @Override
-    public Supplier<AttachmentType<AetherTimeAttachment>> getAttachment() {
-        return () -> AetherDataAttachments.AETHER_TIME;
+    public AttachmentType<AetherTimeAttachment> getAttachment() {
+        return AetherDataAttachments.AETHER_TIME;
     }
 
     public static void execute(AetherTimeSyncPacket payload, AetherPayloadContext context) {

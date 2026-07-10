@@ -47,7 +47,7 @@ public abstract class SyncEntityPacket<T extends AttachmentSyncable> extends Syn
             return;
         }
 
-        T attachment = entity.getAttachedOrCreate(payload.getAttachment().get());
+        T attachment = entity.getAttachedOrCreate(payload.getAttachment());
         payload.applySync(attachment);
     }
 }

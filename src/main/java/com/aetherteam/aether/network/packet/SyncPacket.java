@@ -6,7 +6,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public abstract class SyncPacket<T extends AttachmentSyncable> implements CustomPacketPayload {
     private final String key;
@@ -23,7 +22,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         this(values.key(), values.valueType(), values.value());
     }
 
-    public abstract Supplier<AttachmentType<T>> getAttachment();
+    public abstract AttachmentType<T> getAttachment();
 
     public String key() {
         return this.key;

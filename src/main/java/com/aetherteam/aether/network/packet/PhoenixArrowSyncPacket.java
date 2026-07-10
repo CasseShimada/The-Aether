@@ -11,8 +11,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import com.aetherteam.aether.network.AetherPayloadContext;
 
-import java.util.function.Supplier;
-
 /**
  * Sync packet for values in the {@link PhoenixArrowAttachment} class.
  */
@@ -41,8 +39,8 @@ public class PhoenixArrowSyncPacket extends SyncEntityPacket<PhoenixArrowAttachm
     }
 
     @Override
-    public Supplier<AttachmentType<PhoenixArrowAttachment>> getAttachment() {
-        return () -> AetherDataAttachments.PHOENIX_ARROW;
+    public AttachmentType<PhoenixArrowAttachment> getAttachment() {
+        return AetherDataAttachments.PHOENIX_ARROW;
     }
 
     public static void execute(PhoenixArrowSyncPacket payload, AetherPayloadContext context) {

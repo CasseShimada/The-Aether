@@ -24,7 +24,7 @@ public abstract class SyncLevelPacket<T extends AttachmentSyncable> extends Sync
             return;
         }
 
-        T attachment = player.level().getAttachedOrCreate(payload.getAttachment().get());
+        T attachment = player.level().getAttachedOrCreate(payload.getAttachment());
         payload.applySync(attachment);
     }
 }
