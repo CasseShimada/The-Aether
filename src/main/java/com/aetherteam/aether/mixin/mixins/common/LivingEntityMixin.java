@@ -1,12 +1,12 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
-import com.aetherteam.aether.event.hooks.ArmorAbilityHooks;
 import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
-import com.aetherteam.aether.event.hooks.EntityCombatHooks;
 import com.aetherteam.aether.event.hooks.WeaponAbilityHooks;
+import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
@@ -81,7 +81,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "applyItemBlocking(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)F", at = @At("HEAD"), cancellable = true)
     private void aether$preventSliderShieldBlock(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-        if (EntityCombatHooks.preventSliderShieldBlock(source)) {
+        if (source.getEntity() instanceof Slider) {
             cir.setReturnValue(amount);
         }
     }
@@ -159,7 +159,8 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "causeFallDamage(DFLnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
     private void aether$cancelFallDamage(double fallDistance, float multiplier, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (ArmorAbilityHooks.fallCancellation((LivingEntity) (Object) this)) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (EquipmentUtil.hasSentryBoots(livingEntity) || EquipmentUtil.hasFullGravititeSet(livingEntity) || EquipmentUtil.hasFullValkyrieSet(livingEntity)) {
             cir.setReturnValue(false);
         }
     }

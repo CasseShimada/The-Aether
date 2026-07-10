@@ -68,5 +68,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered block interaction recipes and portal creation directly in Fabric's use-block callback, removing its adapter hook.
 - Registered bucket and armor-stand interactions directly in Fabric's use-entity callback, removing its adapter hook.
 - Inlined the single-use player attachment level-change sync helper while preserving its clientbound direction and timing.
+- Inlined the single-use Slider shield and armor fall-cancellation conditions into their `LivingEntity` mixin injection points.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
