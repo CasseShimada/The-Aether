@@ -58,5 +58,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Centralized the remaining Aether player invisibility, Moa, and client-forwarding sync keys without changing their network values or directions.
 - Removed single-use Accessories-style cosmetic config and networking facades; rendering and packet sending now use direct Aether behavior.
 - Removed the single-listener accessory slot event container while preserving the existing slot callback and builder behavior.
+- Inlined the remaining single-use accessory slot builder into Aether's slot registration and removed its callback facade.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

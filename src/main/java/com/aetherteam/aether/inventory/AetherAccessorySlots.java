@@ -7,7 +7,6 @@ import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.accessories.api.slot.SlotBasedPredicate;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
-import com.aetherteam.aether.accessories.api.slot.UniqueSlotHandling;
 import com.aetherteam.aether.accessories.impl.AccessoriesState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
@@ -17,7 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCallback {
+public class AetherAccessorySlots {
     private static final Identifier GLOVES_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "gloves_items");
     private static final Identifier RING_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "ring_items");
     private static final Identifier PENDANT_PREDICATE = Identifier.fromNamespaceAndPath(Aether.MODID, "pendant_items");
@@ -37,8 +36,6 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
     public static final Identifier BACK_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "back_slot");
     public static final Identifier SHIELD_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "shield_slot");
     public static final Identifier ACCESSORY_SLOT_LOCATION = Identifier.fromNamespaceAndPath(Aether.MODID, "accessory_slot");
-
-    public static final AetherAccessorySlots INSTANCE = new AetherAccessorySlots();
 
     private static SlotTypeReference GLOVES_SLOT;
     private static SlotTypeReference RING_SLOT;
@@ -63,6 +60,33 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
     };
 
     private AetherAccessorySlots() {
+    }
+
+    public static void register() {
+        registerPredicates();
+
+        if (!AetherConfig.COMMON.use_default_accessories_menu.get()) {
+            GLOVES_SLOT = registerAetherSlot(GLOVES_SLOT_LOCATION, 1, GLOVES_PREDICATE, HUMANOID_TYPES);
+            RING_SLOT = registerAetherSlot(RING_SLOT_LOCATION, 2, RING_PREDICATE, EntityTypes.PLAYER);
+            PENDANT_SLOT = registerAetherSlot(PENDANT_SLOT_LOCATION, 1, PENDANT_PREDICATE, HUMANOID_TYPES);
+            CAPE_SLOT = registerAetherSlot(CAPE_SLOT_LOCATION, 1, CAPE_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            SHIELD_SLOT = registerAetherSlot(SHIELD_SLOT_LOCATION, 1, SHIELD_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            BACK_SLOT = registerAetherSlot(BACK_SLOT_LOCATION, 1, BACK_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            ACCESSORY_SLOT = registerAetherSlot(ACCESSORY_SLOT_LOCATION, 2, ACCESSORY_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+        } else {
+            BACK_SLOT = registerDefaultSlot("back", 1, DEFAULT_BACK_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            GLOVES_SLOT = registerDefaultSlot("hand", 1, GLOVES_PREDICATE, HUMANOID_TYPES);
+            RING_SLOT = registerDefaultSlot("ring", 2, RING_PREDICATE, EntityTypes.PLAYER);
+            PENDANT_SLOT = registerDefaultSlot("necklace", 1, PENDANT_PREDICATE, HUMANOID_TYPES);
+            CAPE_SLOT = registerDefaultSlot("cape", 1, DEFAULT_CAPE_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            SHIELD_SLOT = BACK_SLOT;
+            CHARM_SLOT = registerDefaultSlot("charm", 2, CHARM_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            HEAD_SLOT = registerDefaultSlot("head", 1, HEAD_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
+            ACCESSORY_SLOT = CHARM_SLOT;
+        }
+    }
+
+    private static void registerPredicates() {
         AccessoriesAPI.registerPredicate(GLOVES_PREDICATE, SlotBasedPredicate.ofStack(AccessorySlotResolver::matchesGloves));
         AccessoriesAPI.registerPredicate(RING_PREDICATE, SlotBasedPredicate.ofStack(AccessorySlotResolver::matchesRing));
         AccessoriesAPI.registerPredicate(PENDANT_PREDICATE, SlotBasedPredicate.ofStack(AccessorySlotResolver::matchesPendant));
@@ -76,31 +100,15 @@ public class AetherAccessorySlots implements UniqueSlotHandling.RegistrationCall
         AccessoriesAPI.registerPredicate(HEAD_PREDICATE, SlotBasedPredicate.ofStack(AccessorySlotResolver::matchesHeadSlot));
     }
 
-    public static void register() {
-        UniqueSlotHandling.register(INSTANCE);
-    }
-
-    @Override
-    public void registerSlots(UniqueSlotHandling.UniqueSlotBuilderFactory factory) {
-        if (!AetherConfig.COMMON.use_default_accessories_menu.get()) {
-            GLOVES_SLOT = factory.create(GLOVES_SLOT_LOCATION, 1).slotPredicates(GLOVES_PREDICATE).validTypes(HUMANOID_TYPES).allowEquipFromUse(true).build();
-            RING_SLOT = factory.create(RING_SLOT_LOCATION, 2).slotPredicates(RING_PREDICATE).validTypes(EntityTypes.PLAYER).allowEquipFromUse(true).build();
-            PENDANT_SLOT = factory.create(PENDANT_SLOT_LOCATION, 1).slotPredicates(PENDANT_PREDICATE).validTypes(HUMANOID_TYPES).allowEquipFromUse(true).build();
-            CAPE_SLOT = factory.create(CAPE_SLOT_LOCATION, 1).slotPredicates(CAPE_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
-            SHIELD_SLOT = factory.create(SHIELD_SLOT_LOCATION, 1).slotPredicates(SHIELD_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
-            BACK_SLOT = factory.create(BACK_SLOT_LOCATION, 1).slotPredicates(BACK_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
-            ACCESSORY_SLOT = factory.create(ACCESSORY_SLOT_LOCATION, 2).slotPredicates(ACCESSORY_PREDICATE).validTypes(EntityTypes.PLAYER, EntityTypes.ARMOR_STAND).allowEquipFromUse(true).build();
-        } else {
-            BACK_SLOT = registerDefaultSlot("back", 1, DEFAULT_BACK_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
-            GLOVES_SLOT = registerDefaultSlot("hand", 1, GLOVES_PREDICATE, HUMANOID_TYPES);
-            RING_SLOT = registerDefaultSlot("ring", 2, RING_PREDICATE, EntityTypes.PLAYER);
-            PENDANT_SLOT = registerDefaultSlot("necklace", 1, PENDANT_PREDICATE, HUMANOID_TYPES);
-            CAPE_SLOT = registerDefaultSlot("cape", 1, DEFAULT_CAPE_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
-            SHIELD_SLOT = BACK_SLOT;
-            CHARM_SLOT = registerDefaultSlot("charm", 2, CHARM_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
-            HEAD_SLOT = registerDefaultSlot("head", 1, HEAD_PREDICATE, EntityTypes.PLAYER, EntityTypes.ARMOR_STAND);
-            ACCESSORY_SLOT = CHARM_SLOT;
-        }
+    private static SlotTypeReference registerAetherSlot(Identifier id, int size, Identifier predicate, EntityType<?>... validTypes) {
+        String slotName = id.toString();
+        AccessoriesState.registerSlot(new AccessoriesState.SlotDefinition(
+            new SlotType(slotName, size, "accessories.slot." + id.getNamespace() + "." + id.getPath()),
+            List.of(predicate),
+            Set.copyOf(List.of(validTypes)),
+            true
+        ));
+        return SlotTypeReference.of(slotName);
     }
 
     private static SlotTypeReference registerDefaultSlot(String slotName, int size, Identifier predicate, EntityType<?>... validTypes) {
