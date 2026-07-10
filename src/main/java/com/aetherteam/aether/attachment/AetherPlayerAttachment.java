@@ -55,6 +55,11 @@ import java.util.*;
  * Fabric attachment state for handling {@link Player} behavior for the Aether.
  */
 public class AetherPlayerAttachment implements AttachmentSyncable {
+    public static final String HITTING_SYNC_KEY = "setHitting";
+    public static final String MOVING_SYNC_KEY = "setMoving";
+    public static final String JUMPING_SYNC_KEY = "setJumping";
+    public static final String GRAVITITE_JUMP_ACTIVE_SYNC_KEY = "setGravititeJumpActive";
+
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
     private boolean canGetPortal = true;
@@ -122,10 +127,10 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
-        Map.entry("setHitting", new SyncField(Type.BOOLEAN, (object) -> this.setHitting((boolean) object), this::isHitting)),
-        Map.entry("setMoving", new SyncField(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
-        Map.entry("setJumping", new SyncField(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
-        Map.entry("setGravititeJumpActive", new SyncField(Type.BOOLEAN, (object) -> this.setGravititeJumpActive((boolean) object), this::isGravititeJumpActive)),
+        Map.entry(HITTING_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setHitting((boolean) object), this::isHitting)),
+        Map.entry(MOVING_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
+        Map.entry(JUMPING_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
+        Map.entry(GRAVITITE_JUMP_ACTIVE_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setGravititeJumpActive((boolean) object), this::isGravititeJumpActive)),
         Map.entry("setGoldenDartCount", new SyncField(Type.INT, (object) -> this.setGoldenDartCount((int) object), this::getGoldenDartCount)),
         Map.entry("setPoisonDartCount", new SyncField(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
         Map.entry("setEnchantedDartCount", new SyncField(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),

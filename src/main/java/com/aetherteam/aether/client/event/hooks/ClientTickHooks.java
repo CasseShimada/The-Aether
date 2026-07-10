@@ -2,6 +2,7 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
@@ -39,22 +40,22 @@ public final class ClientTickHooks {
 
         boolean isJumping = keys.jump();
         if (isJumping != aetherPlayer.isJumping()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setJumping", isJumping);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.JUMPING_SYNC_KEY, isJumping);
         }
 
         boolean isMoving = isJumping || keys.forward() || keys.backward() || keys.left() || keys.right() || player.isFallFlying();
         if (isMoving != aetherPlayer.isMoving()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setMoving", isMoving);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.MOVING_SYNC_KEY, isMoving);
         }
 
         boolean isHitting = client.options.keyAttack.isDown();
         if (isHitting != aetherPlayer.isHitting()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setHitting", isHitting);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.HITTING_SYNC_KEY, isHitting);
         }
 
         boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
         if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, "setGravititeJumpActive", gravititeJumpActive);
+            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.GRAVITITE_JUMP_ACTIVE_SYNC_KEY, gravititeJumpActive);
         }
     }
 

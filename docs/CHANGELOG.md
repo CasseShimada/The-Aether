@@ -53,5 +53,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered client startup and disconnect callbacks directly from the Fabric client initializer, removing their single-use lifecycle adapter.
 - Removed the deferred-style `Supplier` indirection from attachment sync packets; packets now reference Fabric `AttachmentType` values directly.
 - Centralized Aether time and Phoenix Arrow attachment sync keys without changing their network string values.
+- Centralized Aether player input-state sync keys without changing their network string values or directions.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
