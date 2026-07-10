@@ -2,10 +2,11 @@ package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.effect.AetherEffects;
-import com.aetherteam.aether.event.hooks.BlockInteractionHooks;
+import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityInteractionHooks;
 import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
+import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
@@ -19,6 +20,7 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.InteractionResult;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -67,7 +69,17 @@ public final class AetherFabricEvents {
     }
 
     private static void registerInteractionEvents() {
-        UseBlockCallback.EVENT.register(BlockInteractionHooks::useBlock);
+        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (player == null || hitResult == null) {
+                return InteractionResult.PASS;
+            }
+            if (InteractionRecipeHooks.isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
+                return InteractionResult.FAIL;
+            }
+            return DimensionPortalHooks.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)
+                    ? InteractionResult.SUCCESS
+                    : InteractionResult.PASS;
+        });
         UseEntityCallback.EVENT.register(EntityInteractionHooks::useEntity);
     }
 
