@@ -59,6 +59,11 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public static final String MOVING_SYNC_KEY = "setMoving";
     public static final String JUMPING_SYNC_KEY = "setJumping";
     public static final String GRAVITITE_JUMP_ACTIVE_SYNC_KEY = "setGravititeJumpActive";
+    public static final String GOLDEN_DART_COUNT_SYNC_KEY = "setGoldenDartCount";
+    public static final String POISON_DART_COUNT_SYNC_KEY = "setPoisonDartCount";
+    public static final String ENCHANTED_DART_COUNT_SYNC_KEY = "setEnchantedDartCount";
+    public static final String REMEDY_START_DURATION_SYNC_KEY = "setRemedyStartDuration";
+    public static final String LIFE_SHARD_COUNT_SYNC_KEY = "setLifeShardCount";
 
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
@@ -131,14 +136,14 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         Map.entry(MOVING_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setMoving((boolean) object), this::isMoving)),
         Map.entry(JUMPING_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setJumping((boolean) object), this::isJumping)),
         Map.entry(GRAVITITE_JUMP_ACTIVE_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setGravititeJumpActive((boolean) object), this::isGravititeJumpActive)),
-        Map.entry("setGoldenDartCount", new SyncField(Type.INT, (object) -> this.setGoldenDartCount((int) object), this::getGoldenDartCount)),
-        Map.entry("setPoisonDartCount", new SyncField(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
-        Map.entry("setEnchantedDartCount", new SyncField(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),
-        Map.entry("setRemedyStartDuration", new SyncField(Type.INT, (object) -> this.setRemedyStartDuration((int) object), this::getRemedyStartDuration)),
+        Map.entry(GOLDEN_DART_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setGoldenDartCount((int) object), this::getGoldenDartCount)),
+        Map.entry(POISON_DART_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setPoisonDartCount((int) object), this::getPoisonDartCount)),
+        Map.entry(ENCHANTED_DART_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setEnchantedDartCount((int) object), this::getEnchantedDartCount)),
+        Map.entry(REMEDY_START_DURATION_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setRemedyStartDuration((int) object), this::getRemedyStartDuration)),
         Map.entry("setAttackedWithInvisibility", new SyncField(Type.BOOLEAN, (object) -> this.setAttackedWithInvisibility((boolean) object), this::attackedWithInvisibility)),
         Map.entry("setInvisibilityEnabled", new SyncField(Type.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
         Map.entry("setWearingInvisibilityCloak", new SyncField(Type.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
-        Map.entry("setLifeShardCount", new SyncField(Type.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
+        Map.entry(LIFE_SHARD_COUNT_SYNC_KEY, new SyncField(Type.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
         Map.entry("setLastRiddenMoa", new SyncField(Type.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
         Map.entry("setShouldSyncBetweenClients", new SyncField(Type.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
     );
@@ -352,7 +357,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeGoldenDartTime;
                 if (this.removeGoldenDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setGoldenDartCount", this.getGoldenDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, GOLDEN_DART_COUNT_SYNC_KEY, this.getGoldenDartCount() - 1);
                 }
             }
             if (this.getPoisonDartCount() > 0) {
@@ -362,7 +367,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removePoisonDartTime;
                 if (this.removePoisonDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setPoisonDartCount", this.getPoisonDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, POISON_DART_COUNT_SYNC_KEY, this.getPoisonDartCount() - 1);
                 }
             }
             if (this.getEnchantedDartCount() > 0) {
@@ -372,7 +377,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeEnchantedDartTime;
                 if (this.removeEnchantedDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, "setEnchantedDartCount", this.getEnchantedDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, ENCHANTED_DART_COUNT_SYNC_KEY, this.getEnchantedDartCount() - 1);
                 }
             }
         }
