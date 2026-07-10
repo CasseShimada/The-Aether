@@ -1,14 +1,18 @@
 package com.aetherteam.aether.fabric;
 
+import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.effect.AetherEffects;
+import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
+import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
 import com.aetherteam.aether.event.hooks.EntityBucketHooks;
-import com.aetherteam.aether.event.hooks.EntityLifecycleHooks;
 import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
 import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
+import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -22,6 +26,10 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.bee.Bee;
+import net.minecraft.world.entity.animal.fox.Fox;
+import net.minecraft.world.entity.player.Player;
 
 public final class AetherFabricEvents {
     private AetherFabricEvents() {
@@ -46,8 +54,22 @@ public final class AetherFabricEvents {
     }
 
     private static void registerEntityEvents() {
-        ServerEntityEvents.ENTITY_LOAD.register(EntityLifecycleHooks::load);
-        ServerEntityEvents.ENTITY_UNLOAD.register(EntityLifecycleHooks::unload);
+        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+            if (entity.getClass() == Bee.class) {
+                Bee bee = (Bee) entity;
+                ((MobAccessor) bee).aether$getGoalSelector().addGoal(7, new BeeGrowBerryBushGoal(bee));
+            } else if (entity.getClass() == Fox.class) {
+                Fox fox = (Fox) entity;
+                ((MobAccessor) fox).aether$getGoalSelector().addGoal(10, new FoxEatBerryBushGoal(fox, 1.2F, 12, 1));
+            }
+            if (entity instanceof Player player) {
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onJoinLevel(player);
+            }
+            if (entity instanceof LivingEntity livingEntity) {
+                AccessoryRuntime.forceSync(livingEntity);
+            }
+        });
+        ServerEntityEvents.ENTITY_UNLOAD.register((entity, level) -> AccessoryRuntime.clear(entity));
         ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, livingEntity, context) ->
                 !(livingEntity.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.REMEDY))
                         && effectInstance.getEffect().value() == AetherEffects.INEBRIATION));
@@ -62,7 +84,7 @@ public final class AetherFabricEvents {
     }
 
     private static void registerTrackingEvents() {
-        EntityTrackingEvents.START_TRACKING.register(EntityLifecycleHooks::startTracking);
+        EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
     }
 
     private static void registerCommandEvents() {

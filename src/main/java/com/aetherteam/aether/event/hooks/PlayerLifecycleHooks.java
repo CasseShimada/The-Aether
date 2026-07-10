@@ -63,8 +63,4 @@ public final class PlayerLifecycleHooks {
     public static Player.BedSleepingProblem allowSleeping(Player player, BlockPos sleepingPos) {
         return DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null;
     }
-
-    public static void joinLevel(Player player) {
-        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onJoinLevel(player);
-    }
 }
