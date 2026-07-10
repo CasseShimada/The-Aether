@@ -4,6 +4,7 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.data.resources.registries.AetherDamageTypes;
@@ -406,7 +407,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                 data.setEternalDay(false);
                 data.updateEternalDay(this.level());
                 if (AetherConfig.SERVER.sync_aether_time.get()) {
-                    data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, this.level());
+                    data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, AetherTimeAttachment.SHOULD_WAIT_SYNC_KEY, true, this.level());
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -32,7 +33,7 @@ public class EternalDayCommand {
             data.setEternalDay(value);
             data.updateEternalDay(level); // Syncs to client.
             if (AetherConfig.SERVER.sync_aether_time.get()) {
-                data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, "setShouldWait", true, level);
+                data.setSynced(-1, AttachmentSyncable.Direction.DIMENSION, AetherTimeAttachment.SHOULD_WAIT_SYNC_KEY, true, level);
             }
             source.sendSuccess(() -> Component.translatable("commands.aether.capability.time.eternal_day.set", value), true);
         }

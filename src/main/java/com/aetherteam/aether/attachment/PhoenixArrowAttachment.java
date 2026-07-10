@@ -18,6 +18,8 @@ import java.util.Map;
  * @see com.aetherteam.aether.mixin.mixins.client.TippableArrowRendererMixin
  */
 public class PhoenixArrowAttachment implements AttachmentSyncable {
+    public static final String PHOENIX_ARROW_SYNC_KEY = "setPhoenixArrow";
+
     private boolean isPhoenixArrow;
     private int fireTime;
 
@@ -25,7 +27,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
-            Map.entry("setPhoenixArrow", new SyncField(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
+            Map.entry(PHOENIX_ARROW_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
     );
 
     public static final Codec<PhoenixArrowAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(

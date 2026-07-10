@@ -18,6 +18,9 @@ import java.util.Map;
  * This attachment only has an effect on levels where the dimension type's effects are set to the Aether's.
  */
 public class AetherTimeAttachment implements AttachmentSyncable {
+    public static final String ETERNAL_DAY_SYNC_KEY = "setEternalDay";
+    public static final String SHOULD_WAIT_SYNC_KEY = "setShouldWait";
+
     private static int ticksPerDayMultiplier = -1;
     private long dayTime = -1;
     private boolean isEternalDay = true;
@@ -27,8 +30,8 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
-            Map.entry("setEternalDay", new SyncField(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
-            Map.entry("setShouldWait", new SyncField(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
+            Map.entry(ETERNAL_DAY_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
+            Map.entry(SHOULD_WAIT_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
     );
 
     public static final Codec<AetherTimeAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -74,10 +77,10 @@ public class AetherTimeAttachment implements AttachmentSyncable {
                 if (!level.isClientSide() && level.getLevelData() instanceof AetherLevelData aetherLevelData) {
                     if (AetherConfig.SERVER.sync_aether_time.get()) {
                         if (aetherLevelData.getOverworldDayTime() == aetherLevelData.getDayTime()) {
-                            this.setSynced(-1, Direction.DIMENSION, "setShouldWait", false, level);
+                            this.setSynced(-1, Direction.DIMENSION, SHOULD_WAIT_SYNC_KEY, false, level);
                         }
                     } else if (this.getShouldWait()) {
-                        this.setSynced(-1, Direction.DIMENSION, "setShouldWait", false, level);
+                        this.setSynced(-1, Direction.DIMENSION, SHOULD_WAIT_SYNC_KEY, false, level);
                     }
                 }
             } else {
@@ -100,14 +103,14 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Sends the eternal day value to the client dimension.
      */
     public void updateEternalDay(Level level) {
-        this.setSynced(-1, Direction.DIMENSION, "setEternalDay", this.isEternalDay, level);
+        this.setSynced(-1, Direction.DIMENSION, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, level);
     }
 
     /**
      * Sends the eternal day value to the client player.
      */
     public void updateEternalDay(ServerPlayer player) {
-        this.setSynced(player.getId(), Direction.PLAYER, "setEternalDay", this.isEternalDay, player);
+        this.setSynced(player.getId(), Direction.PLAYER, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, player);
     }
 
     public void setDayTime(long time) {
