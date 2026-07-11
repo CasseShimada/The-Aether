@@ -2,15 +2,21 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.integration.jei.AetherJeiBridge;
+import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
+import com.aetherteam.aether.mixin.mixins.client.accessor.TitleScreenAccessor;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
+
+import java.util.Calendar;
 
 public final class ClientScreenHooks {
     private static final boolean JEI_LOADED = FabricLoader.getInstance().isModLoaded("jei");
@@ -30,7 +36,15 @@ public final class ClientScreenHooks {
 
     private static void configureScreen(Screen screen) {
         if (screen instanceof TitleScreen titleScreen) {
-            TitleScreenHooks.setCustomSplashText(titleScreen);
+            Calendar calendar = Calendar.getInstance();
+            if (calendar.get(Calendar.MONTH) + 1 == 7 && calendar.get(Calendar.DATE) == 22) {
+                TitleScreenAccessor accessor = (TitleScreenAccessor) titleScreen;
+                SplashRenderer splashRenderer = accessor.aether$getSplash();
+                Component splash = ((SplashRendererAccessor) splashRenderer).aether$getSplash();
+                if (!"Happy anniversary to the Aether!".equals(splash.getString())) {
+                    accessor.aether$setSplash(new SplashRenderer(Component.literal("Happy anniversary to the Aether!")));
+                }
+            }
         }
 
         var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);

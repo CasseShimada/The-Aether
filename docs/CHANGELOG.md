@@ -95,5 +95,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the nonfunctional Patreon refresh button, its no-op payload, cooldown hook, translations, and textures.
 - Removed a dead accessory-menu key hook, orphaned compatibility-pack labels, and redundant item slot configuration branches.
 - Removed the nonfunctional default Accessories menu configuration and its unreachable generic-slot registration branch while retaining the current seven Aether slots and arbitrary attachment slot-name persistence.
+- Inlined the single-use anniversary splash hook into the Fabric client screen callback.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
