@@ -51,7 +51,7 @@ public final class PlayerLifecycleHooks {
     }
 
     public static void changeLevel(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
-        DimensionTravelHooks.remountPlayerAerbunny(player);
+        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
         if (!player.level().isClientSide()) {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
         }

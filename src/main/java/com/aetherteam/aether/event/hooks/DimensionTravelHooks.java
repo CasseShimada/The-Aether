@@ -49,10 +49,6 @@ public final class DimensionTravelHooks {
         }
     }
 
-    public static void remountPlayerAerbunny(Player player) {
-        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
-    }
-
     public static void travelling(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             if (DimensionTravelState.teleportationTimer > 0) {
