@@ -6,6 +6,8 @@ This checklist tracks the self-written Aether accessory core built on Fabric att
 
 Old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data has been intentionally removed from this Fabric branch. Curios item tags are no longer used as slot fallbacks; current Aether and `accessories:*` item tags remain supported. Current Aether accessory storage remains backed by the mod's Fabric attachment data and current network sync path.
 
+The nonfunctional alternative Accessories menu switch and its generic-slot registration branch have also been removed. Fabric attachment decoding still preserves arbitrary slot names without migrating or rewriting them, while new runtime registration continues to use the seven current `aether:*_slot` identifiers.
+
 ## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |

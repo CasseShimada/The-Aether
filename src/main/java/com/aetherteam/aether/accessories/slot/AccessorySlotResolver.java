@@ -88,10 +88,6 @@ public final class AccessorySlotResolver {
             || isBackAccessory(stack) && !isShieldLike(stack);
     }
 
-    public static boolean matchesDefaultBack(ItemStack stack) {
-        return matchesBack(stack) || matchesShield(stack);
-    }
-
     public static boolean matchesShield(Item item) {
         return matchesShield(item.getDefaultInstance());
     }
@@ -131,16 +127,8 @@ public final class AccessorySlotResolver {
         return stack.is(ACCESSORIES_HEAD);
     }
 
-    public static boolean matchesHeadSlot(ItemStack stack) {
-        return hasDeathProtection(stack) || matchesHead(stack);
-    }
-
     @Nullable
     public static SlotTypeReference resolveSlotType(ItemStack stack) {
-        SlotTypeReference headSlot = AetherAccessorySlots.getHeadSlotType();
-        if (headSlot != null && matchesHead(stack)) {
-            return headSlot;
-        }
         SlotTypeReference backSlot = AetherAccessorySlots.getBackSlotType();
         if (backSlot != null && matchesBack(stack) && !matchesCapeSlot(stack)) {
             return backSlot;

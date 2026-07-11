@@ -25,12 +25,12 @@ public final class GuiAccessoryMenuHooks {
     }
 
     /**
-     * Checks whether the accessory button isn't disabled by {@link AetherConfig.Client#disable_accessory_button} or accessory tags being empty.
+     * Checks whether the accessory button isn't disabled by {@link AetherConfig.Client#disable_accessory_button}.
      *
      * @return The {@link Boolean} value.
      */
     public static boolean isAccessoryButtonEnabled() {
-        return !AetherConfig.CLIENT.disable_accessory_button.get() && !AetherConfig.COMMON.use_default_accessories_menu.get();
+        return !AetherConfig.CLIENT.disable_accessory_button.get();
     }
 
     public static AccessoryButton setupAccessoryButton(Screen screen, ScreenOffset offsets) {
@@ -49,8 +49,7 @@ public final class GuiAccessoryMenuHooks {
             return;
         }
 
-        if (AetherConfig.COMMON.use_default_accessories_menu.get()
-                || AetherConfig.CLIENT.disable_accessory_button.get()
+        if (AetherConfig.CLIENT.disable_accessory_button.get()
                 || !AetherKeys.OPEN_ACCESSORY_INVENTORY.consumeClick()) {
             return;
         }

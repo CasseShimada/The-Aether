@@ -181,7 +181,6 @@ public class AetherConfig {
     }
 
     public static class Common {
-        public final ConfigValue<Boolean> use_default_accessories_menu;
         public final ConfigValue<Boolean> start_with_portal;
         public final ConfigValue<Boolean> enable_startup_loot;
         public final ConfigValue<Boolean> reposition_slider_message;
@@ -196,11 +195,6 @@ public class AetherConfig {
 
         public Common(ModConfigSpec.Builder builder) {
             builder.push("Gameplay");
-            use_default_accessories_menu = builder
-                    .gameRestart()
-                    .comment("Use the default Accessories menu instead of the Aether's Accessories Menu. WARNING: Do not enable this without emptying your equipped accessories")
-                    .translation("config.aether.common.gameplay.use_default_accessories_menu")
-                    .define("Use default Accessories' menu", false);
             start_with_portal = builder
                     .comment("On world creation, the player is given an Aether Portal Frame item to automatically go to the Aether with")
                     .translation("config.aether.common.gameplay.start_with_portal")
