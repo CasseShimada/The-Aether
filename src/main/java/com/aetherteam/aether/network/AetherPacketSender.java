@@ -3,7 +3,6 @@ package com.aetherteam.aether.network;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import com.aetherteam.aether.util.ClientRuntimeAccess;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -13,13 +12,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public final class AetherPacketSender {
+    private static Consumer<CustomPacketPayload> serverPacketSender = payload -> {
+    };
     @Nullable
     private static MinecraftServer serverInstance;
     private static boolean initialized;
 
     private AetherPacketSender() {
+    }
+
+    public static void registerServerPacketSender(Consumer<CustomPacketPayload> sender) {
+        serverPacketSender = Objects.requireNonNull(sender);
     }
 
     public static void init() {
@@ -37,7 +44,7 @@ public final class AetherPacketSender {
     }
 
     public static void sendToServer(CustomPacketPayload payload) {
-        ClientRuntimeAccess.sendToServer(payload);
+        serverPacketSender.accept(payload);
     }
 
     public static void sendToPlayer(ServerPlayer player, CustomPacketPayload payload) {
