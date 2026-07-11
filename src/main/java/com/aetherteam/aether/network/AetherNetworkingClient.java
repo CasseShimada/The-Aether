@@ -31,6 +31,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public final class AetherNetworkingClient {
@@ -47,8 +48,8 @@ public final class AetherNetworkingClient {
 
         registerClientReceiver(AetherTravelPacket.TYPE, AetherTravelPacket::execute);
         registerClientReceiver(AccessorySyncPacket.TYPE, AccessorySyncPacket::execute);
-        registerClientReceiver(BossInfoPacket.Display.TYPE, (payload, context) -> GuiBossBarHooks.displayBossEvent(payload.getBossEvent(), payload.getEntityID()));
-        registerClientReceiver(BossInfoPacket.Remove.TYPE, (payload, context) -> GuiBossBarHooks.removeBossEvent(payload.getBossEvent()));
+        registerClientReceiver(BossInfoPacket.Display.TYPE, payload -> GuiBossBarHooks.displayBossEvent(payload.getBossEvent(), payload.getEntityID()));
+        registerClientReceiver(BossInfoPacket.Remove.TYPE, payload -> GuiBossBarHooks.removeBossEvent(payload.getBossEvent()));
         registerClientReceiver(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Remove.TYPE, ClientDeveloperGlowPacket.Remove::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Sync.TYPE, ClientDeveloperGlowPacket.Sync::execute);
@@ -63,11 +64,7 @@ public final class AetherNetworkingClient {
         registerClientReceiver(HealthResetPacket.TYPE, HealthResetPacket::execute);
         registerClientReceiver(LeavingAetherPacket.TYPE, LeavingAetherPacket::execute);
         registerClientReceiver(MoaInteractPacket.TYPE, MoaInteractPacket::execute);
-        registerClientReceiver(OpenSunAltarPacket.TYPE, (payload, context) -> {
-            if (context.player() != null) {
-                AetherClient.setToSunAltarScreen(payload.name(), payload.timeScale());
-            }
-        });
+        registerClientReceiver(OpenSunAltarPacket.TYPE, payload -> AetherClient.setToSunAltarScreen(payload.name(), payload.timeScale()));
         registerClientReceiver(PortalInteractPacket.TYPE, PortalInteractPacket::execute);
         registerClientReceiver(PortalTravelSoundPacket.TYPE, PortalTravelSoundPacket::execute);
         registerClientReceiver(QueenDialoguePacket.TYPE, QueenDialoguePacket::execute);
@@ -80,6 +77,11 @@ public final class AetherNetworkingClient {
         registerClientReceiver(AetherPlayerSyncPacket.TYPE, (payload, context) -> AetherPlayerSyncPacket.execute(payload, context.player()));
         registerClientReceiver(AetherTimeSyncPacket.TYPE, (payload, context) -> AetherTimeSyncPacket.execute(payload, context.player()));
         registerClientReceiver(PhoenixArrowSyncPacket.TYPE, (payload, context) -> PhoenixArrowSyncPacket.execute(payload, context.player()));
+    }
+
+    private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, Consumer<T> handler) {
+        ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
+                context.client().execute(() -> handler.accept(payload)));
     }
 
     private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {

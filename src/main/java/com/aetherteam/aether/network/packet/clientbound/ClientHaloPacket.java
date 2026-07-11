@@ -9,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +33,8 @@ public class ClientHaloPacket {
             return TYPE;
         }
 
-        public static void execute(ClientHaloPacket.Apply payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null && payload.halo() != null) {
+        public static void execute(ClientHaloPacket.Apply payload) {
+            if (payload.playerUUID() != null && payload.halo() != null) {
                 ClientHaloPerkData.INSTANCE.applyPerk(payload.playerUUID(), payload.halo());
             }
         }
@@ -57,8 +56,8 @@ public class ClientHaloPacket {
             return TYPE;
         }
 
-        public static void execute(ClientHaloPacket.Remove payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null) {
+        public static void execute(ClientHaloPacket.Remove payload) {
+            if (payload.playerUUID() != null) {
                 ClientHaloPerkData.INSTANCE.removePerk(payload.playerUUID());
             }
         }
@@ -80,8 +79,8 @@ public class ClientHaloPacket {
             return TYPE;
         }
 
-        public static void execute(ClientHaloPacket.Sync payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.halos() != null && !payload.halos().isEmpty()) {
+        public static void execute(ClientHaloPacket.Sync payload) {
+            if (payload.halos() != null && !payload.halos().isEmpty()) {
                 for (Map.Entry<UUID, Halo> haloEntry : payload.halos().entrySet()) {
                     ClientHaloPerkData.INSTANCE.applyPerk(haloEntry.getKey(), haloEntry.getValue());
                 }

@@ -7,7 +7,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Marks the player as being in the process of teleporting to the Aether. This is used for displaying "Ascending to the Aether" in the world loading screen.
@@ -27,9 +26,7 @@ public record AetherTravelPacket(boolean displayAetherTravel) implements CustomP
         return TYPE;
     }
 
-    public static void execute(AetherTravelPacket payload, AetherPayloadContext context) {
-        if (context.player() != null) {
-            DimensionTravelState.displayAetherTravel = payload.displayAetherTravel();
-        }
+    public static void execute(AetherTravelPacket payload) {
+        DimensionTravelState.displayAetherTravel = payload.displayAetherTravel();
     }
 }

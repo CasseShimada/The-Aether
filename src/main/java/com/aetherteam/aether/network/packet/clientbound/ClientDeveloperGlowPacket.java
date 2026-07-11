@@ -9,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +33,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Apply payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null && payload.developerGlow() != null) {
+        public static void execute(ClientDeveloperGlowPacket.Apply payload) {
+            if (payload.playerUUID() != null && payload.developerGlow() != null) {
                 ClientDeveloperGlowPerkData.INSTANCE.applyPerk(payload.playerUUID(), payload.developerGlow());
             }
         }
@@ -57,8 +56,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Remove payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null) {
+        public static void execute(ClientDeveloperGlowPacket.Remove payload) {
+            if (payload.playerUUID() != null) {
                 ClientDeveloperGlowPerkData.INSTANCE.removePerk(payload.playerUUID());
             }
         }
@@ -80,8 +79,8 @@ public class ClientDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ClientDeveloperGlowPacket.Sync payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.developerGlows() != null && !payload.developerGlows().isEmpty()) {
+        public static void execute(ClientDeveloperGlowPacket.Sync payload) {
+            if (payload.developerGlows() != null && !payload.developerGlows().isEmpty()) {
                 for (Map.Entry<UUID, DeveloperGlow> developerGlowEntry : payload.developerGlows().entrySet()) {
                     ClientDeveloperGlowPerkData.INSTANCE.applyPerk(developerGlowEntry.getKey(), developerGlowEntry.getValue());
                 }

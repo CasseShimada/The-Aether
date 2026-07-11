@@ -7,7 +7,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Marks the player as being in the process of leaving the Aether. This is used for displaying "Descending from the Aether" in the world loading screen.
@@ -27,9 +26,7 @@ public record LeavingAetherPacket(boolean playerLeavingAether) implements Custom
         return TYPE;
     }
 
-    public static void execute(LeavingAetherPacket payload, AetherPayloadContext context) {
-        if (context.player() != null) {
-            DimensionTravelState.playerLeavingAether = payload.playerLeavingAether();
-        }
+    public static void execute(LeavingAetherPacket payload) {
+        DimensionTravelState.playerLeavingAether = payload.playerLeavingAether();
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +33,8 @@ public abstract class ClientMoaSkinPacket {
             return TYPE;
         }
 
-        public static void execute(ClientMoaSkinPacket.Apply payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null && payload.moaSkinData() != null) {
+        public static void execute(ClientMoaSkinPacket.Apply payload) {
+            if (payload.playerUUID() != null && payload.moaSkinData() != null) {
                 ClientMoaSkinPerkData.INSTANCE.applyPerk(payload.playerUUID(), payload.moaSkinData());
             }
         }
@@ -57,8 +56,8 @@ public abstract class ClientMoaSkinPacket {
             return TYPE;
         }
 
-        public static void execute(ClientMoaSkinPacket.Remove payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.playerUUID() != null) {
+        public static void execute(ClientMoaSkinPacket.Remove payload) {
+            if (payload.playerUUID() != null) {
                 ClientMoaSkinPerkData.INSTANCE.removePerk(payload.playerUUID());
             }
         }
@@ -80,8 +79,8 @@ public abstract class ClientMoaSkinPacket {
             return TYPE;
         }
 
-        public static void execute(ClientMoaSkinPacket.Sync payload, AetherPayloadContext context) {
-            if (context.player() != null && payload.moaSkinsData() != null && !payload.moaSkinsData().isEmpty()) {
+        public static void execute(ClientMoaSkinPacket.Sync payload) {
+            if (payload.moaSkinsData() != null && !payload.moaSkinsData().isEmpty()) {
                 for (Map.Entry<UUID, MoaData> moaSkinsDataEntry : payload.moaSkinsData().entrySet()) {
                     ClientMoaSkinPerkData.INSTANCE.applyPerk(moaSkinsDataEntry.getKey(), moaSkinsDataEntry.getValue());
                 }

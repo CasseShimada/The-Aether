@@ -90,5 +90,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Renamed the accessory-clear payload type to follow the standard packet naming convention without changing its network ID or codec.
 - Passed Fabric's `ServerPlayer` directly to pure serverbound handlers instead of wrapping it in the cross-side payload context.
 - Passed players directly to the three bidirectional attachment sync handlers, removing the final server-side payload-context adapters.
+- Added a payload-only Fabric client receiver path and removed context parameters from handlers that do not use the player.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

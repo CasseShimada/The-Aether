@@ -7,7 +7,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Stores a client value for whether tools are debuffed in the Aether for {@link ToolAbilityHooks}.
@@ -25,9 +24,7 @@ public record ToolDebuffPacket(boolean debuffTools) implements CustomPacketPaylo
         return TYPE;
     }
 
-    public static void execute(ToolDebuffPacket payload, AetherPayloadContext context) {
-        if (context.player() != null) {
-            ToolAbilityHooks.debuffTools = payload.debuffTools();
-        }
+    public static void execute(ToolDebuffPacket payload) {
+        ToolAbilityHooks.debuffTools = payload.debuffTools();
     }
 }
