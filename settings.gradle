@@ -3,8 +3,6 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.fabricmc.net' }
-        maven { url = 'https://maven.architectury.dev/' }
-        maven { url = 'https://maven.shedaniel.me/' }
     }
 }
 
