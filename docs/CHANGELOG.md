@@ -84,5 +84,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved the remaining accessory serverbound payloads into the standard network packet boundary without changing their payload IDs or codecs.
 - Moved the Aether accessory menu slot out of the accessories API namespace and removed its unused render-toggle helper.
 - Removed unused Architectury and Shedaniel plugin repositories from the Fabric build settings.
+- Removed the stale README claim that the self-contained Fabric accessory core depends on the external Accessories mod.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

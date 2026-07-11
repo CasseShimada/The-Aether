@@ -131,10 +131,3 @@ If you are interested in contributing translations to The Aether, check out our 
 
 ### :hammer: Contributions
 All of our code contribution credits can be found [here](https://github.com/The-Aether-Team/The-Aether/blob/1.21.1-develop-fabric/docs/CREDITS.txt). If you contributed to the project and do not see your name, please contact us.
-
-### :file_folder: Dependencies
-The Aether would not be possible without the features provided by the APIs and libraries it implements. Thanks goes to:
-
-| Library                                                                                                          | Information                                                                                                                                                                                                                                            |
-|------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![Accessories](assets/dependencies/accessories.webp)](https://www.curseforge.com/minecraft/mc-mods/accessories) | Accessories was created by the [Wisp Forest Team](https://github.com/wisp-forest).<br />The source can be found at https://github.com/wisp-forest/accessories.<br />The dependency is licensed under [LGPL v3](https://www.gnu.org/licenses/lgpl-3.0). |
