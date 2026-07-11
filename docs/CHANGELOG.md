@@ -93,5 +93,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Added a payload-only Fabric client receiver path and removed context parameters from handlers that do not use the player.
 - Passed players directly to the remaining clientbound handlers and removed the cross-side payload context abstraction.
 - Removed the nonfunctional Patreon refresh button, its no-op payload, cooldown hook, translations, and textures.
+- Removed a dead accessory-menu key hook, orphaned compatibility-pack labels, and redundant item slot configuration branches.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

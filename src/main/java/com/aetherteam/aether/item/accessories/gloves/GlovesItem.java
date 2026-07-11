@@ -1,7 +1,6 @@
 package com.aetherteam.aether.item.accessories.gloves;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.AccessorySlotProvider;
 import com.aetherteam.aether.item.accessories.AccessoryItem;
@@ -85,6 +84,6 @@ public class GlovesItem extends AccessoryItem implements AccessorySlotProvider {
     }
 
     public static SlotTypeReference getStaticSlotType() {
-        return AetherConfig.COMMON.use_default_accessories_menu.get() ? () -> "hand" : AetherAccessorySlots.getGlovesSlotType();
+        return AetherAccessorySlots.getGlovesSlotType();
     }
 }
