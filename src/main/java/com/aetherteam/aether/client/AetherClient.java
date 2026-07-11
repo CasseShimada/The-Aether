@@ -173,7 +173,10 @@ public class AetherClient {
     }
 
     private static void registerLevelRenderCallbacks() {
-        LevelRenderEvents.COLLECT_SUBMITS.register(DungeonOverlayClientHooks::collectSubmits);
+        LevelRenderEvents.COLLECT_SUBMITS.register(context -> {
+            Minecraft minecraft = Minecraft.getInstance();
+            DungeonOverlayClientHooks.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
+        });
     }
 
     /**

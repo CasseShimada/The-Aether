@@ -97,5 +97,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the nonfunctional default Accessories menu configuration and its unreachable generic-slot registration branch while retaining the current seven Aether slots and arbitrary attachment slot-name persistence.
 - Inlined the single-use anniversary splash hook into the Fabric client screen callback.
 - Inlined clientside Aether time ticking into the Fabric client tick handler.
+- Registered dungeon overlay rendering directly with Fabric's level-render callback, removing its parameter-only adapter.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
