@@ -145,9 +145,9 @@ public final class AetherNetworking {
         registerServerReceiver(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket::execute);
         registerServerReceiver(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket::execute);
 
-        registerServerReceiver(AetherPlayerSyncPacket.TYPE, (payload, player) -> AetherPlayerSyncPacket.execute(payload, AetherPayloadContext.of(player)));
-        registerServerReceiver(AetherTimeSyncPacket.TYPE, (payload, player) -> AetherTimeSyncPacket.execute(payload, AetherPayloadContext.of(player)));
-        registerServerReceiver(PhoenixArrowSyncPacket.TYPE, (payload, player) -> PhoenixArrowSyncPacket.execute(payload, AetherPayloadContext.of(player)));
+        registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
+        registerServerReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
+        registerServerReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
     }
 
     private static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {

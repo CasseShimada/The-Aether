@@ -9,7 +9,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import com.aetherteam.aether.network.AetherPayloadContext;
+import net.minecraft.world.entity.player.Player;
+
+import javax.annotation.Nullable;
 
 /**
  * Sync packet for values in the {@link AetherTimeAttachment} class.
@@ -43,7 +45,7 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
         return AetherDataAttachments.AETHER_TIME;
     }
 
-    public static void execute(AetherTimeSyncPacket payload, AetherPayloadContext context) {
-        SyncLevelPacket.execute(payload, context.player());
+    public static void execute(AetherTimeSyncPacket payload, @Nullable Player player) {
+        SyncLevelPacket.execute(payload, player);
     }
 }

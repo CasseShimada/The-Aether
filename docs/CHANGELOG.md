@@ -89,5 +89,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved client packet-sender injection into the networking boundary and replaced the client-runtime facade with Minecraft's local-player API.
 - Renamed the accessory-clear payload type to follow the standard packet naming convention without changing its network ID or codec.
 - Passed Fabric's `ServerPlayer` directly to pure serverbound handlers instead of wrapping it in the cross-side payload context.
+- Passed players directly to the three bidirectional attachment sync handlers, removing the final server-side payload-context adapters.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

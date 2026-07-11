@@ -77,9 +77,9 @@ public final class AetherNetworkingClient {
         registerClientReceiver(ToolDebuffPacket.TYPE, ToolDebuffPacket::execute);
         registerClientReceiver(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket::execute);
 
-        registerClientReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
-        registerClientReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
-        registerClientReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
+        registerClientReceiver(AetherPlayerSyncPacket.TYPE, (payload, context) -> AetherPlayerSyncPacket.execute(payload, context.player()));
+        registerClientReceiver(AetherTimeSyncPacket.TYPE, (payload, context) -> AetherTimeSyncPacket.execute(payload, context.player()));
+        registerClientReceiver(PhoenixArrowSyncPacket.TYPE, (payload, context) -> PhoenixArrowSyncPacket.execute(payload, context.player()));
     }
 
     private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {
