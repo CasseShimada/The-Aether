@@ -3,12 +3,15 @@ package com.aetherteam.aether.client.event.hooks;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
+import com.aetherteam.aether.attachment.AetherTimeAttachment;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.ClientAccess;
+import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Input;
 
 public final class ClientTickHooks {
@@ -17,7 +20,14 @@ public final class ClientTickHooks {
 
     public static void endClientTick(Minecraft client) {
         ClientMusicHooks.tick();
-        ClientDimensionTimeHooks.tickTime();
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null && !Minecraft.getInstance().isPaused() && level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
+            AetherTimeAttachment data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);
+            if (!data.isTimeSynced()) {
+                long dayTime = data.tickTime(level) - 1;
+                level.getLevelData().setGameTime(dayTime);
+            }
+        }
         tickPlayerState(client);
         handleAccessoryHotkey(client);
         GuiAccessoryMenuHooks.openAccessoryMenu();
