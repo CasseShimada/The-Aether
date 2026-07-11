@@ -8,7 +8,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 public record QueenDialoguePacket(int queenID) implements CustomPacketPayload {
     public static final Type<QueenDialoguePacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "open_valkyrie_queen_dialogue"));
@@ -23,8 +24,8 @@ public record QueenDialoguePacket(int queenID) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(QueenDialoguePacket payload, AetherPayloadContext context) {
-        Player player = context.player();
+    public static void execute(QueenDialoguePacket payload, @Nullable Player contextPlayer) {
+        Player player = contextPlayer;
         if (player != null && player.level().getEntity(payload.queenID()) instanceof ValkyrieQueen valkyrieQueen) {
             valkyrieQueen.openDialogueScreen();
         }

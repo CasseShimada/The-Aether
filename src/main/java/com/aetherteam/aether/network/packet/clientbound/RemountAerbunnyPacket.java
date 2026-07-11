@@ -11,7 +11,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Mounts an Aerbunny to the player using stored NBT data if the player previously logged out with a mounted Aerbunny. This is called by {@link AetherPlayerAttachment#remountAerbunny(Player)}.<br><br>
@@ -32,8 +33,7 @@ public record RemountAerbunnyPacket(int vehicleID, int aerbunnyID) implements Cu
         return TYPE;
     }
 
-    public static void execute(RemountAerbunnyPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(RemountAerbunnyPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null) {
             Level world = contextPlayer.level();
             if (world.getEntity(payload.vehicleID()) instanceof Player player && world.getEntity(payload.aerbunnyID()) instanceof Aerbunny aerbunny) {

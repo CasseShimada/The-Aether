@@ -5,8 +5,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 public record ClientGrabItemPacket(ItemStack stack) implements CustomPacketPayload {
     public static final Type<ClientGrabItemPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "grab_from_accessories_inventory"));
@@ -21,9 +23,9 @@ public record ClientGrabItemPacket(ItemStack stack) implements CustomPacketPaylo
         return TYPE;
     }
 
-    public static void execute(ClientGrabItemPacket payload, AetherPayloadContext context) {
-        if (context.player() != null) {
-            context.player().containerMenu.setCarried(payload.stack());
+    public static void execute(ClientGrabItemPacket payload, @Nullable Player contextPlayer) {
+        if (contextPlayer != null) {
+            contextPlayer.containerMenu.setCarried(payload.stack());
         }
     }
 }

@@ -7,7 +7,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Sets a player's invisibility on the client side from the server side.
@@ -27,8 +28,7 @@ public record SetInvisibilityPacket(int playerID, boolean invisible) implements 
         return TYPE;
     }
 
-    public static void execute(SetInvisibilityPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(SetInvisibilityPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null && contextPlayer.level().getEntity(payload.playerID()) instanceof Player player) {
             player.setInvisible(payload.invisible());
         }

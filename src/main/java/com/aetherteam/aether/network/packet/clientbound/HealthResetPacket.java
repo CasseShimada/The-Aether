@@ -12,7 +12,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Sets the player's Life Shard data and refreshes the modifier and health values. This is called by {@link com.aetherteam.aether.command.PlayerAttachmentCommand}.
@@ -32,8 +33,7 @@ public record HealthResetPacket(int entityID, int value) implements CustomPacket
         return TYPE;
     }
 
-    public static void execute(HealthResetPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(HealthResetPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null && contextPlayer.level().getEntity(payload.entityID()) instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             data.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.LIFE_SHARD_COUNT_SYNC_KEY, payload.value());

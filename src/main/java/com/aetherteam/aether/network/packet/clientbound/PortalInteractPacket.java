@@ -10,7 +10,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 public record PortalInteractPacket(int playerID, boolean mainHand) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<PortalInteractPacket> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "interact_with_portal"));
@@ -27,8 +28,7 @@ public record PortalInteractPacket(int playerID, boolean mainHand) implements Cu
         return TYPE;
     }
 
-    public static void execute(PortalInteractPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(PortalInteractPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null) {
             Entity entity = contextPlayer.level().getEntity(payload.playerID());
             if (entity instanceof Player player) {

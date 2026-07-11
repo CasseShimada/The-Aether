@@ -9,7 +9,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Swings the player's hand when feeding a Moa.
@@ -29,8 +30,7 @@ public record MoaInteractPacket(int playerID, boolean mainHand) implements Custo
         return TYPE;
     }
 
-    public static void execute(MoaInteractPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(MoaInteractPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null) {
             Entity entity = contextPlayer.level().getEntity(payload.playerID());
             if (entity instanceof Player player) {

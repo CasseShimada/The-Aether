@@ -7,7 +7,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Plays the Aether Portal sound on the client from {@link com.aetherteam.aether.block.portal.AetherPortalForcer}.
@@ -22,8 +23,8 @@ public record PortalTravelSoundPacket() implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(PortalTravelSoundPacket payload, AetherPayloadContext context) {
-        Player player = context.player();
+    public static void execute(PortalTravelSoundPacket payload, @Nullable Player contextPlayer) {
+        Player player = contextPlayer;
         if (player != null) {
             player.playSound(AetherSoundEvents.BLOCK_AETHER_PORTAL_TRAVEL, 0.25F, player.level().getRandom().nextFloat() * 0.4F + 0.8F);
         }

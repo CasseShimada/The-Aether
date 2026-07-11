@@ -2,15 +2,16 @@ package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,12 +86,12 @@ public record AccessorySyncPacket(int entityId, List<AccessorySyncPacket.SlotDat
         return TYPE;
     }
 
-    public static void execute(AccessorySyncPacket payload, AetherPayloadContext context) {
-        if (context.player() == null) {
+    public static void execute(AccessorySyncPacket payload, @Nullable Player contextPlayer) {
+        if (contextPlayer == null) {
             return;
         }
 
-        Entity entity = context.player().level().getEntity(payload.entityId());
+        Entity entity = contextPlayer.level().getEntity(payload.entityId());
         if (!(entity instanceof LivingEntity livingEntity)) {
             return;
         }

@@ -7,7 +7,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Used to move the player on the client when they are hit by a ZephyrSnowBallEntity on the server.
@@ -29,8 +30,7 @@ public record ZephyrSnowballHitPacket(int entityID, double xSpeed, double zSpeed
         return TYPE;
     }
 
-    public static void execute(ZephyrSnowballHitPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(ZephyrSnowballHitPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null && contextPlayer.level().getEntity(payload.entityID()) instanceof Player targetPlayer) {
             if (!targetPlayer.isBlocking()) {
                 targetPlayer.setDeltaMovement(targetPlayer.getDeltaMovement().x(), targetPlayer.getDeltaMovement().y() + 0.5, targetPlayer.getDeltaMovement().z());

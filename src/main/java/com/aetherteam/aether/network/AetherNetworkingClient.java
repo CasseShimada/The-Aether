@@ -29,6 +29,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -74,9 +75,9 @@ public final class AetherNetworkingClient {
         registerClientReceiver(ToolDebuffPacket.TYPE, ToolDebuffPacket::execute);
         registerClientReceiver(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket::execute);
 
-        registerClientReceiver(AetherPlayerSyncPacket.TYPE, (payload, context) -> AetherPlayerSyncPacket.execute(payload, context.player()));
-        registerClientReceiver(AetherTimeSyncPacket.TYPE, (payload, context) -> AetherTimeSyncPacket.execute(payload, context.player()));
-        registerClientReceiver(PhoenixArrowSyncPacket.TYPE, (payload, context) -> PhoenixArrowSyncPacket.execute(payload, context.player()));
+        registerClientReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
+        registerClientReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
+        registerClientReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
     }
 
     private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, Consumer<T> handler) {
@@ -84,8 +85,8 @@ public final class AetherNetworkingClient {
                 context.client().execute(() -> handler.accept(payload)));
     }
 
-    private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {
+    private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, Player> handler) {
         ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
-                context.client().execute(() -> handler.accept(payload, AetherPayloadContext.of(context.player()))));
+                context.client().execute(() -> handler.accept(payload, context.player())));
     }
 }

@@ -11,7 +11,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import com.aetherteam.aether.network.AetherPayloadContext;
+
+import javax.annotation.Nullable;
 
 /**
  * Stores Cloud Minions to {@link AetherPlayerAttachment} when summoned.
@@ -33,8 +34,7 @@ public record CloudMinionPacket(int entityID, int rightCloudMinionID, int leftCl
         return TYPE;
     }
 
-    public static void execute(CloudMinionPacket payload, AetherPayloadContext context) {
-        Player contextPlayer = context.player();
+    public static void execute(CloudMinionPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null) {
             Level level = contextPlayer.level();
             if (level.getEntity(payload.entityID()) instanceof Player player && level.getEntity(payload.rightCloudMinionID()) instanceof CloudMinion cloudMinionRight && level.getEntity(payload.leftCloudMinionID()) instanceof CloudMinion cloudMinionLeft) {
