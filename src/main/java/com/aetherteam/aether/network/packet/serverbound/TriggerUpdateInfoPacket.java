@@ -1,11 +1,11 @@
 package com.aetherteam.aether.network.packet.serverbound;
 
-import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Packet used by the Moa skin refresh button path.
@@ -24,7 +24,7 @@ public record TriggerUpdateInfoPacket(int playerID) implements CustomPacketPaylo
         return TYPE;
     }
 
-    public static void execute(TriggerUpdateInfoPacket payload, AetherPayloadContext context) {
+    public static void execute(TriggerUpdateInfoPacket payload, ServerPlayer player) {
         // Intentionally no-op because no external Patreon sync service is bundled.
     }
 }

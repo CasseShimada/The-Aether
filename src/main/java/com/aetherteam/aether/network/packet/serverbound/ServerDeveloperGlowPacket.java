@@ -8,8 +8,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.UUID;
 
@@ -32,8 +32,8 @@ public class ServerDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ServerDeveloperGlowPacket.Apply payload, AetherPayloadContext context) {
-            Player playerEntity = context.player();
+        public static void execute(ServerDeveloperGlowPacket.Apply payload, ServerPlayer player) {
+            Player playerEntity = player;
             if (playerEntity.level().getServer() != null && payload.playerUUID() != null && payload.developerGlow() != null) {
                 ServerPerkData.DEVELOPER_GLOW_INSTANCE.applyPerkWithVerification(playerEntity.level().getServer(), payload.playerUUID(), payload.developerGlow());
             }
@@ -56,8 +56,8 @@ public class ServerDeveloperGlowPacket {
             return TYPE;
         }
 
-        public static void execute(ServerDeveloperGlowPacket.Remove payload, AetherPayloadContext context) {
-            Player playerEntity = context.player();
+        public static void execute(ServerDeveloperGlowPacket.Remove payload, ServerPlayer player) {
+            Player playerEntity = player;
             if (playerEntity.level().getServer() != null && payload.playerUUID() != null) {
                 ServerPerkData.DEVELOPER_GLOW_INSTANCE.removePerk(playerEntity.level().getServer(), payload.playerUUID());
             }

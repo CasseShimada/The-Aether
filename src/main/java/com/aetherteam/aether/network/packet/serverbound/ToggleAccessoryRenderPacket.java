@@ -2,12 +2,12 @@ package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.network.AetherPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 
 public record ToggleAccessoryRenderPacket(String slotName, int slotIndex, boolean shouldRender) implements CustomPacketPayload {
     public static final Type<ToggleAccessoryRenderPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "toggle_accessory_render"));
@@ -26,8 +26,8 @@ public record ToggleAccessoryRenderPacket(String slotName, int slotIndex, boolea
         return TYPE;
     }
 
-    public static void execute(ToggleAccessoryRenderPacket payload, AetherPayloadContext context) {
-        var accessories = AccessoriesAPI.getAccessories(context.player());
+    public static void execute(ToggleAccessoryRenderPacket payload, ServerPlayer player) {
+        var accessories = AccessoriesAPI.getAccessories(player);
         if (accessories == null) {
             return;
         }

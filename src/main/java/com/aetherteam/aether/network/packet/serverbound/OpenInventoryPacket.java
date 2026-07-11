@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.aetherteam.aether.network.AetherPacketSender;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 public record OpenInventoryPacket(ItemStack carryStack) implements CustomPacketPayload {
     public static final Type<OpenInventoryPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "open_vanilla_inventory"));
@@ -25,8 +24,8 @@ public record OpenInventoryPacket(ItemStack carryStack) implements CustomPacketP
         return TYPE;
     }
 
-    public static void execute(OpenInventoryPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(OpenInventoryPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null && playerEntity instanceof ServerPlayer serverPlayer) {
             ItemStack itemStack = serverPlayer.isCreative() ? payload.carryStack() : serverPlayer.containerMenu.getCarried();
             serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);

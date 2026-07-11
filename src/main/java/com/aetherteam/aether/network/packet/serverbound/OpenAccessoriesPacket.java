@@ -14,7 +14,6 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.aetherteam.aether.network.AetherPacketSender;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 public record OpenAccessoriesPacket(ItemStack carryStack) implements CustomPacketPayload {
     public static final Type<OpenAccessoriesPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "open_accessories"));
@@ -29,15 +28,15 @@ public record OpenAccessoriesPacket(ItemStack carryStack) implements CustomPacke
         return TYPE;
     }
 
-    public static void execute(OpenAccessoriesPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(OpenAccessoriesPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (AetherConfig.COMMON.use_default_accessories_menu.get()) {
             return;
         }
         if (playerEntity.level().getServer() != null && playerEntity instanceof ServerPlayer serverPlayer) {
             ItemStack itemStack = serverPlayer.isCreative() ? payload.carryStack() : serverPlayer.containerMenu.getCarried();
             serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);
-            serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, player) -> new AetherAccessoriesMenu(id, inventory), Component.translatable("container.crafting")));
+            serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, menuPlayer) -> new AetherAccessoriesMenu(id, inventory), Component.translatable("container.crafting")));
             if (!itemStack.isEmpty()) {
                 serverPlayer.containerMenu.setCarried(itemStack);
                 AetherPacketSender.sendToPlayer(serverPlayer, new ClientGrabItemPacket(itemStack));

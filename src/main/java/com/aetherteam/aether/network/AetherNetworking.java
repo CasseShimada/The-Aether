@@ -43,6 +43,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.function.BiConsumer;
 
@@ -144,9 +145,9 @@ public final class AetherNetworking {
         registerServerReceiver(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket::execute);
         registerServerReceiver(TriggerUpdateInfoPacket.TYPE, TriggerUpdateInfoPacket::execute);
 
-        registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
-        registerServerReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
-        registerServerReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
+        registerServerReceiver(AetherPlayerSyncPacket.TYPE, (payload, player) -> AetherPlayerSyncPacket.execute(payload, AetherPayloadContext.of(player)));
+        registerServerReceiver(AetherTimeSyncPacket.TYPE, (payload, player) -> AetherTimeSyncPacket.execute(payload, AetherPayloadContext.of(player)));
+        registerServerReceiver(PhoenixArrowSyncPacket.TYPE, (payload, player) -> PhoenixArrowSyncPacket.execute(payload, AetherPayloadContext.of(player)));
     }
 
     private static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
@@ -157,8 +158,8 @@ public final class AetherNetworking {
         PayloadTypeRegistry.serverboundPlay().register(type, codec);
     }
 
-    private static <T extends CustomPacketPayload> void registerServerReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, AetherPayloadContext> handler) {
+    private static <T extends CustomPacketPayload> void registerServerReceiver(CustomPacketPayload.Type<T> type, BiConsumer<T, ServerPlayer> handler) {
         ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) ->
-                context.player().level().getServer().execute(() -> handler.accept(payload, AetherPayloadContext.of(context.player()))));
+                context.player().level().getServer().execute(() -> handler.accept(payload, context.player())));
     }
 }

@@ -7,10 +7,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Called by mounts to sync their step height modifier to the server. This fixes a movement bug where step height occasionally would not work otherwise.
@@ -28,8 +28,8 @@ public record StepHeightPacket(int entityID) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(StepHeightPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(StepHeightPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.entityID()) instanceof MountableAnimal mountableAnimal) {
             AttributeInstance stepHeight = mountableAnimal.getAttribute(Attributes.STEP_HEIGHT);
             if (stepHeight != null) {

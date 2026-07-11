@@ -10,7 +10,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Communicates whether a language entry for lore exists from the client to the server.
@@ -32,8 +31,8 @@ public record LoreExistsPacket(int playerID, ItemStack itemStack, boolean exists
         return TYPE;
     }
 
-    public static void execute(LoreExistsPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(LoreExistsPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null
             && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer
             && playerEntity.containerMenu instanceof LoreBookMenu menu) {

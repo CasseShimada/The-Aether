@@ -7,8 +7,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Sets the {@link Aerbunny#DATA_PUFFINESS_ID} value to 11. This is needed in a packet for precise animation syncing.
@@ -26,8 +26,8 @@ public record AerbunnyPuffPacket(int entityID) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(AerbunnyPuffPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(AerbunnyPuffPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.entityID()) instanceof Aerbunny aerbunny) {
             aerbunny.puff();
         }

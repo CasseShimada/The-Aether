@@ -7,8 +7,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * This packet is sent to the server whenever the player chooses an important action in the NPC dialogue.
@@ -28,8 +28,8 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
         return TYPE;
     }
 
-    public static void execute(NpcPlayerInteractPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(NpcPlayerInteractPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.entityID()) instanceof NpcDialogue npc) {
             npc.handleNpcInteraction(playerEntity, payload.interactionID());
         }

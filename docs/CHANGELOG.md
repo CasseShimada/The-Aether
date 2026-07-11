@@ -88,5 +88,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved the snow-walking and piglin-neutrality contracts out of the obsolete accessory event namespace into item abilities.
 - Moved client packet-sender injection into the networking boundary and replaced the client-runtime facade with Minecraft's local-player API.
 - Renamed the accessory-clear payload type to follow the standard packet naming convention without changing its network ID or codec.
+- Passed Fabric's `ServerPlayer` directly to pure serverbound handlers instead of wrapping it in the cross-side payload context.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

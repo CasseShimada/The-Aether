@@ -8,8 +8,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 import java.util.UUID;
 
@@ -32,8 +32,8 @@ public class ServerHaloPacket {
             return TYPE;
         }
 
-        public static void execute(ServerHaloPacket.Apply payload, AetherPayloadContext context) {
-            Player playerEntity = context.player();
+        public static void execute(ServerHaloPacket.Apply payload, ServerPlayer player) {
+            Player playerEntity = player;
             if (playerEntity.level().getServer() != null && payload.playerUUID() != null && payload.halo() != null) {
                 ServerPerkData.HALO_INSTANCE.applyPerkWithVerification(playerEntity.level().getServer(), payload.playerUUID(), payload.halo());
             }
@@ -56,8 +56,8 @@ public class ServerHaloPacket {
             return TYPE;
         }
 
-        public static void execute(ServerHaloPacket.Remove payload, AetherPayloadContext context) {
-            Player playerEntity = context.player();
+        public static void execute(ServerHaloPacket.Remove payload, ServerPlayer player) {
+            Player playerEntity = player;
             if (playerEntity.level().getServer() != null && payload.playerUUID() != null) {
                 ServerPerkData.HALO_INSTANCE.removePerk(playerEntity.level().getServer(), payload.playerUUID());
             }

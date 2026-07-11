@@ -9,7 +9,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import com.aetherteam.aether.network.AetherPayloadContext;
 
 /**
  * Clears the item currently held by the player's mouse in a container GUI.
@@ -27,8 +26,8 @@ public record ClearItemPacket(int playerID) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public static void execute(ClearItemPacket payload, AetherPayloadContext context) {
-        Player playerEntity = context.player();
+    public static void execute(ClearItemPacket payload, ServerPlayer player) {
+        Player playerEntity = player;
         if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer) {
             serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);
         }
