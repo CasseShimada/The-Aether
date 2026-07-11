@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.accessories.cape;
 
+import com.aetherteam.aether.item.accessories.abilities.AllowWalkingOnSnow;
 import com.aetherteam.aether.item.accessories.abilities.SlowFallAccessory;
-import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.world.item.ItemStack;

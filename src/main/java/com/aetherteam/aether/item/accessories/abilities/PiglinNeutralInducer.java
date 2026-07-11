@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.api.events.extra;
+package com.aetherteam.aether.item.accessories.abilities;
 
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.util.TriState;

@@ -1,11 +1,11 @@
 package com.aetherteam.aether.accessories.effect;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.api.events.extra.AllowWalkingOnSnow;
-import com.aetherteam.aether.accessories.api.events.extra.PiglinNeutralInducer;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.item.accessories.abilities.AllowWalkingOnSnow;
+import com.aetherteam.aether.item.accessories.abilities.PiglinNeutralInducer;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;

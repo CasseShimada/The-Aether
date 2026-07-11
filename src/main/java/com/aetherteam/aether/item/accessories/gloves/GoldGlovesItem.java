@@ -1,7 +1,7 @@
 package com.aetherteam.aether.item.accessories.gloves;
 
-import com.aetherteam.aether.accessories.api.events.extra.PiglinNeutralInducer;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
+import com.aetherteam.aether.item.accessories.abilities.PiglinNeutralInducer;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.equipment.ArmorMaterials;
