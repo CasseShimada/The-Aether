@@ -27,11 +27,8 @@ public final class ClientScreenHooks {
 
     public static void afterInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
         configureScreen(screen);
-        ScreenEvents.afterExtract(screen).register(ClientScreenHooks::afterExtract);
-    }
-
-    private static void afterExtract(Screen currentScreen, GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float tickDelta) {
-        renderScreenOverlay(currentScreen, guiGraphics);
+        ScreenEvents.afterExtract(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) ->
+                renderScreenOverlay(currentScreen, guiGraphics));
     }
 
     private static void configureScreen(Screen screen) {

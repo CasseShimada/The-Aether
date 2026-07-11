@@ -98,5 +98,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use anniversary splash hook into the Fabric client screen callback.
 - Inlined clientside Aether time ticking into the Fabric client tick handler.
 - Registered dungeon overlay rendering directly with Fabric's level-render callback, removing its parameter-only adapter.
+- Registered screen overlay extraction directly with Fabric's per-screen callback, removing its parameter-only adapter.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
