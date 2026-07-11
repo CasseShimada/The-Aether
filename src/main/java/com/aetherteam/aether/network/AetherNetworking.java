@@ -28,7 +28,7 @@ import com.aetherteam.aether.network.packet.serverbound.ClearItemPacket;
 import com.aetherteam.aether.network.packet.serverbound.HammerProjectileLaunchPacket;
 import com.aetherteam.aether.network.packet.serverbound.LoreExistsPacket;
 import com.aetherteam.aether.network.packet.serverbound.NpcPlayerInteractPacket;
-import com.aetherteam.aether.network.packet.serverbound.NukeAccessories;
+import com.aetherteam.aether.network.packet.serverbound.NukeAccessoriesPacket;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
 import com.aetherteam.aether.network.packet.serverbound.OpenInventoryPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerDeveloperGlowPacket;
@@ -98,7 +98,7 @@ public final class AetherNetworking {
         registerServerbound(ClearItemPacket.TYPE, ClearItemPacket.STREAM_CODEC);
         registerServerbound(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket.STREAM_CODEC);
         registerServerbound(LoreExistsPacket.TYPE, LoreExistsPacket.STREAM_CODEC);
-        registerServerbound(NukeAccessories.TYPE, NukeAccessories.STREAM_CODEC);
+        registerServerbound(NukeAccessoriesPacket.TYPE, NukeAccessoriesPacket.STREAM_CODEC);
         registerServerbound(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket.STREAM_CODEC);
         registerServerbound(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket.STREAM_CODEC);
         registerServerbound(OpenInventoryPacket.TYPE, OpenInventoryPacket.STREAM_CODEC);
@@ -129,7 +129,7 @@ public final class AetherNetworking {
         registerServerReceiver(ClearItemPacket.TYPE, ClearItemPacket::execute);
         registerServerReceiver(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket::execute);
         registerServerReceiver(LoreExistsPacket.TYPE, LoreExistsPacket::execute);
-        registerServerReceiver(NukeAccessories.TYPE, NukeAccessories::execute);
+        registerServerReceiver(NukeAccessoriesPacket.TYPE, NukeAccessoriesPacket::execute);
         registerServerReceiver(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket::execute);
         registerServerReceiver(OpenAccessoriesPacket.TYPE, OpenAccessoriesPacket::execute);
         registerServerReceiver(OpenInventoryPacket.TYPE, OpenInventoryPacket::execute);

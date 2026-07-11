@@ -8,16 +8,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-public record NukeAccessories() implements CustomPacketPayload {
-    public static final Type<NukeAccessories> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "nuke_accessories"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, NukeAccessories> STREAM_CODEC = StreamCodec.unit(new NukeAccessories());
+public record NukeAccessoriesPacket() implements CustomPacketPayload {
+    public static final Type<NukeAccessoriesPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "nuke_accessories"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, NukeAccessoriesPacket> STREAM_CODEC = StreamCodec.unit(new NukeAccessoriesPacket());
 
     @Override
-    public Type<NukeAccessories> type() {
+    public Type<NukeAccessoriesPacket> type() {
         return TYPE;
     }
 
-    public static void execute(NukeAccessories payload, AetherPayloadContext context) {
+    public static void execute(NukeAccessoriesPacket payload, AetherPayloadContext context) {
         if (!context.player().getAbilities().instabuild) {
             return;
         }
