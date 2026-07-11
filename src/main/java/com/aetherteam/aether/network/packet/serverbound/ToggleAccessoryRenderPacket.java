@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.networking.server;
+package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;

@@ -1,7 +1,5 @@
 package com.aetherteam.aether.network;
 
-import com.aetherteam.aether.accessories.networking.server.NukeAccessories;
-import com.aetherteam.aether.accessories.networking.server.ToggleAccessoryRenderPacket;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
@@ -30,6 +28,7 @@ import com.aetherteam.aether.network.packet.serverbound.ClearItemPacket;
 import com.aetherteam.aether.network.packet.serverbound.HammerProjectileLaunchPacket;
 import com.aetherteam.aether.network.packet.serverbound.LoreExistsPacket;
 import com.aetherteam.aether.network.packet.serverbound.NpcPlayerInteractPacket;
+import com.aetherteam.aether.network.packet.serverbound.NukeAccessories;
 import com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket;
 import com.aetherteam.aether.network.packet.serverbound.OpenInventoryPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerDeveloperGlowPacket;
@@ -37,6 +36,7 @@ import com.aetherteam.aether.network.packet.serverbound.ServerHaloPacket;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.network.packet.serverbound.StepHeightPacket;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
+import com.aetherteam.aether.network.packet.serverbound.ToggleAccessoryRenderPacket;
 import com.aetherteam.aether.network.packet.serverbound.TriggerUpdateInfoPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
