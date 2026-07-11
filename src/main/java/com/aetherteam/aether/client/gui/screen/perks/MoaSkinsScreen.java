@@ -5,13 +5,11 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.client.gui.component.skins.ChangeSkinButton;
 import com.aetherteam.aether.client.gui.component.skins.PatreonButton;
-import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
 import com.aetherteam.aether.data.resources.registries.AetherMoaTypes;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.passive.Moa;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
-import com.aetherteam.aether.network.packet.serverbound.TriggerUpdateInfoPacket;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import com.aetherteam.aether.perk.data.ClientMoaSkinPerkData;
 import com.aetherteam.aether.perk.types.MoaData;
@@ -136,16 +134,6 @@ public class MoaSkinsScreen extends Screen {
                         this.customizations.load();
                     }
             ).bounds((this.leftPos + this.imageWidth) - 20, this.topPos + 22, 7, 7)));
-
-            // Button that forces the server to re-check the status of the player's user info and Patreon connection.
-            this.addRenderableWidget(new RefreshButton(Button.builder(Component.literal(""),
-                    (pressed) -> {
-                        if (RefreshButton.reboundTimer == 0) {
-                            AetherPacketSender.sendToServer(new TriggerUpdateInfoPacket(this.minecraft.player.getId()));
-                            RefreshButton.reboundTimer = RefreshButton.reboundMax;
-                        }
-                    }
-            ).bounds(this.leftPos + 7, this.topPos + this.imageHeight - 25, 18, 18).tooltip(Tooltip.create(Component.translatable("gui.aether.moa_skins.button.refresh")))));
 
             // Button that opens a screen with a redirect to Patreon.
             this.addRenderableWidget(new PatreonButton(Button.builder(Component.translatable("gui.aether.moa_skins.button.donate"),

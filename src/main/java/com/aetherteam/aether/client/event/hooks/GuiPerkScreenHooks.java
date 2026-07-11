@@ -2,7 +2,6 @@ package com.aetherteam.aether.client.event.hooks;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.ClientAccess;
-import com.aetherteam.aether.client.gui.component.skins.RefreshButton;
 import com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen;
 import com.aetherteam.aether.client.gui.screen.perks.AetherCustomizationsScreen;
 import com.aetherteam.aether.client.gui.screen.perks.MoaSkinsScreen;
@@ -55,15 +54,6 @@ public final class GuiPerkScreenHooks {
         gridLayout.arrangeElements();
         FrameLayout.alignInRectangle(gridLayout, x, y, screen.width, screen.height, 0.5F, 0.25F);
         return gridLayout;
-    }
-
-    public static void handlePatreonRefreshRebound() {
-        if (RefreshButton.reboundTimer > 0) {
-            RefreshButton.reboundTimer--;
-        }
-        if (RefreshButton.reboundTimer < 0) {
-            RefreshButton.reboundTimer = 0;
-        }
     }
 
     private static boolean shouldShowSkinsButton(User user) {

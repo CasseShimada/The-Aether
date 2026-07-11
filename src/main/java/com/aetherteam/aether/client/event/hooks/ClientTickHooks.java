@@ -18,7 +18,6 @@ public final class ClientTickHooks {
     public static void endClientTick(Minecraft client) {
         ClientMusicHooks.tick();
         ClientDimensionTimeHooks.tickTime();
-        GuiPerkScreenHooks.handlePatreonRefreshRebound();
         tickPlayerState(client);
         handleAccessoryHotkey(client);
         GuiAccessoryMenuHooks.openAccessoryMenu();
