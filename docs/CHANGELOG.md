@@ -80,5 +80,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Removed the unimplemented accessory-screen compatibility marker and its unreachable UI branches.
 - Moved the single-use accessory render button into its owning Aether accessories screen.
 - Moved the shared button-render callback out of the accessories namespace into the general Aether GUI component boundary.
+- Removed the stale dispenser documentation reference to the deleted Accessories event handler.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
