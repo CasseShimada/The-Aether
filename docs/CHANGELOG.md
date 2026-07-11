@@ -82,5 +82,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved the shared button-render callback out of the accessories namespace into the general Aether GUI component boundary.
 - Removed the stale dispenser documentation reference to the deleted Accessories event handler.
 - Moved the remaining accessory serverbound payloads into the standard network packet boundary without changing their payload IDs or codecs.
+- Moved the Aether accessory menu slot out of the accessories API namespace and removed its unused render-toggle helper.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

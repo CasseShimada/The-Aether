@@ -1,4 +1,4 @@
-package com.aetherteam.aether.accessories.api.menu;
+package com.aetherteam.aether.inventory.menu.slot;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
@@ -63,10 +63,6 @@ public class AccessoriesBasedSlot extends Slot {
         ItemStack current = newStack.copy();
         super.setByPlayer(oldStack, newStack);
         this.handleStackChange(previous, current);
-    }
-
-    public void toggleRender() {
-        this.container.setShouldRender(this.slotIndex, !this.container.shouldRender(this.slotIndex));
     }
 
     public boolean shouldRender() {

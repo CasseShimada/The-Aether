@@ -14,7 +14,7 @@ import com.aetherteam.aether.network.packet.serverbound.ClearItemPacket;
 import com.aetherteam.aether.perk.PerkUtil;
 import com.aetherteam.aether.perk.data.User;
 import com.aetherteam.aether.perk.data.UserData;
-import com.aetherteam.aether.accessories.api.menu.AccessoriesBasedSlot;
+import com.aetherteam.aether.inventory.menu.slot.AccessoriesBasedSlot;
 import com.aetherteam.aether.network.packet.serverbound.NukeAccessories;
 import com.aetherteam.aether.network.packet.serverbound.ToggleAccessoryRenderPacket;
 import net.minecraft.client.Minecraft;
