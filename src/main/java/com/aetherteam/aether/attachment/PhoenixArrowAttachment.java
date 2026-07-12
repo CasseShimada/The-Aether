@@ -27,7 +27,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
-            Map.entry(PHOENIX_ARROW_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
+            Map.entry(PHOENIX_ARROW_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setPhoenixArrow((boolean) object), this::isPhoenixArrow))
     );
 
     public static final Codec<PhoenixArrowAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -72,7 +72,7 @@ public class PhoenixArrowAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value) {
-        return new PhoenixArrowSyncPacket(entityID, key, type, value);
+    public SyncPacket<?> getSyncPacket(int entityID, String key, ValueType valueType, Object value) {
+        return new PhoenixArrowSyncPacket(entityID, key, valueType, value);
     }
 }

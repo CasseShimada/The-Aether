@@ -27,8 +27,8 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
         super(values);
     }
 
-    public AetherTimeSyncPacket(String key, AttachmentSyncable.Type type, Object value) {
-        super(key, type, value);
+    public AetherTimeSyncPacket(String key, AttachmentSyncable.ValueType valueType, Object value) {
+        super(key, valueType, value);
     }
 
     @Override

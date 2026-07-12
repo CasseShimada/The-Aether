@@ -27,8 +27,8 @@ public class PhoenixArrowSyncPacket extends SyncEntityPacket<PhoenixArrowAttachm
         super(values);
     }
 
-    public PhoenixArrowSyncPacket(int playerID, String key, AttachmentSyncable.Type type, Object value) {
-        super(playerID, key, type, value);
+    public PhoenixArrowSyncPacket(int playerID, String key, AttachmentSyncable.ValueType valueType, Object value) {
+        super(playerID, key, valueType, value);
     }
 
     @Override

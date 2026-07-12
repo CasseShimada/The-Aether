@@ -27,8 +27,8 @@ public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachm
         super(values);
     }
 
-    public AetherPlayerSyncPacket(int playerID, String key, AttachmentSyncable.Type type, Object value) {
-        super(playerID, key, type, value);
+    public AetherPlayerSyncPacket(int playerID, String key, AttachmentSyncable.ValueType valueType, Object value) {
+        super(playerID, key, valueType, value);
     }
 
     @Override

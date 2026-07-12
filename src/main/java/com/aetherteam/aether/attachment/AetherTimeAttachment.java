@@ -30,8 +30,8 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
-            Map.entry(ETERNAL_DAY_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
-            Map.entry(SHOULD_WAIT_SYNC_KEY, new SyncField(Type.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
+            Map.entry(ETERNAL_DAY_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
+            Map.entry(SHOULD_WAIT_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
     );
 
     public static final Codec<AetherTimeAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -151,8 +151,8 @@ public class AetherTimeAttachment implements AttachmentSyncable {
     }
 
     @Override
-    public SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value) {
-        return new AetherTimeSyncPacket(key, type, value);
+    public SyncPacket<?> getSyncPacket(int entityID, String key, ValueType valueType, Object value) {
+        return new AetherTimeSyncPacket(key, valueType, value);
     }
 
     public static int getTicksPerDayMultiplier() {

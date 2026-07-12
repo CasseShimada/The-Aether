@@ -15,12 +15,12 @@ import java.util.function.Supplier;
 public interface AttachmentSyncable {
     Map<String, SyncField> getSyncFields();
 
-    SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value);
+    SyncPacket<?> getSyncPacket(int entityID, String key, ValueType valueType, Object value);
 
     default void forceSync(int entityID, SyncTarget target) {
         for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
             SyncField value = entry.getValue();
-            this.setSynced(entityID, target, entry.getKey(), value.type(), value.getter().get());
+            this.setSynced(entityID, target, entry.getKey(), value.valueType(), value.getter().get());
         }
     }
 
@@ -29,16 +29,16 @@ public interface AttachmentSyncable {
         if (data == null) {
             return;
         }
-        this.setSynced(entityID, target, key, data.type(), value, context);
+        this.setSynced(entityID, target, key, data.valueType(), value, context);
     }
 
-    default void setSynced(int entityID, SyncTarget target, String key, Type type, @Nullable Object value, Object... context) {
-        this.sendPacket(this.getSyncPacket(entityID, key, type, value), target, context);
+    default void setSynced(int entityID, SyncTarget target, String key, ValueType valueType, @Nullable Object value, Object... context) {
+        this.sendPacket(this.getSyncPacket(entityID, key, valueType, value), target, context);
     }
 
-    default void executeSynced(String key, Type type, @Nullable Object value) {
+    default void executeSynced(String key, ValueType valueType, @Nullable Object value) {
         SyncField data = this.getSyncFields().get(key);
-        if (data == null || data.type() != type) {
+        if (data == null || data.valueType() != valueType) {
             return;
         }
         data.setter().accept(value);
@@ -83,9 +83,9 @@ public interface AttachmentSyncable {
         DIMENSION
     }
 
-    record SyncField(Type type, Consumer<Object> setter, Supplier<Object> getter) { }
+    record SyncField(ValueType valueType, Consumer<Object> setter, Supplier<Object> getter) { }
 
-    enum Type {
+    enum ValueType {
         BOOLEAN,
         INT,
         LONG,

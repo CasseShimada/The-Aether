@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import javax.annotation.Nullable;
 
 public abstract class SyncLevelPacket<T extends AttachmentSyncable> extends SyncPacket<T> {
-    protected SyncLevelPacket(String key, AttachmentSyncable.Type valueType, Object value) {
+    protected SyncLevelPacket(String key, AttachmentSyncable.ValueType valueType, Object value) {
         super(key, valueType, value);
     }
 

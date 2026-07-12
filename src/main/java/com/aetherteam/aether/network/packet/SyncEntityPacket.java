@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 public abstract class SyncEntityPacket<T extends AttachmentSyncable> extends SyncPacket<T> {
     private final int entityID;
 
-    protected SyncEntityPacket(int entityID, String key, AttachmentSyncable.Type valueType, Object value) {
+    protected SyncEntityPacket(int entityID, String key, AttachmentSyncable.ValueType valueType, Object value) {
         super(key, valueType, value);
         this.entityID = entityID;
     }
@@ -35,7 +35,7 @@ public abstract class SyncEntityPacket<T extends AttachmentSyncable> extends Syn
         return new EntitySyncValues(entityID, values.key(), values.valueType(), values.value());
     }
 
-    public record EntitySyncValues(int entityID, String key, AttachmentSyncable.Type valueType, Object value) { }
+    public record EntitySyncValues(int entityID, String key, AttachmentSyncable.ValueType valueType, Object value) { }
 
     public static <T extends AttachmentSyncable> void execute(SyncEntityPacket<T> payload, @Nullable Player player) {
         if (player == null) {

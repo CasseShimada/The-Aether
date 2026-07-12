@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public abstract class SyncPacket<T extends AttachmentSyncable> implements CustomPacketPayload {
     private final String key;
-    private final AttachmentSyncable.Type valueType;
+    private final AttachmentSyncable.ValueType valueType;
     private final Object value;
 
-    protected SyncPacket(String key, AttachmentSyncable.Type valueType, Object value) {
+    protected SyncPacket(String key, AttachmentSyncable.ValueType valueType, Object value) {
         this.key = key;
         this.valueType = valueType;
         this.value = value;
@@ -28,7 +28,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         return this.key;
     }
 
-    public AttachmentSyncable.Type valueType() {
+    public AttachmentSyncable.ValueType valueType() {
         return this.valueType;
     }
 
@@ -48,15 +48,15 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
 
     protected static SyncValues decodeValues(RegistryFriendlyByteBuf buf) {
         String key = buf.readUtf();
-        AttachmentSyncable.Type type = buf.readEnum(AttachmentSyncable.Type.class);
-        Object value = readValue(buf, type);
-        return new SyncValues(key, type, value);
+        AttachmentSyncable.ValueType valueType = buf.readEnum(AttachmentSyncable.ValueType.class);
+        Object value = readValue(buf, valueType);
+        return new SyncValues(key, valueType, value);
     }
 
-    public record SyncValues(String key, AttachmentSyncable.Type valueType, Object value) { }
+    public record SyncValues(String key, AttachmentSyncable.ValueType valueType, Object value) { }
 
-    private static void writeValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.Type type, Object value) {
-        switch (type) {
+    private static void writeValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.ValueType valueType, Object value) {
+        switch (valueType) {
             case BOOLEAN -> buf.writeBoolean((Boolean) value);
             case INT -> buf.writeInt((Integer) value);
             case LONG -> buf.writeLong((Long) value);
@@ -83,8 +83,8 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         }
     }
 
-    private static Object readValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.Type type) {
-        return switch (type) {
+    private static Object readValue(RegistryFriendlyByteBuf buf, AttachmentSyncable.ValueType valueType) {
+        return switch (valueType) {
             case BOOLEAN -> buf.readBoolean();
             case INT -> buf.readInt();
             case LONG -> buf.readLong();
