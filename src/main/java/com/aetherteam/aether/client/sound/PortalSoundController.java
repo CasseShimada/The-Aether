@@ -1,7 +1,6 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.sound;
 
 import com.aetherteam.aether.AetherTags;
-import com.aetherteam.aether.client.sound.FadeOutSoundInstance;
 import com.aetherteam.aether.mixin.mixins.client.accessor.SoundEngineAccessor;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundEngine;
@@ -11,8 +10,8 @@ import net.minecraft.sounds.SoundEvent;
 
 import java.util.Optional;
 
-public final class PortalSoundHooks {
-    private PortalSoundHooks() {
+public final class PortalSoundController {
+    private PortalSoundController() {
     }
 
     /**
