@@ -4,7 +4,6 @@ import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
-import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.AetherBossCombatRules;
 import com.aetherteam.aether.entity.AetherCombat;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
@@ -13,6 +12,7 @@ import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
+import com.aetherteam.aether.world.AetherTravelController;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -24,7 +24,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
@@ -92,13 +91,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At("RETURN"))
     private void aether$trackPlayerDeathDrop(ItemStack stack, boolean dropAround, boolean includeName, CallbackInfoReturnable<ItemEntity> cir) {
         if (this.aether$trackingDeathDrops) {
-            LivingEntity livingEntity = (LivingEntity) (Object) this;
-            if (livingEntity instanceof Player player) {
-                ItemEntity itemEntity = cir.getReturnValue();
-                if (itemEntity != null) {
-                    itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).setOwner(player);
-                }
-            }
+            AetherTravelController.trackPlayerDeathDrop((LivingEntity) (Object) this, cir.getReturnValue());
         }
     }
 

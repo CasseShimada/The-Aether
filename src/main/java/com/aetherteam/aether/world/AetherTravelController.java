@@ -12,6 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +46,12 @@ public final class AetherTravelController {
                     || itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).getOwner(entity.level()) instanceof Player) {
                 teleportFallingEntity(entity);
             }
+        }
+    }
+
+    public static void trackPlayerDeathDrop(LivingEntity entity, @Nullable ItemEntity itemEntity) {
+        if (entity instanceof Player player && itemEntity != null) {
+            itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).setOwner(player);
         }
     }
 
