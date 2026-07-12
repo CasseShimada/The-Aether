@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.gui;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.ClientAccess;
@@ -18,10 +18,10 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-public final class GuiAccessoryMenuHooks {
+public final class AccessoryMenuController {
     private static boolean shouldAddButton = true;
 
-    private GuiAccessoryMenuHooks() {
+    private AccessoryMenuController() {
     }
 
     /**

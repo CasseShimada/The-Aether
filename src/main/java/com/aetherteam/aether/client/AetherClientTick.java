@@ -5,7 +5,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
-import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
+import com.aetherteam.aether.client.gui.AccessoryMenuController;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.entity.AetherMounting;
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ public final class AetherClientTick {
         }
         tickPlayerState(client);
         handleAccessoryHotkey(client);
-        GuiAccessoryMenuHooks.openAccessoryMenu();
+        AccessoryMenuController.openAccessoryMenu();
     }
 
     private static void tickPlayerState(Minecraft client) {

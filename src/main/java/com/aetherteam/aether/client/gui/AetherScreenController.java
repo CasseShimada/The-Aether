@@ -1,6 +1,5 @@
 package com.aetherteam.aether.client.gui;
 
-import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
 import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
@@ -48,13 +47,13 @@ public final class AetherScreenController {
         }
 
         var offsets = com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen.getButtonOffset(screen);
-        var inventoryAccessoryButton = GuiAccessoryMenuHooks.setupAccessoryButton(screen, offsets);
-        if (inventoryAccessoryButton != null && GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
+        var inventoryAccessoryButton = AccessoryMenuController.setupAccessoryButton(screen, offsets);
+        if (inventoryAccessoryButton != null && AccessoryMenuController.isAccessoryButtonEnabled()) {
             Screens.getWidgets(screen).add(inventoryAccessoryButton);
         }
 
         GridLayout layout = GuiPerkScreenHooks.setupPerksButtons(screen);
-        if (layout != null && !GuiAccessoryMenuHooks.isAccessoryButtonEnabled()) {
+        if (layout != null && !AccessoryMenuController.isAccessoryButtonEnabled()) {
             addPerkWidgets(screen, layout);
         }
     }
