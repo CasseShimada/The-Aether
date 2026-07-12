@@ -22,7 +22,7 @@ The current source tree contains no Curios, `ForgeCaps`, or `neoforge:attachment
 | Unified equipped query API | Queries scattered via `EquipmentUtil` and raw container access | Add unified query API over accessory core snapshots | DONE |
 | Unified accessory tick entry | No central runtime tick loop for all equipped accessories | Add central per-entity accessory runtime tick dispatcher | DONE |
 | Dynamic attributes add/remove loop | `AccessoryAttributeBuilder` stores untyped modifiers and is not applied globally | Rework builder to typed entries and apply/remove deterministic transient modifiers per slot | DONE |
-| Server-authoritative sync state | No dedicated accessory payload sync path | Add client sync packet for accessory slot snapshots and server dirty-flush path | DONE |
+| Server-authoritative sync state | No dedicated accessory payload sync path | Add client sync packet for accessory slot snapshots, server dirty-flush path, and Fabric tracking dispatch at the networking boundary | DONE |
 | Residual state cleanup | No guaranteed cleanup on entity unload/logout | Add runtime cleanup hooks for entity unload/logout | DONE |
 
 ## Stage 2: Current Compatibility Matrix

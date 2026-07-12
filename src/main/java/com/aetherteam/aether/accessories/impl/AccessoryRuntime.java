@@ -1,17 +1,11 @@
 package com.aetherteam.aether.accessories.impl;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.network.AetherPacketSender;
-import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import com.aetherteam.aether.network.AccessorySyncPacketDispatcher;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Central accessory runtime loop for lifecycle diffing, ticking, modifier closure and state sync.
@@ -29,7 +23,7 @@ public final class AccessoryRuntime {
         accessories.process(shouldRunAccessoryTicks(entity));
 
         if (!entity.level().isClientSide() && accessories.consumeSyncDirty()) {
-            syncEntity(entity, accessories.createSyncPacket());
+            AccessorySyncPacketDispatcher.sendToTrackingAndSelf(entity, accessories.createSyncPacket());
         }
     }
 
@@ -43,7 +37,7 @@ public final class AccessoryRuntime {
             return;
         }
 
-        syncEntity(entity, accessories.createSyncPacket());
+        AccessorySyncPacketDispatcher.sendToTrackingAndSelf(entity, accessories.createSyncPacket());
     }
 
     public static void syncToPlayer(Entity trackedEntity, ServerPlayer player) {
@@ -53,7 +47,7 @@ public final class AccessoryRuntime {
 
         var accessories = AccessoriesAPI.getAccessories(livingEntity);
         if (accessories != null) {
-            AetherPacketSender.sendToPlayer(player, accessories.createSyncPacket());
+            AccessorySyncPacketDispatcher.sendToPlayer(player, accessories.createSyncPacket());
         }
     }
 
@@ -66,19 +60,6 @@ public final class AccessoryRuntime {
         if (accessories != null) {
             accessories.clearRuntimeState(true);
             AccessoriesAPI.evictAccessories(livingEntity);
-        }
-    }
-
-    private static void syncEntity(LivingEntity entity, AccessorySyncPacket packet) {
-        Set<UUID> recipients = new HashSet<>();
-
-        for (ServerPlayer trackingPlayer : PlayerLookup.tracking(entity)) {
-            recipients.add(trackingPlayer.getUUID());
-            AetherPacketSender.sendToPlayer(trackingPlayer, packet);
-        }
-
-        if (entity instanceof ServerPlayer serverPlayer && recipients.add(serverPlayer.getUUID())) {
-            AetherPacketSender.sendToPlayer(serverPlayer, packet);
         }
     }
 
