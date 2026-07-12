@@ -1,6 +1,5 @@
 package com.aetherteam.aether.client.gui;
 
-import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
 import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.integration.jei.AetherJeiBridge;
@@ -52,7 +51,7 @@ public final class AetherScreenController {
             Screens.getWidgets(screen).add(inventoryAccessoryButton);
         }
 
-        GridLayout layout = GuiPerkScreenHooks.setupPerksButtons(screen);
+        GridLayout layout = PerkScreenControls.setupPerksButtons(screen);
         if (layout != null && !AccessoryMenuController.isAccessoryButtonEnabled()) {
             addPerkWidgets(screen, layout);
         }

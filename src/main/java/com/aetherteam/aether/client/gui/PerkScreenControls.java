@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.gui;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.ClientAccess;
@@ -19,8 +19,8 @@ import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
 
-public final class GuiPerkScreenHooks {
-    private GuiPerkScreenHooks() {
+public final class PerkScreenControls {
+    private PerkScreenControls() {
     }
 
     @Nullable
