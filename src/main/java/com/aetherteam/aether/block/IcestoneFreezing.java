@@ -1,7 +1,6 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.block;
 
 import com.aetherteam.aether.AetherGameEvents;
-import com.aetherteam.aether.block.FreezingBlock;
 import com.aetherteam.aether.blockentity.IcestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,8 +11,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.Map;
 
-public final class IcestoneFreezingHooks {
-    private IcestoneFreezingHooks() {
+public final class IcestoneFreezing {
+    private IcestoneFreezing() {
     }
 
     /**

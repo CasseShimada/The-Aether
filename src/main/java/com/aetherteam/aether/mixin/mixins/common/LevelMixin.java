@@ -1,7 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
-import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
+import com.aetherteam.aether.block.IcestoneFreezing;
+import com.aetherteam.aether.block.portal.AetherPortalInteractions;
 import com.aetherteam.aether.recipe.PlacementRecipeRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -23,7 +23,7 @@ public class LevelMixin {
     private void aether$detectWaterPortalFrame(BlockPos pos, BlockState state, int flags, int recursionLeft, CallbackInfoReturnable<Boolean> cir) {
         Level level = (Level) (Object) this;
         if (!level.isClientSide() && cir.getReturnValueZ()) {
-            DimensionPortalHooks.detectWaterInFrame(level, pos, state, state.getFluidState());
+            AetherPortalInteractions.detectWaterInFrame(level, pos, state, state.getFluidState());
         }
     }
 
@@ -35,7 +35,7 @@ public class LevelMixin {
         Level level = (Level) (Object) this;
         if (!level.isClientSide()) {
             PlacementRecipeRules.checkExistenceBanned(level, pos);
-            IcestoneFreezingHooks.sendIcestoneFreezableUpdateEvent(level, pos);
+            IcestoneFreezing.sendIcestoneFreezableUpdateEvent(level, pos);
         }
     }
 }

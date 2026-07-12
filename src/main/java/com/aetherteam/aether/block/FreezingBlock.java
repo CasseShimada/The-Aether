@@ -1,6 +1,5 @@
 package com.aetherteam.aether.block;
 
-import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
 import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.block.IcestoneFreezableRecipe;
 import com.aetherteam.aether.recipe.blockstate.BlockPropertyPair;
@@ -77,7 +76,7 @@ public interface FreezingBlock extends FreezingBehavior<BlockState> {
 
     @Override
     default boolean onFreeze(LevelAccessor level, BlockPos pos, BlockPos origin, BlockState oldBlockState, BlockState newBlockState, BlockState source) {
-        return !IcestoneFreezingHooks.preventBlockFreezing(level, origin, pos);
+        return !IcestoneFreezing.preventBlockFreezing(level, origin, pos);
     }
 
     /**

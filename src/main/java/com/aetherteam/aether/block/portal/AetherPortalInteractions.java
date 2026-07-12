@@ -1,8 +1,7 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.block.portal;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
-import com.aetherteam.aether.block.portal.AetherPortalShape;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.PortalInteractPacket;
 import com.aetherteam.aether.world.LevelUtil;
@@ -21,8 +20,8 @@ import net.minecraft.world.level.material.Fluids;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public final class DimensionPortalHooks {
-    private DimensionPortalHooks() {
+public final class AetherPortalInteractions {
+    private AetherPortalInteractions() {
     }
 
     public static boolean createPortal(Player player, Level level, BlockPos pos, @Nullable Direction direction, ItemStack stack, InteractionHand hand) {
