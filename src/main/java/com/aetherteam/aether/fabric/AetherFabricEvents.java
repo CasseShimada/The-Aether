@@ -1,6 +1,7 @@
 package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.accessories.impl.ArmorStandAccessoryInteractions;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.command.AetherCommands;
@@ -10,7 +11,6 @@ import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
-import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
@@ -152,7 +152,7 @@ public final class AetherFabricEvents {
             }
 
             if (hitResult != null) {
-                result = EntityArmorStandHooks.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
+                result = ArmorStandAccessoryInteractions.interactWithArmorStand(entity, player, player.getItemInHand(hand), hitResult.getLocation(), hand);
                 if (result.isPresent()) {
                     return result.get();
                 }

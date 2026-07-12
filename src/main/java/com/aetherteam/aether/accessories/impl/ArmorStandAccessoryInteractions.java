@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.accessories.impl;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
@@ -23,8 +23,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 
-public final class EntityArmorStandHooks {
-    private EntityArmorStandHooks() {
+public final class ArmorStandAccessoryInteractions {
+    private ArmorStandAccessoryInteractions() {
     }
 
     public static Optional<InteractionResult> interactWithArmorStand(Entity target, Player player, ItemStack stack, Vec3 pos, InteractionHand hand) {

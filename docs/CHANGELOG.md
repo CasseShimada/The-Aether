@@ -109,5 +109,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Re-audited the Fabric attachment and accessory boundaries and confirmed that no Curios, Forge capability, or NeoForge attachment save reader remains.
 - Moved placement and interaction recipe rules out of the event hook package while preserving their Fabric callback and Mixin behavior.
 - Moved Skyroot bucket entity interactions from the event hook package into the bucket item boundary.
+- Moved armor stand accessory interactions from the event hook package into the accessories implementation boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
