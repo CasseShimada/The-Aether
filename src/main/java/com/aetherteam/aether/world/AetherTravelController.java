@@ -8,13 +8,72 @@ import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
 import com.aetherteam.aether.network.packet.clientbound.LeavingAetherPacket;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.phys.Vec3;
+
+import javax.annotation.Nullable;
+import java.util.Set;
 
 public final class AetherTravelController {
     private AetherTravelController() {
+    }
+
+    public static void handleFallingEntity(Entity entity) {
+        if (!(entity.level() instanceof ServerLevel serverLevel)
+                || AetherConfig.SERVER.disable_falling_to_overworld.get()
+                || serverLevel.dimension() != LevelUtil.destinationDimension()
+                || entity.getY() > serverLevel.getMinY()
+                || entity.isPassenger()) {
+            return;
+        }
+
+        if (entity instanceof Player || entity.isVehicle() || (entity instanceof Mob mob && mob.isSaddled())) {
+            teleportFallingEntity(entity);
+        } else if (entity instanceof Projectile projectile && projectile.getOwner() instanceof Player) {
+            teleportFallingEntity(projectile);
+        } else if (entity instanceof ItemEntity itemEntity && itemEntity.hasAttached(AetherDataAttachments.DROPPED_ITEM)) {
+            if (itemEntity.getOwner() instanceof Player
+                    || itemEntity.getAttachedOrCreate(AetherDataAttachments.DROPPED_ITEM).getOwner(entity.level()) instanceof Player) {
+                teleportFallingEntity(entity);
+            }
+        }
+    }
+
+    @Nullable
+    private static Entity teleportFallingEntity(Entity entity) {
+        ServerLevel serverLevel = (ServerLevel) entity.level();
+        MinecraftServer server = serverLevel.getServer();
+        ServerLevel destination = server.getLevel(LevelUtil.returnDimension());
+        if (destination == null || LevelUtil.returnDimension() == LevelUtil.destinationDimension()) {
+            return null;
+        }
+
+        entity.setPortalCooldown();
+        double vehicleOffset = entity.getVehicle() == null ? 0.0 : entity.getVehicle().getBbHeight();
+        TeleportTransition transition = new TeleportTransition(
+                destination,
+                new Vec3(entity.getX(), destination.getMaxY() - entity.getBbHeight() - vehicleOffset, entity.getZ()),
+                entity.getDeltaMovement(),
+                entity.getYRot(),
+                entity.getXRot(),
+                false,
+                false,
+                Set.of(),
+                TeleportTransition.DO_NOTHING);
+        Entity target = entity.teleport(transition);
+        if (target instanceof ServerPlayer) {
+            AetherTravelState.teleportationTimer = 500;
+        }
+        return target;
     }
 
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {

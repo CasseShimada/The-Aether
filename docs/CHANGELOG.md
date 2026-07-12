@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Moved falling-out-of-the-Aether entity filtering and teleport construction from `EntityMixin` into the world travel controller.
 - Renamed the weapon ability utility away from generic hook terminology without changing combat behavior.
 - Renamed the accessory ability utility away from generic hook terminology without changing effect behavior.
 - Renamed the tool ability utility away from generic hook terminology after moving its interaction entrypoints to Fabric callbacks.
