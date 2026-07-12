@@ -9,7 +9,6 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
-import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
@@ -20,6 +19,7 @@ import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import com.aetherteam.aether.recipe.InteractionRecipeRules;
 import com.aetherteam.aether.world.AetherPlayerSpawn;
+import com.aetherteam.aether.world.AetherTimeController;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -54,7 +54,7 @@ public final class AetherFabricEvents {
     private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(player -> {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
-            DimensionTimeHooks.syncAetherTime(player);
+            AetherTimeController.syncAetherTime(player);
             var playerId = player.getGameProfile().id();
             if (!UserData.Server.getStoredUsers().containsKey(playerId)) {
                 var server = player.level().getServer();
@@ -75,7 +75,7 @@ public final class AetherFabricEvents {
         ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
                 newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-            DimensionTimeHooks.syncAetherTime(newPlayer);
+            AetherTimeController.syncAetherTime(newPlayer);
             AccessoryRuntime.forceSync(newPlayer);
         });
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
@@ -83,11 +83,11 @@ public final class AetherFabricEvents {
             if (!player.level().isClientSide()) {
                 player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
             }
-            DimensionTimeHooks.syncAetherTime(player);
+            AetherTimeController.syncAetherTime(player);
             AccessoryRuntime.forceSync(player);
         });
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
-                DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
+                AetherTimeController.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
     }
 
     private static void registerEntityEvents() {
@@ -113,10 +113,10 @@ public final class AetherFabricEvents {
     }
 
     private static void registerLevelEvents() {
-        ServerLevelEvents.LOAD.register((server, level) -> DimensionTimeHooks.initializeLevelData(level));
+        ServerLevelEvents.LOAD.register((server, level) -> AetherTimeController.initializeLevelData(level));
         ServerTickEvents.END_LEVEL_TICK.register(level -> {
-            DimensionTimeHooks.tickTime(level);
-            DimensionTimeHooks.checkEternalDayConfig(level);
+            AetherTimeController.tickTime(level);
+            AetherTimeController.checkEternalDayConfig(level);
         });
     }
 

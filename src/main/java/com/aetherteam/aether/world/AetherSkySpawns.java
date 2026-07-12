@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.world;
 
 import com.aetherteam.aether.data.resources.AetherMobCategory;
 import com.aetherteam.aether.entity.AetherEntityTypes;
@@ -14,8 +14,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-public final class EntitySkySpawnHooks {
-    private EntitySkySpawnHooks() {
+public final class AetherSkySpawns {
+    private AetherSkySpawns() {
     }
 
     public static void tickAetherSkySpawns(ServerLevel level) {

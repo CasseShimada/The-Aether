@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.world;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
@@ -6,7 +6,6 @@ import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.ServerLevelAccessor;
 import com.aetherteam.aether.util.LevelTimeUtil;
-import com.aetherteam.aether.world.AetherLevelData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,8 +15,8 @@ import net.minecraft.world.level.gamerules.GameRules;
 
 import javax.annotation.Nullable;
 
-public final class DimensionTimeHooks {
-    private DimensionTimeHooks() {
+public final class AetherTimeController {
+    private AetherTimeController() {
     }
 
     public static void tickTime(Level level) {
@@ -30,7 +29,7 @@ public final class DimensionTimeHooks {
                 LevelTimeUtil.setTime(serverLevel, serverLevel.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).tickTime(level));
             }
 
-            EntitySkySpawnHooks.tickAetherSkySpawns(serverLevel);
+            AetherSkySpawns.tickAetherSkySpawns(serverLevel);
         }
     }
 
