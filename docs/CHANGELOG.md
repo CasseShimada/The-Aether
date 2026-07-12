@@ -103,5 +103,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered player attachment respawn copying directly with Fabric's player copy callback.
 - Registered the Aether eternal-day sleep restriction directly with Fabric's sleeping callback.
 - Registered player respawn time and accessory synchronization directly with Fabric's post-respawn callback.
+- Registered player attachment logout and accessory runtime cleanup directly with Fabric's leave callback.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

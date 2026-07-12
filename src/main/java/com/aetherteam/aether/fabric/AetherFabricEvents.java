@@ -46,7 +46,10 @@ public final class AetherFabricEvents {
 
     private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(PlayerLifecycleHooks::login);
-        ServerPlayerEvents.LEAVE.register(PlayerLifecycleHooks::logout);
+        ServerPlayerEvents.LEAVE.register(player -> {
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogout(player);
+            AccessoryRuntime.clear(player);
+        });
         ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
                 newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {

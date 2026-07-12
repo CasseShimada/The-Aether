@@ -32,11 +32,6 @@ public final class PlayerLifecycleHooks {
         AccessoryRuntime.forceSync(player);
     }
 
-    public static void logout(ServerPlayer player) {
-        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogout(player);
-        AccessoryRuntime.clear(player);
-    }
-
     public static void changeLevel(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
         player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
         if (!player.level().isClientSide()) {
