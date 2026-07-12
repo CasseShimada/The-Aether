@@ -8,7 +8,6 @@
   "mixins": [
     "common.AbstractArrowMixin",
     "common.AlterGroundDecoratorMixin",
-    "common.AxeItemMixin",
     "common.AvatarMixin",
     "common.BlockPlayerDestroyMixin",
     "common.BlockRegistryIdMixin",
@@ -18,7 +17,6 @@
     "common.ExperienceOrbMixin",
     "common.FireworkRocketItemMixin",
     "common.FishingHookMixin",
-    "common.HoeItemMixin",
     "common.ItemRegistryIdMixin",
     "common.LevelMixin",
     "common.LiquidBlockMixin",
@@ -36,7 +34,6 @@
     "common.compat.twilight.TwilightWandItemMixin",
     "common.compat.twilight.TFItemStackUtilsMixin",
     "common.compat.twilight.ZombieWandItemMixin",
-    "common.ShovelItemMixin",
     "common.SlimeMixin",
     "common.ServerLevelMixin",
     "common.TimelineMixin",

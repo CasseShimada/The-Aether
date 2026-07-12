@@ -9,6 +9,7 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.block.portal.AetherPortalInteractions;
+import com.aetherteam.aether.item.tools.abilities.ToolBlockInteractions;
 import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
@@ -136,9 +137,10 @@ public final class AetherFabricEvents {
             if (InteractionRecipeRules.isBlockedInteraction(player, level, hand, hitResult.getBlockPos(), hitResult.getDirection())) {
                 return InteractionResult.FAIL;
             }
-            return AetherPortalInteractions.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)
-                    ? InteractionResult.SUCCESS
-                    : InteractionResult.PASS;
+            if (AetherPortalInteractions.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)) {
+                return InteractionResult.SUCCESS;
+            }
+            return ToolBlockInteractions.interact(player, level, hand, hitResult);
         });
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             if (level.isClientSide()) {
