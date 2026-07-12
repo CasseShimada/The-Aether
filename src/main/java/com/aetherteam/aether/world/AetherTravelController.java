@@ -76,6 +76,13 @@ public final class AetherTravelController {
         return target;
     }
 
+    public static void beforeDimensionTeleport(Entity entity, TeleportTransition transition) {
+        if (!entity.level().isClientSide() && entity.level().dimension() != transition.newLevel().dimension()) {
+            dimensionTravel(entity, transition.newLevel().dimension());
+            removePlayerAerbunny(entity);
+        }
+    }
+
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
         if (!(entity instanceof Player player) || player.level().isClientSide()) {
             return;

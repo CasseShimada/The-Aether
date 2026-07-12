@@ -30,11 +30,7 @@ public class EntityMixin {
 
     @Inject(at = @At("HEAD"), method = "teleport(Lnet/minecraft/world/level/portal/TeleportTransition;)Lnet/minecraft/world/entity/Entity;")
     private void aether$onTeleport(TeleportTransition transition, CallbackInfoReturnable<Entity> cir) {
-        Entity entity = (Entity) (Object) this;
-        if (!entity.level().isClientSide() && entity.level().dimension() != transition.newLevel().dimension()) {
-            AetherTravelController.dimensionTravel(entity, transition.newLevel().dimension());
-            AetherTravelController.removePlayerAerbunny(entity);
-        }
+        AetherTravelController.beforeDimensionTeleport((Entity) (Object) this, transition);
     }
 
     @Inject(method = "thunderHit(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LightningBolt;)V", at = @At("HEAD"), cancellable = true)
