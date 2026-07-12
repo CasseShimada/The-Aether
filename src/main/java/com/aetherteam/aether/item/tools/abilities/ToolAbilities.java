@@ -26,7 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Map;
 
-public final class ToolAbilityHooks {
+public final class ToolAbilities {
     public enum ToolAction {
         AXE_STRIP,
         SHOVEL_FLATTEN,
@@ -61,7 +61,7 @@ public final class ToolAbilityHooks {
 
     public static boolean debuffTools;
 
-    private ToolAbilityHooks() {
+    private ToolAbilities() {
     }
 
     /**

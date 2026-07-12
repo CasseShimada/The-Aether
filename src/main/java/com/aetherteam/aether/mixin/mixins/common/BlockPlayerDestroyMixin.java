@@ -1,7 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilityHooks;
-import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
+import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public class BlockPlayerDestroyMixin {
         if (!level.isClientSide()) {
             AccessoryAbilityHooks.damageZaniteRing(player, level, state, pos);
             AccessoryAbilityHooks.damageZanitePendant(player, level, state, pos);
-            ToolAbilityHooks.handleHolystoneToolAbility(player, level, pos, stack, state);
+            ToolAbilities.handleHolystoneToolAbility(player, level, pos, stack, state);
         }
     }
 }

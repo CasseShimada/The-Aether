@@ -15,7 +15,7 @@ public interface HolystoneTool {
      * @param player The {@link Player} that mined the block.
      * @param level  The {@link Level} of the block.
      * @param pos    The {@link BlockPos} of the block.
-     * @see ToolAbilityHooks#handleHolystoneToolAbility(Player, Level, BlockPos, ItemStack, BlockState)
+     * @see ToolAbilities#handleHolystoneToolAbility(Player, Level, BlockPos, ItemStack, BlockState)
      */
     default void dropAmbrosium(Player player, Level level, BlockPos pos, ItemStack stack, BlockState state) {
         if (!level.isClientSide() && state.getDestroySpeed(level, pos) > 0 && stack.isCorrectToolForDrops(state) && player.getRandom().nextInt(50) == 0) {

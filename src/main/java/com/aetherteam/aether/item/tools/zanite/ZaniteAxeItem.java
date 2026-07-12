@@ -6,7 +6,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 
 /**
- * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks#handleZaniteToolAbility}.
+ * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleZaniteToolAbility}.
  */
 public class ZaniteAxeItem extends AxeItem implements ZaniteTool {
     public ZaniteAxeItem() {

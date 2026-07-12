@@ -6,7 +6,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 
 /**
- * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks#handleHolystoneToolAbility}.
+ * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleHolystoneToolAbility}.
  */
 public class HolystoneAxeItem extends AxeItem implements HolystoneTool {
     public HolystoneAxeItem() {

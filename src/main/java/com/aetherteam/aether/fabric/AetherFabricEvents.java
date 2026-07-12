@@ -11,7 +11,7 @@ import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.block.portal.AetherPortalInteractions;
 import com.aetherteam.aether.item.tools.abilities.ToolBlockInteractions;
-import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
+import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import com.aetherteam.aether.network.AetherPacketSender;
@@ -64,7 +64,7 @@ public final class AetherFabricEvents {
                 ServerPerkData.HALO_INSTANCE.removePerk(server, playerId);
                 ServerPerkData.DEVELOPER_GLOW_INSTANCE.removePerk(server, playerId);
             }
-            ToolAbilityHooks.setDebuffToolsState(player);
+            ToolAbilities.setDebuffToolsState(player);
             MoaSkins.registerMoaSkins(player.level());
             AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
             AetherPlayerSpawn.startInAether(player);

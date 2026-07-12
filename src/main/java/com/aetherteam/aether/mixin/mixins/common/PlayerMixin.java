@@ -4,7 +4,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.monster.Swet;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilityHooks;
-import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
+import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.world.AetherTravelController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -105,7 +105,7 @@ public abstract class PlayerMixin {
         float speed = original;
         speed = AccessoryAbilityHooks.handleZaniteRingAbility(player, speed);
         speed = AccessoryAbilityHooks.handleZanitePendantAbility(player, speed);
-        speed = ToolAbilityHooks.handleZaniteToolAbility(stack, speed);
-        return ToolAbilityHooks.reduceToolEffectiveness(player, state, stack, speed);
+        speed = ToolAbilities.handleZaniteToolAbility(stack, speed);
+        return ToolAbilities.reduceToolEffectiveness(player, state, stack, speed);
     }
 }

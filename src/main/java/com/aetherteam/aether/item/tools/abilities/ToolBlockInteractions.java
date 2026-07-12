@@ -18,9 +18,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public final class ToolBlockInteractions {
-    private static final ToolInteraction AXE_STRIP = new ToolInteraction(ToolAbilityHooks.ToolAction.AXE_STRIP, SoundEvents.AXE_STRIP);
-    private static final ToolInteraction SHOVEL_FLATTEN = new ToolInteraction(ToolAbilityHooks.ToolAction.SHOVEL_FLATTEN, SoundEvents.SHOVEL_FLATTEN);
-    private static final ToolInteraction HOE_TILL = new ToolInteraction(ToolAbilityHooks.ToolAction.HOE_TILL, SoundEvents.HOE_TILL);
+    private static final ToolInteraction AXE_STRIP = new ToolInteraction(ToolAbilities.ToolAction.AXE_STRIP, SoundEvents.AXE_STRIP);
+    private static final ToolInteraction SHOVEL_FLATTEN = new ToolInteraction(ToolAbilities.ToolAction.SHOVEL_FLATTEN, SoundEvents.SHOVEL_FLATTEN);
+    private static final ToolInteraction HOE_TILL = new ToolInteraction(ToolAbilities.ToolAction.HOE_TILL, SoundEvents.HOE_TILL);
 
     private ToolBlockInteractions() {
     }
@@ -35,7 +35,7 @@ public final class ToolBlockInteractions {
         UseOnContext context = new UseOnContext(player, hand, hitResult);
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        BlockState modified = ToolAbilityHooks.setupItemAbilities(level, pos, state, interaction.action());
+        BlockState modified = ToolAbilities.setupItemAbilities(level, pos, state, interaction.action());
         if (modified == state) {
             return InteractionResult.PASS;
         }
@@ -43,8 +43,8 @@ public final class ToolBlockInteractions {
         if (!level.isClientSide()) {
             level.setBlock(pos, modified, 11);
             level.playSound(null, pos, interaction.sound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            if (interaction.action() == ToolAbilityHooks.ToolAction.AXE_STRIP) {
-                ToolAbilityHooks.stripGoldenOak(level, state, stack, interaction.action(), context);
+            if (interaction.action() == ToolAbilities.ToolAction.AXE_STRIP) {
+                ToolAbilities.stripGoldenOak(level, state, stack, interaction.action(), context);
             }
             stack.hurtAndBreak(1, player, hand);
         }
@@ -66,6 +66,6 @@ public final class ToolBlockInteractions {
         return null;
     }
 
-    private record ToolInteraction(ToolAbilityHooks.ToolAction action, SoundEvent sound) {
+    private record ToolInteraction(ToolAbilities.ToolAction action, SoundEvent sound) {
     }
 }
