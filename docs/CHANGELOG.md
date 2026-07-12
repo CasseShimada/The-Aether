@@ -4,6 +4,13 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Moved player mining-speed composition from `PlayerMixin` into the tool ability boundary without changing modifier order.
+- Moved mob accessory pickup, replacement, initial spawning, death drops, and experience behavior out of Minecraft mixins into the accessory implementation boundary.
+- Moved accessory death-protection consumption effects into the accessory effect boundary while retaining the vanilla return injection and recursion guard.
+- Moved player death-drop attachment ownership from `LivingEntityMixin` into the Aether travel boundary.
+- Moved living-entity damage orchestration, boss combat checks, accessory visibility, and equipment fall immunity out of Minecraft mixins into focused gameplay boundaries.
+- Moved mount success, dismount decisions, and player ride-input handling into the entity mounting boundary while retaining the required vanilla injection points.
+- Moved dungeon-key and Valkyrie Queen lightning item protection from `EntityMixin` into focused lightning rules backed by the current Fabric attachment.
 - Moved pre-teleport dimension travel checks from `EntityMixin` into the world travel controller.
 - Moved falling-out-of-the-Aether entity filtering and teleport construction from `EntityMixin` into the world travel controller.
 - Renamed the weapon ability utility away from generic hook terminology without changing combat behavior.
@@ -86,10 +93,10 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered block interaction recipes and portal creation directly in Fabric's use-block callback, removing its adapter hook.
 - Registered bucket and armor-stand interactions directly in Fabric's use-entity callback, removing its adapter hook.
 - Inlined the single-use player attachment level-change sync helper while preserving its clientbound direction and timing.
-- Inlined the single-use Slider shield and armor fall-cancellation conditions into their `LivingEntity` mixin injection points.
+- Moved the Slider shield and armor fall-cancellation conditions from `LivingEntityMixin` into boss combat and equipment rule boundaries.
 - Inlined the single-use Swet split tag check into the `Slime` mixin condition.
 - Inlined the single-use unhookable entity tag check into the `FishingHook` mixin.
-- Inlined the single-use dungeon-key and tracked-lightning item protections into the `Entity` mixin.
+- Moved dungeon-key and tracked-lightning item protections from `EntityMixin` into the entity lightning rule boundary.
 - Inlined the single-use missing-user perk cleanup into the server-player login lifecycle.
 - Inlined the single-use Bee and Fox goal registration helper into the entity-load lifecycle.
 - Registered creative dungeon-loot tooltips directly in Fabric's client tooltip callback and removed their adapter hook.
