@@ -2,7 +2,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.IcestoneFreezingHooks;
-import com.aetherteam.aether.event.hooks.PlacementRecipeHooks;
+import com.aetherteam.aether.recipe.PlacementRecipeRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +34,7 @@ public class LevelMixin {
     private void aether$onNeighborChanged(BlockPos pos, Block sourceBlock, Orientation orientation, CallbackInfo ci) {
         Level level = (Level) (Object) this;
         if (!level.isClientSide()) {
-            PlacementRecipeHooks.checkExistenceBanned(level, pos);
+            PlacementRecipeRules.checkExistenceBanned(level, pos);
             IcestoneFreezingHooks.sendIcestoneFreezableUpdateEvent(level, pos);
         }
     }

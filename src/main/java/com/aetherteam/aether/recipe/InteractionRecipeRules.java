@@ -1,9 +1,8 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.recipe;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.ban.ItemBanRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,8 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.Vec3;
 
-public final class InteractionRecipeHooks {
-    private InteractionRecipeHooks() {
+public final class InteractionRecipeRules {
+    private InteractionRecipeRules() {
     }
 
     public static boolean isBlockedInteraction(Player player, Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {

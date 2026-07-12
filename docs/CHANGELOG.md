@@ -107,5 +107,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered player level-change attachment, time, and accessory synchronization directly with Fabric's level-change callback.
 - Registered player join initialization directly with Fabric and removed the remaining player lifecycle hook container.
 - Re-audited the Fabric attachment and accessory boundaries and confirmed that no Curios, Forge capability, or NeoForge attachment save reader remains.
+- Moved placement and interaction recipe rules out of the event hook package while preserving their Fabric callback and Mixin behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

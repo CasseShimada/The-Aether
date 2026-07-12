@@ -1,6 +1,5 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.recipe;
 
-import com.aetherteam.aether.recipe.AetherRecipeTypes;
 import com.aetherteam.aether.recipe.recipes.ban.BlockBanRecipe;
 import com.aetherteam.aether.recipe.recipes.block.PlacementConversionRecipe;
 import net.minecraft.core.BlockPos;
@@ -17,8 +16,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public final class PlacementRecipeHooks {
-    private PlacementRecipeHooks() {
+public final class PlacementRecipeRules {
+    private PlacementRecipeRules() {
     }
 
     /**
