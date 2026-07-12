@@ -182,17 +182,7 @@ public abstract class LivingEntityMixin {
 
     @ModifyReturnValue(method = "getVisibilityPercent(Lnet/minecraft/world/entity/Entity;)D", at = @At("RETURN"))
     private double aether$modifyVisibility(double original, Entity lookingEntity) {
-        LivingEntity livingEntity = (LivingEntity) (Object) this;
-        if (lookingEntity != null) {
-            if (AccessoryAbilities.preventTargeting(livingEntity, lookingEntity)
-                    && !AccessoryAbilities.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
-                return 0.0D;
-            }
-            if (AccessoryAbilities.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
-                return 1.0D;
-            }
-        }
-        return original;
+        return AccessoryAbilities.modifyVisibility((LivingEntity) (Object) this, lookingEntity, original);
     }
 
     @ModifyReturnValue(method = "isHolding(Ljava/util/function/Predicate;)Z", at = @At("RETURN"))

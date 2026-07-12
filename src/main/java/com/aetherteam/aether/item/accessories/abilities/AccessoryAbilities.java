@@ -142,6 +142,22 @@ public final class AccessoryAbilities {
     }
 
     /**
+     * Applies Invisibility Cloak state to vanilla entity visibility.
+     */
+    public static double modifyVisibility(LivingEntity target, @Nullable Entity lookingEntity, double original) {
+        if (lookingEntity != null) {
+            if (preventTargeting(target, lookingEntity)
+                    && !recentlyAttackedWithInvisibility(target, lookingEntity)) {
+                return 0.0D;
+            }
+            if (recentlyAttackedWithInvisibility(target, lookingEntity)) {
+                return 1.0D;
+            }
+        }
+        return original;
+    }
+
+    /**
      * Sets that the player recently attacked.
      */
     public static void setAttack(DamageSource source) {
