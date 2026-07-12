@@ -11,6 +11,35 @@ public final class AetherMounting {
     }
 
     /**
+     * Tracks a successfully started ride.
+     *
+     * @param mount   The mounted {@link Entity}.
+     * @param mounted Whether the rider successfully mounted, as a {@link Boolean}.
+     */
+    public static void handleMountStart(Entity mount, boolean mounted) {
+        if (mounted) {
+            trackMount(mount, false);
+        }
+    }
+
+    /**
+     * Handles dismount prevention and tracks an allowed dismount.
+     *
+     * @param rider The {@link Entity} trying to dismount.
+     * @return Whether the dismount should be prevented, as a {@link Boolean}.
+     */
+    public static boolean handleDismount(Entity rider) {
+        Entity mount = rider.getVehicle();
+        if (mount != null) {
+            if (dismountPrevention(rider, mount, true)) {
+                return true;
+            }
+            trackMount(mount, true);
+        }
+        return false;
+    }
+
+    /**
      * Prevents dismounting Aether mounts in the air, and Swets when consumed.
      *
      * @param rider       The {@link Entity} riding the mount.

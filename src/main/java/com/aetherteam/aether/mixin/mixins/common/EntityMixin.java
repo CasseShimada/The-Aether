@@ -46,21 +46,13 @@ public class EntityMixin {
 
     @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;ZZ)Z", at = @At("RETURN"))
     private void aether$trackMountStart(Entity vehicle, boolean force, boolean suppressCancellation, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValueZ()) {
-            AetherMounting.trackMount(vehicle, false);
-        }
+        AetherMounting.handleMountStart(vehicle, cir.getReturnValueZ());
     }
 
     @Inject(method = "stopRiding()V", at = @At("HEAD"), cancellable = true)
     private void aether$handleMountDismount(CallbackInfo ci) {
-        Entity rider = (Entity) (Object) this;
-        Entity mount = rider.getVehicle();
-        if (mount != null) {
-            if (AetherMounting.dismountPrevention(rider, mount, true)) {
-                ci.cancel();
-                return;
-            }
-            AetherMounting.trackMount(mount, true);
+        if (AetherMounting.handleDismount((Entity) (Object) this)) {
+            ci.cancel();
         }
     }
 }
