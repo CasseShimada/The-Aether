@@ -1,8 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.entity.passive.MountableAnimal;
-import com.aetherteam.aether.entity.monster.Swet;
+import com.aetherteam.aether.entity.AetherMounting;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
 import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.world.AetherTravelController;
@@ -47,7 +46,7 @@ public abstract class PlayerMixin {
     }
 
     /**
-     * Used to set whether the player tried to crouch for {@link MountableAnimal}, before crouching is cancelled for mounts by the {@link Player} class.
+     * Preserves crouch input before vanilla mount handling can clear it.
      *
      * @param ci The {@link CallbackInfo} for the void method return.
      */
@@ -55,21 +54,12 @@ public abstract class PlayerMixin {
     private void rideTickHead(CallbackInfo ci, @Share("wantsToStopRiding") LocalBooleanRef wantsToStopRiding) {
         Player player = (Player) (Object) this;
         wantsToStopRiding.set(this.wantsToStopRiding());
-        if (!player.level().isClientSide()) {
-            if (player.isPassenger() && player.getVehicle() instanceof MountableAnimal mountableAnimal) {
-                mountableAnimal.setPlayerTriedToCrouch(player.isShiftKeyDown());
-            }
-        }
+        AetherMounting.handleRideTickStart(player);
     }
 
     @Inject(at = @At(value = "TAIL"), method = "rideTick()V")
     private void rideTickTail(CallbackInfo ci, @Share("wantsToStopRiding") LocalBooleanRef wantsToStopRiding) {
-        Player player = (Player) (Object) this;
-        if (!player.level().isClientSide() && !player.isShiftKeyDown() && wantsToStopRiding.get()) {
-            if (player.isPassenger() && (player.getVehicle() instanceof MountableAnimal || player.getVehicle() instanceof Swet)) {
-                player.setShiftKeyDown(true);
-            }
-        }
+        AetherMounting.handleRideTickEnd((Player) (Object) this, wantsToStopRiding.get());
     }
 
     /**

@@ -40,6 +40,28 @@ public final class AetherMounting {
     }
 
     /**
+     * Records the player's crouch input before vanilla mount handling can clear it.
+     */
+    public static void handleRideTickStart(Player player) {
+        if (!player.level().isClientSide()
+                && player.isPassenger()
+                && player.getVehicle() instanceof MountableAnimal mountableAnimal) {
+            mountableAnimal.setPlayerTriedToCrouch(player.isShiftKeyDown());
+        }
+    }
+
+    /**
+     * Restores crouch input when an Aether mount prevented the requested dismount.
+     */
+    public static void handleRideTickEnd(Player player, boolean wantedToStopRiding) {
+        if (!player.level().isClientSide() && !player.isShiftKeyDown() && wantedToStopRiding
+                && player.isPassenger()
+                && (player.getVehicle() instanceof MountableAnimal || player.getVehicle() instanceof Swet)) {
+            player.setShiftKeyDown(true);
+        }
+    }
+
+    /**
      * Prevents dismounting Aether mounts in the air, and Swets when consumed.
      *
      * @param rider       The {@link Entity} riding the mount.
