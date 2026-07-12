@@ -1,14 +1,9 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
-import com.aetherteam.aether.attachment.PhoenixArrowAttachment;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
+import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,36 +20,10 @@ public abstract class AbstractArrowMixin {
      * Spawns particles from Phoenix Arrows.
      *
      * @param ci The {@link CallbackInfo} for the void method return.
-     * @see AbstractArrowMixin#spawnParticles(AbstractArrow)
+     * @see WeaponAbilities#tickPhoenixArrow(AbstractArrow, boolean, int)
      */
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Projectile;tick()V", shift = At.Shift.AFTER), method = "tick()V")
     private void tick(CallbackInfo ci) {
-        AbstractArrow arrow = (AbstractArrow) (Object) this;
-        if (arrow.hasAttached(AetherDataAttachments.PHOENIX_ARROW)) {
-            var attachment = arrow.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW);
-            if (attachment.isPhoenixArrow() && !arrow.level().isClientSide()) {
-                attachment.setSynced(arrow.getId(), AttachmentSyncable.SyncTarget.CLIENT, PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true); // Sync Phoenix Arrow variable to client.
-                if (this.isInGround()) { // Spawn less particles when the arrow is in the ground.
-                    if (this.inGroundTime % 5 == 0) {
-                        this.spawnParticles(arrow);
-                    }
-                } else {
-                    for (int i = 0; i < 2; i++) {
-                        this.spawnParticles(arrow);
-                    }
-                }
-            }
-        }
-    }
-
-    @Unique
-    private void spawnParticles(AbstractArrow arrow) {
-        if (arrow.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.FLAME,
-                    arrow.getX() + (serverLevel.getRandom().nextGaussian() / 5.0),
-                    arrow.getY() + (serverLevel.getRandom().nextGaussian() / 3.0),
-                    arrow.getZ() + (serverLevel.getRandom().nextGaussian() / 5.0),
-                    1, 0.0, 0.0, 0.0, 0.0F);
-        }
+        WeaponAbilities.tickPhoenixArrow((AbstractArrow) (Object) this, this.isInGround(), this.inGroundTime);
     }
 }

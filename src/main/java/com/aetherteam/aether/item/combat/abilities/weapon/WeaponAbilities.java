@@ -5,12 +5,15 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.attachment.LightningTrackerAttachment;
+import com.aetherteam.aether.attachment.PhoenixArrowAttachment;
 import com.aetherteam.aether.entity.projectile.PoisonNeedle;
 import com.aetherteam.aether.entity.projectile.dart.EnchantedDart;
 import com.aetherteam.aether.entity.projectile.dart.GoldenDart;
 import com.aetherteam.aether.entity.projectile.dart.PoisonDart;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
@@ -73,6 +76,38 @@ public final class WeaponAbilities {
                     impactedEntity.igniteForSeconds(data.getFireTime());
                 }
             }
+        }
+    }
+
+    public static void tickPhoenixArrow(AbstractArrow arrow, boolean inGround, int inGroundTime) {
+        if (!arrow.hasAttached(AetherDataAttachments.PHOENIX_ARROW)) {
+            return;
+        }
+
+        var attachment = arrow.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW);
+        if (!attachment.isPhoenixArrow() || arrow.level().isClientSide()) {
+            return;
+        }
+
+        attachment.setSynced(arrow.getId(), AttachmentSyncable.SyncTarget.CLIENT, PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true);
+        if (inGround) {
+            if (inGroundTime % 5 == 0) {
+                spawnPhoenixArrowParticle(arrow);
+            }
+        } else {
+            for (int i = 0; i < 2; i++) {
+                spawnPhoenixArrowParticle(arrow);
+            }
+        }
+    }
+
+    private static void spawnPhoenixArrowParticle(AbstractArrow arrow) {
+        if (arrow.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.FLAME,
+                    arrow.getX() + (serverLevel.getRandom().nextGaussian() / 5.0),
+                    arrow.getY() + (serverLevel.getRandom().nextGaussian() / 3.0),
+                    arrow.getZ() + (serverLevel.getRandom().nextGaussian() / 5.0),
+                    1, 0.0, 0.0, 0.0, 0.0F);
         }
     }
 
