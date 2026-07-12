@@ -7,8 +7,8 @@ import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.AetherBossCombatRules;
+import com.aetherteam.aether.entity.AetherCombat;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
-import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
@@ -164,20 +164,14 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
     private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity livingEntity = (LivingEntity) (Object) this;
-        AccessoryAbilities.setAttack(source);
-        WeaponAbilities.stickDart(livingEntity, source);
-        if (AccessoryAbilities.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
+        if (AetherCombat.beforeHurt((LivingEntity) (Object) this, source)) {
             cir.setReturnValue(false);
         }
     }
 
     @ModifyVariable(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float aether$modifyIncomingDamage(float amount, ServerLevel level, DamageSource source) {
-        LivingEntity livingEntity = (LivingEntity) (Object) this;
-        Entity direct = source.getDirectEntity();
-        amount = WeaponAbilities.reduceWeaponEffectiveness(livingEntity, direct, amount);
-        return WeaponAbilities.reduceArmorEffectiveness(livingEntity, direct, amount);
+        return AetherCombat.modifyIncomingDamage((LivingEntity) (Object) this, source, amount);
     }
 
     @ModifyReturnValue(method = "getVisibilityPercent(Lnet/minecraft/world/entity/Entity;)D", at = @At("RETURN"))
