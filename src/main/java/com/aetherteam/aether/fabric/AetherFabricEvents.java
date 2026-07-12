@@ -11,8 +11,8 @@ import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
 import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
-import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
+import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
@@ -145,8 +145,8 @@ public final class AetherFabricEvents {
                 return InteractionResult.PASS;
             }
 
-            EntityBucketHooks.skyrootBucketMilking(entity, player, hand);
-            var result = EntityBucketHooks.pickupBucketable(entity, player, hand);
+            SkyrootBucketInteractions.skyrootBucketMilking(entity, player, hand);
+            var result = SkyrootBucketInteractions.pickupBucketable(entity, player, hand);
             if (result.isPresent()) {
                 return result.get();
             }

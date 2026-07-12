@@ -1,18 +1,17 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.item.miscellaneous.bucket;
 
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.entity.passive.FlyingCow;
 import com.aetherteam.aether.item.AetherItems;
-import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Bucketable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.Bucketable;
 import net.minecraft.world.entity.animal.cow.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,8 +20,8 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public final class EntityBucketHooks {
-    private EntityBucketHooks() {
+public final class SkyrootBucketInteractions {
+    private SkyrootBucketInteractions() {
     }
 
     public static void skyrootBucketMilking(Entity target, Player player, InteractionHand hand) {
