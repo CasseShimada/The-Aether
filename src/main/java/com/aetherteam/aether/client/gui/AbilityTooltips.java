@@ -1,8 +1,6 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.gui;
 
 import com.aetherteam.aether.client.ClientAccess;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -13,23 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class AbilityTooltipHooks {
+public final class AbilityTooltips {
     private static final String ABILITY_TOOLTIP_NAMESPACE = "nitrogen_internals";
-    private static boolean callbackRegistered;
 
     public static final Map<Holder.Reference<Item>, TooltipPredicate> PREDICATES = new HashMap<>();
 
-    private AbilityTooltipHooks() {
-    }
-
-    public static void onTooltipCreationLowPriority() {
-        if (callbackRegistered) {
-            return;
-        }
-        callbackRegistered = true;
-
-        ItemTooltipCallback.EVENT.register((itemStack, context, tooltipType, itemTooltips) ->
-                addAbilityTooltips(Minecraft.getInstance().player, itemStack, itemTooltips, context));
+    private AbilityTooltips() {
     }
 
     public static void addAbilityTooltips(Player player, ItemStack stack, List<Component> components, Item.TooltipContext context) {

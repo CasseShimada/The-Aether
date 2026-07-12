@@ -5,8 +5,8 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
-import com.aetherteam.aether.client.event.hooks.AbilityTooltipHooks;
 import com.aetherteam.aether.client.gui.AetherScreenController;
+import com.aetherteam.aether.client.gui.AbilityTooltips;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -55,14 +55,15 @@ public class AetherClient {
     }
 
     public static void registerTooltipOverrides() {
-        AbilityTooltipHooks.onTooltipCreationLowPriority();
+        ItemTooltipCallback.EVENT.register((stack, context, tooltipType, components) ->
+                AbilityTooltips.addAbilityTooltips(Minecraft.getInstance().player, stack, components, context));
         registerHealingGummySwetOverride(AetherItems.BLUE_GUMMY_SWET.builtInRegistryHolder());
         registerHealingGummySwetOverride(AetherItems.GOLDEN_GUMMY_SWET.builtInRegistryHolder());
         registerLifeShardOverride();
     }
 
     private static void registerHealingGummySwetOverride(net.minecraft.core.Holder.Reference<net.minecraft.world.item.Item> itemHolder) {
-        AbilityTooltipHooks.PREDICATES.put(itemHolder, (player, stack, components, context, component) -> {
+        AbilityTooltips.PREDICATES.put(itemHolder, (player, stack, components, context, component) -> {
             if (AetherConfig.SERVER.healing_gummy_swets.get() && component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey() + ".health");
             }
@@ -71,7 +72,7 @@ public class AetherClient {
     }
 
     private static void registerLifeShardOverride() {
-        AbilityTooltipHooks.PREDICATES.put(AetherItems.LIFE_SHARD.builtInRegistryHolder(), (player, stack, components, context, component) -> {
+        AbilityTooltips.PREDICATES.put(AetherItems.LIFE_SHARD.builtInRegistryHolder(), (player, stack, components, context, component) -> {
             if (component.getContents() instanceof TranslatableContents contents && contents.getKey().endsWith(".1")) {
                 return Component.translatable(contents.getKey(), AetherConfig.SERVER.maximum_life_shards.get());
             }
