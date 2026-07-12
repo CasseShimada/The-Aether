@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
-import com.aetherteam.aether.event.hooks.EntityGriefingRules;
+import com.aetherteam.aether.entity.EntityGriefingRules;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;

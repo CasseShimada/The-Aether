@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import com.aetherteam.aether.event.hooks.EntityGriefingRules;
+import com.aetherteam.aether.entity.EntityGriefingRules;
 
 /**
  * [CODE COPY] - {@link Fox.FoxEatBerriesGoal}.<br><br>

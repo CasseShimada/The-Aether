@@ -60,7 +60,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
-import com.aetherteam.aether.event.hooks.EntityGriefingRules;
+import com.aetherteam.aether.entity.EntityGriefingRules;
 import com.aetherteam.aether.network.AetherPacketSender;
 
 import javax.annotation.Nullable;

@@ -116,5 +116,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved Aether dimension travel control and shared travel display state into the world boundary.
 - Moved portal interaction and Icestone freezing rules from the event hook package into their block boundaries.
 - Moved shared Aether mount and dismount rules from the event hook package into the entity boundary.
+- Moved the shared vanilla mob-griefing rule into the entity boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

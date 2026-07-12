@@ -67,7 +67,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import com.aetherteam.aether.event.hooks.EntityGriefingRules;
+import com.aetherteam.aether.entity.EntityGriefingRules;
 import com.aetherteam.aether.network.AetherPacketSender;
 
 import javax.annotation.Nullable;
