@@ -5,7 +5,6 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
-import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.entity.AetherMounting;
@@ -19,7 +18,7 @@ public final class AetherClientTick {
     }
 
     public static void endClientTick(Minecraft client) {
-        ClientMusicHooks.tick();
+        AetherMusicController.tick();
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null && !Minecraft.getInstance().isPaused() && level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
             AetherTimeAttachment data = level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME);

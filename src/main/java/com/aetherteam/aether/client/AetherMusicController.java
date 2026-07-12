@@ -1,8 +1,7 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
-import com.aetherteam.aether.client.AetherMusicManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -13,8 +12,8 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.Optional;
 
-public final class ClientMusicHooks {
-    private ClientMusicHooks() {
+public final class AetherMusicController {
+    private AetherMusicController() {
     }
 
     /**

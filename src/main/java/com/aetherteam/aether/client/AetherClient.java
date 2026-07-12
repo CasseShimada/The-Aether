@@ -4,7 +4,6 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
-import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
 import com.aetherteam.aether.client.event.hooks.AbilityTooltipHooks;
@@ -166,7 +165,7 @@ public class AetherClient {
 
     private static void registerConnectionCallbacks() {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            ClientMusicHooks.stop();
+            AetherMusicController.stop();
             ToolAbilities.resetDebuffToolsState();
         });
     }
