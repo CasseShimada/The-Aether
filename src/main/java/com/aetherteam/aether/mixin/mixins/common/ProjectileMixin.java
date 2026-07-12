@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.WeaponAbilityHooks;
+import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks;
 import com.aetherteam.aether.item.accessories.abilities.ShieldOfRepulsionAccessory;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.HitResult;

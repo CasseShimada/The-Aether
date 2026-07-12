@@ -20,7 +20,7 @@ public class LightningSwordItem extends SwordItem {
 
     /**
      * Summon lightning at the position of the target if the attacker attacked with full strength as determined by {@link EquipmentUtil#isFullStrength(LivingEntity)}.<br><br>
-     * {@link com.aetherteam.aether.event.hooks.WeaponAbilityHooks#lightningTracking} prevents the attacker from being injured by the lightning.
+     * {@link com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks#lightningTracking} prevents the attacker from being injured by the lightning.
      *
      * @param stack    The {@link ItemStack} used to hurt the target
      * @param target   The hurt {@link LivingEntity}.

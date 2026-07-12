@@ -117,5 +117,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved portal interaction and Icestone freezing rules from the event hook package into their block boundaries.
 - Moved shared Aether mount and dismount rules from the event hook package into the entity boundary.
 - Moved the shared vanilla mob-griefing rule into the entity boundary.
+- Moved accessory, tool, and weapon ability helpers from the generic event hook package into their item ability boundaries.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

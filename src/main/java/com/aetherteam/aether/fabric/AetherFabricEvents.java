@@ -9,7 +9,7 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.block.portal.AetherPortalInteractions;
-import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
+import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import com.aetherteam.aether.network.AetherPacketSender;

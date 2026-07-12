@@ -1,7 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
-import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
+import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilityHooks;
+import com.aetherteam.aether.item.tools.abilities.ToolAbilityHooks;
 import net.minecraft.core.BlockPos;
 import com.aetherteam.aether.registry.RegistryConstructionContext;
 import net.minecraft.core.registries.Registries;

@@ -1,11 +1,10 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.item.accessories.abilities;
 
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.item.EquipmentUtil;
-import com.aetherteam.aether.item.accessories.abilities.ZaniteAccessory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,10 +1,8 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.item.tools.abilities;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.block.AetherBlocks;
-import com.aetherteam.aether.item.tools.abilities.HolystoneTool;
-import com.aetherteam.aether.item.tools.abilities.ZaniteTool;
 import com.aetherteam.aether.loot.AetherLoot;
 import com.aetherteam.aether.loot.AetherLootContexts;
 import com.aetherteam.aether.network.AetherPacketSender;
