@@ -1,15 +1,15 @@
 package com.aetherteam.aether.block.dispenser;
 
-import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
-import com.aetherteam.aether.item.AetherItems;
-import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
-import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
-import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.item.AetherItems;
+import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
+import com.aetherteam.aether.item.combat.loot.HammerOfKingbdogzItem;
+import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -88,7 +88,7 @@ public class AetherDispenseBehaviors {
                 if (reference.slotName().equals(GlovesItem.getStaticSlotType().slotName())) {
                     armorStand.setShowArms(true);
                 }
-            } else if (livingEntity instanceof Mob mob && EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
+            } else if (livingEntity instanceof Mob mob && MobAccessorySpawning.canMobSpawnWithAccessories(mob)) {
                 mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY).setGuaranteedDrop(slotTypeReference);
                 mob.setPersistenceRequired();
             }

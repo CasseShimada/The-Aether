@@ -1,13 +1,13 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.event.hooks.EntityAccessoryEquipHooks;
-import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
+import com.aetherteam.aether.accessories.impl.MobAccessoryEquipment;
+import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
+import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
@@ -31,10 +31,10 @@ public class MobMixin {
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "canHoldItem(Lnet/minecraft/world/item/ItemStack;)Z")
     private boolean canTakeItem(boolean original, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
-        if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
-            SlotTypeReference slotType = EntityAccessoryEquipHooks.getSlotTypeForItem(mob, stack);
+        if (MobAccessorySpawning.canMobSpawnWithAccessories(mob)) {
+            SlotTypeReference slotType = MobAccessoryEquipment.getSlotTypeForItem(mob, stack);
             if (slotType != null) {
-                ItemStack accessory = EntityAccessoryEquipHooks.getItemBySlotType(mob, slotType);
+                ItemStack accessory = MobAccessoryEquipment.getItemBySlotType(mob, slotType);
                 if (accessory.isEmpty()) return true;
             }
         }
@@ -51,16 +51,16 @@ public class MobMixin {
     private ItemStack equipItemIfPossible(ItemStack original, ServerLevel serverLevel, ItemStack stack) {
         Mob mob = (Mob) (Object) this;
         var data = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY);
-        SlotTypeReference slotType = EntityAccessoryEquipHooks.getSlotTypeForItem(mob, stack);
+        SlotTypeReference slotType = MobAccessoryEquipment.getSlotTypeForItem(mob, stack);
         if (slotType != null) {
-            ItemStack accessory = EntityAccessoryEquipHooks.getItemBySlotType(mob, slotType);
-            boolean flag = EntityAccessoryEquipHooks.canReplaceCurrentAccessory(mob, stack, accessory);
+            ItemStack accessory = MobAccessoryEquipment.getItemBySlotType(mob, slotType);
+            boolean flag = MobAccessoryEquipment.canReplaceCurrentAccessory(mob, stack, accessory);
             if (flag && mob.canHoldItem(stack)) {
                 double dropChance = data.getEquipmentDropChance(slotType);
                 if (!accessory.isEmpty() && Math.max(mob.getRandom().nextFloat() - 0.1F, 0.0F) < dropChance) {
                     mob.spawnAtLocation(serverLevel, accessory);
                 }
-                EntityAccessoryEquipHooks.setItemBySlotType(mob, stack, slotType);
+                MobAccessoryEquipment.setItemBySlotType(mob, stack, slotType);
                 data.setGuaranteedDrop(slotType);
                 mob.setPersistenceRequired();
                 return stack;
@@ -72,8 +72,8 @@ public class MobMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void aether$spawnWithAccessories(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnData, CallbackInfoReturnable<SpawnGroupData> cir) {
         Mob mob = (Mob) (Object) this;
-        if (EntityAccessorySpawnHooks.canMobSpawnWithAccessories(mob)) {
-            EntityAccessorySpawnHooks.spawnWithAccessories(mob, difficulty);
+        if (MobAccessorySpawning.canMobSpawnWithAccessories(mob)) {
+            MobAccessorySpawning.spawnWithAccessories(mob, difficulty);
         }
     }
 }

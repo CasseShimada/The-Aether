@@ -1,20 +1,20 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
+import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
+import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
-import com.aetherteam.aether.event.hooks.EntityAccessorySpawnHooks;
 import com.aetherteam.aether.event.hooks.WeaponAbilityHooks;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.ValkyrieArmor;
-import com.aetherteam.aether.accessories.api.AccessoriesAPI;
-import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
-import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
-import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -119,7 +119,7 @@ public abstract class LivingEntityMixin {
                 livingEntity
         );
 
-        List<ItemStack> drops = EntityAccessorySpawnHooks.handleEntityAccessoryDrops(livingEntity, equippedAccessories, recentlyHit, looting);
+        List<ItemStack> drops = MobAccessorySpawning.handleEntityAccessoryDrops(livingEntity, equippedAccessories, recentlyHit, looting);
         drops.stream().filter(stack -> !stack.isEmpty()).forEach(stack -> livingEntity.spawnAtLocation(level, stack.copy()));
     }
 
@@ -139,7 +139,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "getExperienceReward(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/Entity;)I", at = @At("RETURN"), cancellable = true)
     private void aether$modifyExperienceReward(ServerLevel level, net.minecraft.world.entity.Entity attacker, CallbackInfoReturnable<Integer> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-        cir.setReturnValue(EntityAccessorySpawnHooks.modifyExperience(livingEntity, cir.getReturnValueI()));
+        cir.setReturnValue(MobAccessorySpawning.modifyExperience(livingEntity, cir.getReturnValueI()));
     }
 
     @Inject(method = "tick()V", at = @At("TAIL"))

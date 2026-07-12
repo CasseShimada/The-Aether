@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.accessories.impl;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public final class EntityAccessorySpawnHooks {
+public final class MobAccessorySpawning {
     private static final SlotTypeReference[] ALL_ACCESSORY_SLOTS = {
             GlovesItem.getStaticSlotType(),
             PendantItem.getStaticSlotType()
@@ -41,7 +41,7 @@ public final class EntityAccessorySpawnHooks {
             GlovesItem.getStaticSlotType()
     };
 
-    private EntityAccessorySpawnHooks() {
+    private MobAccessorySpawning() {
     }
 
     public static boolean canMobSpawnWithAccessories(Entity entity) {

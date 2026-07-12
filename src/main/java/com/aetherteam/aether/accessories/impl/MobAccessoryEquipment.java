@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.accessories.impl;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.AccessoriesContainer;
@@ -11,8 +11,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-public final class EntityAccessoryEquipHooks {
-    private EntityAccessoryEquipHooks() {
+public final class MobAccessoryEquipment {
+    private MobAccessoryEquipment() {
     }
 
     public static boolean canReplaceCurrentAccessory(Mob mob, ItemStack candidate, ItemStack existing) {
