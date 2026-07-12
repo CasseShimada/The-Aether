@@ -185,6 +185,16 @@ public final class EquipmentUtil {
     }
 
     /**
+     * Checks whether the entity's equipped Aether armor prevents fall damage.
+     *
+     * @param entity The {@link LivingEntity} wearer.
+     * @return Whether fall damage should be prevented, as a {@link Boolean}.
+     */
+    public static boolean preventsFallDamage(LivingEntity entity) {
+        return hasSentryBoots(entity) || hasFullGravititeSet(entity) || hasFullValkyrieSet(entity);
+    }
+
+    /**
      * Checks if the player is wearing the Gravitite Armor set.
      *
      * @param entity The {@link LivingEntity} wearer.

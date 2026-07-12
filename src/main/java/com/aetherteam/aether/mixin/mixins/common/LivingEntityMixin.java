@@ -157,8 +157,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "causeFallDamage(DFLnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("HEAD"), cancellable = true)
     private void aether$cancelFallDamage(double fallDistance, float multiplier, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity livingEntity = (LivingEntity) (Object) this;
-        if (EquipmentUtil.hasSentryBoots(livingEntity) || EquipmentUtil.hasFullGravititeSet(livingEntity) || EquipmentUtil.hasFullValkyrieSet(livingEntity)) {
+        if (EquipmentUtil.preventsFallDamage((LivingEntity) (Object) this)) {
             cir.setReturnValue(false);
         }
     }
