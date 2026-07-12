@@ -1,5 +1,8 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.gui;
 
+import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
+import com.aetherteam.aether.client.event.hooks.GuiPerkScreenHooks;
+import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.integration.jei.AetherJeiBridge;
 import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
@@ -18,11 +21,11 @@ import net.minecraft.network.chat.Component;
 
 import java.util.Calendar;
 
-public final class ClientScreenHooks {
+public final class AetherScreenController {
     private static final boolean JEI_LOADED = FabricLoader.getInstance().isModLoaded("jei");
     private static final boolean TIPS_MOD_LOADED = FabricLoader.getInstance().isModLoaded("tipsmod");
 
-    private ClientScreenHooks() {
+    private AetherScreenController() {
     }
 
     public static void afterInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {

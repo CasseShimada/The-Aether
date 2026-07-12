@@ -4,9 +4,9 @@ import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
-import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
 import com.aetherteam.aether.client.event.hooks.AbilityTooltipHooks;
+import com.aetherteam.aether.client.gui.AetherScreenController;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
 import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.client.renderer.AetherOverlays;
@@ -156,7 +156,7 @@ public class AetherClient {
     }
 
     private static void registerScreenCallbacks() {
-        ScreenEvents.AFTER_INIT.register(ClientScreenHooks::afterInit);
+        ScreenEvents.AFTER_INIT.register(AetherScreenController::afterInit);
     }
 
     private static void registerTickCallbacks() {
