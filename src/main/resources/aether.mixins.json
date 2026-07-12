@@ -10,7 +10,7 @@
     "common.AlterGroundDecoratorMixin",
     "common.AxeItemMixin",
     "common.AvatarMixin",
-    "common.BlockMixin",
+    "common.BlockPlayerDestroyMixin",
     "common.BlockRegistryIdMixin",
     "common.EntityMixin",
     "common.EnvironmentAttributeSystemMixin",

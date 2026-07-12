@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Named the retained block-destroy mixin after its gameplay hook and documented why Fabric's after-break event cannot preserve its tool-stack behavior.
 - Moved Aerbunny logout persistence to the Fabric player leave callback and removed its single-use `ServerPlayer` mixin.
 - Isolated Minecraft block and item registry-id constructor injections from unrelated gameplay mixins.
 - Clarified that the retained Minecraft constructor context only binds registry ids before direct registration.

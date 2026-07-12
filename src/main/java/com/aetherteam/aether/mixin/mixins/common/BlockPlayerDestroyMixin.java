@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
-public class BlockMixin {
+public class BlockPlayerDestroyMixin {
+    // Fabric's after-break event does not expose the original tool stack required by the Holystone ability.
     @Inject(method = "playerDestroy", at = @At("TAIL"))
     private void aether$onPlayerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
         if (!level.isClientSide()) {
