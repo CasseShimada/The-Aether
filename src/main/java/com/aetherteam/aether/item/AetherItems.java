@@ -310,7 +310,7 @@ public class AetherItems {
 
     private static <I extends Item> I register(String name, Supplier<? extends I> supplier) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
-        I item = RegistryConstructionContext.construct(Registries.ITEM, id, supplier);
+        I item = RegistryConstructionContext.constructWithId(Registries.ITEM, id, supplier);
         return Registry.register(BuiltInRegistries.ITEM, id, item);
     }
 

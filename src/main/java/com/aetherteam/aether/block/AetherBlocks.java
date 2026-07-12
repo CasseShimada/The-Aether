@@ -263,7 +263,7 @@ public class AetherBlocks {
     public static void registerBlockItems() {
         for (BlockItemRegistration registration : BLOCK_ITEMS) {
             Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, registration.name());
-            BlockItem item = RegistryConstructionContext.construct(Registries.ITEM, id, () -> createBlockItem(registration.block()));
+            BlockItem item = RegistryConstructionContext.constructWithId(Registries.ITEM, id, () -> createBlockItem(registration.block()));
             Registry.register(BuiltInRegistries.ITEM, id, item);
         }
         BLOCK_ITEMS.clear();
@@ -271,7 +271,7 @@ public class AetherBlocks {
 
     private static <T extends Block> T registerBlockOnly(String name, Supplier<? extends T> supplier) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
-        T block = RegistryConstructionContext.construct(Registries.BLOCK, id, supplier);
+        T block = RegistryConstructionContext.constructWithId(Registries.BLOCK, id, supplier);
         return Registry.register(BuiltInRegistries.BLOCK, id, block);
     }
 

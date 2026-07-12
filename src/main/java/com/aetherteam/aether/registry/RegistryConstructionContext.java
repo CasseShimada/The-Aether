@@ -21,7 +21,7 @@ public final class RegistryConstructionContext {
         CURRENT.set(new Context(registryKey, id));
     }
 
-    public static <T> T construct(ResourceKey<? extends Registry<?>> registryKey, Identifier id, Supplier<T> supplier) {
+    public static <T> T constructWithId(ResourceKey<? extends Registry<?>> registryKey, Identifier id, Supplier<T> supplier) {
         push(registryKey, id);
         try {
             return supplier.get();
