@@ -13,7 +13,7 @@ public final class LevelUtil {
      * @return A {@link ResourceKey ResourceKey&lt;Level&gt;} retrieved from {@link AetherConfig.Server#portal_destination_dimension_ID}.
      * @see com.aetherteam.aether.block.portal.AetherPortalBlock
      * @see com.aetherteam.aether.block.portal.AetherPortalForcer
-     * @see com.aetherteam.aether.event.hooks.DimensionTravelHooks
+     * @see AetherTravelController
      */
     public static ResourceKey<Level> destinationDimension() {
         return ResourceKey.create(Registries.DIMENSION, Identifier.parse(AetherConfig.SERVER.portal_destination_dimension_ID.get()));
@@ -25,7 +25,7 @@ public final class LevelUtil {
      * @return A {@link ResourceKey ResourceKey&lt;Level&gt;} retrieved from {@link AetherConfig.Server#portal_return_dimension_ID}.
      * @see com.aetherteam.aether.block.portal.AetherPortalBlock
      * @see com.aetherteam.aether.block.portal.AetherPortalForcer
-     * @see com.aetherteam.aether.event.hooks.DimensionTravelHooks
+     * @see AetherTravelController
      */
     public static ResourceKey<Level> returnDimension() {
         return ResourceKey.create(Registries.DIMENSION, Identifier.parse(AetherConfig.SERVER.portal_return_dimension_ID.get()));

@@ -4,8 +4,8 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
-import com.aetherteam.aether.event.hooks.DimensionTravelState;
-import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
+import com.aetherteam.aether.world.AetherTravelController;
+import com.aetherteam.aether.world.AetherTravelState;
 import com.aetherteam.aether.event.hooks.EntityMountHooks;
 import com.aetherteam.aether.item.combat.abilities.armor.PhoenixArmor;
 import com.aetherteam.aether.world.LevelUtil;
@@ -87,7 +87,7 @@ public class EntityMixin {
                 Entity target = entity.teleport(transition);
                 if (target != null) {
                     if (target instanceof ServerPlayer) {
-                        DimensionTravelState.teleportationTimer = 500; // Sets a timer marking that the player teleported from falling out of the Aether.
+                        AetherTravelState.teleportationTimer = 500; // Sets a timer marking that the player teleported from falling out of the Aether.
                     }
                 }
                 return target;
@@ -100,8 +100,8 @@ public class EntityMixin {
     private void aether$onTeleport(TeleportTransition transition, CallbackInfoReturnable<Entity> cir) {
         Entity entity = (Entity) (Object) this;
         if (!entity.level().isClientSide() && entity.level().dimension() != transition.newLevel().dimension()) {
-            DimensionTravelHooks.dimensionTravel(entity, transition.newLevel().dimension());
-            DimensionTravelHooks.removePlayerAerbunny(entity);
+            AetherTravelController.dimensionTravel(entity, transition.newLevel().dimension());
+            AetherTravelController.removePlayerAerbunny(entity);
         }
     }
 

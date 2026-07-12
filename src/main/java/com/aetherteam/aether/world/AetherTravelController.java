@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.world;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
@@ -7,15 +7,14 @@ import com.aetherteam.aether.mixin.mixins.common.accessor.ServerGamePacketListen
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.AetherTravelPacket;
 import com.aetherteam.aether.network.packet.clientbound.LeavingAetherPacket;
-import com.aetherteam.aether.world.LevelUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public final class DimensionTravelHooks {
-    private DimensionTravelHooks() {
+public final class AetherTravelController {
+    private AetherTravelController() {
     }
 
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
@@ -40,7 +39,7 @@ public final class DimensionTravelHooks {
             return;
         }
 
-        updateTravelDisplay(false, DimensionTravelState.playerLeavingAether);
+        updateTravelDisplay(false, AetherTravelState.playerLeavingAether);
     }
 
     public static void removePlayerAerbunny(Entity entity) {
@@ -51,22 +50,22 @@ public final class DimensionTravelHooks {
 
     public static void travelling(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (DimensionTravelState.teleportationTimer > 0) {
+            if (AetherTravelState.teleportationTimer > 0) {
                 ServerGamePacketListenerImplAccessor accessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;
                 accessor.aether$setAboveGroundTickCount(0);
                 accessor.aether$setAboveGroundVehicleTickCount(0);
-                DimensionTravelState.teleportationTimer--;
+                AetherTravelState.teleportationTimer--;
             }
-            if (DimensionTravelState.teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
-                DimensionTravelState.teleportationTimer = 0;
+            if (AetherTravelState.teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
+                AetherTravelState.teleportationTimer = 0;
             }
         }
     }
 
     private static void updateTravelDisplay(boolean visible, boolean leavingAether) {
-        DimensionTravelState.displayAetherTravel = visible;
+        AetherTravelState.displayAetherTravel = visible;
         if (visible) {
-            DimensionTravelState.playerLeavingAether = leavingAether;
+            AetherTravelState.playerLeavingAether = leavingAether;
         }
         AetherPacketSender.sendToAllPlayers(new AetherTravelPacket(visible));
         if (visible) {

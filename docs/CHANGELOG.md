@@ -113,5 +113,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved initial Aether player spawn logic from the event hook package into the world boundary.
 - Moved mob accessory equipment, spawning, drops, and experience rules into the accessories implementation boundary.
 - Moved Aether time control and fallback sky spawning from the event hook package into the world boundary.
+- Moved Aether dimension travel control and shared travel display state into the world boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

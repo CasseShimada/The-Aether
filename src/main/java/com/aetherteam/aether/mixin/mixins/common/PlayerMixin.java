@@ -5,7 +5,7 @@ import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.monster.Swet;
 import com.aetherteam.aether.event.hooks.AccessoryAbilityHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
-import com.aetherteam.aether.event.hooks.DimensionTravelHooks;
+import com.aetherteam.aether.world.AetherTravelController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -79,7 +79,7 @@ public abstract class PlayerMixin {
     private void tick(CallbackInfo ci) {
         Player player = (Player) (Object) this;
         player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onUpdate(player);
-        DimensionTravelHooks.travelling(player);
+        AetherTravelController.travelling(player);
     }
 
     /**

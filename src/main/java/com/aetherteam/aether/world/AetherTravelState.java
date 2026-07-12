@@ -1,10 +1,10 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.world;
 
-public final class DimensionTravelState {
+public final class AetherTravelState {
     public static boolean playerLeavingAether;
     public static boolean displayAetherTravel;
     public static int teleportationTimer;
 
-    private DimensionTravelState() {
+    private AetherTravelState() {
     }
 }

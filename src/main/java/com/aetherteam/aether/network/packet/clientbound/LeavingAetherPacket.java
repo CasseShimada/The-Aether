@@ -1,7 +1,7 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
-import com.aetherteam.aether.event.hooks.DimensionTravelState;
+import com.aetherteam.aether.world.AetherTravelState;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -27,6 +27,6 @@ public record LeavingAetherPacket(boolean playerLeavingAether) implements Custom
     }
 
     public static void execute(LeavingAetherPacket payload) {
-        DimensionTravelState.playerLeavingAether = payload.playerLeavingAether();
+        AetherTravelState.playerLeavingAether = payload.playerLeavingAether();
     }
 }
