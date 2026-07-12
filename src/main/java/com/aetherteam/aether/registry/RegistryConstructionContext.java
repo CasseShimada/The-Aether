@@ -17,21 +17,18 @@ public final class RegistryConstructionContext {
      * Carries the id from direct {@code Registry.register} calls into vanilla constructors that need
      * {@code Properties#setId}. This is not a deferred registration layer.
      */
-    private static void push(ResourceKey<? extends Registry<?>> registryKey, Identifier id) {
-        CURRENT.set(new Context(registryKey, id));
-    }
-
     public static <T> T constructWithId(ResourceKey<? extends Registry<?>> registryKey, Identifier id, Supplier<T> supplier) {
-        push(registryKey, id);
+        Context previous = CURRENT.get();
+        CURRENT.set(new Context(registryKey, id));
         try {
             return supplier.get();
         } finally {
-            clear();
+            if (previous == null) {
+                CURRENT.remove();
+            } else {
+                CURRENT.set(previous);
+            }
         }
-    }
-
-    private static void clear() {
-        CURRENT.remove();
     }
 
     @Nullable
