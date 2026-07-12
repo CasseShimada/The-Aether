@@ -49,7 +49,10 @@ public final class AetherFabricEvents {
         ServerPlayerEvents.LEAVE.register(PlayerLifecycleHooks::logout);
         ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
                 newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
-        ServerPlayerEvents.AFTER_RESPAWN.register(PlayerLifecycleHooks::afterRespawn);
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            DimensionTimeHooks.syncAetherTime(newPlayer);
+            AccessoryRuntime.forceSync(newPlayer);
+        });
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register(PlayerLifecycleHooks::changeLevel);
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
                 DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);

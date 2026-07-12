@@ -37,11 +37,6 @@ public final class PlayerLifecycleHooks {
         AccessoryRuntime.clear(player);
     }
 
-    public static void afterRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
-        DimensionTimeHooks.syncAetherTime(newPlayer);
-        AccessoryRuntime.forceSync(newPlayer);
-    }
-
     public static void changeLevel(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
         player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
         if (!player.level().isClientSide()) {

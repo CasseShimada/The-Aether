@@ -102,5 +102,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Inlined the single-use Aerbunny remount forwarding method into the Fabric player level-change lifecycle.
 - Registered player attachment respawn copying directly with Fabric's player copy callback.
 - Registered the Aether eternal-day sleep restriction directly with Fabric's sleeping callback.
+- Registered player respawn time and accessory synchronization directly with Fabric's post-respawn callback.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
