@@ -193,6 +193,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
      * Handles functions when the player logs out of a world.
      */
     public void onLogout(Player player) {
+        this.removeAerbunny();
         this.handleLogoutSavedHealth(player);
     }
 
