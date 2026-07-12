@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerLevel.class)
-public class ServerLevelMixin {
+public class ServerLevelSleepMixin {
+    // EntitySleepEvents observes individual players, not completion of the level-wide wake operation.
     @Inject(method = "wakeUpAllPlayers()V", at = @At("TAIL"))
     private void aether$finishSleep(CallbackInfo ci) {
         ServerLevel level = (ServerLevel) (Object) this;
