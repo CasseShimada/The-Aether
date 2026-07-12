@@ -29,6 +29,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,31 @@ public final class MobAccessorySpawning {
             equipArmoredMobAccessories(mob, random);
         }
         enchantAccessories(mob, difficulty);
+    }
+
+    public static void dropAccessories(LivingEntity entity, ServerLevel level, boolean recentlyHit) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
+
+        var accessories = AccessoriesAPI.getAccessories(mob);
+        if (accessories == null) {
+            return;
+        }
+
+        List<ItemStack> equippedAccessories = new ArrayList<>();
+        accessories.getAllEquipped().forEach(reference -> equippedAccessories.add(reference.stack().copy()));
+        if (equippedAccessories.isEmpty()) {
+            return;
+        }
+
+        int looting = EnchantmentHelper.getEnchantmentLevel(
+                level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING),
+                entity
+        );
+
+        List<ItemStack> drops = handleEntityAccessoryDrops(entity, equippedAccessories, recentlyHit, looting);
+        drops.stream().filter(stack -> !stack.isEmpty()).forEach(stack -> entity.spawnAtLocation(level, stack.copy()));
     }
 
     public static List<ItemStack> handleEntityAccessoryDrops(LivingEntity entity, List<ItemStack> itemStacks, boolean recentlyHit, int looting) {
