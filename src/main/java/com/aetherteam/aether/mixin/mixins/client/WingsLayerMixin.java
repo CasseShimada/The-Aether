@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
-import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.object.equipment.ElytraModel;
@@ -50,7 +50,7 @@ public abstract class WingsLayerMixin {
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleWingsAccessory(livingEntity);
+        ItemStack stack = AccessoryRendering.getVisibleWingsAccessory(livingEntity);
         if (stack.isEmpty()) {
             return;
         }

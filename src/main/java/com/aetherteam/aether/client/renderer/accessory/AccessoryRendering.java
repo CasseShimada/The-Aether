@@ -21,8 +21,8 @@ import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public final class AccessoryRenderHooks {
-    private AccessoryRenderHooks() {
+public final class AccessoryRendering {
+    private AccessoryRendering() {
     }
 
     public static ItemStack getVisibleCapeAccessory(LivingEntity livingEntity) {

@@ -2,7 +2,7 @@ package com.aetherteam.aether.client.renderer.accessory.layer;
 
 import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
-import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRendering;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -42,7 +42,7 @@ public class PlayerGlovesLayer extends RenderLayer<AvatarRenderState, PlayerMode
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, GlovesItem.getStaticSlotType(), 0);
+        ItemStack stack = AccessoryRendering.getVisibleAccessory(livingEntity, GlovesItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof GlovesItem glovesItem)) {
             return;
         }
@@ -57,11 +57,11 @@ public class PlayerGlovesLayer extends RenderLayer<AvatarRenderState, PlayerMode
         model.setupAnim(renderState);
         collector.order(0).submitModel(model, renderState, poseStack, RenderTypes.armorCutoutNoCull(glovesItem.getGlovesTexture()), packedLight, overlay, color, null, -1, null);
 
-        TextureAtlasSprite trimSprite = AccessoryRenderHooks.getHumanoidArmorTrimSprite(stack, glovesItem);
+        TextureAtlasSprite trimSprite = AccessoryRendering.getHumanoidArmorTrimSprite(stack, glovesItem);
         if (trimSprite != null) {
             this.getParentModel().copyTransforms(trimModel);
             trimModel.setupAnim(renderState);
-            collector.order(1).submitModel(trimModel, renderState, poseStack, AccessoryRenderHooks.getArmorTrimRenderType(stack), packedLight, overlay, -1, trimSprite, -1, null);
+            collector.order(1).submitModel(trimModel, renderState, poseStack, AccessoryRendering.getArmorTrimRenderType(stack), packedLight, overlay, -1, trimSprite, -1, null);
         }
 
         if (stack.hasFoil()) {

@@ -3,7 +3,7 @@ package com.aetherteam.aether.client.renderer.accessory.layer;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
-import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRendering;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.aetherteam.aether.util.EntityMotionUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -40,7 +40,7 @@ public class PlayerShieldOfRepulsionLayer extends RenderLayer<AvatarRenderState,
             return;
         }
 
-        ItemStack stack = AccessoryRenderHooks.getVisibleAccessory(livingEntity, ShieldOfRepulsionItem.getStaticSlotType(), 0);
+        ItemStack stack = AccessoryRendering.getVisibleAccessory(livingEntity, ShieldOfRepulsionItem.getStaticSlotType(), 0);
         if (!(stack.getItem() instanceof ShieldOfRepulsionItem shieldItem)) {
             return;
         }

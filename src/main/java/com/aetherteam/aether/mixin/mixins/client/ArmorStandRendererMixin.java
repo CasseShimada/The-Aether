@@ -5,7 +5,7 @@ import com.aetherteam.aether.client.renderer.accessory.layer.ArmorStandCapeLayer
 import com.aetherteam.aether.client.renderer.accessory.model.CapeModel;
 import com.aetherteam.aether.client.renderer.accessory.state.ArmorStandCapeRenderState;
 import com.aetherteam.aether.item.accessories.cape.CapeItem;
-import com.aetherteam.aether.client.renderer.accessory.AccessoryRenderHooks;
+import com.aetherteam.aether.client.renderer.accessory.AccessoryRendering;
 import com.aetherteam.aether.mixin.mixins.client.accessor.LivingEntityRendererAccessor;
 import net.minecraft.client.model.object.armorstand.ArmorStandArmorModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,6 +26,6 @@ public abstract class ArmorStandRendererMixin {
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/decoration/ArmorStand;Lnet/minecraft/client/renderer/entity/state/ArmorStandRenderState;F)V", at = @At("TAIL"), require = 0)
     private void aether$extractCapeAccessory(ArmorStand armorStand, ArmorStandRenderState renderState, float partialTick, CallbackInfo ci) {
-        ((ArmorStandCapeRenderState) renderState).aether$setCapeAccessory(AccessoryRenderHooks.getVisibleAccessory(armorStand, CapeItem.getStaticSlotType(), 0).copy());
+        ((ArmorStandCapeRenderState) renderState).aether$setCapeAccessory(AccessoryRendering.getVisibleAccessory(armorStand, CapeItem.getStaticSlotType(), 0).copy());
     }
 }
