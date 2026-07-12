@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.entity;
 
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.entity.monster.Swet;
@@ -6,8 +6,8 @@ import com.aetherteam.aether.entity.passive.MountableAnimal;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-public final class EntityMountHooks {
-    private EntityMountHooks() {
+public final class AetherMounting {
+    private AetherMounting() {
     }
 
     /**

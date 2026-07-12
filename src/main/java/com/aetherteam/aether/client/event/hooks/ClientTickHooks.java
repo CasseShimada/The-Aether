@@ -8,7 +8,7 @@ import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.client.AetherKeys;
 import com.aetherteam.aether.client.ClientAccess;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
-import com.aetherteam.aether.event.hooks.EntityMountHooks;
+import com.aetherteam.aether.entity.AetherMounting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,7 +39,7 @@ public final class ClientTickHooks {
         }
 
         syncPlayerInput(client);
-        EntityMountHooks.launchMount(client.player);
+        AetherMounting.launchMount(client.player);
     }
 
     private static void syncPlayerInput(Minecraft client) {
