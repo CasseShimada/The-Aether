@@ -17,10 +17,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +27,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -168,22 +164,9 @@ public abstract class LivingEntityMixin {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         this.aether$checkingAccessoryDeathProtection = true;
         try {
-            AccessoryEffectBridge.DeathProtectionResult result = AccessoryEffectBridge.consumeDeathProtection(livingEntity);
-            if (result == null) {
-                return;
+            if (AccessoryEffectBridge.applyDeathProtection(livingEntity)) {
+                cir.setReturnValue(true);
             }
-
-            ItemStack usedStack = result.usedStack();
-            if (livingEntity instanceof ServerPlayer serverPlayer) {
-                serverPlayer.awardStat(Stats.ITEM_USED.get(usedStack.getItem()));
-                CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, usedStack);
-                usedStack.causeUseVibration(livingEntity, GameEvent.ITEM_INTERACT_FINISH);
-            }
-
-            livingEntity.setHealth(1.0F);
-            result.deathProtection().applyEffects(usedStack, livingEntity);
-            livingEntity.level().broadcastEntityEvent(livingEntity, (byte) 35);
-            cir.setReturnValue(true);
         } finally {
             this.aether$checkingAccessoryDeathProtection = false;
         }

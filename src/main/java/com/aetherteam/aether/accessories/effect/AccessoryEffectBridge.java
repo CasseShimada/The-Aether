@@ -7,6 +7,7 @@ import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.item.accessories.abilities.AllowWalkingOnSnow;
 import com.aetherteam.aether.item.accessories.abilities.PiglinNeutralInducer;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Holder;
@@ -16,6 +17,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +31,7 @@ import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
@@ -144,6 +148,25 @@ public final class AccessoryEffectBridge {
         }
 
         return null;
+    }
+
+    public static boolean applyDeathProtection(LivingEntity entity) {
+        DeathProtectionResult result = consumeDeathProtection(entity);
+        if (result == null) {
+            return false;
+        }
+
+        ItemStack usedStack = result.usedStack();
+        if (entity instanceof ServerPlayer serverPlayer) {
+            serverPlayer.awardStat(Stats.ITEM_USED.get(usedStack.getItem()));
+            CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, usedStack);
+            usedStack.causeUseVibration(entity, GameEvent.ITEM_INTERACT_FINISH);
+        }
+
+        entity.setHealth(1.0F);
+        result.deathProtection().applyEffects(usedStack, entity);
+        entity.level().broadcastEntityEvent(entity, (byte) 35);
+        return true;
     }
 
     public static void syncAccessorySlotMutation(LivingEntity entity, SlotEntryReference reference, ItemStack previousStack) {
