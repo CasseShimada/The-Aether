@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Moved Fabric player lookup and packet routing out of the attachment data interface into the networking boundary.
 - Renamed attachment sync value types for clearer packet serialization boundaries while preserving enum order and wire format.
 - Renamed attachment sync directions to explicit sync targets without changing packet routing or payload formats.
 - Removed old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data.
