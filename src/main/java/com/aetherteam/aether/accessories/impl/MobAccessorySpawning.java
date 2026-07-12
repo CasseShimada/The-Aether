@@ -56,7 +56,9 @@ public final class MobAccessorySpawning {
     }
 
     public static void spawnWithAccessories(Entity entity, DifficultyInstance difficulty) {
-        if (!(entity instanceof Mob mob) || !(mob.level() instanceof ServerLevel)) {
+        if (!(entity instanceof Mob mob)
+                || !(mob.level() instanceof ServerLevel)
+                || !canMobSpawnWithAccessories(mob)) {
             return;
         }
 

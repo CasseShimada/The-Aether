@@ -44,9 +44,6 @@ public class MobMixin {
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void aether$spawnWithAccessories(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnData, CallbackInfoReturnable<SpawnGroupData> cir) {
-        Mob mob = (Mob) (Object) this;
-        if (MobAccessorySpawning.canMobSpawnWithAccessories(mob)) {
-            MobAccessorySpawning.spawnWithAccessories(mob, difficulty);
-        }
+        MobAccessorySpawning.spawnWithAccessories((Mob) (Object) this, difficulty);
     }
 }
