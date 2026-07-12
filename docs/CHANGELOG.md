@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Isolated Minecraft block and item registry-id constructor injections from unrelated gameplay mixins.
 - Clarified that the retained Minecraft constructor context only binds registry ids before direct registration.
 - Moved Fabric entity tracking and accessory sync packet routing from the accessory runtime into the networking boundary.
 - Named attachment sync packet accessors after the Fabric `AttachmentType` values they return.
