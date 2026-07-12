@@ -100,5 +100,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered dungeon overlay rendering directly with Fabric's level-render callback, removing its parameter-only adapter.
 - Registered screen overlay extraction directly with Fabric's per-screen callback, removing its parameter-only adapter.
 - Inlined the single-use Aerbunny remount forwarding method into the Fabric player level-change lifecycle.
+- Registered player attachment respawn copying directly with Fabric's player copy callback.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

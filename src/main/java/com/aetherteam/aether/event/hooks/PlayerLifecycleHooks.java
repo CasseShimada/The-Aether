@@ -41,10 +41,6 @@ public final class PlayerLifecycleHooks {
         AccessoryRuntime.clear(player);
     }
 
-    public static void copyFrom(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
-        newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive);
-    }
-
     public static void afterRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
         DimensionTimeHooks.syncAetherTime(newPlayer);
         AccessoryRuntime.forceSync(newPlayer);

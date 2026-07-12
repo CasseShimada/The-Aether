@@ -47,7 +47,8 @@ public final class AetherFabricEvents {
     private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(PlayerLifecycleHooks::login);
         ServerPlayerEvents.LEAVE.register(PlayerLifecycleHooks::logout);
-        ServerPlayerEvents.COPY_FROM.register(PlayerLifecycleHooks::copyFrom);
+        ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
+                newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
         ServerPlayerEvents.AFTER_RESPAWN.register(PlayerLifecycleHooks::afterRespawn);
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register(PlayerLifecycleHooks::changeLevel);
         EntitySleepEvents.ALLOW_SLEEPING.register(PlayerLifecycleHooks::allowSleeping);
