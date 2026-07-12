@@ -101,5 +101,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered screen overlay extraction directly with Fabric's per-screen callback, removing its parameter-only adapter.
 - Inlined the single-use Aerbunny remount forwarding method into the Fabric player level-change lifecycle.
 - Registered player attachment respawn copying directly with Fabric's player copy callback.
+- Registered the Aether eternal-day sleep restriction directly with Fabric's sleeping callback.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

@@ -8,12 +8,8 @@ import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.data.ServerPerkData;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-
-import javax.annotation.Nullable;
 
 public final class PlayerLifecycleHooks {
     private PlayerLifecycleHooks() {
@@ -53,10 +49,5 @@ public final class PlayerLifecycleHooks {
         }
         DimensionTimeHooks.syncAetherTime(player);
         AccessoryRuntime.forceSync(player);
-    }
-
-    @Nullable
-    public static Player.BedSleepingProblem allowSleeping(Player player, BlockPos sleepingPos) {
-        return DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null;
     }
 }

@@ -51,7 +51,8 @@ public final class AetherFabricEvents {
                 newPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).handleRespawn(!alive));
         ServerPlayerEvents.AFTER_RESPAWN.register(PlayerLifecycleHooks::afterRespawn);
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register(PlayerLifecycleHooks::changeLevel);
-        EntitySleepEvents.ALLOW_SLEEPING.register(PlayerLifecycleHooks::allowSleeping);
+        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
+                DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
     }
 
     private static void registerEntityEvents() {
