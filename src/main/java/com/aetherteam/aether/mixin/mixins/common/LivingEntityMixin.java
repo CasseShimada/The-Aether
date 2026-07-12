@@ -6,8 +6,7 @@ import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
-import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
+import com.aetherteam.aether.entity.AetherBossCombatRules;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
 import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities;
 import com.aetherteam.aether.item.EquipmentUtil;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -76,12 +74,12 @@ public abstract class LivingEntityMixin {
 
     @WrapWithCondition(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"))
     private boolean hurt(LivingEntity instance, double strength, double x, double z, ServerLevel serverLevel, DamageSource source, float amount) {
-        return (!(instance instanceof ValkyrieQueen) || !(source.getDirectEntity() instanceof Projectile));
+        return AetherBossCombatRules.shouldApplyKnockback(instance, source);
     }
 
     @Inject(method = "applyItemBlocking(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)F", at = @At("HEAD"), cancellable = true)
     private void aether$preventSliderShieldBlock(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-        if (source.getEntity() instanceof Slider) {
+        if (AetherBossCombatRules.bypassesShieldBlocking(source)) {
             cir.setReturnValue(amount);
         }
     }
