@@ -1,9 +1,7 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.accessories.impl.MobAccessoryEquipment;
 import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
-import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -30,15 +28,7 @@ public class MobMixin {
      */
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "canHoldItem(Lnet/minecraft/world/item/ItemStack;)Z")
     private boolean canTakeItem(boolean original, ItemStack stack) {
-        Mob mob = (Mob) (Object) this;
-        if (MobAccessorySpawning.canMobSpawnWithAccessories(mob)) {
-            SlotTypeReference slotType = MobAccessoryEquipment.getSlotTypeForItem(mob, stack);
-            if (slotType != null) {
-                ItemStack accessory = MobAccessoryEquipment.getItemBySlotType(mob, slotType);
-                if (accessory.isEmpty()) return true;
-            }
-        }
-        return original;
+        return MobAccessoryEquipment.canHoldItem((Mob) (Object) this, stack, original);
     }
 
     /**
@@ -49,24 +39,7 @@ public class MobMixin {
      */
     @ModifyReturnValue(at = @At(value = "RETURN"), method = "equipItemIfPossible(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;")
     private ItemStack equipItemIfPossible(ItemStack original, ServerLevel serverLevel, ItemStack stack) {
-        Mob mob = (Mob) (Object) this;
-        var data = mob.getAttachedOrCreate(AetherDataAttachments.MOB_ACCESSORY);
-        SlotTypeReference slotType = MobAccessoryEquipment.getSlotTypeForItem(mob, stack);
-        if (slotType != null) {
-            ItemStack accessory = MobAccessoryEquipment.getItemBySlotType(mob, slotType);
-            boolean flag = MobAccessoryEquipment.canReplaceCurrentAccessory(mob, stack, accessory);
-            if (flag && mob.canHoldItem(stack)) {
-                double dropChance = data.getEquipmentDropChance(slotType);
-                if (!accessory.isEmpty() && Math.max(mob.getRandom().nextFloat() - 0.1F, 0.0F) < dropChance) {
-                    mob.spawnAtLocation(serverLevel, accessory);
-                }
-                MobAccessoryEquipment.setItemBySlotType(mob, stack, slotType);
-                data.setGuaranteedDrop(slotType);
-                mob.setPersistenceRequired();
-                return stack;
-            }
-        }
-        return original;
+        return MobAccessoryEquipment.equipItemIfPossible((Mob) (Object) this, serverLevel, stack, original);
     }
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
