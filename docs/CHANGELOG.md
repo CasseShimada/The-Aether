@@ -4,6 +4,12 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Registered ability tooltip processing directly from the Fabric client entrypoint and moved tooltip rules into the GUI boundary.
+- Moved client tick, music, screen, and accessory-menu control out of the generic event hooks package into focused client boundaries.
+- Renamed the accessory render utility away from generic hook terminology without changing render queries or trim selection.
+- Moved Phoenix Arrow attachment synchronization and particle ticking from `AbstractArrowMixin` into the weapon ability boundary.
+- Moved accessory piglin-neutrality and powder-snow return rules from Minecraft mixins into the accessory effect boundary.
+- Retained projectile hit, fishing-hook hit, experience-orb repair, and arrow tick mixins after confirming Fabric has no strictly equivalent callbacks for their cancellation or mutation timing.
 - Moved player mining-speed composition from `PlayerMixin` into the tool ability boundary without changing modifier order.
 - Moved mob accessory pickup, replacement, initial spawning, death drops, and experience behavior out of Minecraft mixins into the accessory implementation boundary.
 - Moved accessory death-protection consumption effects into the accessory effect boundary while retaining the vanilla return injection and recursion guard.
