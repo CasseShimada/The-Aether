@@ -9,7 +9,7 @@ import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
 import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
-import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks;
+import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
 import com.aetherteam.aether.item.combat.abilities.armor.NeptuneArmor;
@@ -169,7 +169,7 @@ public abstract class LivingEntityMixin {
     private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         AccessoryAbilities.setAttack(source);
-        WeaponAbilityHooks.stickDart(livingEntity, source);
+        WeaponAbilities.stickDart(livingEntity, source);
         if (AccessoryAbilities.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
             cir.setReturnValue(false);
         }
@@ -179,8 +179,8 @@ public abstract class LivingEntityMixin {
     private float aether$modifyIncomingDamage(float amount, ServerLevel level, DamageSource source) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         Entity direct = source.getDirectEntity();
-        amount = WeaponAbilityHooks.reduceWeaponEffectiveness(livingEntity, direct, amount);
-        return WeaponAbilityHooks.reduceArmorEffectiveness(livingEntity, direct, amount);
+        amount = WeaponAbilities.reduceWeaponEffectiveness(livingEntity, direct, amount);
+        return WeaponAbilities.reduceArmorEffectiveness(livingEntity, direct, amount);
     }
 
     @ModifyReturnValue(method = "getVisibilityPercent(Lnet/minecraft/world/entity/Entity;)D", at = @At("RETURN"))

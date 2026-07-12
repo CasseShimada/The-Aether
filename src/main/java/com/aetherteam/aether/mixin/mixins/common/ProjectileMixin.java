@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.common;
 
-import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks;
+import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities;
 import com.aetherteam.aether.item.accessories.abilities.ShieldOfRepulsionAccessory;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.HitResult;
@@ -14,7 +14,7 @@ public abstract class ProjectileMixin {
     @Inject(method = "onHit(Lnet/minecraft/world/phys/HitResult;)V", at = @At("HEAD"), cancellable = true)
     private void aether$onHit(HitResult hitResult, CallbackInfo ci) {
         Projectile projectile = (Projectile) (Object) this;
-        WeaponAbilityHooks.phoenixArrowHit(hitResult, projectile);
+        WeaponAbilities.phoenixArrowHit(hitResult, projectile);
         if (ShieldOfRepulsionAccessory.deflectProjectile(hitResult, projectile)) {
             ci.cancel();
         }

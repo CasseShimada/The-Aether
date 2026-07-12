@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Renamed the weapon ability utility away from generic hook terminology without changing combat behavior.
 - Renamed the accessory ability utility away from generic hook terminology without changing effect behavior.
 - Renamed the tool ability utility away from generic hook terminology after moving its interaction entrypoints to Fabric callbacks.
 - Named retained level mixins after their block-update and level-wide sleep responsibilities, documenting missing equivalent Fabric callbacks.

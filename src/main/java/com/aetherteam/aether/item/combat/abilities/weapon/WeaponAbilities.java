@@ -30,8 +30,8 @@ import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 
-public final class WeaponAbilityHooks {
-    private WeaponAbilityHooks() {
+public final class WeaponAbilities {
+    private WeaponAbilities() {
     }
 
     /**

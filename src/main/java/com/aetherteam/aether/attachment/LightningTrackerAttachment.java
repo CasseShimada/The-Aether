@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Fabric attachment state used to track {@link LightningBolt}s created by entities and weapons.
  *
- * @see com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks#lightningTracking(Entity, LightningBolt)
+ * @see com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilities#lightningTracking(Entity, LightningBolt)
  */
 public class LightningTrackerAttachment {
     private int ownerID;
