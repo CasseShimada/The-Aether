@@ -41,7 +41,7 @@ public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachm
     }
 
     @Override
-    public AttachmentType<AetherPlayerAttachment> getAttachment() {
+    public AttachmentType<AetherPlayerAttachment> attachmentType() {
         return AetherDataAttachments.AETHER_PLAYER;
     }
 

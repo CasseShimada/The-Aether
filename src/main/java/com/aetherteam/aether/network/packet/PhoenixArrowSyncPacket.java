@@ -41,7 +41,7 @@ public class PhoenixArrowSyncPacket extends SyncEntityPacket<PhoenixArrowAttachm
     }
 
     @Override
-    public AttachmentType<PhoenixArrowAttachment> getAttachment() {
+    public AttachmentType<PhoenixArrowAttachment> attachmentType() {
         return AetherDataAttachments.PHOENIX_ARROW;
     }
 

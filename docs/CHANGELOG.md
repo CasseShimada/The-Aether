@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Named attachment sync packet accessors after the Fabric `AttachmentType` values they return.
 - Moved Fabric player lookup and packet routing out of the attachment data interface into the networking boundary.
 - Renamed attachment sync value types for clearer packet serialization boundaries while preserving enum order and wire format.
 - Renamed attachment sync directions to explicit sync targets without changing packet routing or payload formats.

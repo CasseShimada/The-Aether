@@ -41,7 +41,7 @@ public class AetherTimeSyncPacket extends SyncLevelPacket<AetherTimeAttachment> 
     }
 
     @Override
-    public AttachmentType<AetherTimeAttachment> getAttachment() {
+    public AttachmentType<AetherTimeAttachment> attachmentType() {
         return AetherDataAttachments.AETHER_TIME;
     }
 

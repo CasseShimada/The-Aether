@@ -22,7 +22,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
         this(values.key(), values.valueType(), values.value());
     }
 
-    public abstract AttachmentType<T> getAttachment();
+    public abstract AttachmentType<T> attachmentType();
 
     public String key() {
         return this.key;
