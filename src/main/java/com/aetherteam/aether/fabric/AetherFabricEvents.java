@@ -8,12 +8,18 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
+import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.EntityArmorStandHooks;
 import com.aetherteam.aether.event.hooks.EntityBucketHooks;
 import com.aetherteam.aether.event.hooks.InteractionRecipeHooks;
-import com.aetherteam.aether.event.hooks.PlayerLifecycleHooks;
+import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
+import com.aetherteam.aether.network.AetherPacketSender;
+import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
+import com.aetherteam.aether.perk.data.ServerPerkData;
+import com.aetherteam.aether.perk.data.UserData;
+import com.aetherteam.aether.perk.types.MoaSkins;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -46,7 +52,22 @@ public final class AetherFabricEvents {
     }
 
     private static void registerPlayerEvents() {
-        ServerPlayerEvents.JOIN.register(PlayerLifecycleHooks::login);
+        ServerPlayerEvents.JOIN.register(player -> {
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
+            DimensionTimeHooks.syncAetherTime(player);
+            var playerId = player.getGameProfile().id();
+            if (!UserData.Server.getStoredUsers().containsKey(playerId)) {
+                var server = player.level().getServer();
+                ServerPerkData.MOA_SKIN_INSTANCE.removePerk(server, playerId);
+                ServerPerkData.HALO_INSTANCE.removePerk(server, playerId);
+                ServerPerkData.DEVELOPER_GLOW_INSTANCE.removePerk(server, playerId);
+            }
+            ToolAbilityHooks.setDebuffToolsState(player);
+            MoaSkins.registerMoaSkins(player.level());
+            AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
+            DimensionSpawnHooks.startInAether(player);
+            AccessoryRuntime.forceSync(player);
+        });
         ServerPlayerEvents.LEAVE.register(player -> {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogout(player);
             AccessoryRuntime.clear(player);

@@ -8,6 +8,8 @@ Old save migration support for Curios data, Forge capability data, and `neoforge
 
 The nonfunctional alternative Accessories menu switch and its generic-slot registration branch have also been removed. Fabric attachment decoding still preserves arbitrary slot names without migrating or rewriting them, while new runtime registration continues to use the seven current `aether:*_slot` identifiers.
 
+The current source tree contains no Curios, `ForgeCaps`, or `neoforge:attachments` save reader and no legacy capability conversion entrypoint. `AetherDataAttachments` and `AccessoryInventoryAttachment` are current Fabric persistence, not compatibility shims, and must remain in place. Existing `commands.aether.capability.*` translation keys are stable resource identifiers rather than save migration hooks, so this cleanup deliberately leaves them unchanged.
+
 ## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |
