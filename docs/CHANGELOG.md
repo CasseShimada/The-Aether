@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Moved accessory Elytra firework boosting from an item mixin to the Fabric use-block callback.
 - Moved Aether axe, shovel, and hoe block transformations from item mixins to the Fabric use-block callback.
 - Made the retained registry-id construction context restore outer ids during nested direct registrations.
 - Named the retained block-destroy mixin after its gameplay hook and documented why Fabric's after-break event cannot preserve its tool-stack behavior.

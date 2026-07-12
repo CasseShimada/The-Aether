@@ -1,6 +1,7 @@
 package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.accessories.impl.AccessoryItemInteractions;
 import com.aetherteam.aether.accessories.impl.ArmorStandAccessoryInteractions;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
@@ -140,7 +141,11 @@ public final class AetherFabricEvents {
             if (AetherPortalInteractions.createPortal(player, level, hitResult.getBlockPos(), hitResult.getDirection(), player.getItemInHand(hand), hand)) {
                 return InteractionResult.SUCCESS;
             }
-            return ToolBlockInteractions.interact(player, level, hand, hitResult);
+            InteractionResult toolResult = ToolBlockInteractions.interact(player, level, hand, hitResult);
+            if (toolResult != InteractionResult.PASS) {
+                return toolResult;
+            }
+            return AccessoryItemInteractions.useFireworkRocket(player, level, hand);
         });
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             if (level.isClientSide()) {

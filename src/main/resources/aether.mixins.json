@@ -15,7 +15,6 @@
     "common.EnvironmentAttributeSystemMixin",
     "common.EnchantmentHelperMixin",
     "common.ExperienceOrbMixin",
-    "common.FireworkRocketItemMixin",
     "common.FishingHookMixin",
     "common.ItemRegistryIdMixin",
     "common.LevelMixin",
