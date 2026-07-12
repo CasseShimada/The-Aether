@@ -1,4 +1,4 @@
-package com.aetherteam.aether.event.hooks;
+package com.aetherteam.aether.world;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.AetherTags;
@@ -18,8 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
 
-public final class DimensionSpawnHooks {
-    private DimensionSpawnHooks() {
+public final class AetherPlayerSpawn {
+    private AetherPlayerSpawn() {
     }
 
     public static void startInAether(Player player) {

@@ -9,7 +9,6 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
 import com.aetherteam.aether.event.hooks.DimensionPortalHooks;
-import com.aetherteam.aether.event.hooks.DimensionSpawnHooks;
 import com.aetherteam.aether.event.hooks.DimensionTimeHooks;
 import com.aetherteam.aether.event.hooks.ToolAbilityHooks;
 import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions;
@@ -20,6 +19,7 @@ import com.aetherteam.aether.perk.data.ServerPerkData;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
 import com.aetherteam.aether.recipe.InteractionRecipeRules;
+import com.aetherteam.aether.world.AetherPlayerSpawn;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -65,7 +65,7 @@ public final class AetherFabricEvents {
             ToolAbilityHooks.setDebuffToolsState(player);
             MoaSkins.registerMoaSkins(player.level());
             AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
-            DimensionSpawnHooks.startInAether(player);
+            AetherPlayerSpawn.startInAether(player);
             AccessoryRuntime.forceSync(player);
         });
         ServerPlayerEvents.LEAVE.register(player -> {

@@ -110,5 +110,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Moved placement and interaction recipe rules out of the event hook package while preserving their Fabric callback and Mixin behavior.
 - Moved Skyroot bucket entity interactions from the event hook package into the bucket item boundary.
 - Moved armor stand accessory interactions from the event hook package into the accessories implementation boundary.
+- Moved initial Aether player spawn logic from the event hook package into the world boundary.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
