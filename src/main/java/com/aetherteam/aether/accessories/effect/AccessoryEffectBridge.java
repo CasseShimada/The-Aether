@@ -19,6 +19,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -236,6 +237,20 @@ public final class AccessoryEffectBridge {
 
     public static TriState shouldMakePiglinsNeutral(LivingEntity entity) {
         return evaluateAccessoryTriState(entity, PiglinNeutralInducer.class, (effect, stack, reference) -> effect.makePiglinsNeutral(stack, reference));
+    }
+
+    public static boolean modifyPiglinNeutrality(LivingEntity entity, boolean original) {
+        return augmentVanillaResult(original, shouldMakePiglinsNeutral(entity));
+    }
+
+    public static boolean modifyPowderSnowWalking(Entity entity, boolean original) {
+        if (original) {
+            return true;
+        }
+        if (!(entity instanceof LivingEntity livingEntity)) {
+            return false;
+        }
+        return augmentVanillaResult(false, shouldAllowWalkingOnSnow(livingEntity));
     }
 
     /**
@@ -505,6 +520,16 @@ public final class AccessoryEffectBridge {
         }
 
         return fallback;
+    }
+
+    private static boolean augmentVanillaResult(boolean original, TriState state) {
+        if (original || state == TriState.TRUE) {
+            return true;
+        }
+        if (state == TriState.FALSE) {
+            return false;
+        }
+        return original;
     }
 
     @FunctionalInterface
