@@ -29,23 +29,23 @@ public class InvisibilityCloakItem extends AccessoryItem {
         if (livingEntity.level().isClientSide() && livingEntity instanceof Player player) {
             if (AetherKeys.INVISIBILITY_TOGGLE.consumeClick()) {
                 var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-                data.setSynced(player.getId(), AttachmentSyncable.Direction.SERVER, AetherPlayerAttachment.INVISIBILITY_ENABLED_SYNC_KEY, !data.isInvisibilityEnabled());
+                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.INVISIBILITY_ENABLED_SYNC_KEY, !data.isInvisibilityEnabled());
             }
         }
         if (!livingEntity.level().isClientSide() && livingEntity instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (data.isInvisibilityEnabled()) {
                 if (!AetherConfig.SERVER.balance_invisibility_cloak.get()) {
-                    data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, true);
+                    data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, true);
                 } else {
                     if (!data.attackedWithInvisibility() && !data.isWearingInvisibilityCloak()) {
-                        data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, true);
+                        data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, true);
                     } else if (data.attackedWithInvisibility() && data.isWearingInvisibilityCloak()) {
-                        data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
+                        data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
                     }
                 }
             } else {
-                data.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
+                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
             }
         }
         if (!livingEntity.level().isClientSide()) {
@@ -75,7 +75,7 @@ public class InvisibilityCloakItem extends AccessoryItem {
     public void onUnequip(ItemStack stack, SlotReference reference) {
         LivingEntity livingEntity = reference.entity();
         if (!livingEntity.level().isClientSide() && livingEntity instanceof Player player) {
-            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.WEARING_INVISIBILITY_CLOAK_SYNC_KEY, false);
         }
         livingEntity.setInvisible(false);
         ((LivingEntityAccessor) livingEntity).callUpdateEffectVisibility();

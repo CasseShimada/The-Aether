@@ -215,7 +215,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public void onJoinLevel(Player player) {
         if (player.level().isClientSide() && player.isLocalPlayer()) {
             CustomizationsOptions.INSTANCE.load();
-            this.setSynced(player.getId(), Direction.SERVER, SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, true);
+            this.setSynced(player.getId(), SyncTarget.SERVER, SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, true);
         }
     }
 
@@ -257,7 +257,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
     private void syncAfterJoin(Player player) {
         if (this.shouldSyncAfterJoin) {
-            this.forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
+            this.forceSync(player.getId(), AttachmentSyncable.SyncTarget.CLIENT);
             this.shouldSyncAfterJoin = false;
         }
     }
@@ -270,7 +270,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
                     PlayerList playerList = server.getPlayerList();
                     for (ServerPlayer serverPlayer : playerList.getPlayers()) {
                         if (!serverPlayer.getUUID().equals(player.getUUID())) {
-                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
+                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.SyncTarget.CLIENT);
                         }
                     }
                 }
@@ -362,7 +362,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeGoldenDartTime;
                 if (this.removeGoldenDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, GOLDEN_DART_COUNT_SYNC_KEY, this.getGoldenDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, GOLDEN_DART_COUNT_SYNC_KEY, this.getGoldenDartCount() - 1);
                 }
             }
             if (this.getPoisonDartCount() > 0) {
@@ -372,7 +372,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removePoisonDartTime;
                 if (this.removePoisonDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, POISON_DART_COUNT_SYNC_KEY, this.getPoisonDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, POISON_DART_COUNT_SYNC_KEY, this.getPoisonDartCount() - 1);
                 }
             }
             if (this.getEnchantedDartCount() > 0) {
@@ -382,7 +382,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeEnchantedDartTime;
                 if (this.removeEnchantedDartTime <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, ENCHANTED_DART_COUNT_SYNC_KEY, this.getEnchantedDartCount() - 1);
+                    this.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, ENCHANTED_DART_COUNT_SYNC_KEY, this.getEnchantedDartCount() - 1);
                 }
             }
         }
@@ -432,7 +432,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
             if (this.attackedWithInvisibility()) {
                 --this.invisibilityAttackCooldown;
                 if (this.invisibilityAttackCooldown <= 0) {
-                    this.setSynced(player.getId(), AttachmentSyncable.Direction.CLIENT, ATTACKED_WITH_INVISIBILITY_SYNC_KEY, false);
+                    this.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, ATTACKED_WITH_INVISIBILITY_SYNC_KEY, false);
                 }
             } else {
                 this.invisibilityAttackCooldown = AetherConfig.SERVER.invisibility_visibility_time.get();

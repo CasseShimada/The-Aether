@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Renamed attachment sync directions to explicit sync targets without changing packet routing or payload formats.
 - Removed old save migration support for Curios data, Forge capability data, and `neoforge:attachments` data.
 - Removed the remaining Curios item-tag fallbacks from current accessory slot resolution.
 - Removed stale NeoForge furnace fuel and compostable data maps from the Fabric resource output.

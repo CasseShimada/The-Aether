@@ -81,7 +81,7 @@ public final class AetherFabricEvents {
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
             if (!player.level().isClientSide()) {
-                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.SyncTarget.CLIENT);
             }
             AetherTimeController.syncAetherTime(player);
             AccessoryRuntime.forceSync(player);

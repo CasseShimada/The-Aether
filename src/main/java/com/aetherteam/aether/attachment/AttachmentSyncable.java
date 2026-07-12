@@ -17,23 +17,23 @@ public interface AttachmentSyncable {
 
     SyncPacket<?> getSyncPacket(int entityID, String key, Type type, Object value);
 
-    default void forceSync(int entityID, Direction direction) {
+    default void forceSync(int entityID, SyncTarget target) {
         for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
             SyncField value = entry.getValue();
-            this.setSynced(entityID, direction, entry.getKey(), value.type(), value.getter().get());
+            this.setSynced(entityID, target, entry.getKey(), value.type(), value.getter().get());
         }
     }
 
-    default void setSynced(int entityID, Direction direction, String key, @Nullable Object value, Object... context) {
+    default void setSynced(int entityID, SyncTarget target, String key, @Nullable Object value, Object... context) {
         SyncField data = this.getSyncFields().get(key);
         if (data == null) {
             return;
         }
-        this.setSynced(entityID, direction, key, data.type(), value, context);
+        this.setSynced(entityID, target, key, data.type(), value, context);
     }
 
-    default void setSynced(int entityID, Direction direction, String key, Type type, @Nullable Object value, Object... context) {
-        this.sendPacket(this.getSyncPacket(entityID, key, type, value), direction, context);
+    default void setSynced(int entityID, SyncTarget target, String key, Type type, @Nullable Object value, Object... context) {
+        this.sendPacket(this.getSyncPacket(entityID, key, type, value), target, context);
     }
 
     default void executeSynced(String key, Type type, @Nullable Object value) {
@@ -44,8 +44,8 @@ public interface AttachmentSyncable {
         data.setter().accept(value);
     }
 
-    private void sendPacket(SyncPacket<?> packet, Direction direction, Object... context) {
-        switch (direction) {
+    private void sendPacket(SyncPacket<?> packet, SyncTarget target, Object... context) {
+        switch (target) {
             case SERVER -> AetherPacketSender.sendToServer(packet);
             case CLIENT -> this.sendToClients(packet, context);
             case PLAYER -> this.sendToPlayer(packet, context);
@@ -76,7 +76,7 @@ public interface AttachmentSyncable {
         }
     }
 
-    enum Direction {
+    enum SyncTarget {
         CLIENT,
         SERVER,
         PLAYER,
