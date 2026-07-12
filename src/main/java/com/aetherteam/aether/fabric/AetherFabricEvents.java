@@ -2,6 +2,7 @@ package com.aetherteam.aether.fabric;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
@@ -56,7 +57,14 @@ public final class AetherFabricEvents {
             DimensionTimeHooks.syncAetherTime(newPlayer);
             AccessoryRuntime.forceSync(newPlayer);
         });
-        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register(PlayerLifecycleHooks::changeLevel);
+        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
+            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
+            if (!player.level().isClientSide()) {
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
+            }
+            DimensionTimeHooks.syncAetherTime(player);
+            AccessoryRuntime.forceSync(player);
+        });
         EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) ->
                 DimensionTimeHooks.isEternalDay(player) ? Player.BedSleepingProblem.OTHER_PROBLEM : null);
     }

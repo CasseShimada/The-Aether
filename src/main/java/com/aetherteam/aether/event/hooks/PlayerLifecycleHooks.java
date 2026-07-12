@@ -2,13 +2,11 @@ package com.aetherteam.aether.event.hooks;
 
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.perk.data.ServerPerkData;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 public final class PlayerLifecycleHooks {
@@ -29,15 +27,6 @@ public final class PlayerLifecycleHooks {
         MoaSkins.registerMoaSkins(player.level());
         AetherPacketSender.sendToPlayer(player, new RegisterMoaSkinsPacket());
         DimensionSpawnHooks.startInAether(player);
-        AccessoryRuntime.forceSync(player);
-    }
-
-    public static void changeLevel(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
-        player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
-        if (!player.level().isClientSide()) {
-            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.Direction.CLIENT);
-        }
-        DimensionTimeHooks.syncAetherTime(player);
         AccessoryRuntime.forceSync(player);
     }
 }
