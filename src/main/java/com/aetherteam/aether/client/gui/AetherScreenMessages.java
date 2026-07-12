@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.gui;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
@@ -17,12 +17,12 @@ import net.minecraft.util.FormattedCharSequence;
 
 import javax.annotation.Nullable;
 
-public final class GuiTriviaHooks {
+public final class AetherScreenMessages {
     private static boolean generateTrivia = true;
     @Nullable
     private static Screen lastScreen;
 
-    private GuiTriviaHooks() {
+    private AetherScreenMessages() {
     }
 
     public static void drawTrivia(Screen screen, GuiGraphicsExtractor guiGraphics) {

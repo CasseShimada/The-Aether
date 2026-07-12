@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier;
 /**
  * Marks the player as being in the process of leaving the Aether. This is used for displaying "Descending from the Aether" in the world loading screen.
  *
- * @see com.aetherteam.aether.client.event.hooks.GuiTriviaHooks#drawAetherTravelMessage
+ * @see com.aetherteam.aether.client.gui.AetherScreenMessages#drawAetherTravelMessage
  */
 public record LeavingAetherPacket(boolean playerLeavingAether) implements CustomPacketPayload {
     public static final Type<LeavingAetherPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "leave_aether"));

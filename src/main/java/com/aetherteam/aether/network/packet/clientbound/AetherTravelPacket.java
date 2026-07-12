@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier;
 /**
  * Marks the player as being in the process of teleporting to the Aether. This is used for displaying "Ascending to the Aether" in the world loading screen.
  *
- * @see com.aetherteam.aether.client.event.hooks.GuiTriviaHooks#drawAetherTravelMessage
+ * @see com.aetherteam.aether.client.gui.AetherScreenMessages#drawAetherTravelMessage
  */
 public record AetherTravelPacket(boolean displayAetherTravel) implements CustomPacketPayload {
     public static final Type<AetherTravelPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "travel_across_dimensions"));

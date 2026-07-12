@@ -1,6 +1,5 @@
 package com.aetherteam.aether.client.gui;
 
-import com.aetherteam.aether.client.event.hooks.GuiTriviaHooks;
 import com.aetherteam.aether.client.gui.component.inventory.AccessoryButton;
 import com.aetherteam.aether.integration.jei.AetherJeiBridge;
 import com.aetherteam.aether.mixin.mixins.client.accessor.SplashRendererAccessor;
@@ -69,9 +68,9 @@ public final class AetherScreenController {
         updateAccessoryButtons(currentScreen);
         logJeiOverlayState(currentScreen);
         if (!TIPS_MOD_LOADED) {
-            GuiTriviaHooks.drawTrivia(currentScreen, guiGraphics);
+            AetherScreenMessages.drawTrivia(currentScreen, guiGraphics);
         }
-        GuiTriviaHooks.drawAetherTravelMessage(currentScreen, guiGraphics);
+        AetherScreenMessages.drawAetherTravelMessage(currentScreen, guiGraphics);
     }
 
     private static void updateAccessoryButtons(Screen currentScreen) {
