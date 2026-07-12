@@ -8,7 +8,7 @@ import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.monster.dungeon.boss.Slider;
 import com.aetherteam.aether.entity.monster.dungeon.boss.ValkyrieQueen;
-import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilityHooks;
+import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
 import com.aetherteam.aether.item.combat.abilities.weapon.WeaponAbilityHooks;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.abilities.armor.GravititeArmor;
@@ -168,9 +168,9 @@ public abstract class LivingEntityMixin {
     @Inject(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
     private void aether$beforeHurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-        AccessoryAbilityHooks.setAttack(source);
+        AccessoryAbilities.setAttack(source);
         WeaponAbilityHooks.stickDart(livingEntity, source);
-        if (AccessoryAbilityHooks.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
+        if (AccessoryAbilities.preventMagmaDamage(livingEntity, source) || PhoenixArmor.extinguishUser(livingEntity, source)) {
             cir.setReturnValue(false);
         }
     }
@@ -187,11 +187,11 @@ public abstract class LivingEntityMixin {
     private double aether$modifyVisibility(double original, Entity lookingEntity) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (lookingEntity != null) {
-            if (AccessoryAbilityHooks.preventTargeting(livingEntity, lookingEntity)
-                    && !AccessoryAbilityHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+            if (AccessoryAbilities.preventTargeting(livingEntity, lookingEntity)
+                    && !AccessoryAbilities.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
                 return 0.0D;
             }
-            if (AccessoryAbilityHooks.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
+            if (AccessoryAbilities.recentlyAttackedWithInvisibility(livingEntity, lookingEntity)) {
                 return 1.0D;
             }
         }

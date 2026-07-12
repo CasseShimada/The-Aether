@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public final class AccessoryAbilityHooks {
-    private AccessoryAbilityHooks() {
+public final class AccessoryAbilities {
+    private AccessoryAbilities() {
     }
 
     /**

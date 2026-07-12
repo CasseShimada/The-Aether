@@ -4,6 +4,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 
 ## Fabric Native Refactor
 
+- Renamed the accessory ability utility away from generic hook terminology without changing effect behavior.
 - Renamed the tool ability utility away from generic hook terminology after moving its interaction entrypoints to Fabric callbacks.
 - Named retained level mixins after their block-update and level-wide sleep responsibilities, documenting missing equivalent Fabric callbacks.
 - Moved accessory Elytra firework boosting from an item mixin to the Fabric use-block callback.

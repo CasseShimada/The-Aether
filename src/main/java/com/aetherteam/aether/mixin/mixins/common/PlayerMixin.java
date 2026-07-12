@@ -3,7 +3,7 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.entity.passive.MountableAnimal;
 import com.aetherteam.aether.entity.monster.Swet;
-import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilityHooks;
+import com.aetherteam.aether.item.accessories.abilities.AccessoryAbilities;
 import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.world.AetherTravelController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -36,13 +36,13 @@ public abstract class PlayerMixin {
      *
      * @param target The target {@link Entity}.
      * @param ci     The {@link CallbackInfo} for the void method return.
-     * @see AccessoryAbilityHooks#damageGloves(Player)
+     * @see AccessoryAbilities#damageGloves(Player)
      */
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setLastHurtMob(Lnet/minecraft/world/entity/Entity;)V", shift = At.Shift.AFTER), method = "attack(Lnet/minecraft/world/entity/Entity;)V")
     private void attack(Entity target, CallbackInfo ci) {
         Player player = (Player) (Object) this;
         if (target instanceof LivingEntity) {
-            AccessoryAbilityHooks.damageGloves(player);
+            AccessoryAbilities.damageGloves(player);
         }
     }
 
@@ -103,8 +103,8 @@ public abstract class PlayerMixin {
         Player player = (Player) (Object) this;
         ItemStack stack = player.getMainHandItem();
         float speed = original;
-        speed = AccessoryAbilityHooks.handleZaniteRingAbility(player, speed);
-        speed = AccessoryAbilityHooks.handleZanitePendantAbility(player, speed);
+        speed = AccessoryAbilities.handleZaniteRingAbility(player, speed);
+        speed = AccessoryAbilities.handleZanitePendantAbility(player, speed);
         speed = ToolAbilities.handleZaniteToolAbility(stack, speed);
         return ToolAbilities.reduceToolEffectiveness(player, state, stack, speed);
     }
