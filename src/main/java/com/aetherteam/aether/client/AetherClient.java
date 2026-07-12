@@ -6,7 +6,6 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
 import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
 import com.aetherteam.aether.client.event.hooks.ClientScreenHooks;
-import com.aetherteam.aether.client.event.hooks.ClientTickHooks;
 import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
 import com.aetherteam.aether.client.event.hooks.AbilityTooltipHooks;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
@@ -162,7 +161,7 @@ public class AetherClient {
     }
 
     private static void registerTickCallbacks() {
-        ClientTickEvents.END_CLIENT_TICK.register(ClientTickHooks::endClientTick);
+        ClientTickEvents.END_CLIENT_TICK.register(AetherClientTick::endClientTick);
     }
 
     private static void registerConnectionCallbacks() {

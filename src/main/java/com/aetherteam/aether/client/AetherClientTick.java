@@ -1,12 +1,12 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client;
 
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.attachment.AttachmentSyncable;
-import com.aetherteam.aether.client.AetherKeys;
-import com.aetherteam.aether.client.ClientAccess;
+import com.aetherteam.aether.client.event.hooks.ClientMusicHooks;
+import com.aetherteam.aether.client.event.hooks.GuiAccessoryMenuHooks;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.entity.AetherMounting;
 import net.minecraft.client.Minecraft;
@@ -14,8 +14,8 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Input;
 
-public final class ClientTickHooks {
-    private ClientTickHooks() {
+public final class AetherClientTick {
+    private AetherClientTick() {
     }
 
     public static void endClientTick(Minecraft client) {
