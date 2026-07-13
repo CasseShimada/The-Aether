@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
  * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleHolystoneToolAbility}.
  */
 public class HolystoneHoeItem extends HoeItem implements HolystoneTool {
-    public HolystoneHoeItem() {
-        super(AetherItemTiers.HOLYSTONE, -1.0F, -2.0F, new Item.Properties());
+    public HolystoneHoeItem(Item.Properties properties) {
+        super(AetherItemTiers.HOLYSTONE, -1.0F, -2.0F, properties);
     }
 }

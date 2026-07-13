@@ -206,5 +206,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed Properties construction for material swords with Gravitite Sword while preserving its tier, attack attributes, and launch ability.
 - Migrated Skyroot Pickaxe, Axe, and Shovel construction to keyed Properties while preserving the tool tier, attack attributes, and double-drop behavior.
 - Completed the Skyroot tool set and migrated the Holystone Pickaxe and Axe to keyed Properties while preserving tiers, attack attributes, double drops, and Ambrosium drops.
+- Completed the Holystone tool set and migrated the Zanite Pickaxe to keyed Properties while preserving tiers, attack attributes, Ambrosium drops, and Zanite mining-speed behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

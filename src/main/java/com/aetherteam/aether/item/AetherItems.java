@@ -102,10 +102,10 @@ public class AetherItems {
 
     public static final PickaxeItem HOLYSTONE_PICKAXE = register("holystone_pickaxe", properties -> new HolystonePickaxeItem(properties));
     public static final AxeItem HOLYSTONE_AXE = register("holystone_axe", properties -> new HolystoneAxeItem(properties));
-    public static final ShovelItem HOLYSTONE_SHOVEL = register("holystone_shovel", HolystoneShovelItem::new);
-    public static final HoeItem HOLYSTONE_HOE = register("holystone_hoe", HolystoneHoeItem::new);
+    public static final ShovelItem HOLYSTONE_SHOVEL = register("holystone_shovel", properties -> new HolystoneShovelItem(properties));
+    public static final HoeItem HOLYSTONE_HOE = register("holystone_hoe", properties -> new HolystoneHoeItem(properties));
 
-    public static final PickaxeItem ZANITE_PICKAXE = register("zanite_pickaxe", ZanitePickaxeItem::new);
+    public static final PickaxeItem ZANITE_PICKAXE = register("zanite_pickaxe", properties -> new ZanitePickaxeItem(properties));
     public static final AxeItem ZANITE_AXE = register("zanite_axe", ZaniteAxeItem::new);
     public static final ShovelItem ZANITE_SHOVEL = register("zanite_shovel", ZaniteShovelItem::new);
     public static final HoeItem ZANITE_HOE = register("zanite_hoe", ZaniteHoeItem::new);

@@ -9,7 +9,7 @@ import net.minecraft.world.item.PickaxeItem;
  * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleZaniteToolAbility}.
  */
 public class ZanitePickaxeItem extends PickaxeItem implements ZaniteTool {
-    public ZanitePickaxeItem() {
-        super(AetherItemTiers.ZANITE, PickaxeItem.createAttributes(AetherItemTiers.ZANITE, 1.0F, -2.8F), new Item.Properties());
+    public ZanitePickaxeItem(Item.Properties properties) {
+        super(AetherItemTiers.ZANITE, PickaxeItem.createAttributes(AetherItemTiers.ZANITE, 1.0F, -2.8F), properties);
     }
 }
