@@ -302,8 +302,8 @@ public class AetherItems {
     public static final SpawnEggItem VALKYRIE_SPAWN_EGG = register("valkyrie_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.VALKYRIE, 0xF9F5E3, 0xF2D200, properties));
     public static final SpawnEggItem VALKYRIE_QUEEN_SPAWN_EGG = register("valkyrie_queen_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.VALKYRIE_QUEEN, 0xF2D200, 0xF9F5E3, properties));
     public static final SpawnEggItem SLIDER_SPAWN_EGG = register("slider_spawn_egg", properties -> new SliderSpawnEggItem(AetherEntityTypes.SLIDER, 0xA7A7A7, 0x5C9FF2, properties));
-    public static final SpawnEggItem SUN_SPIRIT_SPAWN_EGG = register("sun_spirit_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.SUN_SPIRIT, 0xFEF500, 0xFF6D01, new Item.Properties()));
-    public static final SpawnEggItem ZEPHYR_SPAWN_EGG = register("zephyr_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.ZEPHYR, 0xDFDFDF, 0x99CFE8, new Item.Properties()));
+    public static final SpawnEggItem SUN_SPIRIT_SPAWN_EGG = register("sun_spirit_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.SUN_SPIRIT, 0xFEF500, 0xFF6D01, properties));
+    public static final SpawnEggItem ZEPHYR_SPAWN_EGG = register("zephyr_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.ZEPHYR, 0xDFDFDF, 0x99CFE8, properties));
 
     public static ItemStack SWET_BANNER = null;
 
