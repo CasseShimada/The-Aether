@@ -9,7 +9,7 @@ import net.minecraft.world.item.PickaxeItem;
  * Ambrosium dropping behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleHolystoneToolAbility}.
  */
 public class HolystonePickaxeItem extends PickaxeItem implements HolystoneTool {
-    public HolystonePickaxeItem() {
-        super(AetherItemTiers.HOLYSTONE, PickaxeItem.createAttributes(AetherItemTiers.HOLYSTONE, 1.0F, -2.8F), new Item.Properties());
+    public HolystonePickaxeItem(Item.Properties properties) {
+        super(AetherItemTiers.HOLYSTONE, PickaxeItem.createAttributes(AetherItemTiers.HOLYSTONE, 1.0F, -2.8F), properties);
     }
 }

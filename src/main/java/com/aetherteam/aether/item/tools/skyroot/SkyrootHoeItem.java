@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
  * Double drops behavior is called by {@link com.aetherteam.aether.loot.functions.DoubleDrops}.
  */
 public class SkyrootHoeItem extends HoeItem implements SkyrootTool {
-    public SkyrootHoeItem() {
-        super(AetherItemTiers.SKYROOT, 0.0F, -3.0F, new Item.Properties());
+    public SkyrootHoeItem(Item.Properties properties) {
+        super(AetherItemTiers.SKYROOT, 0.0F, -3.0F, properties);
     }
 }

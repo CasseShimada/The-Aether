@@ -98,10 +98,10 @@ public class AetherItems {
     public static final PickaxeItem SKYROOT_PICKAXE = register("skyroot_pickaxe", properties -> new SkyrootPickaxeItem(properties));
     public static final AxeItem SKYROOT_AXE = register("skyroot_axe", properties -> new SkyrootAxeItem(properties));
     public static final ShovelItem SKYROOT_SHOVEL = register("skyroot_shovel", properties -> new SkyrootShovelItem(properties));
-    public static final HoeItem SKYROOT_HOE = register("skyroot_hoe", SkyrootHoeItem::new);
+    public static final HoeItem SKYROOT_HOE = register("skyroot_hoe", properties -> new SkyrootHoeItem(properties));
 
-    public static final PickaxeItem HOLYSTONE_PICKAXE = register("holystone_pickaxe", HolystonePickaxeItem::new);
-    public static final AxeItem HOLYSTONE_AXE = register("holystone_axe", HolystoneAxeItem::new);
+    public static final PickaxeItem HOLYSTONE_PICKAXE = register("holystone_pickaxe", properties -> new HolystonePickaxeItem(properties));
+    public static final AxeItem HOLYSTONE_AXE = register("holystone_axe", properties -> new HolystoneAxeItem(properties));
     public static final ShovelItem HOLYSTONE_SHOVEL = register("holystone_shovel", HolystoneShovelItem::new);
     public static final HoeItem HOLYSTONE_HOE = register("holystone_hoe", HolystoneHoeItem::new);
 
