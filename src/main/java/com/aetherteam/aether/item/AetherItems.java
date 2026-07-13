@@ -184,13 +184,13 @@ public class AetherItems {
 
     // Food
     public static final Item BLUE_BERRY = register("blue_berry", properties -> new Item(properties.food(AetherFoods.BLUE_BERRY)));
-    public static final Item ENCHANTED_BERRY = register("enchanted_berry", () -> new Item(new Item.Properties().rarity(Rarity.RARE).food(AetherFoods.ENCHANTED_BERRY)));
+    public static final Item ENCHANTED_BERRY = register("enchanted_berry", properties -> new Item(properties.rarity(Rarity.RARE).food(AetherFoods.ENCHANTED_BERRY)));
     public static final Item WHITE_APPLE = register("white_apple", WhiteAppleItem::new);
     public static final Item BLUE_GUMMY_SWET = register("blue_gummy_swet", GummySwetItem::new);
     public static final Item GOLDEN_GUMMY_SWET = register("golden_gummy_swet", GummySwetItem::new);
     public static final Item HEALING_STONE = register("healing_stone", HealingStoneItem::new);
-    public static final Item CANDY_CANE = register("candy_cane", () -> new Item(new Item.Properties().food(AetherFoods.CANDY_CANE)));
-    public static final Item GINGERBREAD_MAN = register("gingerbread_man", () -> new Item(new Item.Properties().food(AetherFoods.GINGERBREAD_MAN)));
+    public static final Item CANDY_CANE = register("candy_cane", properties -> new Item(properties.food(AetherFoods.CANDY_CANE)));
+    public static final Item GINGERBREAD_MAN = register("gingerbread_man", properties -> new Item(properties.food(AetherFoods.GINGERBREAD_MAN)));
 
     // Accessories
     public static final Item IRON_RING = register("iron_ring", () -> new RingItem(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_RING, new Item.Properties().stacksTo(1)));
