@@ -139,7 +139,7 @@ public class AetherItems {
 
     public static final Item LIGHTNING_KNIFE = register("lightning_knife", LightningKnifeItem::new);
 
-    public static final Item GOLDEN_DART = register("golden_dart", () -> new GoldenDartItem(new Item.Properties()));
+    public static final Item GOLDEN_DART = register("golden_dart", GoldenDartItem::new);
     public static final Item POISON_DART = register("poison_dart", () -> new PoisonDartItem(new Item.Properties()));
     public static final Item ENCHANTED_DART = register("enchanted_dart", () -> new EnchantedDartItem(new Item.Properties().rarity(Rarity.RARE)));
 
@@ -233,9 +233,9 @@ public class AetherItems {
     // Materials
     public static final Item SKYROOT_STICK = register("skyroot_stick", Item::new);
     public static final Item GOLDEN_AMBER = register("golden_amber", Item::new);
-    public static final Item SWET_BALL = register("swet_ball", () -> new SwetBallItem(new Item.Properties()));
+    public static final Item SWET_BALL = register("swet_ball", SwetBallItem::new);
     public static final Item AECHOR_PETAL = register("aechor_petal", Item::new);
-    public static final Item AMBROSIUM_SHARD = register("ambrosium_shard", () -> new AmbrosiumShardItem(new Item.Properties()));
+    public static final Item AMBROSIUM_SHARD = register("ambrosium_shard", AmbrosiumShardItem::new);
     public static final Item ZANITE_GEMSTONE = register("zanite_gemstone", Item::new);
 
     // Misc
