@@ -158,10 +158,10 @@ public class AetherBlocks {
     public static final Block CHEST_MIMIC = register("chest_mimic", () -> new ChestMimicBlock(Block.Properties.ofFullCopy(Blocks.CHEST)));
     public static final Block TREASURE_CHEST = register("treasure_chest", () -> new TreasureChestBlock(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).requiresCorrectToolForDrops()));
 
-    public static final RotatedPillarBlock PILLAR = register("pillar",
-            () -> new RotatedPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final FacingPillarBlock PILLAR_TOP = register("pillar_top",
-            () -> new FacingPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()));
+    public static final RotatedPillarBlock PILLAR = registerKeyed("pillar",
+            key -> new RotatedPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops().setId(key)));
+    public static final FacingPillarBlock PILLAR_TOP = registerKeyed("pillar_top",
+            key -> new FacingPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops().setId(key)));
 
     public static final Block PRESENT = registerKeyed("present",
             key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL).strength(0.1F).sound(SoundType.WOOL).setId(key)));
