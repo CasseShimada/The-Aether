@@ -187,5 +187,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed registration for the Valkyrie armor set while preserving delayed material lookup, armor slots, durability, and loot rarity.
 - Migrated the Neptune Helmet, Chestplate, and Leggings to explicit keyed vanilla Item registration while preserving delayed material lookup, armor slots, durability, and loot rarity.
 - Completed keyed registration for the Neptune armor set and migrated the Phoenix Helmet and Chestplate while preserving delayed material lookup, armor slots, durability, loot rarity, and fire resistance.
+- Completed keyed registration for the Phoenix armor set and migrated the Obsidian Helmet while preserving delayed material lookup, armor slots, durability, loot rarity, and Phoenix fire resistance.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
