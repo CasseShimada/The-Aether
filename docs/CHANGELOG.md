@@ -212,5 +212,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed the Gravitite tool set and migrated the Valkyrie Pickaxe and Axe to keyed Properties while preserving tiers, attack and reach attributes, block floating, and loot rarity.
 - Completed keyed Properties construction for the Valkyrie tool set while preserving its tier, attack and reach attributes, interactions, and loot rarity.
 - Removed the obsolete Supplier-based registration overload from `AetherItems`; all item registrations now receive keyed vanilla `Item.Properties` directly.
+- Registered BlockItems with explicit keyed vanilla `Item.Properties` and removed the no-longer-needed `ItemRegistryIdMixin` while preserving delayed BlockItem creation and item-specific properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

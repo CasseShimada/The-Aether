@@ -25,6 +25,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -263,7 +264,8 @@ public class AetherBlocks {
     public static void registerBlockItems() {
         for (BlockItemRegistration registration : BLOCK_ITEMS) {
             Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, registration.name());
-            BlockItem item = RegistryConstructionContext.constructWithId(Registries.ITEM, id, () -> createBlockItem(registration.block()));
+            ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
+            BlockItem item = createBlockItem(registration.block(), new Item.Properties().setId(key));
             Registry.register(BuiltInRegistries.ITEM, id, item);
         }
         BLOCK_ITEMS.clear();
@@ -281,35 +283,35 @@ public class AetherBlocks {
         return register;
     }
 
-    private static BlockItem createBlockItem(Block block) {
+    private static BlockItem createBlockItem(Block block, Item.Properties properties) {
         if (block == ENCHANTED_AETHER_GRASS_BLOCK
                 || block == QUICKSOIL_GLASS
                 || block == QUICKSOIL_GLASS_PANE
                 || block == ENCHANTED_GRAVITITE) {
-            return new BlockItem(block, new Item.Properties().rarity(Rarity.RARE));
+            return new BlockItem(block, properties.rarity(Rarity.RARE));
         } else if (block == AEROGEL
                 || block == AEROGEL_WALL
                 || block == AEROGEL_STAIRS
                 || block == AEROGEL_SLAB) {
-            return new BlockItem(block, new Item.Properties().rarity(Rarity.EPIC));
+            return new BlockItem(block, properties.rarity(Rarity.EPIC));
         } else if (block == AMBROSIUM_TORCH) {
-            return new StandingAndWallBlockItem(AMBROSIUM_TORCH, AMBROSIUM_WALL_TORCH, Direction.DOWN, new Item.Properties());
+            return new StandingAndWallBlockItem(AMBROSIUM_TORCH, AMBROSIUM_WALL_TORCH, Direction.DOWN, properties);
         } else if (block == SKYROOT_SIGN) {
-            return new SignItem(SKYROOT_SIGN, SKYROOT_WALL_SIGN, new Item.Properties().stacksTo(16));
+            return new SignItem(SKYROOT_SIGN, SKYROOT_WALL_SIGN, properties.stacksTo(16));
         } else if (block == SKYROOT_HANGING_SIGN) {
-            return new HangingSignItem(SKYROOT_HANGING_SIGN, SKYROOT_WALL_HANGING_SIGN, new Item.Properties().stacksTo(16));
+            return new HangingSignItem(SKYROOT_HANGING_SIGN, SKYROOT_WALL_HANGING_SIGN, properties.stacksTo(16));
         } else if (block == CHEST_MIMIC) {
-            return new BlockItem(block, new Item.Properties());
+            return new BlockItem(block, properties);
         } else if (block == TREASURE_CHEST) {
-            return new BlockItem(block, new Item.Properties());
+            return new BlockItem(block, properties);
         } else if (block == SKYROOT_DOOR) {
-            return new DoubleHighBlockItem(block, new Item.Properties());
+            return new DoubleHighBlockItem(block, properties);
         } else if (block == SUN_ALTAR) {
-            return new BlockItem(block, new Item.Properties().fireResistant());
+            return new BlockItem(block, properties.fireResistant());
         } else if (block == SKYROOT_BED) {
-            return new BlockItem(block, new Item.Properties().stacksTo(1));
+            return new BlockItem(block, properties.stacksTo(1));
         } else {
-            return new BlockItem(block, new Item.Properties());
+            return new BlockItem(block, properties);
         }
     }
 

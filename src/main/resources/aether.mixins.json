@@ -15,7 +15,6 @@
     "common.EnchantmentHelperMixin",
     "common.ExperienceOrbMixin",
     "common.FishingHookMixin",
-    "common.ItemRegistryIdMixin",
     "common.LevelBlockUpdateMixin",
     "common.LiquidBlockMixin",
     "common.LivingEntityMixin",
