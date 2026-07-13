@@ -90,7 +90,7 @@ public class AetherBlocks {
     public static final Block AEROGEL = register("aerogel", () -> new AerogelBlock(Block.Properties.of().mapColor(MapColor.DIAMOND).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(1.0F, 2000.0F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops().isViewBlocking(AetherBlocks::never)));
 
     public static final Block AMBROSIUM_BLOCK = registerKeyed("ambrosium_block", key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
-    public static final Block ZANITE_BLOCK = register("zanite_block", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BIT).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final Block ZANITE_BLOCK = registerKeyed("zanite_block", key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BIT).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
     public static final Block ENCHANTED_GRAVITITE = register("enchanted_gravitite", () -> new FloatingBlock(true, Block.Properties.of().mapColor(MapColor.COLOR_PINK).instrument(NoteBlockInstrument.PLING).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
     public static final Block ALTAR = register("altar", () -> new AltarBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.5F)));
@@ -120,9 +120,9 @@ public class AetherBlocks {
     public static final FlowerPotBlock POTTED_SKYROOT_SAPLING = registerBlockOnly("potted_skyroot_sapling", () -> new FlowerPotBlock(SKYROOT_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final FlowerPotBlock POTTED_GOLDEN_OAK_SAPLING = registerBlockOnly("potted_golden_oak_sapling", () -> new FlowerPotBlock(GOLDEN_OAK_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
-    public static final Block CARVED_STONE = register("carved_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops()));
+    public static final Block CARVED_STONE = registerKeyed("carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final Block SENTRY_STONE = register("sentry_stone", () -> new Block(Block.Properties.ofFullCopy(CARVED_STONE).lightLevel(AetherBlocks::lightLevel11)));
-    public static final Block ANGELIC_STONE = register("angelic_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops()));
+    public static final Block ANGELIC_STONE = registerKeyed("angelic_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final Block LIGHT_ANGELIC_STONE = register("light_angelic_stone", () -> new Block(Block.Properties.ofFullCopy(ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11)));
     public static final Block HELLFIRE_STONE = register("hellfire_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops()));
     public static final Block LIGHT_HELLFIRE_STONE = register("light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));
