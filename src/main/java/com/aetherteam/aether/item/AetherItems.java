@@ -121,9 +121,9 @@ public class AetherItems {
     public static final HoeItem VALKYRIE_HOE = register("valkyrie_hoe", ValkyrieHoeItem::new);
 
     // Weapons
-    public static final SwordItem SKYROOT_SWORD = register("skyroot_sword", SkyrootSwordItem::new);
-    public static final SwordItem HOLYSTONE_SWORD = register("holystone_sword", HolystoneSwordItem::new);
-    public static final SwordItem ZANITE_SWORD = register("zanite_sword", ZaniteSwordItem::new);
+    public static final SwordItem SKYROOT_SWORD = register("skyroot_sword", properties -> new SkyrootSwordItem(properties));
+    public static final SwordItem HOLYSTONE_SWORD = register("holystone_sword", properties -> new HolystoneSwordItem(properties));
+    public static final SwordItem ZANITE_SWORD = register("zanite_sword", properties -> new ZaniteSwordItem(properties));
     public static final SwordItem GRAVITITE_SWORD = register("gravitite_sword", GravititeSwordItem::new);
 
     public static final SwordItem VALKYRIE_LANCE = register("valkyrie_lance", properties -> new ValkyrieLanceItem(properties.rarity(AETHER_LOOT)));

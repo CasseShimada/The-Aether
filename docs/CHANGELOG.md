@@ -202,5 +202,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Flaming Sword, Lightning Sword, and Holy Sword construction to keyed Properties while preserving tiers, attack attributes, rarity, enchantment handling, and combat abilities.
 - Migrated Vampire Blade, Pig Slayer, and Candy Cane Sword construction to keyed Properties while preserving tiers, attack attributes, rarity, healing, bonus damage, particles, and item drops.
 - Migrated Valkyrie Lance and Hammer of Kingbdogz construction to keyed Properties while preserving tiers, attack and reach attributes, rarity, projectile behavior, cooldowns, and durability use.
+- Migrated Skyroot, Holystone, and Zanite Sword construction to keyed Properties while preserving tiers, attack attributes, and material-specific weapon abilities.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

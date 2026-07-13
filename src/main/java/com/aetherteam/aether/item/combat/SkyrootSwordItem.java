@@ -5,7 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 
 public class SkyrootSwordItem extends SwordItem implements SkyrootWeapon {
-    public SkyrootSwordItem() {
-        super(AetherItemTiers.SKYROOT, SwordItem.createAttributes(AetherItemTiers.SKYROOT, 3.0F, -2.4F), new Item.Properties());
+    public SkyrootSwordItem(Item.Properties properties) {
+        super(AetherItemTiers.SKYROOT, SwordItem.createAttributes(AetherItemTiers.SKYROOT, 3.0F, -2.4F), properties);
     }
 }

@@ -5,8 +5,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 
 public class ZaniteSwordItem extends SwordItem implements ZaniteWeapon {
-    public ZaniteSwordItem() {
-        super(AetherItemTiers.ZANITE, SwordItem.createAttributes(AetherItemTiers.ZANITE, 3.0F, -2.4F), new Item.Properties());
+    public ZaniteSwordItem(Item.Properties properties) {
+        super(AetherItemTiers.ZANITE, SwordItem.createAttributes(AetherItemTiers.ZANITE, 3.0F, -2.4F), properties);
     }
 
 }
