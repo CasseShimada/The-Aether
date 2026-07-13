@@ -68,6 +68,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -83,6 +84,7 @@ import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.entity.BannerPatterns;
 import net.minecraft.world.level.material.Fluids;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AetherItems {
@@ -273,12 +275,12 @@ public class AetherItems {
     public static final Item WHITE_MOA_EGG = register("white_moa_egg", () -> new MoaEggItem(AetherMoaTypes.WHITE, 0xFFFFFF, new Item.Properties()));
     public static final Item BLACK_MOA_EGG = register("black_moa_egg", () -> new MoaEggItem(AetherMoaTypes.BLACK, 0x222222, new Item.Properties()));
 
-    public static final Item NATURE_STAFF = register("nature_staff", () -> new Item(new Item.Properties().durability(100)));
+    public static final Item NATURE_STAFF = register("nature_staff", properties -> new Item(properties.durability(100)));
     public static final Item CLOUD_STAFF = register("cloud_staff", CloudStaffItem::new);
 
-    public static final Item LIFE_SHARD = register("life_shard", () -> new LifeShardItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item LIFE_SHARD = register("life_shard", properties -> new LifeShardItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
 
-    public static final Item BOOK_OF_LORE = register("book_of_lore", () -> new LoreBookItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item BOOK_OF_LORE = register("book_of_lore", properties -> new LoreBookItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
 
     public static final Item AETHER_PORTAL_FRAME = register("aether_portal_frame", () -> new AetherPortalItem(new Item.Properties().stacksTo(1)));
 
@@ -311,6 +313,13 @@ public class AetherItems {
     private static <I extends Item> I register(String name, Supplier<? extends I> supplier) {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
         I item = RegistryConstructionContext.constructWithId(Registries.ITEM, id, supplier);
+        return Registry.register(BuiltInRegistries.ITEM, id, item);
+    }
+
+    private static <I extends Item> I register(String name, Function<Item.Properties, ? extends I> factory) {
+        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
+        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
+        I item = factory.apply(new Item.Properties().setId(key));
         return Registry.register(BuiltInRegistries.ITEM, id, item);
     }
 

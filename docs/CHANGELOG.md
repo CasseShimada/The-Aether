@@ -154,5 +154,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Replaced attachment sync target enums and untyped context arguments with explicit server, client, player, and dimension send methods without changing packet formats.
 - Removed Twilight Forest implementation-specific mixins and hardcoded accessory compatibility data; slot matching now uses only Aether, generic Accessories, vanilla component, and common tag boundaries.
 - Marked the Aether Mixin configuration as required and made the block/item registry-id constructor injections require exactly one match, while leaving other injection counts unchanged for staged hardening.
+- Migrated three simple item registrations to construct vanilla `Item.Properties` with an explicit `ResourceKey<Item>` before direct `Registry.register`, bypassing the transitional registry construction context for those items.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
