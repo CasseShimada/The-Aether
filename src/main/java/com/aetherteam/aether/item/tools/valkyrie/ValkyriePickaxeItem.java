@@ -1,6 +1,5 @@
 package com.aetherteam.aether.item.tools.valkyrie;
 
-import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
 import com.aetherteam.aether.item.tools.abilities.ValkyrieTool;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -10,13 +9,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PickaxeItem;
 
 public class ValkyriePickaxeItem extends PickaxeItem implements ValkyrieTool {
-    public ValkyriePickaxeItem() {
+    public ValkyriePickaxeItem(Item.Properties properties) {
         super(
                 AetherItemTiers.VALKYRIE,
                 PickaxeItem.createAttributes(AetherItemTiers.VALKYRIE, 1.0F, -3.1F)
                         .withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(BLOCK_INTERACTION_RANGE_MODIFIER_UUID, RANGE_MODIFER, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                         .withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ENTITY_INTERACTION_RANGE_MODIFIER_UUID, RANGE_MODIFER, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND),
-                new Item.Properties().rarity(AetherItems.AETHER_LOOT)
+                properties
         );
     }
 }

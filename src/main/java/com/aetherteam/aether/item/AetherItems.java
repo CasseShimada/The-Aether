@@ -113,10 +113,10 @@ public class AetherItems {
     public static final PickaxeItem GRAVITITE_PICKAXE = register("gravitite_pickaxe", properties -> new GravititePickaxeItem(properties));
     public static final AxeItem GRAVITITE_AXE = register("gravitite_axe", properties -> new GravititeAxeItem(properties));
     public static final ShovelItem GRAVITITE_SHOVEL = register("gravitite_shovel", properties -> new GravititeShovelItem(properties));
-    public static final HoeItem GRAVITITE_HOE = register("gravitite_hoe", GravititeHoeItem::new);
+    public static final HoeItem GRAVITITE_HOE = register("gravitite_hoe", properties -> new GravititeHoeItem(properties));
 
-    public static final PickaxeItem VALKYRIE_PICKAXE = register("valkyrie_pickaxe", ValkyriePickaxeItem::new);
-    public static final AxeItem VALKYRIE_AXE = register("valkyrie_axe", ValkyrieAxeItem::new);
+    public static final PickaxeItem VALKYRIE_PICKAXE = register("valkyrie_pickaxe", properties -> new ValkyriePickaxeItem(properties.rarity(AETHER_LOOT)));
+    public static final AxeItem VALKYRIE_AXE = register("valkyrie_axe", properties -> new ValkyrieAxeItem(properties.rarity(AETHER_LOOT)));
     public static final ShovelItem VALKYRIE_SHOVEL = register("valkyrie_shovel", ValkyrieShovelItem::new);
     public static final HoeItem VALKYRIE_HOE = register("valkyrie_hoe", ValkyrieHoeItem::new);
 
