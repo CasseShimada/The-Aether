@@ -180,7 +180,7 @@ public class AetherItems {
     public static final Item OBSIDIAN_LEGGINGS = register("obsidian_leggings", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.LEGGINGS, properties.durability(ArmorItem.Type.LEGGINGS.getDurability(37)).rarity(AETHER_LOOT)));
     public static final Item OBSIDIAN_BOOTS = register("obsidian_boots", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.BOOTS, properties.durability(ArmorItem.Type.BOOTS.getDurability(37)).rarity(AETHER_LOOT)));
 
-    public static final Item SENTRY_BOOTS = register("sentry_boots", () -> new ArmorItem(() -> AetherArmorMaterials.SENTRY.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15)).rarity(AETHER_LOOT)));
+    public static final Item SENTRY_BOOTS = register("sentry_boots", properties -> new ArmorItem(() -> AetherArmorMaterials.SENTRY.value(), ArmorItem.Type.BOOTS, properties.durability(ArmorItem.Type.BOOTS.getDurability(15)).rarity(AETHER_LOOT)));
 
     // Food
     public static final Item BLUE_BERRY = register("blue_berry", properties -> new Item(properties.food(AetherFoods.BLUE_BERRY)));
