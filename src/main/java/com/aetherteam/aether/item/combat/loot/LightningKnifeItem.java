@@ -2,7 +2,6 @@ package com.aetherteam.aether.item.combat.loot;
 
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.entity.projectile.weapon.ThrownLightningKnife;
-import com.aetherteam.aether.item.AetherItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -20,8 +19,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 public class LightningKnifeItem extends Item implements ProjectileItem {
-    public LightningKnifeItem() {
-        super(new Item.Properties().rarity(AetherItems.AETHER_LOOT).stacksTo(16));
+    public LightningKnifeItem(Properties properties) {
+        super(properties);
     }
 
     /**

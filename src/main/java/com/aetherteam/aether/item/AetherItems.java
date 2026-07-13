@@ -137,7 +137,7 @@ public class AetherItems {
 
     public static final SwordItem HAMMER_OF_KINGBDOGZ = register("hammer_of_kingbdogz", HammerOfKingbdogzItem::new);
 
-    public static final Item LIGHTNING_KNIFE = register("lightning_knife", LightningKnifeItem::new);
+    public static final Item LIGHTNING_KNIFE = register("lightning_knife", properties -> new LightningKnifeItem(properties.rarity(AETHER_LOOT).stacksTo(16)));
 
     public static final Item GOLDEN_DART = register("golden_dart", GoldenDartItem::new);
     public static final Item POISON_DART = register("poison_dart", PoisonDartItem::new);
@@ -147,7 +147,7 @@ public class AetherItems {
     public static final Item POISON_DART_SHOOTER = register("poison_dart_shooter", properties -> new DartShooterItem(() -> POISON_DART, properties.stacksTo(1)));
     public static final Item ENCHANTED_DART_SHOOTER = register("enchanted_dart_shooter", properties -> new DartShooterItem(() -> ENCHANTED_DART, properties.stacksTo(1).rarity(Rarity.RARE)));
 
-    public static final BowItem PHOENIX_BOW = register("phoenix_bow", PhoenixBowItem::new);
+    public static final BowItem PHOENIX_BOW = register("phoenix_bow", properties -> new PhoenixBowItem(properties.durability(384).rarity(AETHER_LOOT)));
 
     // Armor
     public static final Item ZANITE_HELMET = register("zanite_helmet", properties -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.HELMET, properties.durability(ArmorItem.Type.HELMET.getDurability(15))));
@@ -276,7 +276,7 @@ public class AetherItems {
     public static final Item BLACK_MOA_EGG = register("black_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.BLACK, 0x222222, properties));
 
     public static final Item NATURE_STAFF = register("nature_staff", properties -> new Item(properties.durability(100)));
-    public static final Item CLOUD_STAFF = register("cloud_staff", CloudStaffItem::new);
+    public static final Item CLOUD_STAFF = register("cloud_staff", properties -> new CloudStaffItem(properties.durability(60).rarity(AETHER_LOOT)));
 
     public static final Item LIFE_SHARD = register("life_shard", properties -> new LifeShardItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
 
