@@ -245,12 +245,12 @@ public class AetherItems {
     public static final Item SILVER_DUNGEON_KEY = register("silver_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "silver")))));
     public static final Item GOLD_DUNGEON_KEY = register("gold_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "gold")))));
 
-    public static final Item MUSIC_DISC_AETHER_TUNE = register("music_disc_aether_tune", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.AETHER_TUNE)));
-    public static final Item MUSIC_DISC_ASCENDING_DAWN = register("music_disc_ascending_dawn", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.ASCENDING_DAWN)));
-    public static final Item MUSIC_DISC_CHINCHILLA = register("music_disc_chinchilla", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.CHINCHILLA)));
-    public static final Item MUSIC_DISC_HIGH = register("music_disc_high", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.HIGH)));
-    public static final Item MUSIC_DISC_KLEPTO = register("music_disc_klepto", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.KLEPTO)));
-    public static final Item MUSIC_DISC_SLIDERS_WRATH = register("music_disc_sliders_wrath", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.SLIDERS_WRATH)));
+    public static final Item MUSIC_DISC_AETHER_TUNE = register("music_disc_aether_tune", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.AETHER_TUNE)));
+    public static final Item MUSIC_DISC_ASCENDING_DAWN = register("music_disc_ascending_dawn", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.ASCENDING_DAWN)));
+    public static final Item MUSIC_DISC_CHINCHILLA = register("music_disc_chinchilla", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.CHINCHILLA)));
+    public static final Item MUSIC_DISC_HIGH = register("music_disc_high", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.HIGH)));
+    public static final Item MUSIC_DISC_KLEPTO = register("music_disc_klepto", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.KLEPTO)));
+    public static final Item MUSIC_DISC_SLIDERS_WRATH = register("music_disc_sliders_wrath", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.SLIDERS_WRATH)));
 
     public static final Item SKYROOT_BUCKET = register("skyroot_bucket", () -> new SkyrootBucketItem(Fluids.EMPTY, new Item.Properties().stacksTo(16)));
     public static final Item SKYROOT_WATER_BUCKET = register("skyroot_water_bucket", () -> new SkyrootBucketItem(Fluids.WATER, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));

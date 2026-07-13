@@ -156,5 +156,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Marked the Aether Mixin configuration as required and made the block/item registry-id constructor injections require exactly one match, while leaving other injection counts unchanged for staged hardening.
 - Migrated three simple item registrations to construct vanilla `Item.Properties` with an explicit `ResourceKey<Item>` before direct `Registry.register`, bypassing the transitional registry construction context for those items.
 - Migrated the three dungeon key items to the same explicit `ResourceKey<Item>` and vanilla `Item.Properties` registration path without changing their dungeon-kind components.
+- Migrated all six music disc items to explicit keyed `Item.Properties` registration while preserving their jukebox song keys and item properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
