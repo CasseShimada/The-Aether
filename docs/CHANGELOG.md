@@ -237,5 +237,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Boss Doorway Carved Stone, Boss Doorway Sentry Stone, and Boss Doorway Angelic Stone to direct keyed Block registration while preserving boss entity suppliers, copied properties, and unbreakable dungeon behavior.
 - Migrated Boss Doorway Light Angelic Stone, Boss Doorway Hellfire Stone, and Boss Doorway Light Hellfire Stone to direct keyed Block registration while preserving boss entity suppliers, copied properties, and unbreakable dungeon behavior.
 - Migrated Treasure Doorway Carved Stone, Treasure Doorway Sentry Stone, and Treasure Doorway Angelic Stone to direct keyed Block registration while preserving copied locked-stone properties and treasure doorway behavior.
+- Migrated Treasure Doorway Light Angelic Stone, Treasure Doorway Hellfire Stone, and Treasure Doorway Light Hellfire Stone to direct keyed Block registration while preserving copied locked-stone properties, light levels, and treasure doorway behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
