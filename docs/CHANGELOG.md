@@ -226,5 +226,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Ambrosium Ore, Zanite Ore, and Gravitite Ore to direct keyed Block registration while preserving experience ranges, double drops, floating behavior, random ticks, and tool requirements.
 - Migrated Skyroot Leaves, Golden Oak Leaves, and Crystal Leaves to direct keyed Block registration while preserving double drops, particles, random ticks, spawn predicates, and leaf collision behavior.
 - Migrated Crystal Fruit Leaves, Holiday Leaves, and Decorated Holiday Leaves to direct keyed Block registration while preserving fruit behavior, particles, random ticks, spawn predicates, and leaf collision behavior.
+- Migrated Skyroot Log, Golden Oak Log, and Stripped Skyroot Log to direct keyed Block registration while preserving copied vanilla properties and log behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
