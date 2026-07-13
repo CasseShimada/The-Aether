@@ -198,9 +198,9 @@ public class AetherItems {
     public static final Item ZANITE_RING = register("zanite_ring", properties -> new ZaniteRingItem(properties.durability(49)));
     public static final Item ICE_RING = register("ice_ring", () -> new IceRingItem(new Item.Properties().durability(125)));
 
-    public static final Item IRON_PENDANT = register("iron_pendant", () -> new PendantItem("iron_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_PENDANT, new Item.Properties().stacksTo(1)));
-    public static final Item GOLDEN_PENDANT = register("golden_pendant", () -> new PendantItem("golden_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GOLD_PENDANT, new Item.Properties().stacksTo(1)));
-    public static final Item ZANITE_PENDANT = register("zanite_pendant", () -> new ZanitePendantItem(new Item.Properties().durability(98)));
+    public static final Item IRON_PENDANT = register("iron_pendant", properties -> new PendantItem("iron_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_PENDANT, properties.stacksTo(1)));
+    public static final Item GOLDEN_PENDANT = register("golden_pendant", properties -> new PendantItem("golden_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GOLD_PENDANT, properties.stacksTo(1)));
+    public static final Item ZANITE_PENDANT = register("zanite_pendant", properties -> new ZanitePendantItem(properties.durability(98)));
     public static final Item ICE_PENDANT = register("ice_pendant", () -> new IcePendantItem(new Item.Properties().durability(250)));
 
     public static final Item LEATHER_GLOVES = register("leather_gloves", () -> new LeatherGlovesItem(0.25, new Item.Properties().durability(59)));
