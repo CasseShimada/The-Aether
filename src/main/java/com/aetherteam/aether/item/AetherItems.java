@@ -231,10 +231,10 @@ public class AetherItems {
     public static final Item SHIELD_OF_REPULSION = register("shield_of_repulsion", () -> new ShieldOfRepulsionItem(new Item.Properties().durability(512).rarity(AETHER_LOOT)));
 
     // Materials
-    public static final Item SKYROOT_STICK = register("skyroot_stick", () -> new Item(new Item.Properties()));
-    public static final Item GOLDEN_AMBER = register("golden_amber", () -> new Item(new Item.Properties()));
+    public static final Item SKYROOT_STICK = register("skyroot_stick", Item::new);
+    public static final Item GOLDEN_AMBER = register("golden_amber", Item::new);
     public static final Item SWET_BALL = register("swet_ball", () -> new SwetBallItem(new Item.Properties()));
-    public static final Item AECHOR_PETAL = register("aechor_petal", () -> new Item(new Item.Properties()));
+    public static final Item AECHOR_PETAL = register("aechor_petal", Item::new);
     public static final Item AMBROSIUM_SHARD = register("ambrosium_shard", () -> new AmbrosiumShardItem(new Item.Properties()));
     public static final Item ZANITE_GEMSTONE = register("zanite_gemstone", () -> new Item(new Item.Properties()));
 
