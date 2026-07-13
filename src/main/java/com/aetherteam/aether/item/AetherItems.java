@@ -203,9 +203,9 @@ public class AetherItems {
     public static final Item ZANITE_PENDANT = register("zanite_pendant", properties -> new ZanitePendantItem(properties.durability(98)));
     public static final Item ICE_PENDANT = register("ice_pendant", properties -> new IcePendantItem(properties.durability(250)));
 
-    public static final Item LEATHER_GLOVES = register("leather_gloves", () -> new LeatherGlovesItem(0.25, new Item.Properties().durability(59)));
-    public static final Item CHAINMAIL_GLOVES = register("chainmail_gloves", () -> new GlovesItem(ArmorMaterials.CHAINMAIL, 0.35, "chainmail_gloves", SoundEvents.ARMOR_EQUIP_CHAIN, new Item.Properties().durability(131)));
-    public static final Item IRON_GLOVES = register("iron_gloves", () -> new GlovesItem(ArmorMaterials.IRON, 0.5, "iron_gloves", SoundEvents.ARMOR_EQUIP_IRON, new Item.Properties().durability(250)));
+    public static final Item LEATHER_GLOVES = register("leather_gloves", properties -> new LeatherGlovesItem(0.25, properties.durability(59)));
+    public static final Item CHAINMAIL_GLOVES = register("chainmail_gloves", properties -> new GlovesItem(ArmorMaterials.CHAINMAIL, 0.35, "chainmail_gloves", SoundEvents.ARMOR_EQUIP_CHAIN, properties.durability(131)));
+    public static final Item IRON_GLOVES = register("iron_gloves", properties -> new GlovesItem(ArmorMaterials.IRON, 0.5, "iron_gloves", SoundEvents.ARMOR_EQUIP_IRON, properties.durability(250)));
     public static final Item GOLDEN_GLOVES = register("golden_gloves", () -> new GoldGlovesItem(0.25, new Item.Properties().durability(32)));
     public static final Item DIAMOND_GLOVES = register("diamond_gloves", () -> new GlovesItem(ArmorMaterials.DIAMOND, 0.75, "diamond_gloves", SoundEvents.ARMOR_EQUIP_DIAMOND, new Item.Properties().durability(1561)));
     public static final Item NETHERITE_GLOVES = register("netherite_gloves", () -> new GlovesItem(ArmorMaterials.NETHERITE, 1.0, "netherite_gloves", SoundEvents.ARMOR_EQUIP_NETHERITE, new Item.Properties().durability(2031).fireResistant()));
