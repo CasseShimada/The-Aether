@@ -148,9 +148,9 @@ public class AetherBlocks {
     public static final Block BOSS_DOORWAY_HELLFIRE_STONE = registerKeyed("boss_doorway_hellfire_stone", key -> new DoorwayBlock(() -> AetherEntityTypes.SUN_SPIRIT, BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).forceSolidOn().setId(key)));
     public static final Block BOSS_DOORWAY_LIGHT_HELLFIRE_STONE = registerKeyed("boss_doorway_light_hellfire_stone", key -> new DoorwayBlock(() -> AetherEntityTypes.SUN_SPIRIT, BlockBehaviour.Properties.ofFullCopy(BOSS_DOORWAY_HELLFIRE_STONE).setId(key)));
 
-    public static final Block TREASURE_DOORWAY_CARVED_STONE = register("treasure_doorway_carved_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_CARVED_STONE)));
-    public static final Block TREASURE_DOORWAY_SENTRY_STONE = register("treasure_doorway_sentry_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_SENTRY_STONE)));
-    public static final Block TREASURE_DOORWAY_ANGELIC_STONE = register("treasure_doorway_angelic_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_ANGELIC_STONE)));
+    public static final Block TREASURE_DOORWAY_CARVED_STONE = registerKeyed("treasure_doorway_carved_stone", key -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_CARVED_STONE).setId(key)));
+    public static final Block TREASURE_DOORWAY_SENTRY_STONE = registerKeyed("treasure_doorway_sentry_stone", key -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_SENTRY_STONE).setId(key)));
+    public static final Block TREASURE_DOORWAY_ANGELIC_STONE = registerKeyed("treasure_doorway_angelic_stone", key -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_ANGELIC_STONE).setId(key)));
     public static final Block TREASURE_DOORWAY_LIGHT_ANGELIC_STONE = register("treasure_doorway_light_angelic_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_LIGHT_ANGELIC_STONE)));
     public static final Block TREASURE_DOORWAY_HELLFIRE_STONE = register("treasure_doorway_hellfire_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_HELLFIRE_STONE)));
     public static final Block TREASURE_DOORWAY_LIGHT_HELLFIRE_STONE = register("treasure_doorway_light_hellfire_stone", () -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_LIGHT_HELLFIRE_STONE)));
