@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Item.class)
 public class ItemRegistryIdMixin {
-    @Inject(method = "<init>", at = @At("HEAD"))
+    @Inject(method = "<init>", at = @At("HEAD"), require = 1)
     private static void aether$bindRegistryId(Item.Properties properties, CallbackInfo ci) {
         Identifier id = RegistryConstructionContext.currentId(Registries.ITEM);
         if (id != null) {

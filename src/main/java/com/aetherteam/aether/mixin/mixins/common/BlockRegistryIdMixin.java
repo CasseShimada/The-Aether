@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
 public class BlockRegistryIdMixin {
-    @Inject(method = "<init>", at = @At("HEAD"))
+    @Inject(method = "<init>", at = @At("HEAD"), require = 1)
     private static void aether$bindRegistryId(BlockBehaviour.Properties properties, CallbackInfo ci) {
         Identifier id = RegistryConstructionContext.currentId(Registries.BLOCK);
         if (id != null) {

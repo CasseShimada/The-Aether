@@ -1,5 +1,5 @@
 {
-  "required": false,
+  "required": true,
   "package": "com.aetherteam.aether.mixin.mixins",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_25",
