@@ -241,9 +241,9 @@ public class AetherItems {
     // Misc
     public static final Item VICTORY_MEDAL = register("victory_medal", () -> new Item(new Item.Properties().stacksTo(10).rarity(AETHER_LOOT)));
 
-    public static final Item BRONZE_DUNGEON_KEY = register("bronze_dungeon_key", () -> new Item(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze")))));
-    public static final Item SILVER_DUNGEON_KEY = register("silver_dungeon_key", () -> new Item(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "silver")))));
-    public static final Item GOLD_DUNGEON_KEY = register("gold_dungeon_key", () -> new Item(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "gold")))));
+    public static final Item BRONZE_DUNGEON_KEY = register("bronze_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze")))));
+    public static final Item SILVER_DUNGEON_KEY = register("silver_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "silver")))));
+    public static final Item GOLD_DUNGEON_KEY = register("gold_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "gold")))));
 
     public static final Item MUSIC_DISC_AETHER_TUNE = register("music_disc_aether_tune", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.AETHER_TUNE)));
     public static final Item MUSIC_DISC_ASCENDING_DAWN = register("music_disc_ascending_dawn", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.ASCENDING_DAWN)));
