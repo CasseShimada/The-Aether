@@ -197,5 +197,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Golden Swet, Whirlwind, and Evil Whirlwind spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 - Migrated the Valkyrie, Valkyrie Queen, and Slider spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings, tint colors, and Slider placement behavior.
 - Completed keyed registration for all spawn eggs with Sun Spirit and Zephyr while preserving entity bindings and tint colors.
+- Migrated White Apple, Gummy Swet, and Healing Stone construction to keyed Properties while preserving food components, rarity, effects, and configurable healing behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

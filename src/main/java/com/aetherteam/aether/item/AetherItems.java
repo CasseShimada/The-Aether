@@ -185,10 +185,10 @@ public class AetherItems {
     // Food
     public static final Item BLUE_BERRY = register("blue_berry", properties -> new Item(properties.food(AetherFoods.BLUE_BERRY)));
     public static final Item ENCHANTED_BERRY = register("enchanted_berry", properties -> new Item(properties.rarity(Rarity.RARE).food(AetherFoods.ENCHANTED_BERRY)));
-    public static final Item WHITE_APPLE = register("white_apple", WhiteAppleItem::new);
-    public static final Item BLUE_GUMMY_SWET = register("blue_gummy_swet", GummySwetItem::new);
-    public static final Item GOLDEN_GUMMY_SWET = register("golden_gummy_swet", GummySwetItem::new);
-    public static final Item HEALING_STONE = register("healing_stone", HealingStoneItem::new);
+    public static final Item WHITE_APPLE = register("white_apple", properties -> new WhiteAppleItem(properties.food(AetherFoods.WHITE_APPLE)));
+    public static final Item BLUE_GUMMY_SWET = register("blue_gummy_swet", properties -> new GummySwetItem(properties.rarity(AETHER_LOOT).food(AetherFoods.GUMMY_SWET)));
+    public static final Item GOLDEN_GUMMY_SWET = register("golden_gummy_swet", properties -> new GummySwetItem(properties.rarity(AETHER_LOOT).food(AetherFoods.GUMMY_SWET)));
+    public static final Item HEALING_STONE = register("healing_stone", properties -> new HealingStoneItem(properties.rarity(Rarity.RARE).food(AetherFoods.HEALING_STONE)));
     public static final Item CANDY_CANE = register("candy_cane", properties -> new Item(properties.food(AetherFoods.CANDY_CANE)));
     public static final Item GINGERBREAD_MAN = register("gingerbread_man", properties -> new Item(properties.food(AetherFoods.GINGERBREAD_MAN)));
 
