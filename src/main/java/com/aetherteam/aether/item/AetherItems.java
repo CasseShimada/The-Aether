@@ -128,9 +128,9 @@ public class AetherItems {
 
     public static final SwordItem VALKYRIE_LANCE = register("valkyrie_lance", ValkyrieLanceItem::new);
 
-    public static final SwordItem FLAMING_SWORD = register("flaming_sword", FlamingSwordItem::new);
-    public static final SwordItem LIGHTNING_SWORD = register("lightning_sword", LightningSwordItem::new);
-    public static final SwordItem HOLY_SWORD = register("holy_sword", HolySwordItem::new);
+    public static final SwordItem FLAMING_SWORD = register("flaming_sword", properties -> new FlamingSwordItem(properties.rarity(AETHER_LOOT)));
+    public static final SwordItem LIGHTNING_SWORD = register("lightning_sword", properties -> new LightningSwordItem(properties.rarity(AETHER_LOOT)));
+    public static final SwordItem HOLY_SWORD = register("holy_sword", properties -> new HolySwordItem(properties.rarity(AETHER_LOOT)));
     public static final SwordItem VAMPIRE_BLADE = register("vampire_blade", VampireBladeItem::new);
     public static final SwordItem PIG_SLAYER = register("pig_slayer", PigSlayerItem::new);
     public static final SwordItem CANDY_CANE_SWORD = register("candy_cane_sword", CandyCaneSwordItem::new);

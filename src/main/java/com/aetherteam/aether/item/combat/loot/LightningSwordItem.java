@@ -1,7 +1,6 @@
 package com.aetherteam.aether.item.combat.loot;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
 import net.minecraft.server.level.ServerLevel;
@@ -14,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
 public class LightningSwordItem extends SwordItem {
-    public LightningSwordItem() {
-        super(AetherItemTiers.LIGHTNING, SwordItem.createAttributes(AetherItemTiers.LIGHTNING, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public LightningSwordItem(Item.Properties properties) {
+        super(AetherItemTiers.LIGHTNING, SwordItem.createAttributes(AetherItemTiers.LIGHTNING, 3.0F, -2.4F), properties);
     }
 
     /**

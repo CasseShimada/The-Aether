@@ -14,8 +14,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class FlamingSwordItem extends SwordItem {
-    public FlamingSwordItem() {
-        super(AetherItemTiers.FLAMING, SwordItem.createAttributes(AetherItemTiers.FLAMING, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public FlamingSwordItem(Item.Properties properties) {
+        super(AetherItemTiers.FLAMING, SwordItem.createAttributes(AetherItemTiers.FLAMING, 3.0F, -2.4F), properties);
     }
 
     public static void onLivingDamage(LivingEntity target, DamageSource damageSource) {

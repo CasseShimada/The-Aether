@@ -15,8 +15,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class HolySwordItem extends SwordItem {
-    public HolySwordItem() {
-        super(AetherItemTiers.HOLY, SwordItem.createAttributes(AetherItemTiers.HOLY, 3, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public HolySwordItem(Item.Properties properties) {
+        super(AetherItemTiers.HOLY, SwordItem.createAttributes(AetherItemTiers.HOLY, 3, -2.4F), properties);
     }
 
     /**
