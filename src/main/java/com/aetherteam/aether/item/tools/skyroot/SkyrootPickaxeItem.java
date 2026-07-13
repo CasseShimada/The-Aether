@@ -9,7 +9,7 @@ import net.minecraft.world.item.PickaxeItem;
  * Double drops behavior is called by {@link com.aetherteam.aether.loot.functions.DoubleDrops}.
  */
 public class SkyrootPickaxeItem extends PickaxeItem implements SkyrootTool {
-    public SkyrootPickaxeItem() {
-        super(AetherItemTiers.SKYROOT, PickaxeItem.createAttributes(AetherItemTiers.SKYROOT, 1.0F, -2.8F), new Item.Properties());
+    public SkyrootPickaxeItem(Item.Properties properties) {
+        super(AetherItemTiers.SKYROOT, PickaxeItem.createAttributes(AetherItemTiers.SKYROOT, 1.0F, -2.8F), properties);
     }
 }

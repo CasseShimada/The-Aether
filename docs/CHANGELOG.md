@@ -204,5 +204,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Valkyrie Lance and Hammer of Kingbdogz construction to keyed Properties while preserving tiers, attack and reach attributes, rarity, projectile behavior, cooldowns, and durability use.
 - Migrated Skyroot, Holystone, and Zanite Sword construction to keyed Properties while preserving tiers, attack attributes, and material-specific weapon abilities.
 - Completed keyed Properties construction for material swords with Gravitite Sword while preserving its tier, attack attributes, and launch ability.
+- Migrated Skyroot Pickaxe, Axe, and Shovel construction to keyed Properties while preserving the tool tier, attack attributes, and double-drop behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
