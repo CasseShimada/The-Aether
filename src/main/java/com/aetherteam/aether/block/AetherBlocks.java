@@ -124,12 +124,12 @@ public class AetherBlocks {
     public static final Block SENTRY_STONE = register("sentry_stone", () -> new Block(Block.Properties.ofFullCopy(CARVED_STONE).lightLevel(AetherBlocks::lightLevel11)));
     public static final Block ANGELIC_STONE = registerKeyed("angelic_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final Block LIGHT_ANGELIC_STONE = register("light_angelic_stone", () -> new Block(Block.Properties.ofFullCopy(ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11)));
-    public static final Block HELLFIRE_STONE = register("hellfire_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops()));
+    public static final Block HELLFIRE_STONE = registerKeyed("hellfire_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final Block LIGHT_HELLFIRE_STONE = register("light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));
 
-    public static final Block LOCKED_CARVED_STONE = register("locked_carved_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F)));
+    public static final Block LOCKED_CARVED_STONE = registerKeyed("locked_carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
     public static final Block LOCKED_SENTRY_STONE = register("locked_sentry_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_CARVED_STONE).lightLevel(AetherBlocks::lightLevel11)));
-    public static final Block LOCKED_ANGELIC_STONE = register("locked_angelic_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F)));
+    public static final Block LOCKED_ANGELIC_STONE = registerKeyed("locked_angelic_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
     public static final Block LOCKED_LIGHT_ANGELIC_STONE = register("locked_light_angelic_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11)));
     public static final Block LOCKED_HELLFIRE_STONE = register("locked_hellfire_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F)));
     public static final Block LOCKED_LIGHT_HELLFIRE_STONE = register("locked_light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));

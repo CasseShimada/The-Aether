@@ -215,5 +215,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Registered BlockItems with explicit keyed vanilla `Item.Properties` and removed the no-longer-needed `ItemRegistryIdMixin` while preserving delayed BlockItem creation and item-specific properties.
 - Added a direct keyed Block registration path and migrated Skyroot Planks, Holystone Bricks, and Ambrosium Block while preserving block properties, ids, and BlockItem creation.
 - Migrated Zanite Block, Carved Stone, and Angelic Stone to direct keyed Block registration while preserving material properties and dependent walls, stairs, slabs, and dungeon variants.
+- Migrated Hellfire Stone, Locked Carved Stone, and Locked Angelic Stone to direct keyed Block registration while preserving hardness, resistance, map colors, and dependent dungeon variants.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
