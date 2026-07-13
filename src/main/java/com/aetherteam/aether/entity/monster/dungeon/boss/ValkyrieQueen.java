@@ -770,7 +770,6 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
-        input.read("Dungeon", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
         input.child("DungeonBounds").ifPresent(bounds -> this.dungeonBounds = new AABB(
                 bounds.getDoubleOr("MinX", 0.0),
                 bounds.getDoubleOr("MinY", 0.0),
@@ -779,17 +778,6 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
                 bounds.getDoubleOr("MaxY", 0.0),
                 bounds.getDoubleOr("MaxZ", 0.0)
         ));
-        double oldDungeonMinX = input.getDoubleOr("DungeonBoundsMinX", Double.NaN);
-        if (!Double.isNaN(oldDungeonMinX)) {
-            this.dungeonBounds = new AABB(
-                    oldDungeonMinX,
-                    input.getDoubleOr("DungeonBoundsMinY", 0.0),
-                    input.getDoubleOr("DungeonBoundsMinZ", 0.0),
-                    input.getDoubleOr("DungeonBoundsMaxX", 0.0),
-                    input.getDoubleOr("DungeonBoundsMaxY", 0.0),
-                    input.getDoubleOr("DungeonBoundsMaxZ", 0.0)
-            );
-        }
         this.setReady(input.getBooleanOr("Ready", this.isReady()));
     }
 

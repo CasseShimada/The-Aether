@@ -16,8 +16,6 @@ public class MobAccessoryAttachment {
 
     public MobAccessoryAttachment() {
         this.accessoryDropChances = new HashMap<>(Map.ofEntries(
-                Map.entry("hand", 0.085F),
-                Map.entry("necklace", 0.085F),
                 Map.entry("aether:gloves_slot", 0.085F),
                 Map.entry("aether:pendant_slot", 0.085F)
         ));

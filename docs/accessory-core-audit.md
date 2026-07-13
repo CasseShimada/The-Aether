@@ -10,6 +10,8 @@ The nonfunctional alternative Accessories menu switch and its generic-slot regis
 
 The current source tree contains no Curios, `ForgeCaps`, or `neoforge:attachments` save reader and no legacy capability conversion entrypoint. `AetherDataAttachments` and `AccessoryInventoryAttachment` are current Fabric persistence, not compatibility shims, and must remain in place. Existing `commands.aether.capability.*` translation keys are stable resource identifiers rather than save migration hooks, so this cleanup deliberately leaves them unchanged.
 
+Mob accessory drop chances now seed only the current `aether:gloves_slot` and `aether:pendant_slot` identifiers. The obsolete unnamespaced `hand` and `necklace` defaults are no longer created; arbitrary slot names in the current accessory inventory attachment remain preserved unchanged.
+
 ## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |
