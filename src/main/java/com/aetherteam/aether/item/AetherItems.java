@@ -236,10 +236,10 @@ public class AetherItems {
     public static final Item SWET_BALL = register("swet_ball", () -> new SwetBallItem(new Item.Properties()));
     public static final Item AECHOR_PETAL = register("aechor_petal", Item::new);
     public static final Item AMBROSIUM_SHARD = register("ambrosium_shard", () -> new AmbrosiumShardItem(new Item.Properties()));
-    public static final Item ZANITE_GEMSTONE = register("zanite_gemstone", () -> new Item(new Item.Properties()));
+    public static final Item ZANITE_GEMSTONE = register("zanite_gemstone", Item::new);
 
     // Misc
-    public static final Item VICTORY_MEDAL = register("victory_medal", () -> new Item(new Item.Properties().stacksTo(10).rarity(AETHER_LOOT)));
+    public static final Item VICTORY_MEDAL = register("victory_medal", properties -> new Item(properties.stacksTo(10).rarity(AETHER_LOOT)));
 
     public static final Item BRONZE_DUNGEON_KEY = register("bronze_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "bronze")))));
     public static final Item SILVER_DUNGEON_KEY = register("silver_dungeon_key", properties -> new Item(properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().component(AetherDataComponents.DUNGEON_KIND, new DungeonKind(Identifier.fromNamespaceAndPath(Aether.MODID, "silver")))));
@@ -282,7 +282,7 @@ public class AetherItems {
 
     public static final Item BOOK_OF_LORE = register("book_of_lore", properties -> new LoreBookItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
 
-    public static final Item AETHER_PORTAL_FRAME = register("aether_portal_frame", () -> new AetherPortalItem(new Item.Properties().stacksTo(1)));
+    public static final Item AETHER_PORTAL_FRAME = register("aether_portal_frame", properties -> new AetherPortalItem(properties.stacksTo(1)));
 
     public static final SpawnEggItem AECHOR_PLANT_SPAWN_EGG = register("aechor_plant_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.AECHOR_PLANT, 0x076178, 0x4BC69E, new Item.Properties()));
     public static final SpawnEggItem AERBUNNY_SPAWN_EGG = register("aerbunny_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.AERBUNNY, 0xE2FCFF, 0xFFDFF9, new Item.Properties()));

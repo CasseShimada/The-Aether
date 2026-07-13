@@ -158,5 +158,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the three dungeon key items to the same explicit `ResourceKey<Item>` and vanilla `Item.Properties` registration path without changing their dungeon-kind components.
 - Migrated all six music disc items to explicit keyed `Item.Properties` registration while preserving their jukebox song keys and item properties.
 - Migrated Skyroot Sticks, Golden Amber, and Aechor Petals to the explicit keyed vanilla `Item` registration path.
+- Migrated Zanite Gemstones, Victory Medals, and the Aether Portal Frame to explicit keyed `Item.Properties` registration without changing their gameplay properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
