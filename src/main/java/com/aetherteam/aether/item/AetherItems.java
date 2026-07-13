@@ -126,7 +126,7 @@ public class AetherItems {
     public static final SwordItem ZANITE_SWORD = register("zanite_sword", ZaniteSwordItem::new);
     public static final SwordItem GRAVITITE_SWORD = register("gravitite_sword", GravititeSwordItem::new);
 
-    public static final SwordItem VALKYRIE_LANCE = register("valkyrie_lance", ValkyrieLanceItem::new);
+    public static final SwordItem VALKYRIE_LANCE = register("valkyrie_lance", properties -> new ValkyrieLanceItem(properties.rarity(AETHER_LOOT)));
 
     public static final SwordItem FLAMING_SWORD = register("flaming_sword", properties -> new FlamingSwordItem(properties.rarity(AETHER_LOOT)));
     public static final SwordItem LIGHTNING_SWORD = register("lightning_sword", properties -> new LightningSwordItem(properties.rarity(AETHER_LOOT)));
@@ -135,7 +135,7 @@ public class AetherItems {
     public static final SwordItem PIG_SLAYER = register("pig_slayer", properties -> new PigSlayerItem(properties.rarity(AETHER_LOOT)));
     public static final SwordItem CANDY_CANE_SWORD = register("candy_cane_sword", properties -> new CandyCaneSwordItem(properties));
 
-    public static final SwordItem HAMMER_OF_KINGBDOGZ = register("hammer_of_kingbdogz", HammerOfKingbdogzItem::new);
+    public static final SwordItem HAMMER_OF_KINGBDOGZ = register("hammer_of_kingbdogz", properties -> new HammerOfKingbdogzItem(properties.rarity(AETHER_LOOT)));
 
     public static final Item LIGHTNING_KNIFE = register("lightning_knife", properties -> new LightningKnifeItem(properties.rarity(AETHER_LOOT).stacksTo(16)));
 

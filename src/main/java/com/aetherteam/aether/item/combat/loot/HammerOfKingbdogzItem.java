@@ -3,7 +3,6 @@ package com.aetherteam.aether.item.combat.loot;
 import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.client.AetherSoundEvents;
 import com.aetherteam.aether.entity.projectile.weapon.HammerProjectile;
-import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -21,8 +20,8 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 
 public class HammerOfKingbdogzItem extends SwordItem implements ProjectileItem {
-    public HammerOfKingbdogzItem() {
-        super(AetherItemTiers.HAMMER_OF_KINGBDOGZ, SwordItem.createAttributes(AetherItemTiers.HAMMER_OF_KINGBDOGZ, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public HammerOfKingbdogzItem(Item.Properties properties) {
+        super(AetherItemTiers.HAMMER_OF_KINGBDOGZ, SwordItem.createAttributes(AetherItemTiers.HAMMER_OF_KINGBDOGZ, 3.0F, -2.4F), properties);
     }
 
     /**
