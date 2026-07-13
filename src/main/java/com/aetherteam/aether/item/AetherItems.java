@@ -219,9 +219,9 @@ public class AetherItems {
     public static final Item RED_CAPE = register("red_cape", properties -> new CapeItem("red_cape", properties.stacksTo(1)));
     public static final Item BLUE_CAPE = register("blue_cape", properties -> new CapeItem("blue_cape", properties.stacksTo(1)));
     public static final Item YELLOW_CAPE = register("yellow_cape", properties -> new CapeItem("yellow_cape", properties.stacksTo(1)));
-    public static final Item WHITE_CAPE = register("white_cape", () -> new CapeItem("white_cape", new Item.Properties().stacksTo(1)));
-    public static final Item AGILITY_CAPE = register("agility_cape", () -> new AgilityCapeItem("agility_cape", new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
-    public static final Item SWET_CAPE = register("swet_cape", () -> new CapeItem("swet_cape", new Item.Properties().stacksTo(1)));
+    public static final Item WHITE_CAPE = register("white_cape", properties -> new CapeItem("white_cape", properties.stacksTo(1)));
+    public static final Item AGILITY_CAPE = register("agility_cape", properties -> new AgilityCapeItem("agility_cape", properties.stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item SWET_CAPE = register("swet_cape", properties -> new CapeItem("swet_cape", properties.stacksTo(1)));
     public static final Item INVISIBILITY_CLOAK = register("invisibility_cloak", () -> new InvisibilityCloakItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item VALKYRIE_CAPE = register("valkyrie_cape", () -> new ValkyrieCapeItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
 
