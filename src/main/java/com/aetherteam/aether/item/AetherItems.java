@@ -110,9 +110,9 @@ public class AetherItems {
     public static final ShovelItem ZANITE_SHOVEL = register("zanite_shovel", properties -> new ZaniteShovelItem(properties));
     public static final HoeItem ZANITE_HOE = register("zanite_hoe", properties -> new ZaniteHoeItem(properties));
 
-    public static final PickaxeItem GRAVITITE_PICKAXE = register("gravitite_pickaxe", GravititePickaxeItem::new);
-    public static final AxeItem GRAVITITE_AXE = register("gravitite_axe", GravititeAxeItem::new);
-    public static final ShovelItem GRAVITITE_SHOVEL = register("gravitite_shovel", GravititeShovelItem::new);
+    public static final PickaxeItem GRAVITITE_PICKAXE = register("gravitite_pickaxe", properties -> new GravititePickaxeItem(properties));
+    public static final AxeItem GRAVITITE_AXE = register("gravitite_axe", properties -> new GravititeAxeItem(properties));
+    public static final ShovelItem GRAVITITE_SHOVEL = register("gravitite_shovel", properties -> new GravititeShovelItem(properties));
     public static final HoeItem GRAVITITE_HOE = register("gravitite_hoe", GravititeHoeItem::new);
 
     public static final PickaxeItem VALKYRIE_PICKAXE = register("valkyrie_pickaxe", ValkyriePickaxeItem::new);

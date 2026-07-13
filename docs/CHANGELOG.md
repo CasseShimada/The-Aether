@@ -208,5 +208,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed the Skyroot tool set and migrated the Holystone Pickaxe and Axe to keyed Properties while preserving tiers, attack attributes, double drops, and Ambrosium drops.
 - Completed the Holystone tool set and migrated the Zanite Pickaxe to keyed Properties while preserving tiers, attack attributes, Ambrosium drops, and Zanite mining-speed behavior.
 - Completed keyed Properties construction for the Zanite tool set while preserving its tier, attack attributes, and durability-based mining-speed behavior.
+- Migrated Gravitite Pickaxe, Axe, and Shovel construction to keyed Properties while preserving the tool tier, attack attributes, and block-floating interactions.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
