@@ -128,10 +128,10 @@ public class AetherBlocks {
     public static final Block LIGHT_HELLFIRE_STONE = register("light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));
 
     public static final Block LOCKED_CARVED_STONE = registerKeyed("locked_carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
-    public static final Block LOCKED_SENTRY_STONE = register("locked_sentry_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_CARVED_STONE).lightLevel(AetherBlocks::lightLevel11)));
+    public static final Block LOCKED_SENTRY_STONE = registerKeyed("locked_sentry_stone", key -> new Block(Block.Properties.ofFullCopy(LOCKED_CARVED_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
     public static final Block LOCKED_ANGELIC_STONE = registerKeyed("locked_angelic_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
     public static final Block LOCKED_LIGHT_ANGELIC_STONE = register("locked_light_angelic_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11)));
-    public static final Block LOCKED_HELLFIRE_STONE = register("locked_hellfire_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F)));
+    public static final Block LOCKED_HELLFIRE_STONE = registerKeyed("locked_hellfire_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
     public static final Block LOCKED_LIGHT_HELLFIRE_STONE = register("locked_light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(LOCKED_HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));
 
     public static final Block TRAPPED_CARVED_STONE = register("trapped_carved_stone", () -> new TrappedBlock(() -> AetherEntityTypes.SENTRY, () -> CARVED_STONE.defaultBlockState(), Block.Properties.ofFullCopy(CARVED_STONE)));
@@ -163,8 +163,8 @@ public class AetherBlocks {
     public static final FacingPillarBlock PILLAR_TOP = register("pillar_top",
             () -> new FacingPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops()));
 
-    public static final Block PRESENT = register("present",
-            () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL).strength(0.1F).sound(SoundType.WOOL)));
+    public static final Block PRESENT = registerKeyed("present",
+            key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL).strength(0.1F).sound(SoundType.WOOL).setId(key)));
 
     public static final FenceBlock SKYROOT_FENCE = register("skyroot_fence", () -> new FenceBlock(Block.Properties.ofFullCopy(Blocks.OAK_FENCE)));
     public static final FenceGateBlock SKYROOT_FENCE_GATE = register("skyroot_fence_gate", () -> new FenceGateBlock(AetherWoodTypes.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)));

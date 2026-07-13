@@ -216,5 +216,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Added a direct keyed Block registration path and migrated Skyroot Planks, Holystone Bricks, and Ambrosium Block while preserving block properties, ids, and BlockItem creation.
 - Migrated Zanite Block, Carved Stone, and Angelic Stone to direct keyed Block registration while preserving material properties and dependent walls, stairs, slabs, and dungeon variants.
 - Migrated Hellfire Stone, Locked Carved Stone, and Locked Angelic Stone to direct keyed Block registration while preserving hardness, resistance, map colors, and dependent dungeon variants.
+- Migrated Locked Hellfire Stone, Locked Sentry Stone, and Present to direct keyed Block registration while preserving copied properties, light levels, sounds, and dungeon dependencies.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
