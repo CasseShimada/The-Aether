@@ -222,13 +222,13 @@ public class AetherItems {
     public static final Item WHITE_CAPE = register("white_cape", properties -> new CapeItem("white_cape", properties.stacksTo(1)));
     public static final Item AGILITY_CAPE = register("agility_cape", properties -> new AgilityCapeItem("agility_cape", properties.stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item SWET_CAPE = register("swet_cape", properties -> new CapeItem("swet_cape", properties.stacksTo(1)));
-    public static final Item INVISIBILITY_CLOAK = register("invisibility_cloak", () -> new InvisibilityCloakItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
-    public static final Item VALKYRIE_CAPE = register("valkyrie_cape", () -> new ValkyrieCapeItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item INVISIBILITY_CLOAK = register("invisibility_cloak", properties -> new InvisibilityCloakItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item VALKYRIE_CAPE = register("valkyrie_cape", properties -> new ValkyrieCapeItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
 
     public static final Item GOLDEN_FEATHER = register("golden_feather", properties -> new GoldenFeatherItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item REGENERATION_STONE = register("regeneration_stone", properties -> new RegenerationStoneItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item IRON_BUBBLE = register("iron_bubble", properties -> new IronBubbleItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
-    public static final Item SHIELD_OF_REPULSION = register("shield_of_repulsion", () -> new ShieldOfRepulsionItem(new Item.Properties().durability(512).rarity(AETHER_LOOT)));
+    public static final Item SHIELD_OF_REPULSION = register("shield_of_repulsion", properties -> new ShieldOfRepulsionItem(properties.durability(512).rarity(AETHER_LOOT)));
 
     // Materials
     public static final Item SKYROOT_STICK = register("skyroot_stick", Item::new);
