@@ -218,5 +218,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Hellfire Stone, Locked Carved Stone, and Locked Angelic Stone to direct keyed Block registration while preserving hardness, resistance, map colors, and dependent dungeon variants.
 - Migrated Locked Hellfire Stone, Locked Sentry Stone, and Present to direct keyed Block registration while preserving copied properties, light levels, sounds, and dungeon dependencies.
 - Migrated Sentry Stone, Light Angelic Stone, and Light Hellfire Stone to direct keyed Block registration while preserving copied base properties and light levels.
+- Completed direct keyed registration for the ordinary Locked Stone variants with Locked Light Angelic Stone and Locked Light Hellfire Stone while preserving copied properties and light levels.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
