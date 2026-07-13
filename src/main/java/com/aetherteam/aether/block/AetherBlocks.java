@@ -43,6 +43,7 @@ import net.minecraft.world.level.material.PushReaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AetherBlocks {
@@ -82,13 +83,13 @@ public class AetherBlocks {
     public static final RotatedPillarBlock GOLDEN_OAK_WOOD = register("golden_oak_wood", () -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_WOOD)));
     public static final RotatedPillarBlock STRIPPED_SKYROOT_WOOD = register("stripped_skyroot_wood", () -> new RotatedPillarBlock(Block.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)));
 
-    public static final Block SKYROOT_PLANKS = register("skyroot_planks", () -> new Block(Block.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
-    public static final Block HOLYSTONE_BRICKS = register("holystone_bricks", () -> new Block(Block.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+    public static final Block SKYROOT_PLANKS = registerKeyed("skyroot_planks", key -> new Block(Block.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(key)));
+    public static final Block HOLYSTONE_BRICKS = registerKeyed("holystone_bricks", key -> new Block(Block.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final TransparentBlock QUICKSOIL_GLASS = register("quicksoil_glass", () -> new QuicksoilGlassBlock(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).instrument(NoteBlockInstrument.HAT).strength(0.2F).friction(1.1F).lightLevel(AetherBlocks::lightLevel11).sound(SoundType.GLASS).noOcclusion().isValidSpawn(AetherBlocks::never).isRedstoneConductor(AetherBlocks::never).isSuffocating(AetherBlocks::never).isViewBlocking(AetherBlocks::never)));
     public static final IronBarsBlock QUICKSOIL_GLASS_PANE = register("quicksoil_glass_pane", () -> new QuicksoilGlassPaneBlock(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).instrument(NoteBlockInstrument.HAT).strength(0.2F).friction(1.1F).lightLevel(AetherBlocks::lightLevel11).sound(SoundType.GLASS).noOcclusion()));
     public static final Block AEROGEL = register("aerogel", () -> new AerogelBlock(Block.Properties.of().mapColor(MapColor.DIAMOND).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(1.0F, 2000.0F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops().isViewBlocking(AetherBlocks::never)));
 
-    public static final Block AMBROSIUM_BLOCK = register("ambrosium_block", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final Block AMBROSIUM_BLOCK = registerKeyed("ambrosium_block", key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
     public static final Block ZANITE_BLOCK = register("zanite_block", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BIT).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
     public static final Block ENCHANTED_GRAVITITE = register("enchanted_gravitite", () -> new FloatingBlock(true, Block.Properties.of().mapColor(MapColor.COLOR_PINK).instrument(NoteBlockInstrument.PLING).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
@@ -281,6 +282,14 @@ public class AetherBlocks {
         B register = registerBlockOnly(name, block);
         BLOCK_ITEMS.add(new BlockItemRegistration(name, register));
         return register;
+    }
+
+    private static <B extends Block> B registerKeyed(String name, Function<ResourceKey<Block>, B> factory) {
+        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id);
+        B block = Registry.register(BuiltInRegistries.BLOCK, id, factory.apply(key));
+        BLOCK_ITEMS.add(new BlockItemRegistration(name, block));
+        return block;
     }
 
     private static BlockItem createBlockItem(Block block, Item.Properties properties) {
