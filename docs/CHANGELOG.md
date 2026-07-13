@@ -229,5 +229,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Log, Golden Oak Log, and Stripped Skyroot Log to direct keyed Block registration while preserving copied vanilla properties and log behavior.
 - Migrated Skyroot Wood, Golden Oak Wood, and Stripped Skyroot Wood to direct keyed Block registration while preserving copied vanilla properties and pillar behavior.
 - Migrated Quicksoil Glass, Quicksoil Glass Pane, and Aerogel to direct keyed Block registration while preserving friction, light levels, collision predicates, transparency, and blast resistance.
+- Migrated Enchanted Gravitite, Berry Bush, and Berry Bush Stem to direct keyed Block registration while preserving floating behavior, collision shapes, spawn predicates, and push reactions.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

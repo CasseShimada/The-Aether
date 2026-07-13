@@ -91,7 +91,7 @@ public class AetherBlocks {
 
     public static final Block AMBROSIUM_BLOCK = registerKeyed("ambrosium_block", key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
     public static final Block ZANITE_BLOCK = registerKeyed("zanite_block", key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BIT).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
-    public static final Block ENCHANTED_GRAVITITE = register("enchanted_gravitite", () -> new FloatingBlock(true, Block.Properties.of().mapColor(MapColor.COLOR_PINK).instrument(NoteBlockInstrument.PLING).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final Block ENCHANTED_GRAVITITE = registerKeyed("enchanted_gravitite", key -> new FloatingBlock(true, Block.Properties.of().mapColor(MapColor.COLOR_PINK).instrument(NoteBlockInstrument.PLING).strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).setId(key)));
 
     public static final Block ALTAR = register("altar", () -> new AltarBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.5F)));
     public static final Block FREEZER = register("freezer", () -> new FreezerBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F)));
@@ -105,8 +105,8 @@ public class AetherBlocks {
     public static final CeilingHangingSignBlock SKYROOT_HANGING_SIGN = register("skyroot_hanging_sign", () -> new SkyrootCeilingHangingSignBlock(AetherWoodTypes.SKYROOT, BlockBehaviour.Properties.of().mapColor(Blocks.OAK_LOG.defaultMapColor()).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollision().strength(1.0F).ignitedByLava()));
     public static final WallHangingSignBlock SKYROOT_WALL_HANGING_SIGN = registerBlockOnly("skyroot_wall_hanging_sign", () -> new SkyrootWallHangingSignBlock(AetherWoodTypes.SKYROOT, BlockBehaviour.Properties.of().mapColor(Blocks.OAK_LOG.defaultMapColor()).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollision().strength(1.0F).ignitedByLava()));
 
-    public static final Block BERRY_BUSH = register("berry_bush", () -> new BerryBushBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noOcclusion().isValidSpawn(AetherBlocks::ocelotOrParrot).isRedstoneConductor(AetherBlocks::never).isSuffocating(AetherBlocks::never).isViewBlocking(AetherBlocks::never)));
-    public static final Block BERRY_BUSH_STEM = register("berry_bush_stem", () -> new BerryBushStemBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noCollision()));
+    public static final Block BERRY_BUSH = registerKeyed("berry_bush", key -> new BerryBushBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noOcclusion().isValidSpawn(AetherBlocks::ocelotOrParrot).isRedstoneConductor(AetherBlocks::never).isSuffocating(AetherBlocks::never).isViewBlocking(AetherBlocks::never).setId(key)));
+    public static final Block BERRY_BUSH_STEM = registerKeyed("berry_bush_stem", key -> new BerryBushStemBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noCollision().setId(key)));
     public static final FlowerPotBlock POTTED_BERRY_BUSH = registerBlockOnly("potted_berry_bush", () -> new FlowerPotBlock(BERRY_BUSH, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final FlowerPotBlock POTTED_BERRY_BUSH_STEM = registerBlockOnly("potted_berry_bush_stem", () -> new FlowerPotBlock(BERRY_BUSH_STEM, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
