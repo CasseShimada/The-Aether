@@ -190,5 +190,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed registration for the Phoenix armor set and migrated the Obsidian Helmet while preserving delayed material lookup, armor slots, durability, loot rarity, and Phoenix fire resistance.
 - Completed keyed registration for the Obsidian armor set while preserving delayed material lookup, armor slots, durability, and loot rarity.
 - Completed keyed registration for all armor items by migrating the Sentry Boots while preserving delayed material lookup, armor slot, durability, and loot rarity.
+- Migrated the Aechor Plant, Aerbunny, and Aerwhale spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

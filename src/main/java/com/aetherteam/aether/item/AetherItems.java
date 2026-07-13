@@ -284,9 +284,9 @@ public class AetherItems {
 
     public static final Item AETHER_PORTAL_FRAME = register("aether_portal_frame", properties -> new AetherPortalItem(properties.stacksTo(1)));
 
-    public static final SpawnEggItem AECHOR_PLANT_SPAWN_EGG = register("aechor_plant_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.AECHOR_PLANT, 0x076178, 0x4BC69E, new Item.Properties()));
-    public static final SpawnEggItem AERBUNNY_SPAWN_EGG = register("aerbunny_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.AERBUNNY, 0xE2FCFF, 0xFFDFF9, new Item.Properties()));
-    public static final SpawnEggItem AERWHALE_SPAWN_EGG = register("aerwhale_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.AERWHALE, 0xC0E7FD, 0x879EAA, new Item.Properties()));
+    public static final SpawnEggItem AECHOR_PLANT_SPAWN_EGG = register("aechor_plant_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.AECHOR_PLANT, 0x076178, 0x4BC69E, properties));
+    public static final SpawnEggItem AERBUNNY_SPAWN_EGG = register("aerbunny_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.AERBUNNY, 0xE2FCFF, 0xFFDFF9, properties));
+    public static final SpawnEggItem AERWHALE_SPAWN_EGG = register("aerwhale_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.AERWHALE, 0xC0E7FD, 0x879EAA, properties));
     public static final SpawnEggItem COCKATRICE_SPAWN_EGG = register("cockatrice_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.COCKATRICE, 0x6CB15C, 0x6C579D, new Item.Properties()));
     public static final SpawnEggItem FIRE_MINION_SPAWN_EGG = register("fire_minion_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.FIRE_MINION, 0xFF6D01, 0xFEF500, new Item.Properties()));
     public static final SpawnEggItem FLYING_COW_SPAWN_EGG = register("flying_cow_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.FLYING_COW, 0xD8D8D8, 0xFFD939, new Item.Properties()));
