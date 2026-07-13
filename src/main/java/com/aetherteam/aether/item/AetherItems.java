@@ -206,9 +206,9 @@ public class AetherItems {
     public static final Item LEATHER_GLOVES = register("leather_gloves", properties -> new LeatherGlovesItem(0.25, properties.durability(59)));
     public static final Item CHAINMAIL_GLOVES = register("chainmail_gloves", properties -> new GlovesItem(ArmorMaterials.CHAINMAIL, 0.35, "chainmail_gloves", SoundEvents.ARMOR_EQUIP_CHAIN, properties.durability(131)));
     public static final Item IRON_GLOVES = register("iron_gloves", properties -> new GlovesItem(ArmorMaterials.IRON, 0.5, "iron_gloves", SoundEvents.ARMOR_EQUIP_IRON, properties.durability(250)));
-    public static final Item GOLDEN_GLOVES = register("golden_gloves", () -> new GoldGlovesItem(0.25, new Item.Properties().durability(32)));
-    public static final Item DIAMOND_GLOVES = register("diamond_gloves", () -> new GlovesItem(ArmorMaterials.DIAMOND, 0.75, "diamond_gloves", SoundEvents.ARMOR_EQUIP_DIAMOND, new Item.Properties().durability(1561)));
-    public static final Item NETHERITE_GLOVES = register("netherite_gloves", () -> new GlovesItem(ArmorMaterials.NETHERITE, 1.0, "netherite_gloves", SoundEvents.ARMOR_EQUIP_NETHERITE, new Item.Properties().durability(2031).fireResistant()));
+    public static final Item GOLDEN_GLOVES = register("golden_gloves", properties -> new GoldGlovesItem(0.25, properties.durability(32)));
+    public static final Item DIAMOND_GLOVES = register("diamond_gloves", properties -> new GlovesItem(ArmorMaterials.DIAMOND, 0.75, "diamond_gloves", SoundEvents.ARMOR_EQUIP_DIAMOND, properties.durability(1561)));
+    public static final Item NETHERITE_GLOVES = register("netherite_gloves", properties -> new GlovesItem(ArmorMaterials.NETHERITE, 1.0, "netherite_gloves", SoundEvents.ARMOR_EQUIP_NETHERITE, properties.durability(2031).fireResistant()));
     public static final Item ZANITE_GLOVES = register("zanite_gloves", () -> new ZaniteGlovesItem(0.5, new Item.Properties().durability(250)));
     public static final Item GRAVITITE_GLOVES = register("gravitite_gloves", () -> new GlovesItem(AetherArmorMaterials.GRAVITITE, 0.75, "gravitite_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_GRAVITITE, new Item.Properties().durability(1561)));
     public static final Item VALKYRIE_GLOVES = register("valkyrie_gloves", () -> new GlovesItem(AetherArmorMaterials.VALKYRIE, 1.0, "valkyrie_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_VALKYRIE, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).durability(1561)));

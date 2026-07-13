@@ -178,5 +178,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Cold and Golden Parachutes to explicit keyed vanilla Item registration while preserving delayed entity type lookup, durability, deployment, and item damage behavior.
 - Migrated the Golden, Poison, and Enchanted Dart Shooters to explicit keyed vanilla Item registration while preserving delayed dart lookup, stack limits, rarity, projectile matching, and firing behavior.
 - Migrated Leather, Chainmail, and Iron Gloves to explicit keyed vanilla Item registration while preserving vanilla armor materials, durability, punch damage, textures, repair rules, and equip sounds.
+- Migrated Golden, Diamond, and Netherite Gloves to explicit keyed vanilla Item registration while preserving vanilla armor materials, durability, punch damage, Piglin neutrality, fire resistance, textures, repair rules, and equip sounds.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
