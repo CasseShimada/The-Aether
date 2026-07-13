@@ -174,5 +174,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Skyroot Milk, Powder Snow, and Cod Buckets to explicit keyed vanilla Item registration while preserving crafting remainders, placement and consumption behavior, and bucket entity data.
 - Migrated the Skyroot Salmon, Pufferfish, and Tropical Fish Buckets to explicit keyed vanilla Item registration while preserving entity types, fluids, sounds, crafting remainders, and bucket entity data.
 - Migrated the Skyroot Axolotl and Tadpole Buckets to explicit keyed vanilla Item registration while preserving entity types, fluids, sounds, crafting remainders, and bucket entity data.
+- Migrated the Blue, White, and Black Moa Eggs to explicit keyed vanilla Item registration while preserving Moa type resource keys, shell colors, local lookup mapping, and spawn behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

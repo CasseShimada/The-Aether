@@ -271,9 +271,9 @@ public class AetherItems {
     public static final Item COLD_PARACHUTE = register("cold_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.COLD_PARACHUTE, new Item.Properties().durability(1)));
     public static final Item GOLDEN_PARACHUTE = register("golden_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.GOLDEN_PARACHUTE, new Item.Properties().durability(20)));
 
-    public static final Item BLUE_MOA_EGG = register("blue_moa_egg", () -> new MoaEggItem(AetherMoaTypes.BLUE, 0x7777FF, new Item.Properties()));
-    public static final Item WHITE_MOA_EGG = register("white_moa_egg", () -> new MoaEggItem(AetherMoaTypes.WHITE, 0xFFFFFF, new Item.Properties()));
-    public static final Item BLACK_MOA_EGG = register("black_moa_egg", () -> new MoaEggItem(AetherMoaTypes.BLACK, 0x222222, new Item.Properties()));
+    public static final Item BLUE_MOA_EGG = register("blue_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.BLUE, 0x7777FF, properties));
+    public static final Item WHITE_MOA_EGG = register("white_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.WHITE, 0xFFFFFF, properties));
+    public static final Item BLACK_MOA_EGG = register("black_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.BLACK, 0x222222, properties));
 
     public static final Item NATURE_STAFF = register("nature_staff", properties -> new Item(properties.durability(100)));
     public static final Item CLOUD_STAFF = register("cloud_staff", CloudStaffItem::new);
