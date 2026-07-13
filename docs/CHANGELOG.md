@@ -164,5 +164,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Enchanted Berries, Candy Canes, and Gingerbread Men to explicit keyed vanilla Item registration while preserving their food and rarity properties.
 - Migrated Iron, Golden, and Zanite Rings to explicit keyed vanilla Item registration while preserving stack limits, durability, and equip sounds.
 - Migrated Iron, Golden, and Zanite Pendants to explicit keyed vanilla Item registration while preserving textures, stack limits, durability, and equip sounds.
+- Migrated Red, Blue, and Yellow Capes to explicit keyed vanilla Item registration while preserving texture paths, stack limits, and equip sounds.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

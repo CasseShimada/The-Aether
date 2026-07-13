@@ -216,9 +216,9 @@ public class AetherItems {
     public static final Item PHOENIX_GLOVES = register("phoenix_gloves", () -> new GlovesItem(AetherArmorMaterials.PHOENIX, 1.0, "phoenix_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_PHOENIX, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).fireResistant().durability(1561)));
     public static final Item OBSIDIAN_GLOVES = register("obsidian_gloves", () -> new GlovesItem(AetherArmorMaterials.OBSIDIAN, 1.0, "obsidian_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_OBSIDIAN, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).durability(2031)));
 
-    public static final Item RED_CAPE = register("red_cape", () -> new CapeItem("red_cape", new Item.Properties().stacksTo(1)));
-    public static final Item BLUE_CAPE = register("blue_cape", () -> new CapeItem("blue_cape", new Item.Properties().stacksTo(1)));
-    public static final Item YELLOW_CAPE = register("yellow_cape", () -> new CapeItem("yellow_cape", new Item.Properties().stacksTo(1)));
+    public static final Item RED_CAPE = register("red_cape", properties -> new CapeItem("red_cape", properties.stacksTo(1)));
+    public static final Item BLUE_CAPE = register("blue_cape", properties -> new CapeItem("blue_cape", properties.stacksTo(1)));
+    public static final Item YELLOW_CAPE = register("yellow_cape", properties -> new CapeItem("yellow_cape", properties.stacksTo(1)));
     public static final Item WHITE_CAPE = register("white_cape", () -> new CapeItem("white_cape", new Item.Properties().stacksTo(1)));
     public static final Item AGILITY_CAPE = register("agility_cape", () -> new AgilityCapeItem("agility_cape", new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item SWET_CAPE = register("swet_cape", () -> new CapeItem("swet_cape", new Item.Properties().stacksTo(1)));
