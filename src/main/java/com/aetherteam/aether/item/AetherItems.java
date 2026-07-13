@@ -143,9 +143,9 @@ public class AetherItems {
     public static final Item POISON_DART = register("poison_dart", PoisonDartItem::new);
     public static final Item ENCHANTED_DART = register("enchanted_dart", properties -> new EnchantedDartItem(properties.rarity(Rarity.RARE)));
 
-    public static final Item GOLDEN_DART_SHOOTER = register("golden_dart_shooter", () -> new DartShooterItem(() -> GOLDEN_DART, new Item.Properties().stacksTo(1)));
-    public static final Item POISON_DART_SHOOTER = register("poison_dart_shooter", () -> new DartShooterItem(() -> POISON_DART, new Item.Properties().stacksTo(1)));
-    public static final Item ENCHANTED_DART_SHOOTER = register("enchanted_dart_shooter", () -> new DartShooterItem(() -> ENCHANTED_DART, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    public static final Item GOLDEN_DART_SHOOTER = register("golden_dart_shooter", properties -> new DartShooterItem(() -> GOLDEN_DART, properties.stacksTo(1)));
+    public static final Item POISON_DART_SHOOTER = register("poison_dart_shooter", properties -> new DartShooterItem(() -> POISON_DART, properties.stacksTo(1)));
+    public static final Item ENCHANTED_DART_SHOOTER = register("enchanted_dart_shooter", properties -> new DartShooterItem(() -> ENCHANTED_DART, properties.stacksTo(1).rarity(Rarity.RARE)));
 
     public static final BowItem PHOENIX_BOW = register("phoenix_bow", PhoenixBowItem::new);
 

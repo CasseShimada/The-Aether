@@ -176,5 +176,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Skyroot Axolotl and Tadpole Buckets to explicit keyed vanilla Item registration while preserving entity types, fluids, sounds, crafting remainders, and bucket entity data.
 - Migrated the Blue, White, and Black Moa Eggs to explicit keyed vanilla Item registration while preserving Moa type resource keys, shell colors, local lookup mapping, and spawn behavior.
 - Migrated the Cold and Golden Parachutes to explicit keyed vanilla Item registration while preserving delayed entity type lookup, durability, deployment, and item damage behavior.
+- Migrated the Golden, Poison, and Enchanted Dart Shooters to explicit keyed vanilla Item registration while preserving delayed dart lookup, stack limits, rarity, projectile matching, and firing behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
