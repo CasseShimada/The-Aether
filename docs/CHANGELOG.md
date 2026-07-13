@@ -171,5 +171,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Invisibility Cloak, Valkyrie Cape, and Shield of Repulsion to explicit keyed vanilla Item registration without changing attachment sync, network behavior, textures, rarity, or durability.
 - Migrated the empty Skyroot Bucket, Skyroot Boat, and Skyroot Chest Boat to explicit keyed vanilla Item registration while preserving stack limits and runtime bucket and vehicle behavior.
 - Migrated the Skyroot Water, Poison, and Remedy Buckets to explicit keyed vanilla Item registration while preserving the Skyroot Bucket crafting remainder, rarity, fluid, and drinking behavior.
+- Migrated the Skyroot Milk, Powder Snow, and Cod Buckets to explicit keyed vanilla Item registration while preserving crafting remainders, placement and consumption behavior, and bucket entity data.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
