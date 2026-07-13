@@ -252,7 +252,7 @@ public class AetherItems {
     public static final Item MUSIC_DISC_KLEPTO = register("music_disc_klepto", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.KLEPTO)));
     public static final Item MUSIC_DISC_SLIDERS_WRATH = register("music_disc_sliders_wrath", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.SLIDERS_WRATH)));
 
-    public static final Item SKYROOT_BUCKET = register("skyroot_bucket", () -> new SkyrootBucketItem(Fluids.EMPTY, new Item.Properties().stacksTo(16)));
+    public static final Item SKYROOT_BUCKET = register("skyroot_bucket", properties -> new SkyrootBucketItem(Fluids.EMPTY, properties.stacksTo(16)));
     public static final Item SKYROOT_WATER_BUCKET = register("skyroot_water_bucket", () -> new SkyrootBucketItem(Fluids.WATER, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
     public static final Item SKYROOT_POISON_BUCKET = register("skyroot_poison_bucket", () -> new SkyrootPoisonBucketItem(new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
     public static final Item SKYROOT_REMEDY_BUCKET = register("skyroot_remedy_bucket", () -> new SkyrootRemedyBucketItem(new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1).rarity(Rarity.RARE)));
@@ -265,8 +265,8 @@ public class AetherItems {
     public static final Item SKYROOT_AXOLOTL_BUCKET = register("skyroot_axolotl_bucket", () -> new SkyrootMobBucketItem(EntityTypes.AXOLOTL, Fluids.WATER, SoundEvents.BUCKET_EMPTY_AXOLOTL, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)));
     public static final Item SKYROOT_TADPOLE_BUCKET = register("skyroot_tadpole_bucket", () -> new SkyrootMobBucketItem(EntityTypes.TADPOLE, Fluids.WATER, SoundEvents.BUCKET_EMPTY_TADPOLE, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)));
 
-    public static final Item SKYROOT_BOAT = register("skyroot_boat", () -> new SkyrootBoatItem(false, new Item.Properties().stacksTo(1)));
-    public static final Item SKYROOT_CHEST_BOAT = register("skyroot_chest_boat", () -> new SkyrootBoatItem(true, new Item.Properties().stacksTo(1)));
+    public static final Item SKYROOT_BOAT = register("skyroot_boat", properties -> new SkyrootBoatItem(false, properties.stacksTo(1)));
+    public static final Item SKYROOT_CHEST_BOAT = register("skyroot_chest_boat", properties -> new SkyrootBoatItem(true, properties.stacksTo(1)));
 
     public static final Item COLD_PARACHUTE = register("cold_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.COLD_PARACHUTE, new Item.Properties().durability(1)));
     public static final Item GOLDEN_PARACHUTE = register("golden_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.GOLDEN_PARACHUTE, new Item.Properties().durability(20)));
