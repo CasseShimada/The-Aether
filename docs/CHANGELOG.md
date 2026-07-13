@@ -210,5 +210,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed Properties construction for the Zanite tool set while preserving its tier, attack attributes, and durability-based mining-speed behavior.
 - Migrated Gravitite Pickaxe, Axe, and Shovel construction to keyed Properties while preserving the tool tier, attack attributes, and block-floating interactions.
 - Completed the Gravitite tool set and migrated the Valkyrie Pickaxe and Axe to keyed Properties while preserving tiers, attack and reach attributes, block floating, and loot rarity.
+- Completed keyed Properties construction for the Valkyrie tool set while preserving its tier, attack and reach attributes, interactions, and loot rarity.
+- Removed the obsolete Supplier-based registration overload from `AetherItems`; all item registrations now receive keyed vanilla `Item.Properties` directly.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

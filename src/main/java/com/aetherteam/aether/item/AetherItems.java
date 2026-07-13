@@ -55,7 +55,6 @@ import com.aetherteam.aether.item.tools.zanite.ZaniteAxeItem;
 import com.aetherteam.aether.item.tools.zanite.ZaniteHoeItem;
 import com.aetherteam.aether.item.tools.zanite.ZanitePickaxeItem;
 import com.aetherteam.aether.item.tools.zanite.ZaniteShovelItem;
-import com.aetherteam.aether.registry.RegistryConstructionContext;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import net.minecraft.ChatFormatting;
@@ -85,7 +84,6 @@ import net.minecraft.world.level.block.entity.BannerPatterns;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class AetherItems {
     public static final Rarity AETHER_LOOT = Rarity.EPIC;
@@ -117,8 +115,8 @@ public class AetherItems {
 
     public static final PickaxeItem VALKYRIE_PICKAXE = register("valkyrie_pickaxe", properties -> new ValkyriePickaxeItem(properties.rarity(AETHER_LOOT)));
     public static final AxeItem VALKYRIE_AXE = register("valkyrie_axe", properties -> new ValkyrieAxeItem(properties.rarity(AETHER_LOOT)));
-    public static final ShovelItem VALKYRIE_SHOVEL = register("valkyrie_shovel", ValkyrieShovelItem::new);
-    public static final HoeItem VALKYRIE_HOE = register("valkyrie_hoe", ValkyrieHoeItem::new);
+    public static final ShovelItem VALKYRIE_SHOVEL = register("valkyrie_shovel", properties -> new ValkyrieShovelItem(properties.rarity(AETHER_LOOT)));
+    public static final HoeItem VALKYRIE_HOE = register("valkyrie_hoe", properties -> new ValkyrieHoeItem(properties.rarity(AETHER_LOOT)));
 
     // Weapons
     public static final SwordItem SKYROOT_SWORD = register("skyroot_sword", properties -> new SkyrootSwordItem(properties));
@@ -308,12 +306,6 @@ public class AetherItems {
     public static ItemStack SWET_BANNER = null;
 
     public static void bootstrap() {
-    }
-
-    private static <I extends Item> I register(String name, Supplier<? extends I> supplier) {
-        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
-        I item = RegistryConstructionContext.constructWithId(Registries.ITEM, id, supplier);
-        return Registry.register(BuiltInRegistries.ITEM, id, item);
     }
 
     private static <I extends Item> I register(String name, Function<Item.Properties, ? extends I> factory) {
