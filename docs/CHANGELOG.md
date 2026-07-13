@@ -184,5 +184,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Began the high-risk armor registration phase by migrating the Zanite Helmet, Chestplate, and Leggings to explicit keyed vanilla Item registration while preserving delayed material lookup, armor slots, and durability.
 - Completed keyed registration for the Zanite armor set and migrated the Gravitite Helmet and Chestplate while preserving delayed material lookup, armor slots, and durability.
 - Completed keyed registration for the Gravitite armor set and migrated the Valkyrie Helmet while preserving delayed material lookup, armor slots, durability, and loot rarity.
+- Completed keyed registration for the Valkyrie armor set while preserving delayed material lookup, armor slots, durability, and loot rarity.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
