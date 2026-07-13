@@ -162,5 +162,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Golden Darts, Swet Balls, and Ambrosium Shards to direct keyed Properties constructor references; their runtime recipe, sound, and projectile behavior is unchanged.
 - Migrated Poison Darts, Enchanted Darts, and Blue Berries to explicit keyed Properties registration while preserving rarity, food, and projectile behavior.
 - Migrated Enchanted Berries, Candy Canes, and Gingerbread Men to explicit keyed vanilla Item registration while preserving their food and rarity properties.
+- Migrated Iron, Golden, and Zanite Rings to explicit keyed vanilla Item registration while preserving stack limits, durability, and equip sounds.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

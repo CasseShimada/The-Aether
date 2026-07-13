@@ -193,9 +193,9 @@ public class AetherItems {
     public static final Item GINGERBREAD_MAN = register("gingerbread_man", properties -> new Item(properties.food(AetherFoods.GINGERBREAD_MAN)));
 
     // Accessories
-    public static final Item IRON_RING = register("iron_ring", () -> new RingItem(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_RING, new Item.Properties().stacksTo(1)));
-    public static final Item GOLDEN_RING = register("golden_ring", () -> new RingItem(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GOLD_RING, new Item.Properties().stacksTo(1)));
-    public static final Item ZANITE_RING = register("zanite_ring", () -> new ZaniteRingItem(new Item.Properties().durability(49)));
+    public static final Item IRON_RING = register("iron_ring", properties -> new RingItem(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_RING, properties.stacksTo(1)));
+    public static final Item GOLDEN_RING = register("golden_ring", properties -> new RingItem(AetherSoundEvents.ITEM_ACCESSORY_EQUIP_GOLD_RING, properties.stacksTo(1)));
+    public static final Item ZANITE_RING = register("zanite_ring", properties -> new ZaniteRingItem(properties.durability(49)));
     public static final Item ICE_RING = register("ice_ring", () -> new IceRingItem(new Item.Properties().durability(125)));
 
     public static final Item IRON_PENDANT = register("iron_pendant", () -> new PendantItem("iron_pendant", AetherSoundEvents.ITEM_ACCESSORY_EQUIP_IRON_PENDANT, new Item.Properties().stacksTo(1)));
