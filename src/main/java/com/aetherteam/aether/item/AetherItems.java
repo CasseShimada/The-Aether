@@ -153,10 +153,10 @@ public class AetherItems {
     public static final Item ZANITE_HELMET = register("zanite_helmet", properties -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.HELMET, properties.durability(ArmorItem.Type.HELMET.getDurability(15))));
     public static final Item ZANITE_CHESTPLATE = register("zanite_chestplate", properties -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.CHESTPLATE, properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(15))));
     public static final Item ZANITE_LEGGINGS = register("zanite_leggings", properties -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.LEGGINGS, properties.durability(ArmorItem.Type.LEGGINGS.getDurability(15))));
-    public static final Item ZANITE_BOOTS = register("zanite_boots", () -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
+    public static final Item ZANITE_BOOTS = register("zanite_boots", properties -> new ArmorItem(() -> AetherArmorMaterials.ZANITE.value(), ArmorItem.Type.BOOTS, properties.durability(ArmorItem.Type.BOOTS.getDurability(15))));
 
-    public static final Item GRAVITITE_HELMET = register("gravitite_helmet", () -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(33))));
-    public static final Item GRAVITITE_CHESTPLATE = register("gravitite_chestplate", () -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(33))));
+    public static final Item GRAVITITE_HELMET = register("gravitite_helmet", properties -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.HELMET, properties.durability(ArmorItem.Type.HELMET.getDurability(33))));
+    public static final Item GRAVITITE_CHESTPLATE = register("gravitite_chestplate", properties -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.CHESTPLATE, properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(33))));
     public static final Item GRAVITITE_LEGGINGS = register("gravitite_leggings", () -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(33))));
     public static final Item GRAVITITE_BOOTS = register("gravitite_boots", () -> new ArmorItem(() -> AetherArmorMaterials.GRAVITITE.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(33))));
 

@@ -182,5 +182,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Zanite, Gravitite, and Valkyrie Gloves to explicit keyed vanilla Item registration while preserving direct armor material holders, durability, rarity, stack limits, textures, repair rules, equip sounds, and dynamic punch damage.
 - Migrated Neptune, Phoenix, and Obsidian Gloves to explicit keyed vanilla Item registration while preserving direct armor material holders, durability, rarity, stack limits, fire resistance, textures, repair rules, equip sounds, and punch damage.
 - Began the high-risk armor registration phase by migrating the Zanite Helmet, Chestplate, and Leggings to explicit keyed vanilla Item registration while preserving delayed material lookup, armor slots, and durability.
+- Completed keyed registration for the Zanite armor set and migrated the Gravitite Helmet and Chestplate while preserving delayed material lookup, armor slots, and durability.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
