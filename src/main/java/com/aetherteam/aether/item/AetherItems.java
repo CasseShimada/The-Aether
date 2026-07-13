@@ -212,9 +212,9 @@ public class AetherItems {
     public static final Item ZANITE_GLOVES = register("zanite_gloves", properties -> new ZaniteGlovesItem(0.5, properties.durability(250)));
     public static final Item GRAVITITE_GLOVES = register("gravitite_gloves", properties -> new GlovesItem(AetherArmorMaterials.GRAVITITE, 0.75, "gravitite_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_GRAVITITE, properties.durability(1561)));
     public static final Item VALKYRIE_GLOVES = register("valkyrie_gloves", properties -> new GlovesItem(AetherArmorMaterials.VALKYRIE, 1.0, "valkyrie_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_VALKYRIE, properties.stacksTo(1).rarity(AETHER_LOOT).durability(1561)));
-    public static final Item NEPTUNE_GLOVES = register("neptune_gloves", () -> new GlovesItem(AetherArmorMaterials.NEPTUNE, 0.5, "neptune_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_NEPTUNE, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).durability(250)));
-    public static final Item PHOENIX_GLOVES = register("phoenix_gloves", () -> new GlovesItem(AetherArmorMaterials.PHOENIX, 1.0, "phoenix_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_PHOENIX, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).fireResistant().durability(1561)));
-    public static final Item OBSIDIAN_GLOVES = register("obsidian_gloves", () -> new GlovesItem(AetherArmorMaterials.OBSIDIAN, 1.0, "obsidian_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_OBSIDIAN, new Item.Properties().stacksTo(1).rarity(AETHER_LOOT).durability(2031)));
+    public static final Item NEPTUNE_GLOVES = register("neptune_gloves", properties -> new GlovesItem(AetherArmorMaterials.NEPTUNE, 0.5, "neptune_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_NEPTUNE, properties.stacksTo(1).rarity(AETHER_LOOT).durability(250)));
+    public static final Item PHOENIX_GLOVES = register("phoenix_gloves", properties -> new GlovesItem(AetherArmorMaterials.PHOENIX, 1.0, "phoenix_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_PHOENIX, properties.stacksTo(1).rarity(AETHER_LOOT).fireResistant().durability(1561)));
+    public static final Item OBSIDIAN_GLOVES = register("obsidian_gloves", properties -> new GlovesItem(AetherArmorMaterials.OBSIDIAN, 1.0, "obsidian_gloves", AetherSoundEvents.ITEM_ARMOR_EQUIP_OBSIDIAN, properties.stacksTo(1).rarity(AETHER_LOOT).durability(2031)));
 
     public static final Item RED_CAPE = register("red_cape", properties -> new CapeItem("red_cape", properties.stacksTo(1)));
     public static final Item BLUE_CAPE = register("blue_cape", properties -> new CapeItem("blue_cape", properties.stacksTo(1)));

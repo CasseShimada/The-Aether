@@ -180,5 +180,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Leather, Chainmail, and Iron Gloves to explicit keyed vanilla Item registration while preserving vanilla armor materials, durability, punch damage, textures, repair rules, and equip sounds.
 - Migrated Golden, Diamond, and Netherite Gloves to explicit keyed vanilla Item registration while preserving vanilla armor materials, durability, punch damage, Piglin neutrality, fire resistance, textures, repair rules, and equip sounds.
 - Migrated Zanite, Gravitite, and Valkyrie Gloves to explicit keyed vanilla Item registration while preserving direct armor material holders, durability, rarity, stack limits, textures, repair rules, equip sounds, and dynamic punch damage.
+- Migrated Neptune, Phoenix, and Obsidian Gloves to explicit keyed vanilla Item registration while preserving direct armor material holders, durability, rarity, stack limits, fire resistance, textures, repair rules, equip sounds, and punch damage.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
