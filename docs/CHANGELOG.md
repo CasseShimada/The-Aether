@@ -234,5 +234,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Sapling and Golden Oak Sapling to direct keyed Block registration while preserving tree growers, copied vanilla sapling properties, and potted block references.
 - Migrated Trapped Carved Stone, Trapped Sentry Stone, and Trapped Angelic Stone to direct keyed Block registration while preserving entity suppliers, disguise state suppliers, and copied dungeon block properties.
 - Migrated Trapped Light Angelic Stone, Trapped Hellfire Stone, and Trapped Light Hellfire Stone to direct keyed Block registration while preserving entity suppliers, disguise state suppliers, light levels, and copied dungeon block properties.
+- Migrated Boss Doorway Carved Stone, Boss Doorway Sentry Stone, and Boss Doorway Angelic Stone to direct keyed Block registration while preserving boss entity suppliers, copied properties, and unbreakable dungeon behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
