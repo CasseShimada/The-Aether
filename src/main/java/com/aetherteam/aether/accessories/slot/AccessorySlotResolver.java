@@ -4,7 +4,6 @@ import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -15,7 +14,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.Equippable;
 
 import javax.annotation.Nullable;
-import java.util.Set;
 
 public final class AccessorySlotResolver {
     private static final TagKey<Item> ACCESSORIES_RING = tag("accessories", "ring");
@@ -26,16 +24,6 @@ public final class AccessorySlotResolver {
     private static final TagKey<Item> ACCESSORIES_HEAD = tag("accessories", "head");
     private static final TagKey<Item> ACCESSORIES_HAND = tag("accessories", "hand");
     private static final TagKey<Item> COMMON_SHIELDS = tag("c", "tools/shield");
-    private static final TagKey<Item> TWILIGHT_SCEPTERS = tag("twilightforest", "scepters");
-    private static final Identifier TWILIGHT_KNIGHTMETAL_RING = Identifier.fromNamespaceAndPath("twilightforest", "knightmetal_ring");
-    private static final Identifier TWILIGHT_KNIGHTMETAL_SHIELD = Identifier.fromNamespaceAndPath("twilightforest", "knightmetal_shield");
-    private static final Set<Identifier> TWILIGHT_CHARM_ITEMS = Set.of(
-        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_life_1"),
-        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_life_2"),
-        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_1"),
-        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_2"),
-        Identifier.fromNamespaceAndPath("twilightforest", "charm_of_keeping_3")
-    );
 
     private AccessorySlotResolver() {
     }
@@ -55,8 +43,7 @@ public final class AccessorySlotResolver {
     public static boolean matchesRing(ItemStack stack) {
         return hasDeathProtection(stack)
             || stack.is(AetherTags.Items.ACCESSORIES_RINGS)
-            || stack.is(ACCESSORIES_RING)
-            || TWILIGHT_KNIGHTMETAL_RING.equals(BuiltInRegistries.ITEM.getKey(stack.getItem()));
+            || stack.is(ACCESSORIES_RING);
     }
 
     public static boolean matchesPendant(Item item) {
@@ -98,11 +85,9 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean isShieldLike(ItemStack stack) {
-        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return stack.is(AetherTags.Items.ACCESSORIES_SHIELDS)
             || stack.is(COMMON_SHIELDS)
             || Items.SHIELD.equals(stack.getItem())
-            || TWILIGHT_KNIGHTMETAL_SHIELD.equals(id)
             || isBackAccessory(stack) && prefersEquipmentSlot(stack, EquipmentSlot.OFFHAND);
     }
 
@@ -115,12 +100,9 @@ public final class AccessorySlotResolver {
     }
 
     public static boolean matchesCharm(ItemStack stack) {
-        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return hasDeathProtection(stack)
             || stack.is(AetherTags.Items.ACCESSORIES_MISCELLANEOUS)
-            || stack.is(ACCESSORIES_CHARM)
-            || stack.is(TWILIGHT_SCEPTERS)
-            || TWILIGHT_CHARM_ITEMS.contains(id);
+            || stack.is(ACCESSORIES_CHARM);
     }
 
     public static boolean matchesHead(ItemStack stack) {

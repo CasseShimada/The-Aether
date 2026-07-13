@@ -1,6 +1,6 @@
 # Aether Accessory Core Audit (Stage 1)
 
-This checklist tracks the self-written Aether accessory core built on Fabric attachments. Current slot resolution lives under the Aether accessory slot boundary, current effect bridging lives under the Aether accessory effect boundary, and optional Twilight Forest hooks remain isolated in the Twilight compatibility mixin package.
+This checklist tracks the self-written Aether accessory core built on Fabric attachments. Current slot resolution lives under the Aether accessory slot boundary, and current effect bridging lives under the Aether accessory effect boundary.
 
 ## Legacy Migration Decision
 
@@ -15,6 +15,10 @@ Mob accessory drop chances now seed only the current `aether:gloves_slot` and `a
 ## Current Attachment Sync Boundary
 
 Current attachment field synchronization uses explicit server, all-client, player, and dimension send methods. The former target enum and untyped context arguments have been removed; packet payload types, field keys, codecs, and Fabric attachment persistence remain unchanged. Accessory inventory snapshots continue to use their dedicated tracking-and-self dispatcher.
+
+## Third-party Implementation Hooks
+
+Implementation-specific Twilight Forest pseudo-mixins, target class names, item IDs, component IDs, and NBT handling have been intentionally removed. Current slot matching remains data-driven through Aether tags, generic `accessories:*` tags, vanilla item components, and common `c:*` tags.
 
 ## Stage 1: Core Attachment Matrix
 
@@ -37,8 +41,3 @@ Current attachment field synchronization uses explicit server, all-client, playe
 |---|---|---|
 | Vanilla/Fabric `LivingEntity#isHolding(Predicate<ItemStack>)` checks | `AccessoryEffectBridge.isHoldingEquivalent` via `LivingEntityMixin` return-augment | DONE |
 | Vanilla/Fabric inventory tick for held/equipped passive items | Accessory runtime dispatches equipped stacks through `Item#inventoryTick` | DONE |
-| Twilight charm/equipment-slot consumption path (`TFItemStackUtils.consumeEquipmentSlot`) | Optional twilight mixin `TFItemStackUtilsMixin` + `AccessoryEffectBridge.consumeAccessoryItem` | DONE |
-| Twilight mystic-crown head-slot checks (scepter/wand family) | Optional twilight mixins (`TwilightWandItemMixin`, `ZombieWandItemMixin`, `LifedrainScepterItemMixin`) + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
-| Twilight temporary shield timer crown bonus (`FortificationShieldAttachment.checkLichCrownBonus`) | Optional twilight mixin `FortificationShieldAttachmentMixin` + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
-| Twilight armor-coverage checks (`EntityEvents.getGearCoverage`) | Optional twilight mixin `EntityEventsMixin` + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
-| Twilight armor-shrouding checks (`ArmorUtil.getShroudedArmorPercentage`) | Optional twilight mixin `ArmorUtilMixin` + `AccessoryEffectBridge.findFirstByEquipmentSlot` | DONE |
