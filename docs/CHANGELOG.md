@@ -232,5 +232,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Enchanted Gravitite, Berry Bush, and Berry Bush Stem to direct keyed Block registration while preserving floating behavior, collision shapes, spawn predicates, and push reactions.
 - Migrated Purple Flower and White Flower to direct keyed Block registration while preserving mob effects, effect durations, and copied vanilla flower properties.
 - Migrated Skyroot Sapling and Golden Oak Sapling to direct keyed Block registration while preserving tree growers, copied vanilla sapling properties, and potted block references.
+- Migrated Trapped Carved Stone, Trapped Sentry Stone, and Trapped Angelic Stone to direct keyed Block registration while preserving entity suppliers, disguise state suppliers, and copied dungeon block properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
