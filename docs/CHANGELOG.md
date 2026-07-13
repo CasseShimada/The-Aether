@@ -160,5 +160,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Sticks, Golden Amber, and Aechor Petals to the explicit keyed vanilla `Item` registration path.
 - Migrated Zanite Gemstones, Victory Medals, and the Aether Portal Frame to explicit keyed `Item.Properties` registration without changing their gameplay properties.
 - Migrated Golden Darts, Swet Balls, and Ambrosium Shards to direct keyed Properties constructor references; their runtime recipe, sound, and projectile behavior is unchanged.
+- Migrated Poison Darts, Enchanted Darts, and Blue Berries to explicit keyed Properties registration while preserving rarity, food, and projectile behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

@@ -140,8 +140,8 @@ public class AetherItems {
     public static final Item LIGHTNING_KNIFE = register("lightning_knife", LightningKnifeItem::new);
 
     public static final Item GOLDEN_DART = register("golden_dart", GoldenDartItem::new);
-    public static final Item POISON_DART = register("poison_dart", () -> new PoisonDartItem(new Item.Properties()));
-    public static final Item ENCHANTED_DART = register("enchanted_dart", () -> new EnchantedDartItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final Item POISON_DART = register("poison_dart", PoisonDartItem::new);
+    public static final Item ENCHANTED_DART = register("enchanted_dart", properties -> new EnchantedDartItem(properties.rarity(Rarity.RARE)));
 
     public static final Item GOLDEN_DART_SHOOTER = register("golden_dart_shooter", () -> new DartShooterItem(() -> GOLDEN_DART, new Item.Properties().stacksTo(1)));
     public static final Item POISON_DART_SHOOTER = register("poison_dart_shooter", () -> new DartShooterItem(() -> POISON_DART, new Item.Properties().stacksTo(1)));
@@ -183,7 +183,7 @@ public class AetherItems {
     public static final Item SENTRY_BOOTS = register("sentry_boots", () -> new ArmorItem(() -> AetherArmorMaterials.SENTRY.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15)).rarity(AETHER_LOOT)));
 
     // Food
-    public static final Item BLUE_BERRY = register("blue_berry", () -> new Item(new Item.Properties().food(AetherFoods.BLUE_BERRY)));
+    public static final Item BLUE_BERRY = register("blue_berry", properties -> new Item(properties.food(AetherFoods.BLUE_BERRY)));
     public static final Item ENCHANTED_BERRY = register("enchanted_berry", () -> new Item(new Item.Properties().rarity(Rarity.RARE).food(AetherFoods.ENCHANTED_BERRY)));
     public static final Item WHITE_APPLE = register("white_apple", WhiteAppleItem::new);
     public static final Item BLUE_GUMMY_SWET = register("blue_gummy_swet", GummySwetItem::new);
