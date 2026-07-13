@@ -121,11 +121,11 @@ public class AetherBlocks {
     public static final FlowerPotBlock POTTED_GOLDEN_OAK_SAPLING = registerBlockOnly("potted_golden_oak_sapling", () -> new FlowerPotBlock(GOLDEN_OAK_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
     public static final Block CARVED_STONE = registerKeyed("carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
-    public static final Block SENTRY_STONE = register("sentry_stone", () -> new Block(Block.Properties.ofFullCopy(CARVED_STONE).lightLevel(AetherBlocks::lightLevel11)));
+    public static final Block SENTRY_STONE = registerKeyed("sentry_stone", key -> new Block(Block.Properties.ofFullCopy(CARVED_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
     public static final Block ANGELIC_STONE = registerKeyed("angelic_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
-    public static final Block LIGHT_ANGELIC_STONE = register("light_angelic_stone", () -> new Block(Block.Properties.ofFullCopy(ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11)));
+    public static final Block LIGHT_ANGELIC_STONE = registerKeyed("light_angelic_stone", key -> new Block(Block.Properties.ofFullCopy(ANGELIC_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
     public static final Block HELLFIRE_STONE = registerKeyed("hellfire_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
-    public static final Block LIGHT_HELLFIRE_STONE = register("light_hellfire_stone", () -> new Block(Block.Properties.ofFullCopy(HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11)));
+    public static final Block LIGHT_HELLFIRE_STONE = registerKeyed("light_hellfire_stone", key -> new Block(Block.Properties.ofFullCopy(HELLFIRE_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
 
     public static final Block LOCKED_CARVED_STONE = registerKeyed("locked_carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).setId(key)));
     public static final Block LOCKED_SENTRY_STONE = registerKeyed("locked_sentry_stone", key -> new Block(Block.Properties.ofFullCopy(LOCKED_CARVED_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
