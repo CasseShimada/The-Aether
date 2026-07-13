@@ -115,8 +115,8 @@ public class AetherBlocks {
     public static final FlowerPotBlock POTTED_PURPLE_FLOWER = registerBlockOnly("potted_purple_flower", () -> new FlowerPotBlock(PURPLE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final FlowerPotBlock POTTED_WHITE_FLOWER = registerBlockOnly("potted_white_flower", () -> new FlowerPotBlock(WHITE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
-    public static final SaplingBlock SKYROOT_SAPLING = register("skyroot_sapling", () -> new SaplingBlock(AetherTreeGrowers.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final SaplingBlock GOLDEN_OAK_SAPLING = register("golden_oak_sapling", () -> new SaplingBlock(AetherTreeGrowers.GOLDEN_OAK, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final SaplingBlock SKYROOT_SAPLING = registerKeyed("skyroot_sapling", key -> new SaplingBlock(AetherTreeGrowers.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(key)));
+    public static final SaplingBlock GOLDEN_OAK_SAPLING = registerKeyed("golden_oak_sapling", key -> new SaplingBlock(AetherTreeGrowers.GOLDEN_OAK, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(key)));
     public static final FlowerPotBlock POTTED_SKYROOT_SAPLING = registerBlockOnly("potted_skyroot_sapling", () -> new FlowerPotBlock(SKYROOT_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final FlowerPotBlock POTTED_GOLDEN_OAK_SAPLING = registerBlockOnly("potted_golden_oak_sapling", () -> new FlowerPotBlock(GOLDEN_OAK_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
