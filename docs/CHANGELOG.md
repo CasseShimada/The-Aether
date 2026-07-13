@@ -194,5 +194,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Cockatrice, Fire Minion, and Flying Cow spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 - Migrated the Mimic, Moa, and Phyg spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 - Migrated the Sentry, Sheepuff, and Blue Swet spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
+- Migrated the Golden Swet, Whirlwind, and Evil Whirlwind spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

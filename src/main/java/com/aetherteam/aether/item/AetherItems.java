@@ -296,9 +296,9 @@ public class AetherItems {
     public static final SpawnEggItem SENTRY_SPAWN_EGG = register("sentry_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.SENTRY, 0x808080, 0x3A8AEC, properties));
     public static final SpawnEggItem SHEEPUFF_SPAWN_EGG = register("sheepuff_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.SHEEPUFF, 0xE2FCFF, 0xCB9090, properties));
     public static final SpawnEggItem BLUE_SWET_SPAWN_EGG = register("blue_swet_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.BLUE_SWET, 0x4FB1DA, 0xCDDA4F, properties));
-    public static final SpawnEggItem GOLDEN_SWET_SPAWN_EGG = register("golden_swet_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.GOLDEN_SWET, 0xCDDA4F, 0x4FB1DA, new Item.Properties()));
-    public static final SpawnEggItem WHIRLWIND_SPAWN_EGG = register("whirlwind_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.WHIRLWIND, 0x9FC3F7, 0xFFFFFF, new Item.Properties()));
-    public static final SpawnEggItem EVIL_WHIRLWIND_SPAWN_EGG = register("evil_whirlwind_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.EVIL_WHIRLWIND, 0x9FC3F7, 0x111111, new Item.Properties()));
+    public static final SpawnEggItem GOLDEN_SWET_SPAWN_EGG = register("golden_swet_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.GOLDEN_SWET, 0xCDDA4F, 0x4FB1DA, properties));
+    public static final SpawnEggItem WHIRLWIND_SPAWN_EGG = register("whirlwind_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.WHIRLWIND, 0x9FC3F7, 0xFFFFFF, properties));
+    public static final SpawnEggItem EVIL_WHIRLWIND_SPAWN_EGG = register("evil_whirlwind_spawn_egg", properties -> new AetherSpawnEggItem(AetherEntityTypes.EVIL_WHIRLWIND, 0x9FC3F7, 0x111111, properties));
     public static final SpawnEggItem VALKYRIE_SPAWN_EGG = register("valkyrie_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.VALKYRIE, 0xF9F5E3, 0xF2D200, new Item.Properties()));
     public static final SpawnEggItem VALKYRIE_QUEEN_SPAWN_EGG = register("valkyrie_queen_spawn_egg", () -> new AetherSpawnEggItem(AetherEntityTypes.VALKYRIE_QUEEN, 0xF2D200, 0xF9F5E3, new Item.Properties()));
     public static final SpawnEggItem SLIDER_SPAWN_EGG = register("slider_spawn_egg", () -> new SliderSpawnEggItem(AetherEntityTypes.SLIDER, 0xA7A7A7, 0x5C9FF2, new Item.Properties()));
