@@ -225,9 +225,9 @@ public class AetherItems {
     public static final Item INVISIBILITY_CLOAK = register("invisibility_cloak", () -> new InvisibilityCloakItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item VALKYRIE_CAPE = register("valkyrie_cape", () -> new ValkyrieCapeItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
 
-    public static final Item GOLDEN_FEATHER = register("golden_feather", () -> new GoldenFeatherItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
-    public static final Item REGENERATION_STONE = register("regeneration_stone", () -> new RegenerationStoneItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
-    public static final Item IRON_BUBBLE = register("iron_bubble", () -> new IronBubbleItem(new Item.Properties().stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item GOLDEN_FEATHER = register("golden_feather", properties -> new GoldenFeatherItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item REGENERATION_STONE = register("regeneration_stone", properties -> new RegenerationStoneItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
+    public static final Item IRON_BUBBLE = register("iron_bubble", properties -> new IronBubbleItem(properties.stacksTo(1).rarity(AETHER_LOOT)));
     public static final Item SHIELD_OF_REPULSION = register("shield_of_repulsion", () -> new ShieldOfRepulsionItem(new Item.Properties().durability(512).rarity(AETHER_LOOT)));
 
     // Materials

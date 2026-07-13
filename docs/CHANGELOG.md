@@ -167,5 +167,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Red, Blue, and Yellow Capes to explicit keyed vanilla Item registration while preserving texture paths, stack limits, and equip sounds.
 - Migrated White, Agility, and Swet Capes to explicit keyed vanilla Item registration while preserving texture paths, rarity, stack limits, and accessory behavior.
 - Migrated the Ice Ring and Ice Pendant to explicit keyed vanilla Item registration while preserving durability, repair tags, equip sounds, textures, and freezing behavior.
+- Migrated the Golden Feather, Regeneration Stone, and Iron Bubble to explicit keyed vanilla Item registration while preserving rarity, stack limits, and accessory abilities.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
