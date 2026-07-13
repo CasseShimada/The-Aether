@@ -2,7 +2,6 @@ package com.aetherteam.aether.effect;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
@@ -28,7 +27,7 @@ public class RemedyEffect extends MobEffect {
         if (livingEntity instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (data.getRemedyStartDuration() <= 0) {
-                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.REMEDY_START_DURATION_SYNC_KEY, this.effectDuration);
+                data.setSyncedToServer(player.getId(), AetherPlayerAttachment.REMEDY_START_DURATION_SYNC_KEY, this.effectDuration);
             }
         }
         var inebriation = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION);

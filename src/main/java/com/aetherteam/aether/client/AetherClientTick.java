@@ -4,7 +4,6 @@ import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.client.gui.AccessoryMenuController;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.entity.AetherMounting;
@@ -48,22 +47,22 @@ public final class AetherClientTick {
 
         boolean isJumping = keys.jump();
         if (isJumping != aetherPlayer.isJumping()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.JUMPING_SYNC_KEY, isJumping);
+            aetherPlayer.setSyncedToServer(player.getId(), AetherPlayerAttachment.JUMPING_SYNC_KEY, isJumping);
         }
 
         boolean isMoving = isJumping || keys.forward() || keys.backward() || keys.left() || keys.right() || player.isFallFlying();
         if (isMoving != aetherPlayer.isMoving()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.MOVING_SYNC_KEY, isMoving);
+            aetherPlayer.setSyncedToServer(player.getId(), AetherPlayerAttachment.MOVING_SYNC_KEY, isMoving);
         }
 
         boolean isHitting = client.options.keyAttack.isDown();
         if (isHitting != aetherPlayer.isHitting()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.HITTING_SYNC_KEY, isHitting);
+            aetherPlayer.setSyncedToServer(player.getId(), AetherPlayerAttachment.HITTING_SYNC_KEY, isHitting);
         }
 
         boolean gravititeJumpActive = AetherKeys.GRAVITITE_JUMP_ABILITY.isDown();
         if (gravititeJumpActive != aetherPlayer.isGravititeJumpActive()) {
-            aetherPlayer.setSynced(player.getId(), AttachmentSyncable.SyncTarget.SERVER, AetherPlayerAttachment.GRAVITITE_JUMP_ACTIVE_SYNC_KEY, gravititeJumpActive);
+            aetherPlayer.setSyncedToServer(player.getId(), AetherPlayerAttachment.GRAVITITE_JUMP_ACTIVE_SYNC_KEY, gravititeJumpActive);
         }
     }
 

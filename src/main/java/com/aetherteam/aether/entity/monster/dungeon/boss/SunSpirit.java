@@ -17,7 +17,6 @@ import com.aetherteam.aether.entity.projectile.crystal.FireCrystal;
 import com.aetherteam.aether.entity.projectile.crystal.IceCrystal;
 import com.aetherteam.aether.mixin.mixins.common.accessor.LookAtPlayerGoalAccessor;
 import com.aetherteam.aether.network.packet.clientbound.BossInfoPacket;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.entity.boss.BossRoomTracker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -407,7 +406,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
                 data.setEternalDay(false);
                 data.updateEternalDay(this.level());
                 if (AetherConfig.SERVER.sync_aether_time.get()) {
-                    data.setSynced(-1, AttachmentSyncable.SyncTarget.DIMENSION, AetherTimeAttachment.SHOULD_WAIT_SYNC_KEY, true, this.level());
+                    data.setSyncedToDimension(-1, AetherTimeAttachment.SHOULD_WAIT_SYNC_KEY, true, this.level());
                 }
             }
         }

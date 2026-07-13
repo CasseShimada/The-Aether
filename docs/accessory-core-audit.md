@@ -12,6 +12,10 @@ The current source tree contains no Curios, `ForgeCaps`, or `neoforge:attachment
 
 Mob accessory drop chances now seed only the current `aether:gloves_slot` and `aether:pendant_slot` identifiers. The obsolete unnamespaced `hand` and `necklace` defaults are no longer created; arbitrary slot names in the current accessory inventory attachment remain preserved unchanged.
 
+## Current Attachment Sync Boundary
+
+Current attachment field synchronization uses explicit server, all-client, player, and dimension send methods. The former target enum and untyped context arguments have been removed; packet payload types, field keys, codecs, and Fabric attachment persistence remain unchanged. Accessory inventory snapshots continue to use their dedicated tracking-and-self dispatcher.
+
 ## Stage 1: Core Attachment Matrix
 
 | Module | Current State | Fabric-side Fix | Status |

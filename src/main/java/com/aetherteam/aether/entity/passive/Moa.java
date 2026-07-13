@@ -23,7 +23,6 @@ import com.aetherteam.aether.item.miscellaneous.MoaEggItem;
 import com.aetherteam.aether.network.packet.clientbound.MoaInteractPacket;
 import com.aetherteam.aether.perk.data.ServerPerkData;
 import com.aetherteam.aether.perk.types.MoaData;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -291,7 +290,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setLastRider(player.getUUID());
             }
             if (!player.level().isClientSide()) {
-                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.LAST_RIDDEN_MOA_SYNC_KEY, this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSyncedToClients(player.getId(), AetherPlayerAttachment.LAST_RIDDEN_MOA_SYNC_KEY, this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
                 if (player.level().getServer() != null) {
                     Map<UUID, MoaData> userSkinsData = ServerPerkData.MOA_SKIN_INSTANCE.getServerPerkData(player.level().getServer());
                     if (userSkinsData.containsKey(this.getLastRider())) { // Tracks a Moa Skin as being tied to this Moa and this passenger.

@@ -77,10 +77,10 @@ public class AetherTimeAttachment implements AttachmentSyncable {
                 if (!level.isClientSide() && level.getLevelData() instanceof AetherLevelData aetherLevelData) {
                     if (AetherConfig.SERVER.sync_aether_time.get()) {
                         if (aetherLevelData.getOverworldDayTime() == aetherLevelData.getDayTime()) {
-                            this.setSynced(-1, SyncTarget.DIMENSION, SHOULD_WAIT_SYNC_KEY, false, level);
+                            this.setSyncedToDimension(-1, SHOULD_WAIT_SYNC_KEY, false, level);
                         }
                     } else if (this.getShouldWait()) {
-                        this.setSynced(-1, SyncTarget.DIMENSION, SHOULD_WAIT_SYNC_KEY, false, level);
+                        this.setSyncedToDimension(-1, SHOULD_WAIT_SYNC_KEY, false, level);
                     }
                 }
             } else {
@@ -103,14 +103,14 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Sends the eternal day value to the client dimension.
      */
     public void updateEternalDay(Level level) {
-        this.setSynced(-1, SyncTarget.DIMENSION, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, level);
+        this.setSyncedToDimension(-1, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, level);
     }
 
     /**
      * Sends the eternal day value to the client player.
      */
     public void updateEternalDay(ServerPlayer player) {
-        this.setSynced(player.getId(), SyncTarget.PLAYER, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, player);
+        this.setSyncedToPlayer(player.getId(), ETERNAL_DAY_SYNC_KEY, this.isEternalDay, player);
     }
 
     public void setDayTime(long time) {

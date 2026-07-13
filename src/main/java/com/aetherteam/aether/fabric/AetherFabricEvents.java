@@ -4,7 +4,6 @@ import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.accessories.impl.AccessoryItemInteractions;
 import com.aetherteam.aether.accessories.impl.ArmorStandAccessoryInteractions;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.command.AetherCommands;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
@@ -83,7 +82,7 @@ public final class AetherFabricEvents {
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
             if (!player.level().isClientSide()) {
-                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSync(player.getId(), AttachmentSyncable.SyncTarget.CLIENT);
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSyncToClients(player.getId());
             }
             AetherTimeController.syncAetherTime(player);
             AccessoryRuntime.forceSync(player);

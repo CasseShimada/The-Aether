@@ -10,7 +10,6 @@ import com.aetherteam.aether.entity.projectile.PoisonNeedle;
 import com.aetherteam.aether.entity.projectile.dart.EnchantedDart;
 import com.aetherteam.aether.entity.projectile.dart.GoldenDart;
 import com.aetherteam.aether.entity.projectile.dart.PoisonDart;
-import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -49,11 +48,11 @@ public final class WeaponAbilities {
             Entity sourceEntity = source.getDirectEntity();
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (sourceEntity instanceof GoldenDart) {
-                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.GOLDEN_DART_COUNT_SYNC_KEY, data.getGoldenDartCount() + 1);
+                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.GOLDEN_DART_COUNT_SYNC_KEY, data.getGoldenDartCount() + 1);
             } else if (sourceEntity instanceof PoisonDart || sourceEntity instanceof PoisonNeedle) {
-                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.POISON_DART_COUNT_SYNC_KEY, data.getPoisonDartCount() + 1);
+                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.POISON_DART_COUNT_SYNC_KEY, data.getPoisonDartCount() + 1);
             } else if (sourceEntity instanceof EnchantedDart) {
-                data.setSynced(player.getId(), AttachmentSyncable.SyncTarget.CLIENT, AetherPlayerAttachment.ENCHANTED_DART_COUNT_SYNC_KEY, data.getEnchantedDartCount() + 1);
+                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.ENCHANTED_DART_COUNT_SYNC_KEY, data.getEnchantedDartCount() + 1);
             }
         }
     }
@@ -89,7 +88,7 @@ public final class WeaponAbilities {
             return;
         }
 
-        attachment.setSynced(arrow.getId(), AttachmentSyncable.SyncTarget.CLIENT, PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true);
+        attachment.setSyncedToClients(arrow.getId(), PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true);
         if (inGround) {
             if (inGroundTime % 5 == 0) {
                 spawnPhoenixArrowParticle(arrow);
