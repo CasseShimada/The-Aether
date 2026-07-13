@@ -1,7 +1,7 @@
 package com.aetherteam.aether.network;
 
 import com.aetherteam.aether.client.AetherClient;
-import com.aetherteam.aether.client.event.hooks.GuiBossBarHooks;
+import com.aetherteam.aether.client.gui.AetherBossBarTracker;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
 import com.aetherteam.aether.network.packet.AetherTimeSyncPacket;
 import com.aetherteam.aether.network.packet.PhoenixArrowSyncPacket;
@@ -49,8 +49,8 @@ public final class AetherNetworkingClient {
 
         registerClientReceiver(AetherTravelPacket.TYPE, AetherTravelPacket::execute);
         registerClientReceiver(AccessorySyncPacket.TYPE, AccessorySyncPacket::execute);
-        registerClientReceiver(BossInfoPacket.Display.TYPE, payload -> GuiBossBarHooks.displayBossEvent(payload.getBossEvent(), payload.getEntityID()));
-        registerClientReceiver(BossInfoPacket.Remove.TYPE, payload -> GuiBossBarHooks.removeBossEvent(payload.getBossEvent()));
+        registerClientReceiver(BossInfoPacket.Display.TYPE, payload -> AetherBossBarTracker.track(payload.getBossEvent(), payload.getEntityID()));
+        registerClientReceiver(BossInfoPacket.Remove.TYPE, payload -> AetherBossBarTracker.untrack(payload.getBossEvent()));
         registerClientReceiver(ClientDeveloperGlowPacket.Apply.TYPE, ClientDeveloperGlowPacket.Apply::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Remove.TYPE, ClientDeveloperGlowPacket.Remove::execute);
         registerClientReceiver(ClientDeveloperGlowPacket.Sync.TYPE, ClientDeveloperGlowPacket.Sync::execute);
