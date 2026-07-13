@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
 public class PigSlayerItem extends SwordItem {
-    public PigSlayerItem() {
-        super(AetherItemTiers.PIG_SLAYER, SwordItem.createAttributes(AetherItemTiers.PIG_SLAYER, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public PigSlayerItem(Item.Properties properties) {
+        super(AetherItemTiers.PIG_SLAYER, SwordItem.createAttributes(AetherItemTiers.PIG_SLAYER, 3.0F, -2.4F), properties);
     }
 
     /**

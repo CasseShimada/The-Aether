@@ -2,7 +2,6 @@ package com.aetherteam.aether.item.combat.loot;
 
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.attachment.AetherPlayerAttachment;
-import com.aetherteam.aether.item.AetherItems;
 import com.aetherteam.aether.item.EquipmentUtil;
 import com.aetherteam.aether.item.combat.AetherItemTiers;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
 public class VampireBladeItem extends SwordItem {
-    public VampireBladeItem() {
-        super(AetherItemTiers.VAMPIRE, SwordItem.createAttributes(AetherItemTiers.VAMPIRE, 3.0F, -2.4F), new Item.Properties().rarity(AetherItems.AETHER_LOOT));
+    public VampireBladeItem(Item.Properties properties) {
+        super(AetherItemTiers.VAMPIRE, SwordItem.createAttributes(AetherItemTiers.VAMPIRE, 3.0F, -2.4F), properties);
     }
 
     /**

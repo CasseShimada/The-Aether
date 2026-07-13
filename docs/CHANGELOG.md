@@ -200,5 +200,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated White Apple, Gummy Swet, and Healing Stone construction to keyed Properties while preserving food components, rarity, effects, and configurable healing behavior.
 - Migrated Lightning Knife, Phoenix Bow, and Cloud Staff construction to keyed Properties while preserving stack limits, durability, rarity, projectile behavior, attachments, and cloud minion controls.
 - Migrated Flaming Sword, Lightning Sword, and Holy Sword construction to keyed Properties while preserving tiers, attack attributes, rarity, enchantment handling, and combat abilities.
+- Migrated Vampire Blade, Pig Slayer, and Candy Cane Sword construction to keyed Properties while preserving tiers, attack attributes, rarity, healing, bonus damage, particles, and item drops.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
