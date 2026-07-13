@@ -253,9 +253,9 @@ public class AetherItems {
     public static final Item MUSIC_DISC_SLIDERS_WRATH = register("music_disc_sliders_wrath", properties -> new Item(properties.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(AetherJukeboxSongs.SLIDERS_WRATH)));
 
     public static final Item SKYROOT_BUCKET = register("skyroot_bucket", properties -> new SkyrootBucketItem(Fluids.EMPTY, properties.stacksTo(16)));
-    public static final Item SKYROOT_WATER_BUCKET = register("skyroot_water_bucket", () -> new SkyrootBucketItem(Fluids.WATER, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
-    public static final Item SKYROOT_POISON_BUCKET = register("skyroot_poison_bucket", () -> new SkyrootPoisonBucketItem(new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
-    public static final Item SKYROOT_REMEDY_BUCKET = register("skyroot_remedy_bucket", () -> new SkyrootRemedyBucketItem(new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1).rarity(Rarity.RARE)));
+    public static final Item SKYROOT_WATER_BUCKET = register("skyroot_water_bucket", properties -> new SkyrootBucketItem(Fluids.WATER, properties.craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
+    public static final Item SKYROOT_POISON_BUCKET = register("skyroot_poison_bucket", properties -> new SkyrootPoisonBucketItem(properties.craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
+    public static final Item SKYROOT_REMEDY_BUCKET = register("skyroot_remedy_bucket", properties -> new SkyrootRemedyBucketItem(properties.craftRemainder(SKYROOT_BUCKET).stacksTo(1).rarity(Rarity.RARE)));
     public static final Item SKYROOT_MILK_BUCKET = register("skyroot_milk_bucket", () -> new SkyrootMilkBucketItem(new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
     public static final Item SKYROOT_POWDER_SNOW_BUCKET = register("skyroot_powder_snow_bucket", () -> new SkyrootSolidBucketItem(Blocks.POWDER_SNOW, SoundEvents.BUCKET_EMPTY_POWDER_SNOW, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1)));
     public static final Item SKYROOT_COD_BUCKET = register("skyroot_cod_bucket", () -> new SkyrootMobBucketItem(EntityTypes.COD, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(SKYROOT_BUCKET).stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)));
