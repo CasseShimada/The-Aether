@@ -227,5 +227,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Leaves, Golden Oak Leaves, and Crystal Leaves to direct keyed Block registration while preserving double drops, particles, random ticks, spawn predicates, and leaf collision behavior.
 - Migrated Crystal Fruit Leaves, Holiday Leaves, and Decorated Holiday Leaves to direct keyed Block registration while preserving fruit behavior, particles, random ticks, spawn predicates, and leaf collision behavior.
 - Migrated Skyroot Log, Golden Oak Log, and Stripped Skyroot Log to direct keyed Block registration while preserving copied vanilla properties and log behavior.
+- Migrated Skyroot Wood, Golden Oak Wood, and Stripped Skyroot Wood to direct keyed Block registration while preserving copied vanilla properties and pillar behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

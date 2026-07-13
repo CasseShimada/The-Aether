@@ -79,9 +79,9 @@ public class AetherBlocks {
     public static final RotatedPillarBlock SKYROOT_LOG = registerKeyed("skyroot_log", key -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_LOG).setId(key)));
     public static final RotatedPillarBlock GOLDEN_OAK_LOG = registerKeyed("golden_oak_log", key -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_LOG).setId(key)));
     public static final RotatedPillarBlock STRIPPED_SKYROOT_LOG = registerKeyed("stripped_skyroot_log", key -> new RotatedPillarBlock(Block.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG).setId(key)));
-    public static final RotatedPillarBlock SKYROOT_WOOD = register("skyroot_wood", () -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_WOOD)));
-    public static final RotatedPillarBlock GOLDEN_OAK_WOOD = register("golden_oak_wood", () -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_WOOD)));
-    public static final RotatedPillarBlock STRIPPED_SKYROOT_WOOD = register("stripped_skyroot_wood", () -> new RotatedPillarBlock(Block.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)));
+    public static final RotatedPillarBlock SKYROOT_WOOD = registerKeyed("skyroot_wood", key -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(key)));
+    public static final RotatedPillarBlock GOLDEN_OAK_WOOD = registerKeyed("golden_oak_wood", key -> new AetherLogBlock(Block.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(key)));
+    public static final RotatedPillarBlock STRIPPED_SKYROOT_WOOD = registerKeyed("stripped_skyroot_wood", key -> new RotatedPillarBlock(Block.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD).setId(key)));
 
     public static final Block SKYROOT_PLANKS = registerKeyed("skyroot_planks", key -> new Block(Block.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(key)));
     public static final Block HOLYSTONE_BRICKS = registerKeyed("holystone_bricks", key -> new Block(Block.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F, 6.0F).requiresCorrectToolForDrops().setId(key)));
