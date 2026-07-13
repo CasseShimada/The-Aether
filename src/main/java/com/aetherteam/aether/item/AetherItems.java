@@ -268,8 +268,8 @@ public class AetherItems {
     public static final Item SKYROOT_BOAT = register("skyroot_boat", properties -> new SkyrootBoatItem(false, properties.stacksTo(1)));
     public static final Item SKYROOT_CHEST_BOAT = register("skyroot_chest_boat", properties -> new SkyrootBoatItem(true, properties.stacksTo(1)));
 
-    public static final Item COLD_PARACHUTE = register("cold_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.COLD_PARACHUTE, new Item.Properties().durability(1)));
-    public static final Item GOLDEN_PARACHUTE = register("golden_parachute", () -> new ParachuteItem(() -> AetherEntityTypes.GOLDEN_PARACHUTE, new Item.Properties().durability(20)));
+    public static final Item COLD_PARACHUTE = register("cold_parachute", properties -> new ParachuteItem(() -> AetherEntityTypes.COLD_PARACHUTE, properties.durability(1)));
+    public static final Item GOLDEN_PARACHUTE = register("golden_parachute", properties -> new ParachuteItem(() -> AetherEntityTypes.GOLDEN_PARACHUTE, properties.durability(20)));
 
     public static final Item BLUE_MOA_EGG = register("blue_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.BLUE, 0x7777FF, properties));
     public static final Item WHITE_MOA_EGG = register("white_moa_egg", properties -> new MoaEggItem(AetherMoaTypes.WHITE, 0xFFFFFF, properties));
