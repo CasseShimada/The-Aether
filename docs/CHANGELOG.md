@@ -192,5 +192,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed registration for all armor items by migrating the Sentry Boots while preserving delayed material lookup, armor slot, durability, and loot rarity.
 - Migrated the Aechor Plant, Aerbunny, and Aerwhale spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 - Migrated the Cockatrice, Fire Minion, and Flying Cow spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
+- Migrated the Mimic, Moa, and Phyg spawn eggs to explicit keyed vanilla Item registration while preserving entity bindings and tint colors.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
