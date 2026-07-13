@@ -176,9 +176,9 @@ public class AetherItems {
     public static final Item PHOENIX_BOOTS = register("phoenix_boots", properties -> new ArmorItem(() -> AetherArmorMaterials.PHOENIX.value(), ArmorItem.Type.BOOTS, properties.durability(ArmorItem.Type.BOOTS.getDurability(33)).rarity(AETHER_LOOT).fireResistant()));
 
     public static final Item OBSIDIAN_HELMET = register("obsidian_helmet", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.HELMET, properties.durability(ArmorItem.Type.HELMET.getDurability(37)).rarity(AETHER_LOOT)));
-    public static final Item OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", () -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(37)).rarity(AETHER_LOOT)));
-    public static final Item OBSIDIAN_LEGGINGS = register("obsidian_leggings", () -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(37)).rarity(AETHER_LOOT)));
-    public static final Item OBSIDIAN_BOOTS = register("obsidian_boots", () -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(37)).rarity(AETHER_LOOT)));
+    public static final Item OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.CHESTPLATE, properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(37)).rarity(AETHER_LOOT)));
+    public static final Item OBSIDIAN_LEGGINGS = register("obsidian_leggings", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.LEGGINGS, properties.durability(ArmorItem.Type.LEGGINGS.getDurability(37)).rarity(AETHER_LOOT)));
+    public static final Item OBSIDIAN_BOOTS = register("obsidian_boots", properties -> new ArmorItem(() -> AetherArmorMaterials.OBSIDIAN.value(), ArmorItem.Type.BOOTS, properties.durability(ArmorItem.Type.BOOTS.getDurability(37)).rarity(AETHER_LOOT)));
 
     public static final Item SENTRY_BOOTS = register("sentry_boots", () -> new ArmorItem(() -> AetherArmorMaterials.SENTRY.value(), ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15)).rarity(AETHER_LOOT)));
 
