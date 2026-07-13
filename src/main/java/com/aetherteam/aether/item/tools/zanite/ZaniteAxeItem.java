@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
  * Zanite mining speed boost behavior is called by {@link com.aetherteam.aether.item.tools.abilities.ToolAbilities#handleZaniteToolAbility}.
  */
 public class ZaniteAxeItem extends AxeItem implements ZaniteTool {
-    public ZaniteAxeItem() {
-        super(AetherItemTiers.ZANITE, 6.0F, -3.1F, new Item.Properties());
+    public ZaniteAxeItem(Item.Properties properties) {
+        super(AetherItemTiers.ZANITE, 6.0F, -3.1F, properties);
     }
 }
