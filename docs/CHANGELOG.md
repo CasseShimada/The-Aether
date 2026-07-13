@@ -224,5 +224,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Quicksoil, Aether Dirt Path, and Cold Aercloud to direct keyed Block registration while preserving friction, instruments, collision shape, occlusion, and terrain behavior.
 - Migrated Blue Aercloud, Golden Aercloud, and Icestone to direct keyed Block registration while preserving instruments, shapes, random ticks, sounds, and tool requirements.
 - Migrated Ambrosium Ore, Zanite Ore, and Gravitite Ore to direct keyed Block registration while preserving experience ranges, double drops, floating behavior, random ticks, and tool requirements.
+- Migrated Skyroot Leaves, Golden Oak Leaves, and Crystal Leaves to direct keyed Block registration while preserving double drops, particles, random ticks, spawn predicates, and leaf collision behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
