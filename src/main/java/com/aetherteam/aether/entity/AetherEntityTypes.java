@@ -131,13 +131,13 @@ public final class AetherEntityTypes {
 
     // Projectiles
     public static final EntityType<ZephyrSnowball> ZEPHYR_SNOWBALL = register("zephyr_snowball",
-            EntityType.Builder.<ZephyrSnowball>of(ZephyrSnowball::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build(key("zephyr_snowball")));
+            key -> EntityType.Builder.<ZephyrSnowball>of(ZephyrSnowball::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build(key));
 
     public static final EntityType<CloudCrystal> CLOUD_CRYSTAL = register("cloud_crystal",
-            EntityType.Builder.<CloudCrystal>of(CloudCrystal::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build(key("cloud_crystal")));
+            key -> EntityType.Builder.<CloudCrystal>of(CloudCrystal::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build(key));
 
     public static final EntityType<FireCrystal> FIRE_CRYSTAL = register("fire_crystal",
-            EntityType.Builder.<FireCrystal>of(FireCrystal::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key("fire_crystal")));
+            key -> EntityType.Builder.<FireCrystal>of(FireCrystal::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key));
 
     public static final EntityType<IceCrystal> ICE_CRYSTAL = register("ice_crystal",
             EntityType.Builder.<IceCrystal>of(IceCrystal::new, MobCategory.MISC).sized(1.2F, 1.2F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key("ice_crystal")));
