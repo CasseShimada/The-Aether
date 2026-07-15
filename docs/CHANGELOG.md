@@ -250,5 +250,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Icestone Stairs, Holystone Brick Stairs, and Aerogel Stairs to direct keyed Block registration while preserving base block states, copied properties, special block behavior, and view-blocking rules.
 - Migrated Skyroot Slab, Carved Slab, and Angelic Slab to direct keyed Block registration while preserving copied properties, strength overrides, and slab behavior.
 - Migrated Hellfire Slab, Holystone Slab, and Mossy Holystone Slab to direct keyed Block registration while preserving copied properties, strength overrides, and slab behavior.
+- Migrated Icestone Slab, Holystone Brick Slab, and Aerogel Slab to direct keyed Block registration while preserving copied properties, strength overrides, special block behavior, and view-blocking rules.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

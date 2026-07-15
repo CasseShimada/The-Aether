@@ -216,12 +216,12 @@ public class AetherBlocks {
             key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).strength(0.5F, 6.0F).setId(key)));
     public static final SlabBlock MOSSY_HOLYSTONE_SLAB = registerKeyed("mossy_holystone_slab",
             key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).strength(0.5F, 6.0F).setId(key)));
-    public static final SlabBlock ICESTONE_SLAB = register("icestone_slab",
-            () -> new IcestoneSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).strength(0.5F, 6.0F)));
-    public static final SlabBlock HOLYSTONE_BRICK_SLAB = register("holystone_brick_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS).strength(2.0F, 6.0F)));
-    public static final SlabBlock AEROGEL_SLAB = register("aerogel_slab",
-            () -> new AerogelSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).strength(1.0F, 2000.0F).isViewBlocking(AetherBlocks::never)));
+    public static final SlabBlock ICESTONE_SLAB = registerKeyed("icestone_slab",
+            key -> new IcestoneSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).strength(0.5F, 6.0F).setId(key)));
+    public static final SlabBlock HOLYSTONE_BRICK_SLAB = registerKeyed("holystone_brick_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS).strength(2.0F, 6.0F).setId(key)));
+    public static final SlabBlock AEROGEL_SLAB = registerKeyed("aerogel_slab",
+            key -> new AerogelSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).strength(1.0F, 2000.0F).isViewBlocking(AetherBlocks::never).setId(key)));
 
     public static final Block SUN_ALTAR = register("sun_altar",
             () -> new SunAltarBlock(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).sound(SoundType.METAL)));
