@@ -107,12 +107,12 @@ public class AetherBlocks {
 
     public static final Block BERRY_BUSH = registerKeyed("berry_bush", key -> new BerryBushBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noOcclusion().isValidSpawn(AetherBlocks::ocelotOrParrot).isRedstoneConductor(AetherBlocks::never).isSuffocating(AetherBlocks::never).isViewBlocking(AetherBlocks::never).setId(key)));
     public static final Block BERRY_BUSH_STEM = registerKeyed("berry_bush_stem", key -> new BerryBushStemBlock(Block.Properties.of().mapColor(MapColor.GRASS).pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GRASS).noCollision().setId(key)));
-    public static final FlowerPotBlock POTTED_BERRY_BUSH = registerBlockOnly("potted_berry_bush", () -> new FlowerPotBlock(BERRY_BUSH, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
-    public static final FlowerPotBlock POTTED_BERRY_BUSH_STEM = registerBlockOnly("potted_berry_bush_stem", () -> new FlowerPotBlock(BERRY_BUSH_STEM, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
+    public static final FlowerPotBlock POTTED_BERRY_BUSH = registerBlockOnly("potted_berry_bush", key -> new FlowerPotBlock(BERRY_BUSH, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
+    public static final FlowerPotBlock POTTED_BERRY_BUSH_STEM = registerBlockOnly("potted_berry_bush_stem", key -> new FlowerPotBlock(BERRY_BUSH_STEM, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
 
     public static final Block PURPLE_FLOWER = registerKeyed("purple_flower", key -> new AetherFlowerBlock(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION), 12, Block.Properties.ofFullCopy(Blocks.DANDELION).setId(key)));
     public static final Block WHITE_FLOWER = registerKeyed("white_flower", key -> new AetherFlowerBlock(MobEffects.SLOW_FALLING, 4, Block.Properties.ofFullCopy(Blocks.DANDELION).setId(key)));
-    public static final FlowerPotBlock POTTED_PURPLE_FLOWER = registerBlockOnly("potted_purple_flower", () -> new FlowerPotBlock(PURPLE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
+    public static final FlowerPotBlock POTTED_PURPLE_FLOWER = registerBlockOnly("potted_purple_flower", key -> new FlowerPotBlock(PURPLE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
     public static final FlowerPotBlock POTTED_WHITE_FLOWER = registerBlockOnly("potted_white_flower", () -> new FlowerPotBlock(WHITE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
 
     public static final SaplingBlock SKYROOT_SAPLING = registerKeyed("skyroot_sapling", key -> new SaplingBlock(AetherTreeGrowers.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(key)));
@@ -276,6 +276,12 @@ public class AetherBlocks {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
         T block = RegistryConstructionContext.constructWithId(Registries.BLOCK, id, supplier);
         return Registry.register(BuiltInRegistries.BLOCK, id, block);
+    }
+
+    private static <B extends Block> B registerBlockOnly(String name, Function<ResourceKey<Block>, B> factory) {
+        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id);
+        return Registry.register(BuiltInRegistries.BLOCK, id, factory.apply(key));
     }
 
     private static <B extends Block> B registerKeyed(String name, Function<ResourceKey<Block>, B> factory) {

@@ -261,5 +261,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Sun Altar to direct keyed Block registration while preserving its block entity binding, time-control behavior, map color, instrument, strength, and sound.
 - Migrated Skyroot Sign and Skyroot Hanging Sign to direct keyed Block registration while preserving wood types, specialized sign items, wall-block pairings, and existing block properties.
 - Migrated Skyroot Bed to direct keyed Block registration while preserving its block entity binding, cyan bed properties, single-item stack limit, and bed behavior; removed the now-unused Supplier-based Block-and-BlockItem registration helper.
+- Added keyed registration for blocks without BlockItems and migrated Potted Berry Bush, Potted Berry Bush Stem, and Potted Purple Flower while preserving their contents and copied vanilla flower-pot properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
