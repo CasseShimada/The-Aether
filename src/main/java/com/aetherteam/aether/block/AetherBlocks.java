@@ -191,12 +191,12 @@ public class AetherBlocks {
             key -> new StairBlock(CARVED_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).setId(key)));
     public static final StairBlock ANGELIC_STAIRS = registerKeyed("angelic_stairs",
             key -> new StairBlock(ANGELIC_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).setId(key)));
-    public static final StairBlock HELLFIRE_STAIRS = register("hellfire_stairs",
-            () -> new StairBlock(HELLFIRE_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE)));
-    public static final StairBlock HOLYSTONE_STAIRS = register("holystone_stairs",
-            () -> new StairBlock(HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE)));
-    public static final StairBlock MOSSY_HOLYSTONE_STAIRS = register("mossy_holystone_stairs",
-            () -> new StairBlock(MOSSY_HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE)));
+    public static final StairBlock HELLFIRE_STAIRS = registerKeyed("hellfire_stairs",
+            key -> new StairBlock(HELLFIRE_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).setId(key)));
+    public static final StairBlock HOLYSTONE_STAIRS = registerKeyed("holystone_stairs",
+            key -> new StairBlock(HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).setId(key)));
+    public static final StairBlock MOSSY_HOLYSTONE_STAIRS = registerKeyed("mossy_holystone_stairs",
+            key -> new StairBlock(MOSSY_HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).setId(key)));
     public static final StairBlock ICESTONE_STAIRS = register("icestone_stairs",
             () -> new IcestoneStairsBlock(ICESTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ICESTONE)));
     public static final StairBlock HOLYSTONE_BRICK_STAIRS = register("holystone_brick_stairs",
