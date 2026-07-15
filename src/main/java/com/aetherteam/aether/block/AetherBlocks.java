@@ -210,12 +210,12 @@ public class AetherBlocks {
             key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).strength(0.5F, 6.0F).setId(key)));
     public static final SlabBlock ANGELIC_SLAB = registerKeyed("angelic_slab",
             key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).strength(0.5F, 6.0F).setId(key)));
-    public static final SlabBlock HELLFIRE_SLAB = register("hellfire_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).strength(0.5F, 6.0F)));
-    public static final SlabBlock HOLYSTONE_SLAB = register("holystone_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).strength(0.5F, 6.0F)));
-    public static final SlabBlock MOSSY_HOLYSTONE_SLAB = register("mossy_holystone_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).strength(0.5F, 6.0F)));
+    public static final SlabBlock HELLFIRE_SLAB = registerKeyed("hellfire_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).strength(0.5F, 6.0F).setId(key)));
+    public static final SlabBlock HOLYSTONE_SLAB = registerKeyed("holystone_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).strength(0.5F, 6.0F).setId(key)));
+    public static final SlabBlock MOSSY_HOLYSTONE_SLAB = registerKeyed("mossy_holystone_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).strength(0.5F, 6.0F).setId(key)));
     public static final SlabBlock ICESTONE_SLAB = register("icestone_slab",
             () -> new IcestoneSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).strength(0.5F, 6.0F)));
     public static final SlabBlock HOLYSTONE_BRICK_SLAB = register("holystone_brick_slab",
