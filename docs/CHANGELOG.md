@@ -257,5 +257,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Treasure Chest to direct keyed Block registration while preserving its block entity binding, map color, instrument, unbreakable strength, tool requirements, and locked treasure behavior.
 - Migrated Altar to direct keyed Block registration while preserving its block entity binding, menu and recipe behavior, map color, instrument, and strength.
 - Migrated Freezer to direct keyed Block registration while preserving its block entity binding, menu and recipe behavior, map color, instrument, and strength.
+- Migrated Incubator to direct keyed Block registration while preserving its block entity binding, menu and incubation behavior, map color, instrument, and strength.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

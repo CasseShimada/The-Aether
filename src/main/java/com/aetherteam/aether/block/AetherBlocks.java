@@ -95,7 +95,7 @@ public class AetherBlocks {
 
     public static final Block ALTAR = registerKeyed("altar", key -> new AltarBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.5F).setId(key)));
     public static final Block FREEZER = registerKeyed("freezer", key -> new FreezerBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).setId(key)));
-    public static final Block INCUBATOR = register("incubator", () -> new IncubatorBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F)));
+    public static final Block INCUBATOR = registerKeyed("incubator", key -> new IncubatorBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).setId(key)));
 
     public static final Block AMBROSIUM_WALL_TORCH = registerBlockOnly("ambrosium_wall_torch", () -> new WallTorchBlock(ParticleTypes.SMOKE, Block.Properties.ofFullCopy(Blocks.WALL_TORCH)));
     public static final Block AMBROSIUM_TORCH = registerKeyed("ambrosium_torch", key -> new TorchBlock(ParticleTypes.SMOKE, Block.Properties.ofFullCopy(Blocks.TORCH).setId(key)));
