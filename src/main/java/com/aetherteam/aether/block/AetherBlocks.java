@@ -179,9 +179,9 @@ public class AetherBlocks {
     public static final WallBlock CARVED_WALL = registerKeyed("carved_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).forceSolidOn().setId(key)));
     public static final WallBlock ANGELIC_WALL = registerKeyed("angelic_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).forceSolidOn().setId(key)));
     public static final WallBlock HELLFIRE_WALL = registerKeyed("hellfire_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).forceSolidOn().setId(key)));
-    public static final WallBlock HOLYSTONE_WALL = register("holystone_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).forceSolidOn()));
-    public static final WallBlock MOSSY_HOLYSTONE_WALL = register("mossy_holystone_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).forceSolidOn()));
-    public static final WallBlock ICESTONE_WALL = register("icestone_wall", () -> new IcestoneWallBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).forceSolidOn()));
+    public static final WallBlock HOLYSTONE_WALL = registerKeyed("holystone_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).forceSolidOn().setId(key)));
+    public static final WallBlock MOSSY_HOLYSTONE_WALL = registerKeyed("mossy_holystone_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).forceSolidOn().setId(key)));
+    public static final WallBlock ICESTONE_WALL = registerKeyed("icestone_wall", key -> new IcestoneWallBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).forceSolidOn().setId(key)));
     public static final WallBlock HOLYSTONE_BRICK_WALL = register("holystone_brick_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS).forceSolidOn()));
     public static final WallBlock AEROGEL_WALL = register("aerogel_wall", () -> new AerogelWallBlock(Block.Properties.of().mapColor(MapColor.DIAMOND).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).strength(1.0F, 2000.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().isViewBlocking(AetherBlocks::never).noOcclusion()));
 

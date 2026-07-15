@@ -243,5 +243,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Trapdoor, Skyroot Button, and Skyroot Pressure Plate to direct keyed Block registration while preserving block set types, button press duration, redstone behavior, and copied vanilla properties.
 - Migrated Holystone Button and Holystone Pressure Plate to direct keyed Block registration while preserving stone block set behavior, button press duration, redstone behavior, and existing block properties.
 - Migrated Carved Wall, Angelic Wall, and Hellfire Wall to direct keyed Block registration while preserving copied stone properties, solid-face behavior, and wall connections.
+- Migrated Holystone Wall, Mossy Holystone Wall, and Icestone Wall to direct keyed Block registration while preserving copied terrain properties, solid-face behavior, wall connections, and Icestone behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
