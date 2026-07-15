@@ -279,5 +279,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Ice Crystal, Thunder Crystal, and Golden Dart to the shared keyed entity factory while preserving dimensions, tracking ranges, update intervals, and fire immunity.
 - Migrated Poison Dart, Enchanted Dart, and Poison Needle to the shared keyed entity factory while preserving dimensions, tracking ranges, and update intervals.
 - Completed keyed entity registration for Lightning Knife and Hammer Projectile, then removed the duplicate entity key helper and prebuilt-value registration overload; every Aether entity builder now receives the exact `ResourceKey<EntityType<?>>` used by vanilla registration.
+- Renamed the retained client sky implementation away from generic hook terminology while preserving its Minecraft Mixin injection points, environment attribute layers, celestial rendering, and Aether time calculations.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

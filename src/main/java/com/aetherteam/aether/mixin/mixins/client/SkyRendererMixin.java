@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
-import com.aetherteam.aether.client.renderer.level.AetherSkyRenderHooks;
+import com.aetherteam.aether.client.renderer.level.AetherSkyRendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -32,17 +32,17 @@ public abstract class SkyRendererMixin {
 
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void aether$adjustRenderState(ClientLevel level, float partialTick, Camera camera, SkyRenderState renderState, CallbackInfo ci) {
-        AetherSkyRenderHooks.adjustSkyRenderState(level, partialTick, renderState);
+        AetherSkyRendering.adjustSkyRenderState(level, partialTick, renderState);
     }
 
     @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"), cancellable = true)
     private void aether$renderAetherCelestials(PoseStack poseStack, float sunAngle, float moonAngle, float starAngle, MoonPhase moonPhase, float rainBrightness, float starBrightness, CallbackInfo ci) {
         ClientLevel level = Minecraft.getInstance().level;
-        if (!AetherSkyRenderHooks.isCustomSkyEnabled(level)) {
+        if (!AetherSkyRendering.isCustomSkyEnabled(level)) {
             return;
         }
 
-        float[] opacities = AetherSkyRenderHooks.getCelestialOpacities(level, rainBrightness);
+        float[] opacities = AetherSkyRendering.getCelestialOpacities(level, rainBrightness);
         float sunOpacity = opacities[0];
         float moonOpacity = opacities[1];
 
@@ -77,7 +77,7 @@ public abstract class SkyRendererMixin {
 
     @Inject(method = "shouldRenderDarkDisc", at = @At("HEAD"), cancellable = true)
     private void aether$disableDarkDiscInAether(float partialTick, ClientLevel level, CallbackInfoReturnable<Boolean> cir) {
-        if (AetherSkyRenderHooks.isAetherLevel(level)) {
+        if (AetherSkyRendering.isAetherLevel(level)) {
             cir.setReturnValue(false);
         }
     }

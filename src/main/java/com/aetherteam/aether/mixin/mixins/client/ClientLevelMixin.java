@@ -1,6 +1,6 @@
 package com.aetherteam.aether.mixin.mixins.client;
 
-import com.aetherteam.aether.client.renderer.level.AetherSkyRenderHooks;
+import com.aetherteam.aether.client.renderer.level.AetherSkyRendering;
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
@@ -22,7 +22,7 @@ public class ClientLevelMixin {
 
         EnvironmentAttributeSystem.Builder result = cir.getReturnValue();
         result.addTimeBasedLayer(EnvironmentAttributes.SKY_LIGHT_FACTOR, (current, tickId) -> {
-            float timeOfDay = AetherSkyRenderHooks.getAetherTimeOfDay(level, 0.0F);
+            float timeOfDay = AetherSkyRendering.getAetherTimeOfDay(level, 0.0F);
             float skyLightFactor = Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.5F;
             skyLightFactor = Mth.clamp(skyLightFactor, 0.0F, 1.0F);
             skyLightFactor *= 1.0F - level.getRainLevel(1.0F) * (5.0F / 16.0F);
@@ -31,9 +31,9 @@ public class ClientLevelMixin {
         });
 
         result.addTimeBasedLayer(EnvironmentAttributes.SKY_COLOR, (current, tickId) ->
-                AetherSkyRenderHooks.getAetherSkyColor(level, 0.0F));
+                AetherSkyRendering.getAetherSkyColor(level, 0.0F));
 
         result.addTimeBasedLayer(EnvironmentAttributes.CLOUD_COLOR, (current, tickId) ->
-                AetherSkyRenderHooks.getAetherCloudColor(level, 0.0F));
+                AetherSkyRendering.getAetherCloudColor(level, 0.0F));
     }
 }

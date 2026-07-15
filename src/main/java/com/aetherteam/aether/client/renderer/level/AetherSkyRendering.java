@@ -14,8 +14,8 @@ import net.minecraft.world.level.dimension.DimensionType;
 
 import javax.annotation.Nullable;
 
-public final class AetherSkyRenderHooks {
-    private AetherSkyRenderHooks() {
+public final class AetherSkyRendering {
+    private AetherSkyRendering() {
     }
 
     public static boolean isAetherLevel(@Nullable ClientLevel level) {
