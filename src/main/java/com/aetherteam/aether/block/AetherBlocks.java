@@ -226,7 +226,7 @@ public class AetherBlocks {
     public static final Block SUN_ALTAR = register("sun_altar",
             () -> new SunAltarBlock(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).sound(SoundType.METAL)));
 
-    public static final Block SKYROOT_BOOKSHELF = register("skyroot_bookshelf", () -> new BookshelfBlock(Block.Properties.ofFullCopy(Blocks.BOOKSHELF)));
+    public static final Block SKYROOT_BOOKSHELF = registerKeyed("skyroot_bookshelf", key -> new BookshelfBlock(Block.Properties.ofFullCopy(Blocks.BOOKSHELF).setId(key)));
 
     public static final BedBlock SKYROOT_BED = register("skyroot_bed", () -> new SkyrootBedBlock(Block.Properties.ofFullCopy(Blocks.BED.pick(DyeColor.CYAN))));
 
