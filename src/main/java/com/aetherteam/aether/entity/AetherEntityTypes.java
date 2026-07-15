@@ -140,13 +140,13 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.<FireCrystal>of(FireCrystal::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key));
 
     public static final EntityType<IceCrystal> ICE_CRYSTAL = register("ice_crystal",
-            EntityType.Builder.<IceCrystal>of(IceCrystal::new, MobCategory.MISC).sized(1.2F, 1.2F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key("ice_crystal")));
+            key -> EntityType.Builder.<IceCrystal>of(IceCrystal::new, MobCategory.MISC).sized(1.2F, 1.2F).clientTrackingRange(4).updateInterval(10).fireImmune().build(key));
 
     public static final EntityType<ThunderCrystal> THUNDER_CRYSTAL = register("thunder_crystal",
-            EntityType.Builder.<ThunderCrystal>of(ThunderCrystal::new, MobCategory.MISC).sized(0.7F, 0.7F).updateInterval(2).build(key("thunder_crystal")));
+            key -> EntityType.Builder.<ThunderCrystal>of(ThunderCrystal::new, MobCategory.MISC).sized(0.7F, 0.7F).updateInterval(2).build(key));
 
     public static final EntityType<GoldenDart> GOLDEN_DART = register("golden_dart",
-            EntityType.Builder.<GoldenDart>of(GoldenDart::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(key("golden_dart")));
+            key -> EntityType.Builder.<GoldenDart>of(GoldenDart::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(key));
 
     public static final EntityType<PoisonDart> POISON_DART = register("poison_dart",
             EntityType.Builder.<PoisonDart>of(PoisonDart::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(key("poison_dart")));
