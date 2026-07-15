@@ -41,16 +41,18 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 
+import java.util.function.Function;
+
 public final class AetherEntityTypes {
     // Passive Mobs
     public static final EntityType<Phyg> PHYG = register("phyg",
-            EntityType.Builder.of(Phyg::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10).build(key("phyg")));
+            key -> EntityType.Builder.of(Phyg::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10).build(key));
 
     public static final EntityType<FlyingCow> FLYING_COW = register("flying_cow",
-            EntityType.Builder.of(FlyingCow::new, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10).build(key("flying_cow")));
+            key -> EntityType.Builder.of(FlyingCow::new, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Sheepuff> SHEEPUFF = register("sheepuff",
-            EntityType.Builder.of(Sheepuff::new, MobCategory.CREATURE).sized(0.9F, 1.3F).clientTrackingRange(10).build(key("sheepuff")));
+            key -> EntityType.Builder.of(Sheepuff::new, MobCategory.CREATURE).sized(0.9F, 1.3F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Moa> MOA = register("moa",
             EntityType.Builder.of(Moa::new, MobCategory.CREATURE).sized(0.9F, 2.15F).clientTrackingRange(10).build(key("moa")));
@@ -217,6 +219,12 @@ public final class AetherEntityTypes {
 
     private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name, EntityType<T> type) {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
+    }
+
+    private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name, Function<ResourceKey<EntityType<?>>, EntityType<T>> factory) {
+        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, factory.apply(key));
     }
 
     private AetherEntityTypes() {
