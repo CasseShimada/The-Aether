@@ -112,13 +112,13 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.<SkyrootBoat>of(SkyrootBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key));
 
     public static final EntityType<SkyrootChestBoat> SKYROOT_CHEST_BOAT = register("skyroot_chest_boat",
-            EntityType.Builder.<SkyrootChestBoat>of(SkyrootChestBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key("skyroot_chest_boat")));
+            key -> EntityType.Builder.<SkyrootChestBoat>of(SkyrootChestBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key));
 
     public static final EntityType<CloudMinion> CLOUD_MINION = register("cloud_minion",
-            EntityType.Builder.<CloudMinion>of(CloudMinion::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(5).build(key("cloud_minion")));
+            key -> EntityType.Builder.<CloudMinion>of(CloudMinion::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(5).build(key));
 
     public static final EntityType<Parachute> COLD_PARACHUTE = register("cold_parachute",
-            EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key("cold_parachute")));
+            key -> EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key));
 
     public static final EntityType<Parachute> GOLDEN_PARACHUTE = register("golden_parachute",
             EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key("golden_parachute")));
