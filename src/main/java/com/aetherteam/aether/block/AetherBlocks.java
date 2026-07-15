@@ -197,12 +197,12 @@ public class AetherBlocks {
             key -> new StairBlock(HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).setId(key)));
     public static final StairBlock MOSSY_HOLYSTONE_STAIRS = registerKeyed("mossy_holystone_stairs",
             key -> new StairBlock(MOSSY_HOLYSTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).setId(key)));
-    public static final StairBlock ICESTONE_STAIRS = register("icestone_stairs",
-            () -> new IcestoneStairsBlock(ICESTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ICESTONE)));
-    public static final StairBlock HOLYSTONE_BRICK_STAIRS = register("holystone_brick_stairs",
-            () -> new StairBlock(HOLYSTONE_BRICKS.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS)));
-    public static final StairBlock AEROGEL_STAIRS = register("aerogel_stairs",
-            () -> new AerogelStairsBlock(AEROGEL.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).isViewBlocking(AetherBlocks::never)));
+    public static final StairBlock ICESTONE_STAIRS = registerKeyed("icestone_stairs",
+            key -> new IcestoneStairsBlock(ICESTONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).setId(key)));
+    public static final StairBlock HOLYSTONE_BRICK_STAIRS = registerKeyed("holystone_brick_stairs",
+            key -> new StairBlock(HOLYSTONE_BRICKS.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS).setId(key)));
+    public static final StairBlock AEROGEL_STAIRS = registerKeyed("aerogel_stairs",
+            key -> new AerogelStairsBlock(AEROGEL.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).isViewBlocking(AetherBlocks::never).setId(key)));
 
     public static final SlabBlock SKYROOT_SLAB = register("skyroot_slab",
             () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.SKYROOT_PLANKS).strength(2.0F, 3.0F)));
