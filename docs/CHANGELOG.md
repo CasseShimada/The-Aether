@@ -239,5 +239,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Treasure Doorway Carved Stone, Treasure Doorway Sentry Stone, and Treasure Doorway Angelic Stone to direct keyed Block registration while preserving copied locked-stone properties and treasure doorway behavior.
 - Migrated Treasure Doorway Light Angelic Stone, Treasure Doorway Hellfire Stone, and Treasure Doorway Light Hellfire Stone to direct keyed Block registration while preserving copied locked-stone properties, light levels, and treasure doorway behavior.
 - Migrated Pillar and Pillar Top to direct keyed Block registration while preserving orientation behavior, map color, instrument, sound, strength, and tool requirements.
+- Migrated Skyroot Fence, Skyroot Fence Gate, and Skyroot Door to direct keyed Block registration while preserving wood types, block set types, interaction behavior, and copied vanilla properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

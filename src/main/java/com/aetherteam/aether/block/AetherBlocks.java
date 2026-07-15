@@ -166,9 +166,9 @@ public class AetherBlocks {
     public static final Block PRESENT = registerKeyed("present",
             key -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL).strength(0.1F).sound(SoundType.WOOL).setId(key)));
 
-    public static final FenceBlock SKYROOT_FENCE = register("skyroot_fence", () -> new FenceBlock(Block.Properties.ofFullCopy(Blocks.OAK_FENCE)));
-    public static final FenceGateBlock SKYROOT_FENCE_GATE = register("skyroot_fence_gate", () -> new FenceGateBlock(AetherWoodTypes.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)));
-    public static final DoorBlock SKYROOT_DOOR = register("skyroot_door", () -> new DoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_DOOR)));
+    public static final FenceBlock SKYROOT_FENCE = registerKeyed("skyroot_fence", key -> new FenceBlock(Block.Properties.ofFullCopy(Blocks.OAK_FENCE).setId(key)));
+    public static final FenceGateBlock SKYROOT_FENCE_GATE = registerKeyed("skyroot_fence_gate", key -> new FenceGateBlock(AetherWoodTypes.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE).setId(key)));
+    public static final DoorBlock SKYROOT_DOOR = registerKeyed("skyroot_door", key -> new DoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_DOOR).setId(key)));
     public static final TrapDoorBlock SKYROOT_TRAPDOOR = register("skyroot_trapdoor", () -> new TrapDoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)));
     public static final ButtonBlock SKYROOT_BUTTON = register("skyroot_button", () -> new ButtonBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, 30, Block.Properties.ofFullCopy(Blocks.OAK_BUTTON)));
     public static final PressurePlateBlock SKYROOT_PRESSURE_PLATE = register("skyroot_pressure_plate", () -> new PressurePlateBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)));
