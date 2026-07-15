@@ -9,7 +9,6 @@
     "common.AlterGroundDecoratorMixin",
     "common.AvatarMixin",
     "common.BlockPlayerDestroyMixin",
-    "common.BlockRegistryIdMixin",
     "common.EntityMixin",
     "common.EnvironmentAttributeSystemMixin",
     "common.EnchantmentHelperMixin",

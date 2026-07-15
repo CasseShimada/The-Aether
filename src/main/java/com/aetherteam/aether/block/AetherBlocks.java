@@ -16,7 +16,6 @@ import com.aetherteam.aether.client.particle.AetherParticleTypes;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.mixin.mixins.common.accessor.FireBlockAccessor;
-import com.aetherteam.aether.registry.RegistryConstructionContext;
 import com.aetherteam.aether.world.treegrower.AetherTreeGrowers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,12 +43,11 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class AetherBlocks {
     private static final List<BlockItemRegistration> BLOCK_ITEMS = new ArrayList<>();
 
-    public static final AetherPortalBlock AETHER_PORTAL = registerBlockOnly("aether_portal", () -> new AetherPortalBlock(Block.Properties.of().noCollision().randomTicks().strength(-1.0F).sound(SoundType.GLASS).lightLevel(AetherBlocks::lightLevel11).pushReaction(PushReaction.BLOCK).forceSolidOn()));
+    public static final AetherPortalBlock AETHER_PORTAL = registerBlockOnly("aether_portal", key -> new AetherPortalBlock(Block.Properties.of().noCollision().randomTicks().strength(-1.0F).sound(SoundType.GLASS).lightLevel(AetherBlocks::lightLevel11).pushReaction(PushReaction.BLOCK).forceSolidOn().setId(key)));
 
     public static final Block AETHER_GRASS_BLOCK = registerKeyed("aether_grass_block", key -> new AetherGrassBlock(Block.Properties.of().mapColor(MapColor.WARPED_WART_BLOCK).randomTicks().strength(0.2F).sound(SoundType.GRASS).setId(key)));
     public static final Block ENCHANTED_AETHER_GRASS_BLOCK = registerKeyed("enchanted_aether_grass_block", key -> new EnchantedAetherGrassBlock(Block.Properties.of().mapColor(MapColor.GOLD).randomTicks().strength(0.2F).sound(SoundType.GRASS).setId(key)));
@@ -270,12 +268,6 @@ public class AetherBlocks {
             Registry.register(BuiltInRegistries.ITEM, id, item);
         }
         BLOCK_ITEMS.clear();
-    }
-
-    private static <T extends Block> T registerBlockOnly(String name, Supplier<? extends T> supplier) {
-        Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
-        T block = RegistryConstructionContext.constructWithId(Registries.BLOCK, id, supplier);
-        return Registry.register(BuiltInRegistries.BLOCK, id, block);
     }
 
     private static <B extends Block> B registerBlockOnly(String name, Function<ResourceKey<Block>, B> factory) {

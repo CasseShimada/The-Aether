@@ -265,5 +265,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Potted White Flower, Potted Skyroot Sapling, and Potted Golden Oak Sapling to keyed block-only registration while preserving their contents and copied vanilla flower-pot properties.
 - Migrated Frosted Ice and Unstable Obsidian to keyed block-only registration while preserving random ticks, friction, spawn and conductor predicates, sounds, strength, and tool requirements.
 - Migrated Ambrosium Wall Torch, Skyroot Wall Sign, and Skyroot Wall Hanging Sign to keyed block-only registration while preserving particles, wood types, specialized item pairings, and wall-block properties.
+- Migrated the Aether Portal to keyed block-only registration and removed the obsolete supplier-based block helper, construction context, and Block registry ID mixin; every Aether block now receives its explicit vanilla `ResourceKey<Block>` before registration.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
