@@ -65,13 +65,13 @@ public final class AetherEntityTypes {
 
     // Hostile Mobs
     public static final EntityType<Swet> BLUE_SWET = register("blue_swet",
-            EntityType.Builder.of(Swet::new, AetherMobCategory.AETHER_SURFACE_MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key("blue_swet")));
+            key -> EntityType.Builder.of(Swet::new, AetherMobCategory.AETHER_SURFACE_MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Swet> GOLDEN_SWET = register("golden_swet",
-            EntityType.Builder.of(Swet::new, AetherMobCategory.AETHER_SURFACE_MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key("golden_swet")));
+            key -> EntityType.Builder.of(Swet::new, AetherMobCategory.AETHER_SURFACE_MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key));
 
     public static final EntityType<PassiveWhirlwind> WHIRLWIND = register("whirlwind",
-            EntityType.Builder.of(PassiveWhirlwind::new, AetherMobCategory.AETHER_SURFACE_MONSTER).fireImmune().sized(0.6F, 0.8F).clientTrackingRange(8).build(key("whirlwind")));
+            key -> EntityType.Builder.of(PassiveWhirlwind::new, AetherMobCategory.AETHER_SURFACE_MONSTER).fireImmune().sized(0.6F, 0.8F).clientTrackingRange(8).build(key));
 
     public static final EntityType<EvilWhirlwind> EVIL_WHIRLWIND = register("evil_whirlwind",
             EntityType.Builder.of(EvilWhirlwind::new, AetherMobCategory.AETHER_SURFACE_MONSTER).fireImmune().sized(0.6F, 0.8F).clientTrackingRange(8).build(key("evil_whirlwind")));

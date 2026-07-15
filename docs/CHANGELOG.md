@@ -268,5 +268,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated the Aether Portal to keyed block-only registration and removed the obsolete supplier-based block helper, construction context, and Block registry ID mixin; every Aether block now receives its explicit vanilla `ResourceKey<Block>` before registration.
 - Began converging entity registration around a single explicit key by migrating Phyg, Flying Cow, and Sheepuff factories; each builder now receives the same `ResourceKey<EntityType<?>>` used for direct vanilla registration.
 - Migrated Moa, Aerbunny, and Aerwhale to the shared keyed entity factory while preserving mob categories, dimensions, tracking ranges, and Aerwhale fire immunity.
+- Migrated Blue Swet, Golden Swet, and Whirlwind to the shared keyed entity factory while preserving Aether mob categories, dimensions, tracking ranges, and Whirlwind fire immunity.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
