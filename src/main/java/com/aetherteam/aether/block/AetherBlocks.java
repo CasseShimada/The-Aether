@@ -169,9 +169,9 @@ public class AetherBlocks {
     public static final FenceBlock SKYROOT_FENCE = registerKeyed("skyroot_fence", key -> new FenceBlock(Block.Properties.ofFullCopy(Blocks.OAK_FENCE).setId(key)));
     public static final FenceGateBlock SKYROOT_FENCE_GATE = registerKeyed("skyroot_fence_gate", key -> new FenceGateBlock(AetherWoodTypes.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE).setId(key)));
     public static final DoorBlock SKYROOT_DOOR = registerKeyed("skyroot_door", key -> new DoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_DOOR).setId(key)));
-    public static final TrapDoorBlock SKYROOT_TRAPDOOR = register("skyroot_trapdoor", () -> new TrapDoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)));
-    public static final ButtonBlock SKYROOT_BUTTON = register("skyroot_button", () -> new ButtonBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, 30, Block.Properties.ofFullCopy(Blocks.OAK_BUTTON)));
-    public static final PressurePlateBlock SKYROOT_PRESSURE_PLATE = register("skyroot_pressure_plate", () -> new PressurePlateBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)));
+    public static final TrapDoorBlock SKYROOT_TRAPDOOR = registerKeyed("skyroot_trapdoor", key -> new TrapDoorBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR).setId(key)));
+    public static final ButtonBlock SKYROOT_BUTTON = registerKeyed("skyroot_button", key -> new ButtonBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, 30, Block.Properties.ofFullCopy(Blocks.OAK_BUTTON).setId(key)));
+    public static final PressurePlateBlock SKYROOT_PRESSURE_PLATE = registerKeyed("skyroot_pressure_plate", key -> new PressurePlateBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE).setId(key)));
 
     public static final ButtonBlock HOLYSTONE_BUTTON = register("holystone_button", () -> new ButtonBlock(BlockSetType.STONE, 20, Block.Properties.ofFullCopy(Blocks.STONE_BUTTON)));
     public static final PressurePlateBlock HOLYSTONE_PRESSURE_PLATE = register("holystone_pressure_plate", () -> new PressurePlateBlock(BlockSetType.STONE, Block.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollision().strength(0.5F)));
