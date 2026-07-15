@@ -254,5 +254,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Skyroot Bookshelf to direct keyed Block registration while preserving copied vanilla bookshelf properties and bookshelf behavior.
 - Migrated Ambrosium Torch to direct keyed Block registration while preserving smoke particles, copied vanilla torch properties, and its existing wall-torch pairing.
 - Migrated Chest Mimic to direct keyed Block registration while preserving its block entity binding, copied chest properties, waterlogging, block states, and Mimic spawning behavior.
+- Migrated Treasure Chest to direct keyed Block registration while preserving its block entity binding, map color, instrument, unbreakable strength, tool requirements, and locked treasure behavior.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

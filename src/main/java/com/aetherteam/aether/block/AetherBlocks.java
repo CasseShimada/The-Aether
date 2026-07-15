@@ -156,7 +156,7 @@ public class AetherBlocks {
     public static final Block TREASURE_DOORWAY_LIGHT_HELLFIRE_STONE = registerKeyed("treasure_doorway_light_hellfire_stone", key -> new TreasureDoorwayBlock(BlockBehaviour.Properties.ofFullCopy(LOCKED_LIGHT_HELLFIRE_STONE).setId(key)));
 
     public static final Block CHEST_MIMIC = registerKeyed("chest_mimic", key -> new ChestMimicBlock(Block.Properties.ofFullCopy(Blocks.CHEST).setId(key)));
-    public static final Block TREASURE_CHEST = register("treasure_chest", () -> new TreasureChestBlock(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).requiresCorrectToolForDrops()));
+    public static final Block TREASURE_CHEST = registerKeyed("treasure_chest", key -> new TreasureChestBlock(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(-1.0F, 3600000.0F).requiresCorrectToolForDrops().setId(key)));
 
     public static final RotatedPillarBlock PILLAR = registerKeyed("pillar",
             key -> new RotatedPillarBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F).sound(SoundType.METAL).requiresCorrectToolForDrops().setId(key)));
