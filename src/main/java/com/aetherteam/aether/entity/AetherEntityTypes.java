@@ -102,14 +102,14 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.of(ValkyrieQueen::new, MobCategory.MONSTER).sized(0.8F, 1.95F).fireImmune().clientTrackingRange(10).build(key));
 
     public static final EntityType<FireMinion> FIRE_MINION = register("fire_minion",
-            EntityType.Builder.of(FireMinion::new, MobCategory.MONSTER).sized(1.1F, 1.95F).fireImmune().clientTrackingRange(8).build(key("fire_minion")));
+            key -> EntityType.Builder.of(FireMinion::new, MobCategory.MONSTER).sized(1.1F, 1.95F).fireImmune().clientTrackingRange(8).build(key));
 
     public static final EntityType<SunSpirit> SUN_SPIRIT = register("sun_spirit",
-            EntityType.Builder.of(SunSpirit::new, MobCategory.MONSTER).sized(2.5F, 3.4F).fireImmune().clientTrackingRange(10).build(key("sun_spirit")));
+            key -> EntityType.Builder.of(SunSpirit::new, MobCategory.MONSTER).sized(2.5F, 3.4F).fireImmune().clientTrackingRange(10).build(key));
 
     // Miscellaneous Entities
     public static final EntityType<SkyrootBoat> SKYROOT_BOAT = register("skyroot_boat",
-            EntityType.Builder.<SkyrootBoat>of(SkyrootBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key("skyroot_boat")));
+            key -> EntityType.Builder.<SkyrootBoat>of(SkyrootBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key));
 
     public static final EntityType<SkyrootChestBoat> SKYROOT_CHEST_BOAT = register("skyroot_chest_boat",
             EntityType.Builder.<SkyrootChestBoat>of(SkyrootChestBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10).build(key("skyroot_chest_boat")));

@@ -272,5 +272,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Evil Whirlwind, Aechor Plant, and Cockatrice to the shared keyed entity factory while preserving Aether mob categories, dimensions, tracking ranges, and Evil Whirlwind fire immunity.
 - Migrated Zephyr, Mimic, and Sentry to the shared keyed entity factory while preserving mob categories, dimensions, and tracking ranges.
 - Migrated Slider, Valkyrie, and Valkyrie Queen to the shared keyed entity factory while preserving dimensions, tracking ranges, and boss fire immunity.
+- Migrated Fire Minion, Sun Spirit, and Skyroot Boat to the shared keyed entity factory while preserving categories, dimensions, tracking ranges, and fire immunity.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
