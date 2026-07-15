@@ -259,5 +259,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Freezer to direct keyed Block registration while preserving its block entity binding, menu and recipe behavior, map color, instrument, and strength.
 - Migrated Incubator to direct keyed Block registration while preserving its block entity binding, menu and incubation behavior, map color, instrument, and strength.
 - Migrated Sun Altar to direct keyed Block registration while preserving its block entity binding, time-control behavior, map color, instrument, strength, and sound.
+- Migrated Skyroot Sign and Skyroot Hanging Sign to direct keyed Block registration while preserving wood types, specialized sign items, wall-block pairings, and existing block properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
