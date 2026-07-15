@@ -185,12 +185,12 @@ public class AetherBlocks {
     public static final WallBlock HOLYSTONE_BRICK_WALL = registerKeyed("holystone_brick_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE_BRICKS).forceSolidOn().setId(key)));
     public static final WallBlock AEROGEL_WALL = registerKeyed("aerogel_wall", key -> new AerogelWallBlock(Block.Properties.of().mapColor(MapColor.DIAMOND).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).strength(1.0F, 2000.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().isViewBlocking(AetherBlocks::never).noOcclusion().setId(key)));
 
-    public static final StairBlock SKYROOT_STAIRS = register("skyroot_stairs",
-            () -> new StairBlock(SKYROOT_PLANKS.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.SKYROOT_PLANKS)));
-    public static final StairBlock CARVED_STAIRS = register("carved_stairs",
-            () -> new StairBlock(CARVED_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE)));
-    public static final StairBlock ANGELIC_STAIRS = register("angelic_stairs",
-            () -> new StairBlock(ANGELIC_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE)));
+    public static final StairBlock SKYROOT_STAIRS = registerKeyed("skyroot_stairs",
+            key -> new StairBlock(SKYROOT_PLANKS.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.SKYROOT_PLANKS).setId(key)));
+    public static final StairBlock CARVED_STAIRS = registerKeyed("carved_stairs",
+            key -> new StairBlock(CARVED_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).setId(key)));
+    public static final StairBlock ANGELIC_STAIRS = registerKeyed("angelic_stairs",
+            key -> new StairBlock(ANGELIC_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).setId(key)));
     public static final StairBlock HELLFIRE_STAIRS = register("hellfire_stairs",
             () -> new StairBlock(HELLFIRE_STONE.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE)));
     public static final StairBlock HOLYSTONE_STAIRS = register("holystone_stairs",
