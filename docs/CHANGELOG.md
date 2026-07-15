@@ -252,5 +252,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Hellfire Slab, Holystone Slab, and Mossy Holystone Slab to direct keyed Block registration while preserving copied properties, strength overrides, and slab behavior.
 - Migrated Icestone Slab, Holystone Brick Slab, and Aerogel Slab to direct keyed Block registration while preserving copied properties, strength overrides, special block behavior, and view-blocking rules.
 - Migrated Skyroot Bookshelf to direct keyed Block registration while preserving copied vanilla bookshelf properties and bookshelf behavior.
+- Migrated Ambrosium Torch to direct keyed Block registration while preserving smoke particles, copied vanilla torch properties, and its existing wall-torch pairing.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

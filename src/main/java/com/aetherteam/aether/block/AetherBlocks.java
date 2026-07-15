@@ -98,7 +98,7 @@ public class AetherBlocks {
     public static final Block INCUBATOR = register("incubator", () -> new IncubatorBlock(Block.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F)));
 
     public static final Block AMBROSIUM_WALL_TORCH = registerBlockOnly("ambrosium_wall_torch", () -> new WallTorchBlock(ParticleTypes.SMOKE, Block.Properties.ofFullCopy(Blocks.WALL_TORCH)));
-    public static final Block AMBROSIUM_TORCH = register("ambrosium_torch", () -> new TorchBlock(ParticleTypes.SMOKE, Block.Properties.ofFullCopy(Blocks.TORCH)));
+    public static final Block AMBROSIUM_TORCH = registerKeyed("ambrosium_torch", key -> new TorchBlock(ParticleTypes.SMOKE, Block.Properties.ofFullCopy(Blocks.TORCH).setId(key)));
 
     public static final StandingSignBlock SKYROOT_SIGN = register("skyroot_sign", () -> new SkyrootSignBlock(AetherWoodTypes.SKYROOT, Block.Properties.of().mapColor(MapColor.SAND).forceSolidOn().ignitedByLava().instrument(NoteBlockInstrument.BASS).noCollision().strength(1.0F).sound(SoundType.WOOD)));
     public static final WallSignBlock SKYROOT_WALL_SIGN = registerBlockOnly("skyroot_wall_sign", () -> new SkyrootWallSignBlock(AetherWoodTypes.SKYROOT, Block.Properties.ofFullCopy(SKYROOT_SIGN)));
