@@ -228,7 +228,7 @@ public class AetherBlocks {
 
     public static final Block SKYROOT_BOOKSHELF = registerKeyed("skyroot_bookshelf", key -> new BookshelfBlock(Block.Properties.ofFullCopy(Blocks.BOOKSHELF).setId(key)));
 
-    public static final BedBlock SKYROOT_BED = register("skyroot_bed", () -> new SkyrootBedBlock(Block.Properties.ofFullCopy(Blocks.BED.pick(DyeColor.CYAN))));
+    public static final BedBlock SKYROOT_BED = registerKeyed("skyroot_bed", key -> new SkyrootBedBlock(Block.Properties.ofFullCopy(Blocks.BED.pick(DyeColor.CYAN)).setId(key)));
 
     public static final Block FROSTED_ICE = registerBlockOnly("frosted_ice", () -> new AetherFrostedIceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.ICE).friction(0.98F).randomTicks().strength(0.5F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, entityType) -> entityType == EntityTypes.POLAR_BEAR).isRedstoneConductor(AetherBlocks::never)));
     public static final Block UNSTABLE_OBSIDIAN = registerBlockOnly("unstable_obsidian", () -> new UnstableObsidianBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BASEDRUM).randomTicks().requiresCorrectToolForDrops().strength(50.0F, 1200.0F)));
@@ -276,12 +276,6 @@ public class AetherBlocks {
         Identifier id = Identifier.fromNamespaceAndPath(Aether.MODID, name);
         T block = RegistryConstructionContext.constructWithId(Registries.BLOCK, id, supplier);
         return Registry.register(BuiltInRegistries.BLOCK, id, block);
-    }
-
-    private static <B extends Block> B register(String name, Supplier<B> block) {
-        B register = registerBlockOnly(name, block);
-        BLOCK_ITEMS.add(new BlockItemRegistration(name, register));
-        return register;
     }
 
     private static <B extends Block> B registerKeyed(String name, Function<ResourceKey<Block>, B> factory) {
