@@ -264,5 +264,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Added keyed registration for blocks without BlockItems and migrated Potted Berry Bush, Potted Berry Bush Stem, and Potted Purple Flower while preserving their contents and copied vanilla flower-pot properties.
 - Migrated Potted White Flower, Potted Skyroot Sapling, and Potted Golden Oak Sapling to keyed block-only registration while preserving their contents and copied vanilla flower-pot properties.
 - Migrated Frosted Ice and Unstable Obsidian to keyed block-only registration while preserving random ticks, friction, spawn and conductor predicates, sounds, strength, and tool requirements.
+- Migrated Ambrosium Wall Torch, Skyroot Wall Sign, and Skyroot Wall Hanging Sign to keyed block-only registration while preserving particles, wood types, specialized item pairings, and wall-block properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
