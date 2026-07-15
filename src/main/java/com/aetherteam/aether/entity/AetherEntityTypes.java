@@ -55,13 +55,13 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.of(Sheepuff::new, MobCategory.CREATURE).sized(0.9F, 1.3F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Moa> MOA = register("moa",
-            EntityType.Builder.of(Moa::new, MobCategory.CREATURE).sized(0.9F, 2.15F).clientTrackingRange(10).build(key("moa")));
+            key -> EntityType.Builder.of(Moa::new, MobCategory.CREATURE).sized(0.9F, 2.15F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Aerbunny> AERBUNNY = register("aerbunny",
-            EntityType.Builder.of(Aerbunny::new, MobCategory.CREATURE).sized(0.6F, 0.5F).clientTrackingRange(10).build(key("aerbunny")));
+            key -> EntityType.Builder.of(Aerbunny::new, MobCategory.CREATURE).sized(0.6F, 0.5F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Aerwhale> AERWHALE = register("aerwhale",
-            EntityType.Builder.of(Aerwhale::new, AetherMobCategory.AETHER_AERWHALE).fireImmune().sized(3.0F, 3.0F).clientTrackingRange(10).build(key("aerwhale")));
+            key -> EntityType.Builder.of(Aerwhale::new, AetherMobCategory.AETHER_AERWHALE).fireImmune().sized(3.0F, 3.0F).clientTrackingRange(10).build(key));
 
     // Hostile Mobs
     public static final EntityType<Swet> BLUE_SWET = register("blue_swet",

@@ -267,5 +267,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Ambrosium Wall Torch, Skyroot Wall Sign, and Skyroot Wall Hanging Sign to keyed block-only registration while preserving particles, wood types, specialized item pairings, and wall-block properties.
 - Migrated the Aether Portal to keyed block-only registration and removed the obsolete supplier-based block helper, construction context, and Block registry ID mixin; every Aether block now receives its explicit vanilla `ResourceKey<Block>` before registration.
 - Began converging entity registration around a single explicit key by migrating Phyg, Flying Cow, and Sheepuff factories; each builder now receives the same `ResourceKey<EntityType<?>>` used for direct vanilla registration.
+- Migrated Moa, Aerbunny, and Aerwhale to the shared keyed entity factory while preserving mob categories, dimensions, tracking ranges, and Aerwhale fire immunity.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
