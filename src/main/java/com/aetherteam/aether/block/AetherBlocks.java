@@ -176,9 +176,9 @@ public class AetherBlocks {
     public static final ButtonBlock HOLYSTONE_BUTTON = registerKeyed("holystone_button", key -> new ButtonBlock(BlockSetType.STONE, 20, Block.Properties.ofFullCopy(Blocks.STONE_BUTTON).setId(key)));
     public static final PressurePlateBlock HOLYSTONE_PRESSURE_PLATE = registerKeyed("holystone_pressure_plate", key -> new PressurePlateBlock(BlockSetType.STONE, Block.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollision().strength(0.5F).setId(key)));
 
-    public static final WallBlock CARVED_WALL = register("carved_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).forceSolidOn()));
-    public static final WallBlock ANGELIC_WALL = register("angelic_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).forceSolidOn()));
-    public static final WallBlock HELLFIRE_WALL = register("hellfire_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).forceSolidOn()));
+    public static final WallBlock CARVED_WALL = registerKeyed("carved_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).forceSolidOn().setId(key)));
+    public static final WallBlock ANGELIC_WALL = registerKeyed("angelic_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).forceSolidOn().setId(key)));
+    public static final WallBlock HELLFIRE_WALL = registerKeyed("hellfire_wall", key -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).forceSolidOn().setId(key)));
     public static final WallBlock HOLYSTONE_WALL = register("holystone_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.HOLYSTONE).forceSolidOn()));
     public static final WallBlock MOSSY_HOLYSTONE_WALL = register("mossy_holystone_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.MOSSY_HOLYSTONE).forceSolidOn()));
     public static final WallBlock ICESTONE_WALL = register("icestone_wall", () -> new IcestoneWallBlock(Block.Properties.ofFullCopy(AetherBlocks.ICESTONE).forceSolidOn()));
