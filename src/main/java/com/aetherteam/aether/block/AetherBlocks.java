@@ -223,8 +223,8 @@ public class AetherBlocks {
     public static final SlabBlock AEROGEL_SLAB = registerKeyed("aerogel_slab",
             key -> new AerogelSlabBlock(Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).strength(1.0F, 2000.0F).isViewBlocking(AetherBlocks::never).setId(key)));
 
-    public static final Block SUN_ALTAR = register("sun_altar",
-            () -> new SunAltarBlock(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).sound(SoundType.METAL)));
+    public static final Block SUN_ALTAR = registerKeyed("sun_altar",
+            key -> new SunAltarBlock(Block.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).strength(2.0F).sound(SoundType.METAL).setId(key)));
 
     public static final Block SKYROOT_BOOKSHELF = registerKeyed("skyroot_bookshelf", key -> new BookshelfBlock(Block.Properties.ofFullCopy(Blocks.BOOKSHELF).setId(key)));
 
