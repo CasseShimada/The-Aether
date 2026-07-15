@@ -270,5 +270,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Moa, Aerbunny, and Aerwhale to the shared keyed entity factory while preserving mob categories, dimensions, tracking ranges, and Aerwhale fire immunity.
 - Migrated Blue Swet, Golden Swet, and Whirlwind to the shared keyed entity factory while preserving Aether mob categories, dimensions, tracking ranges, and Whirlwind fire immunity.
 - Migrated Evil Whirlwind, Aechor Plant, and Cockatrice to the shared keyed entity factory while preserving Aether mob categories, dimensions, tracking ranges, and Evil Whirlwind fire immunity.
+- Migrated Zephyr, Mimic, and Sentry to the shared keyed entity factory while preserving mob categories, dimensions, and tracking ranges.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

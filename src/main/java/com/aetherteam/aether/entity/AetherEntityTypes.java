@@ -83,14 +83,14 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.of(Cockatrice::new, AetherMobCategory.AETHER_DARKNESS_MONSTER).sized(0.9F, 2.15F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Zephyr> ZEPHYR = register("zephyr",
-            EntityType.Builder.of(Zephyr::new, AetherMobCategory.AETHER_SKY_MONSTER).sized(4.5F, 3.5F).clientTrackingRange(10).build(key("zephyr")));
+            key -> EntityType.Builder.of(Zephyr::new, AetherMobCategory.AETHER_SKY_MONSTER).sized(4.5F, 3.5F).clientTrackingRange(10).build(key));
 
     // Dungeon Mobs
     public static final EntityType<Mimic> MIMIC = register("mimic",
-            EntityType.Builder.of(Mimic::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(8).build(key("mimic")));
+            key -> EntityType.Builder.of(Mimic::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(8).build(key));
 
     public static final EntityType<Sentry> SENTRY = register("sentry",
-            EntityType.Builder.of(Sentry::new, MobCategory.MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key("sentry")));
+            key -> EntityType.Builder.of(Sentry::new, MobCategory.MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Slider> SLIDER = register("slider",
             EntityType.Builder.of(Slider::new, MobCategory.MONSTER).sized(2.0F, 2.0F).fireImmune().clientTrackingRange(10).build(key("slider")));
