@@ -158,10 +158,10 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.<PoisonNeedle>of(PoisonNeedle::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(key));
 
     public static final EntityType<ThrownLightningKnife> LIGHTNING_KNIFE = register("lightning_knife",
-            EntityType.Builder.<ThrownLightningKnife>of(ThrownLightningKnife::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(key("lightning_knife")));
+            key -> EntityType.Builder.<ThrownLightningKnife>of(ThrownLightningKnife::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(key));
 
     public static final EntityType<HammerProjectile> HAMMER_PROJECTILE = register("hammer_projectile",
-            EntityType.Builder.<HammerProjectile>of(HammerProjectile::new, MobCategory.MISC).sized(0.35F, 0.35F).clientTrackingRange(4).updateInterval(10).build(key("hammer_projectile")));
+            key -> EntityType.Builder.<HammerProjectile>of(HammerProjectile::new, MobCategory.MISC).sized(0.35F, 0.35F).clientTrackingRange(4).updateInterval(10).build(key));
 
     public static void registerSpawnPlacements() {
         // Passive Mobs
@@ -211,14 +211,6 @@ public final class AetherEntityTypes {
 
         // Miscellaneous Entities
         FabricDefaultAttributeRegistry.register(AetherEntityTypes.CLOUD_MINION, CloudMinion.createMobAttributes());
-    }
-
-    private static ResourceKey<EntityType<?>> key(String path) {
-        return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, path));
-    }
-
-    private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name, EntityType<T> type) {
-        return Registry.register(BuiltInRegistries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Aether.MODID, name), type);
     }
 
     private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name, Function<ResourceKey<EntityType<?>>, EntityType<T>> factory) {
