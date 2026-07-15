@@ -274,5 +274,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Slider, Valkyrie, and Valkyrie Queen to the shared keyed entity factory while preserving dimensions, tracking ranges, and boss fire immunity.
 - Migrated Fire Minion, Sun Spirit, and Skyroot Boat to the shared keyed entity factory while preserving categories, dimensions, tracking ranges, and fire immunity.
 - Migrated Skyroot Chest Boat, Cloud Minion, and Cold Parachute to the shared keyed entity factory while preserving categories, dimensions, and tracking ranges.
+- Migrated Golden Parachute, Floating Block, and TNT Present to the shared keyed entity factory while preserving dimensions, tracking ranges, update intervals, fire immunity, and eye height.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

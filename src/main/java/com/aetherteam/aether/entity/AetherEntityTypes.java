@@ -121,13 +121,13 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key));
 
     public static final EntityType<Parachute> GOLDEN_PARACHUTE = register("golden_parachute",
-            EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key("golden_parachute")));
+            key -> EntityType.Builder.of(Parachute::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).build(key));
 
     public static final EntityType<FloatingBlockEntity> FLOATING_BLOCK = register("floating_block",
-            EntityType.Builder.<FloatingBlockEntity>of(FloatingBlockEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(10).updateInterval(20).build(key("floating_block")));
+            key -> EntityType.Builder.<FloatingBlockEntity>of(FloatingBlockEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(10).updateInterval(20).build(key));
 
     public static final EntityType<TntPresent> TNT_PRESENT = register("tnt_present",
-            EntityType.Builder.<TntPresent>of(TntPresent::new, MobCategory.MISC).fireImmune().sized(1.0F, 1.0F).eyeHeight(0.15F).clientTrackingRange(10).updateInterval(10).build(key("tnt_present")));
+            key -> EntityType.Builder.<TntPresent>of(TntPresent::new, MobCategory.MISC).fireImmune().sized(1.0F, 1.0F).eyeHeight(0.15F).clientTrackingRange(10).updateInterval(10).build(key));
 
     // Projectiles
     public static final EntityType<ZephyrSnowball> ZEPHYR_SNOWBALL = register("zephyr_snowball",
