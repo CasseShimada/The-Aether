@@ -24,10 +24,10 @@ public class AetherOverlays {
             Gui gui = minecraft.gui;
             LocalPlayer player = minecraft.player;
             if (player != null) {
-                AetherOverlayVignetteHooks.renderAetherPortalOverlay(guiGraphics, minecraft, player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER), partialTicks);
-                AetherOverlayVignetteHooks.renderInebriationOverlay(guiGraphics, minecraft, window, player);
-                AetherOverlayVignetteHooks.renderRemedyOverlay(guiGraphics, minecraft, window, player);
-                AetherOverlayVignetteHooks.renderRepulsionOverlay(guiGraphics, minecraft, window, player);
+                AetherVignetteRendering.renderAetherPortalOverlay(guiGraphics, minecraft, player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER), partialTicks);
+                AetherVignetteRendering.renderInebriationOverlay(guiGraphics, minecraft, window, player);
+                AetherVignetteRendering.renderRemedyOverlay(guiGraphics, minecraft, window, player);
+                AetherVignetteRendering.renderRepulsionOverlay(guiGraphics, minecraft, window, player);
                 AetherOverlayStatusHudHooks.renderHammerCooldownOverlay(guiGraphics, minecraft, window, player);
                 AetherOverlayStatusHudHooks.renderMoaJumps(guiGraphics, window, player);
                 AetherOverlayLifeShardHooks.renderSilverLifeShardHearts(guiGraphics, minecraft, window, gui, player);
