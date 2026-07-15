@@ -93,13 +93,13 @@ public final class AetherEntityTypes {
             key -> EntityType.Builder.of(Sentry::new, MobCategory.MONSTER).sized(0.9F, 0.9F).clientTrackingRange(10).build(key));
 
     public static final EntityType<Slider> SLIDER = register("slider",
-            EntityType.Builder.of(Slider::new, MobCategory.MONSTER).sized(2.0F, 2.0F).fireImmune().clientTrackingRange(10).build(key("slider")));
+            key -> EntityType.Builder.of(Slider::new, MobCategory.MONSTER).sized(2.0F, 2.0F).fireImmune().clientTrackingRange(10).build(key));
 
     public static final EntityType<Valkyrie> VALKYRIE = register("valkyrie",
-            EntityType.Builder.of(Valkyrie::new, MobCategory.MONSTER).sized(0.8F, 1.95F).clientTrackingRange(8).build(key("valkyrie")));
+            key -> EntityType.Builder.of(Valkyrie::new, MobCategory.MONSTER).sized(0.8F, 1.95F).clientTrackingRange(8).build(key));
 
     public static final EntityType<ValkyrieQueen> VALKYRIE_QUEEN = register("valkyrie_queen",
-            EntityType.Builder.of(ValkyrieQueen::new, MobCategory.MONSTER).sized(0.8F, 1.95F).fireImmune().clientTrackingRange(10).build(key("valkyrie_queen")));
+            key -> EntityType.Builder.of(ValkyrieQueen::new, MobCategory.MONSTER).sized(0.8F, 1.95F).fireImmune().clientTrackingRange(10).build(key));
 
     public static final EntityType<FireMinion> FIRE_MINION = register("fire_minion",
             EntityType.Builder.of(FireMinion::new, MobCategory.MONSTER).sized(1.1F, 1.95F).fireImmune().clientTrackingRange(8).build(key("fire_minion")));
