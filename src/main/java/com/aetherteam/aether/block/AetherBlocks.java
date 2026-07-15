@@ -204,12 +204,12 @@ public class AetherBlocks {
     public static final StairBlock AEROGEL_STAIRS = registerKeyed("aerogel_stairs",
             key -> new AerogelStairsBlock(AEROGEL.defaultBlockState(), Block.Properties.ofFullCopy(AetherBlocks.AEROGEL).isViewBlocking(AetherBlocks::never).setId(key)));
 
-    public static final SlabBlock SKYROOT_SLAB = register("skyroot_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.SKYROOT_PLANKS).strength(2.0F, 3.0F)));
-    public static final SlabBlock CARVED_SLAB = register("carved_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).strength(0.5F, 6.0F)));
-    public static final SlabBlock ANGELIC_SLAB = register("angelic_slab",
-            () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).strength(0.5F, 6.0F)));
+    public static final SlabBlock SKYROOT_SLAB = registerKeyed("skyroot_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.SKYROOT_PLANKS).strength(2.0F, 3.0F).setId(key)));
+    public static final SlabBlock CARVED_SLAB = registerKeyed("carved_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).strength(0.5F, 6.0F).setId(key)));
+    public static final SlabBlock ANGELIC_SLAB = registerKeyed("angelic_slab",
+            key -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).strength(0.5F, 6.0F).setId(key)));
     public static final SlabBlock HELLFIRE_SLAB = register("hellfire_slab",
             () -> new SlabBlock(Block.Properties.ofFullCopy(AetherBlocks.HELLFIRE_STONE).strength(0.5F, 6.0F)));
     public static final SlabBlock HOLYSTONE_SLAB = register("holystone_slab",
