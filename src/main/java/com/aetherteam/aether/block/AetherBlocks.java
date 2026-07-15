@@ -173,8 +173,8 @@ public class AetherBlocks {
     public static final ButtonBlock SKYROOT_BUTTON = registerKeyed("skyroot_button", key -> new ButtonBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, 30, Block.Properties.ofFullCopy(Blocks.OAK_BUTTON).setId(key)));
     public static final PressurePlateBlock SKYROOT_PRESSURE_PLATE = registerKeyed("skyroot_pressure_plate", key -> new PressurePlateBlock(AetherWoodTypes.SKYROOT_BLOCK_SET, Block.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE).setId(key)));
 
-    public static final ButtonBlock HOLYSTONE_BUTTON = register("holystone_button", () -> new ButtonBlock(BlockSetType.STONE, 20, Block.Properties.ofFullCopy(Blocks.STONE_BUTTON)));
-    public static final PressurePlateBlock HOLYSTONE_PRESSURE_PLATE = register("holystone_pressure_plate", () -> new PressurePlateBlock(BlockSetType.STONE, Block.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollision().strength(0.5F)));
+    public static final ButtonBlock HOLYSTONE_BUTTON = registerKeyed("holystone_button", key -> new ButtonBlock(BlockSetType.STONE, 20, Block.Properties.ofFullCopy(Blocks.STONE_BUTTON).setId(key)));
+    public static final PressurePlateBlock HOLYSTONE_PRESSURE_PLATE = registerKeyed("holystone_pressure_plate", key -> new PressurePlateBlock(BlockSetType.STONE, Block.Properties.of().mapColor(MapColor.WOOL).forceSolidOn().instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().noCollision().strength(0.5F).setId(key)));
 
     public static final WallBlock CARVED_WALL = register("carved_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.CARVED_STONE).forceSolidOn()));
     public static final WallBlock ANGELIC_WALL = register("angelic_wall", () -> new WallBlock(Block.Properties.ofFullCopy(AetherBlocks.ANGELIC_STONE).forceSolidOn()));

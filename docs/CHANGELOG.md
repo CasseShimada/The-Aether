@@ -241,5 +241,6 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Migrated Pillar and Pillar Top to direct keyed Block registration while preserving orientation behavior, map color, instrument, sound, strength, and tool requirements.
 - Migrated Skyroot Fence, Skyroot Fence Gate, and Skyroot Door to direct keyed Block registration while preserving wood types, block set types, interaction behavior, and copied vanilla properties.
 - Migrated Skyroot Trapdoor, Skyroot Button, and Skyroot Pressure Plate to direct keyed Block registration while preserving block set types, button press duration, redstone behavior, and copied vanilla properties.
+- Migrated Holystone Button and Holystone Pressure Plate to direct keyed Block registration while preserving stone block set behavior, button press duration, redstone behavior, and existing block properties.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.
