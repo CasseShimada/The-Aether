@@ -113,12 +113,12 @@ public class AetherBlocks {
     public static final Block PURPLE_FLOWER = registerKeyed("purple_flower", key -> new AetherFlowerBlock(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION), 12, Block.Properties.ofFullCopy(Blocks.DANDELION).setId(key)));
     public static final Block WHITE_FLOWER = registerKeyed("white_flower", key -> new AetherFlowerBlock(MobEffects.SLOW_FALLING, 4, Block.Properties.ofFullCopy(Blocks.DANDELION).setId(key)));
     public static final FlowerPotBlock POTTED_PURPLE_FLOWER = registerBlockOnly("potted_purple_flower", key -> new FlowerPotBlock(PURPLE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
-    public static final FlowerPotBlock POTTED_WHITE_FLOWER = registerBlockOnly("potted_white_flower", () -> new FlowerPotBlock(WHITE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
+    public static final FlowerPotBlock POTTED_WHITE_FLOWER = registerBlockOnly("potted_white_flower", key -> new FlowerPotBlock(WHITE_FLOWER, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
 
     public static final SaplingBlock SKYROOT_SAPLING = registerKeyed("skyroot_sapling", key -> new SaplingBlock(AetherTreeGrowers.SKYROOT, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(key)));
     public static final SaplingBlock GOLDEN_OAK_SAPLING = registerKeyed("golden_oak_sapling", key -> new SaplingBlock(AetherTreeGrowers.GOLDEN_OAK, Block.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(key)));
-    public static final FlowerPotBlock POTTED_SKYROOT_SAPLING = registerBlockOnly("potted_skyroot_sapling", () -> new FlowerPotBlock(SKYROOT_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
-    public static final FlowerPotBlock POTTED_GOLDEN_OAK_SAPLING = registerBlockOnly("potted_golden_oak_sapling", () -> new FlowerPotBlock(GOLDEN_OAK_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT)));
+    public static final FlowerPotBlock POTTED_SKYROOT_SAPLING = registerBlockOnly("potted_skyroot_sapling", key -> new FlowerPotBlock(SKYROOT_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
+    public static final FlowerPotBlock POTTED_GOLDEN_OAK_SAPLING = registerBlockOnly("potted_golden_oak_sapling", key -> new FlowerPotBlock(GOLDEN_OAK_SAPLING, Block.Properties.ofFullCopy(Blocks.FLOWER_POT).setId(key)));
 
     public static final Block CARVED_STONE = registerKeyed("carved_stone", key -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(0.5F, 6.0F).requiresCorrectToolForDrops().setId(key)));
     public static final Block SENTRY_STONE = registerKeyed("sentry_stone", key -> new Block(Block.Properties.ofFullCopy(CARVED_STONE).lightLevel(AetherBlocks::lightLevel11).setId(key)));
