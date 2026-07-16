@@ -1,7 +1,7 @@
 package com.aetherteam.aether.loot.conditions;
 
 import com.aetherteam.aether.data.ConfigSerializationUtil;
-import com.aetherteam.aether.config.ModConfigSpec;
+import com.aetherteam.aether.config.BooleanConfigEntry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -13,9 +13,9 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
  */
 public class ConfigEnabled implements LootItemCondition {
     public static final MapCodec<ConfigEnabled> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(Codec.STRING.fieldOf("config").forGetter(instance -> ConfigSerializationUtil.serialize(instance.config))).apply(builder, (e) -> new ConfigEnabled(ConfigSerializationUtil.deserialize(e))));
-    private final ModConfigSpec.ConfigValue<Boolean> config;
+    private final BooleanConfigEntry config;
 
-    public ConfigEnabled(ModConfigSpec.ConfigValue<Boolean> config) {
+    public ConfigEnabled(BooleanConfigEntry config) {
         this.config = config;
     }
 
@@ -29,7 +29,7 @@ public class ConfigEnabled implements LootItemCondition {
         return this.config.get();
     }
 
-    public static LootItemCondition.Builder isEnabled(ModConfigSpec.ConfigValue<Boolean> config) {
+    public static LootItemCondition.Builder isEnabled(BooleanConfigEntry config) {
         return () -> new ConfigEnabled(config);
     }
 }

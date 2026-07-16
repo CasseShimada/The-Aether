@@ -20,7 +20,7 @@ public class AdvancementToastMixin {
     /**
      * Plays the Aether's advancement sounds when the player gets an Aether advancement.
      */
-    @Inject(method = "getSoundEvent", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getSoundEvent", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$getSoundEvent(CallbackInfoReturnable<SoundEvent> cir) {
         if (this.advancement != null) {
             SoundEvent soundOverride = AetherAdvancementSoundOverrides.retrieveOverride(this.advancement);

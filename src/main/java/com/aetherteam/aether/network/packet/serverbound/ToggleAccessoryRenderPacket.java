@@ -2,6 +2,7 @@ package com.aetherteam.aether.network.packet.serverbound;
 
 import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.impl.AccessoriesState;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -12,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 public record ToggleAccessoryRenderPacket(String slotName, int slotIndex, boolean shouldRender) implements CustomPacketPayload {
     public static final Type<ToggleAccessoryRenderPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "toggle_accessory_render"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ToggleAccessoryRenderPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8,
+            ByteBufCodecs.stringUtf8(128),
             ToggleAccessoryRenderPacket::slotName,
             ByteBufCodecs.INT,
             ToggleAccessoryRenderPacket::slotIndex,
@@ -27,6 +28,9 @@ public record ToggleAccessoryRenderPacket(String slotName, int slotIndex, boolea
     }
 
     public static void execute(ToggleAccessoryRenderPacket payload, ServerPlayer player) {
+        if (AccessoriesState.getSlot(payload.slotName()) == null) {
+            return;
+        }
         var accessories = AccessoriesAPI.getAccessories(player);
         if (accessories == null) {
             return;

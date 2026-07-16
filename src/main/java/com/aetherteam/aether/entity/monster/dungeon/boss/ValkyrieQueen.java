@@ -769,15 +769,31 @@ public class ValkyrieQueen extends AbstractValkyrie implements AetherBossMob<Val
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
-        input.child("DungeonBounds").ifPresent(bounds -> this.dungeonBounds = new AABB(
-                bounds.getDoubleOr("MinX", 0.0),
-                bounds.getDoubleOr("MinY", 0.0),
-                bounds.getDoubleOr("MinZ", 0.0),
-                bounds.getDoubleOr("MaxX", 0.0),
-                bounds.getDoubleOr("MaxY", 0.0),
-                bounds.getDoubleOr("MaxZ", 0.0)
-        ));
+        this.readBossSaveData(input);
+        var currentBounds = input.child("DungeonBounds");
+        if (currentBounds.isPresent()) {
+            ValueInput bounds = currentBounds.get();
+            this.dungeonBounds = new AABB(
+                    bounds.getDoubleOr("MinX", 0.0),
+                    bounds.getDoubleOr("MinY", 0.0),
+                    bounds.getDoubleOr("MinZ", 0.0),
+                    bounds.getDoubleOr("MaxX", 0.0),
+                    bounds.getDoubleOr("MaxY", 0.0),
+                    bounds.getDoubleOr("MaxZ", 0.0)
+            );
+        } else {
+            double legacyMinX = input.getDoubleOr("DungeonBoundsMinX", Double.NaN);
+            if (!Double.isNaN(legacyMinX)) {
+                this.dungeonBounds = new AABB(
+                        legacyMinX,
+                        input.getDoubleOr("DungeonBoundsMinY", 0.0),
+                        input.getDoubleOr("DungeonBoundsMinZ", 0.0),
+                        input.getDoubleOr("DungeonBoundsMaxX", 0.0),
+                        input.getDoubleOr("DungeonBoundsMaxY", 0.0),
+                        input.getDoubleOr("DungeonBoundsMaxZ", 0.0)
+                );
+            }
+        }
         this.setReady(input.getBooleanOr("Ready", this.isReady()));
     }
 

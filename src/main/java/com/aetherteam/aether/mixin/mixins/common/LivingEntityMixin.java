@@ -55,14 +55,27 @@ public abstract class LivingEntityMixin {
      * @param ci The {@link CallbackInfo} for the void method return.
      * @see PhoenixArmor#boostVerticalLavaSwimming(LivingEntity)
      */
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidJumpThreshold()D", shift = At.Shift.AFTER), method = "travel(Lnet/minecraft/world/phys/Vec3;)V")
-    private void travel(CallbackInfo ci) {
+    @Inject(
+        method = "travelInLava(Lnet/minecraft/world/phys/Vec3;DZD)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/LivingEntity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V",
+            shift = At.Shift.AFTER
+        )
+    )
+    private void aether$boostVerticalLavaSwimming(CallbackInfo ci) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         PhoenixArmor.boostVerticalLavaSwimming(livingEntity);
     }
 
-    @WrapWithCondition(method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"))
-    private boolean hurt(LivingEntity instance, double strength, double x, double z, ServerLevel serverLevel, DamageSource source, float amount) {
+    @WrapWithCondition(
+        method = "hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/LivingEntity;dealDefaultKnockback(Lnet/minecraft/world/damagesource/DamageSource;FZ)V"
+        )
+    )
+    private boolean aether$shouldApplyDefaultKnockback(LivingEntity instance, DamageSource source, float amount, boolean blocked) {
         return AetherBossCombatRules.shouldApplyKnockback(instance, source);
     }
 

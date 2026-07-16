@@ -27,7 +27,7 @@ public class RemedyEffect extends MobEffect {
         if (livingEntity instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (data.getRemedyStartDuration() <= 0) {
-                data.setSyncedToServer(player.getId(), AetherPlayerAttachment.REMEDY_START_DURATION_SYNC_KEY, this.effectDuration);
+                data.setSyncedToClients(player, AetherPlayerAttachment.REMEDY_START_DURATION_SYNC_KEY, this.effectDuration);
             }
         }
         var inebriation = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AetherEffects.INEBRIATION);

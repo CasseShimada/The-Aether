@@ -48,11 +48,11 @@ public final class WeaponAbilities {
             Entity sourceEntity = source.getDirectEntity();
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
             if (sourceEntity instanceof GoldenDart) {
-                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.GOLDEN_DART_COUNT_SYNC_KEY, data.getGoldenDartCount() + 1);
+                data.setSyncedToClients(player, AetherPlayerAttachment.GOLDEN_DART_COUNT_SYNC_KEY, data.getGoldenDartCount() + 1);
             } else if (sourceEntity instanceof PoisonDart || sourceEntity instanceof PoisonNeedle) {
-                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.POISON_DART_COUNT_SYNC_KEY, data.getPoisonDartCount() + 1);
+                data.setSyncedToClients(player, AetherPlayerAttachment.POISON_DART_COUNT_SYNC_KEY, data.getPoisonDartCount() + 1);
             } else if (sourceEntity instanceof EnchantedDart) {
-                data.setSyncedToClients(player.getId(), AetherPlayerAttachment.ENCHANTED_DART_COUNT_SYNC_KEY, data.getEnchantedDartCount() + 1);
+                data.setSyncedToClients(player, AetherPlayerAttachment.ENCHANTED_DART_COUNT_SYNC_KEY, data.getEnchantedDartCount() + 1);
             }
         }
     }
@@ -88,7 +88,7 @@ public final class WeaponAbilities {
             return;
         }
 
-        attachment.setSyncedToClients(arrow.getId(), PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true);
+        attachment.setSyncedToClients(arrow, PhoenixArrowAttachment.PHOENIX_ARROW_SYNC_KEY, true);
         if (inGround) {
             if (inGroundTime % 5 == 0) {
                 spawnPhoenixArrowParticle(arrow);

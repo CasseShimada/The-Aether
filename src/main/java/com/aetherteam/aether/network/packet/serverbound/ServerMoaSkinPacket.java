@@ -34,7 +34,7 @@ public abstract class ServerMoaSkinPacket {
 
         public static void execute(ServerMoaSkinPacket.Apply payload, ServerPlayer player) {
             Player playerEntity = player;
-            if (playerEntity.level().getServer() != null && payload.playerUUID() != null && payload.moaSkinData() != null) {
+            if (player.getUUID().equals(payload.playerUUID()) && playerEntity.level().getServer() != null && payload.moaSkinData() != null) {
                 ServerPerkData.MOA_SKIN_INSTANCE.applyPerkWithVerification(playerEntity.level().getServer(), payload.playerUUID(), payload.moaSkinData());
             }
         }
@@ -58,7 +58,7 @@ public abstract class ServerMoaSkinPacket {
 
         public static void execute(ServerMoaSkinPacket.Remove payload, ServerPlayer player) {
             Player playerEntity = player;
-            if (playerEntity.level().getServer() != null && payload.playerUUID() != null) {
+            if (player.getUUID().equals(payload.playerUUID()) && playerEntity.level().getServer() != null) {
                 ServerPerkData.MOA_SKIN_INSTANCE.removePerk(playerEntity.level().getServer(), payload.playerUUID());
             }
         }

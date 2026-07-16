@@ -4,6 +4,7 @@ import com.aetherteam.aether.network.packet.SyncPacket;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public final class AttachmentSyncPacketDispatcher {
@@ -14,8 +15,8 @@ public final class AttachmentSyncPacketDispatcher {
         AetherPacketSender.sendToServer(packet);
     }
 
-    public static void sendToClients(SyncPacket<?> packet) {
-        AetherPacketSender.sendToAllPlayers(packet);
+    public static void sendToClients(SyncPacket<?> packet, Entity entity) {
+        AetherPacketSender.sendToTrackingAndSelf(entity, packet);
     }
 
     public static void sendToPlayer(SyncPacket<?> packet, ServerPlayer player) {

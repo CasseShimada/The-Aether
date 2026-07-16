@@ -55,7 +55,7 @@ public abstract class AvatarRendererMixin {
     @Unique
     private PlayerModel aether$shieldSlimFirstPersonModel;
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"), require = 1)
     private void aether$addPendantLayer(EntityRendererProvider.Context context, boolean slim, CallbackInfo ci) {
         this.aether$glovesFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES));
         this.aether$glovesSlimFirstPersonModel = new GlovesModel(context.bakeLayer(AetherModelLayers.GLOVES_SLIM));
@@ -74,28 +74,28 @@ public abstract class AvatarRendererMixin {
         ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
     }
 
-    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 0)
+    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 1)
     private void aether$hideInvisibilityCloakAvatar(Avatar avatar, AvatarRenderState renderState, float partialTick, CallbackInfo ci) {
         if (avatar.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isWearingInvisibilityCloak()) {
             renderState.isInvisibleToPlayer = true;
         }
     }
 
-    @Inject(method = "renderRightHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Z)V", at = @At("HEAD"), cancellable = true, require = 0)
+    @Inject(method = "renderRightHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Z)V", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$cancelInvisibilityCloakRightHand(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, Identifier skin, boolean showSleeve, CallbackInfo ci) {
         if (isLocalPlayerWearingInvisibilityCloak()) {
             ci.cancel();
         }
     }
 
-    @Inject(method = "renderLeftHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Z)V", at = @At("HEAD"), cancellable = true, require = 0)
+    @Inject(method = "renderLeftHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Z)V", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$cancelInvisibilityCloakLeftHand(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, Identifier skin, boolean showSleeve, CallbackInfo ci) {
         if (isLocalPlayerWearingInvisibilityCloak()) {
             ci.cancel();
         }
     }
 
-    @Inject(method = "renderHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Lnet/minecraft/client/model/geom/ModelPart;Z)V", at = @At("TAIL"), require = 0)
+    @Inject(method = "renderHand(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/resources/Identifier;Lnet/minecraft/client/model/geom/ModelPart;Z)V", at = @At("TAIL"), require = 1)
     private void aether$renderAccessoryHands(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, Identifier skin, ModelPart arm, boolean showSleeve, CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
         if (!(minecraft.player instanceof Player player) || this.aether$glovesFirstPersonModel == null || this.aether$shieldFirstPersonModel == null) {

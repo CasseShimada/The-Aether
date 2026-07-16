@@ -1,5 +1,7 @@
 package com.aetherteam.aether.network;
 
+import com.aetherteam.aether.attachment.AetherTimeAttachment;
+import com.aetherteam.aether.attachment.AttachmentSyncable;
 import com.aetherteam.aether.client.AetherClient;
 import com.aetherteam.aether.client.gui.AetherBossBarTracker;
 import com.aetherteam.aether.network.packet.AetherPlayerSyncPacket;
@@ -23,11 +25,13 @@ import com.aetherteam.aether.network.packet.clientbound.QueenDialoguePacket;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.network.packet.clientbound.RemountAerbunnyPacket;
 import com.aetherteam.aether.network.packet.clientbound.SetInvisibilityPacket;
+import com.aetherteam.aether.network.packet.clientbound.ServerConfigSyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.ToolDebuffPacket;
 import com.aetherteam.aether.network.packet.clientbound.ZephyrSnowballHitPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
@@ -65,19 +69,30 @@ public final class AetherNetworkingClient {
         registerClientReceiver(HealthResetPacket.TYPE, HealthResetPacket::execute);
         registerClientReceiver(LeavingAetherPacket.TYPE, LeavingAetherPacket::execute);
         registerClientReceiver(MoaInteractPacket.TYPE, MoaInteractPacket::execute);
-        registerClientReceiver(OpenSunAltarPacket.TYPE, payload -> AetherClient.setToSunAltarScreen(payload.name(), payload.timeScale()));
+        registerClientReceiver(OpenSunAltarPacket.TYPE, payload -> AetherClient.setToSunAltarScreen(payload.name(), payload.timeScale(), payload.altarPos()));
         registerClientReceiver(PortalInteractPacket.TYPE, PortalInteractPacket::execute);
         registerClientReceiver(PortalTravelSoundPacket.TYPE, PortalTravelSoundPacket::execute);
         registerClientReceiver(QueenDialoguePacket.TYPE, QueenDialoguePacket::execute);
         registerClientReceiver(RegisterMoaSkinsPacket.TYPE, RegisterMoaSkinsPacket::execute);
         registerClientReceiver(RemountAerbunnyPacket.TYPE, RemountAerbunnyPacket::execute);
         registerClientReceiver(SetInvisibilityPacket.TYPE, SetInvisibilityPacket::execute);
+        registerClientReceiver(ServerConfigSyncPacket.TYPE, ServerConfigSyncPacket::execute);
         registerClientReceiver(ToolDebuffPacket.TYPE, ToolDebuffPacket::execute);
         registerClientReceiver(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket::execute);
 
-        registerClientReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
-        registerClientReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
+        registerClientReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::executeClientbound);
+        registerClientReceiver(AetherTimeSyncPacket.TYPE, AetherNetworkingClient::executeAetherTimeSync);
         registerClientReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
+    }
+
+    private static void executeAetherTimeSync(AetherTimeSyncPacket payload, Player player) {
+        AetherTimeSyncPacket.execute(payload, player);
+        if (payload.key().equals(AetherTimeAttachment.DAY_TIME_SYNC_KEY)
+                && payload.valueType() == AttachmentSyncable.ValueType.LONG
+                && payload.value() instanceof Long dayTime
+                && player.level() instanceof ClientLevel clientLevel) {
+            clientLevel.getLevelData().setGameTime(dayTime);
+        }
     }
 
     private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, Consumer<T> handler) {

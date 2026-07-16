@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.renderer.level;
 
 import com.aetherteam.aether.AetherTags;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -9,10 +9,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-final class DungeonOverlayStateHooks {
+final class DungeonOverlayTracker {
     private static final HashMap<Integer, List<BlockPos>> POSITIONS_FOR_TYPES = new HashMap<>();
+    private static ClientLevel trackedLevel;
 
-    private DungeonOverlayStateHooks() {
+    private DungeonOverlayTracker() {
+    }
+
+    static void prepareForLevel(ClientLevel level) {
+        if (trackedLevel != level) {
+            clear();
+            trackedLevel = level;
+        }
+    }
+
+    static void clear() {
+        POSITIONS_FOR_TYPES.clear();
+        trackedLevel = null;
     }
 
     static void updateTrackedPositions(BlockPos playerPos, ClientLevel level, ItemStack stack, int range, int type, boolean depopulate) {

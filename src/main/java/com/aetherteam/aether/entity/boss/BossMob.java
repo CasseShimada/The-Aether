@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
@@ -89,23 +90,15 @@ public interface BossMob<T extends Mob & BossMob<T>> {
         if (!(this instanceof Mob)) {
             return;
         }
-        if (tag.getDouble("DungeonOriginX").isPresent()) {
-            net.minecraft.world.phys.Vec3 origin = new net.minecraft.world.phys.Vec3(
-                    tag.getDouble("DungeonOriginX").orElse(0.0),
-                    tag.getDouble("DungeonOriginY").orElse(0.0),
-                    tag.getDouble("DungeonOriginZ").orElse(0.0)
-            );
-            AABB bounds = new AABB(
-                    tag.getDouble("DungeonMinX").orElse(0.0),
-                    tag.getDouble("DungeonMinY").orElse(0.0),
-                    tag.getDouble("DungeonMinZ").orElse(0.0),
-                    tag.getDouble("DungeonMaxX").orElse(0.0),
-                    tag.getDouble("DungeonMaxY").orElse(0.0),
-                    tag.getDouble("DungeonMaxZ").orElse(0.0)
-            );
-            this.setDungeon(new BossRoomTracker<>((T) this, origin, bounds));
-        }
+        BossNbtCompatibility.readDungeon(tag).ifPresent(dungeon ->
+                this.setDungeon(new BossRoomTracker<>((T) this, dungeon.origin(), dungeon.bounds())));
         tag.getBoolean("BossFight").ifPresent(this::setBossFight);
+    }
+
+    default void readBossSaveData(ValueInput input) {
+        input.read("BossData", CompoundTag.CODEC)
+                .or(() -> input.read("Dungeon", CompoundTag.CODEC))
+                .ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
     }
 
     @SuppressWarnings("unchecked")

@@ -18,6 +18,7 @@ import java.util.Map;
  * This attachment only has an effect on levels where the dimension type's effects are set to the Aether's.
  */
 public class AetherTimeAttachment implements AttachmentSyncable {
+    public static final String DAY_TIME_SYNC_KEY = "setDayTime";
     public static final String ETERNAL_DAY_SYNC_KEY = "setEternalDay";
     public static final String SHOULD_WAIT_SYNC_KEY = "setShouldWait";
 
@@ -30,6 +31,7 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Stores the following methods as able to be synced between client and server and vice-versa.
      */
     private final Map<String, SyncField> syncFields = Map.ofEntries(
+            Map.entry(DAY_TIME_SYNC_KEY, new SyncField(ValueType.LONG, (object) -> this.setDayTime((long) object), this::getDayTime)),
             Map.entry(ETERNAL_DAY_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setEternalDay((boolean) object), this::isEternalDay)),
             Map.entry(SHOULD_WAIT_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setShouldWait((boolean) object), this::getShouldWait))
     );
@@ -103,14 +105,22 @@ public class AetherTimeAttachment implements AttachmentSyncable {
      * Sends the eternal day value to the client dimension.
      */
     public void updateEternalDay(Level level) {
+        this.updateDayTime(level);
         this.setSyncedToDimension(-1, ETERNAL_DAY_SYNC_KEY, this.isEternalDay, level);
     }
 
-    /**
-     * Sends the eternal day value to the client player.
-     */
-    public void updateEternalDay(ServerPlayer player) {
+    public void syncToPlayer(ServerPlayer player) {
+        this.updateDayTime(player);
         this.setSyncedToPlayer(player.getId(), ETERNAL_DAY_SYNC_KEY, this.isEternalDay, player);
+        this.setSyncedToPlayer(player.getId(), SHOULD_WAIT_SYNC_KEY, this.shouldWait, player);
+    }
+
+    public void updateDayTime(Level level) {
+        this.setSyncedToDimension(-1, DAY_TIME_SYNC_KEY, this.dayTime, level);
+    }
+
+    public void updateDayTime(ServerPlayer player) {
+        this.setSyncedToPlayer(player.getId(), DAY_TIME_SYNC_KEY, this.dayTime, player);
     }
 
     public void setDayTime(long time) {

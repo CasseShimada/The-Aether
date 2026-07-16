@@ -23,7 +23,7 @@ final class AetherOverlayLifeShardHooks {
     private static final Identifier TEXTURE_LIFE_SHARD_FULL = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_full");
     private static final Identifier TEXTURE_LIFE_SHARD_HALF = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_half");
     private static final Identifier TEXTURE_LIFE_SHARD_FULL_BLINKING = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_full_blinking");
-    private static final Identifier TEXTURE_LIFE_SHARD_HALF_BLINKING = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_half_blinkin");
+    private static final Identifier TEXTURE_LIFE_SHARD_HALF_BLINKING = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_half_blinking");
     private static final Identifier TEXTURE_LIFE_SHARD_POISONED_FULL = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_poisoned_full");
     private static final Identifier TEXTURE_LIFE_SHARD_POISONED_HALF = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_poisoned_half");
     private static final Identifier TEXTURE_LIFE_SHARD_POISONED_FULL_BLINKING = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/heart/shard_poisoned_full_blinking");

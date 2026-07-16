@@ -1,39 +1,39 @@
 package com.aetherteam.aether.data;
 
 import com.aetherteam.aether.AetherConfig;
-import com.aetherteam.aether.config.ModConfigSpec;
+import com.aetherteam.aether.config.AetherConfigEntry;
+import com.aetherteam.aether.config.AetherConfigFile;
+import com.aetherteam.aether.config.BooleanConfigEntry;
 import com.google.gson.JsonSyntaxException;
 
-import java.util.Arrays;
 import java.util.List;
 
 public final class ConfigSerializationUtil {
     /**
      * Create a serializable string out of a config value's path.
      *
-     * @param config The {@link ModConfigSpec.ConfigValue}<{@link Boolean}> to serialize from.
+     * @param config The {@link BooleanConfigEntry} to serialize from.
      * @return The serializable {@link String}.
      */
-    public static String serialize(ModConfigSpec.ConfigValue<Boolean> config) {
-        try {
-            return config.getPath().toString();
-        } catch (NullPointerException e) {
-            throw new JsonSyntaxException("Error loading config entry from JSON! Maybe the config key is incorrect?");
-        }
+    public static String serialize(BooleanConfigEntry config) {
+        return AetherConfigFile.serializePath(config.path());
     }
 
     /**
      * Gets a config value out of a serialized string.
      *
      * @param string The {@link String} to deserialize from.
-     * @return The deserialized {@link ModConfigSpec.ConfigValue}<{@link Boolean}>.
+     * @return The deserialized {@link BooleanConfigEntry}.
      */
-    public static ModConfigSpec.ConfigValue<Boolean> deserialize(String string) {
-        List<String> path = Arrays.asList(string.replace("[", "").replace("]", "").split(", "));
-        ModConfigSpec.ConfigValue<Boolean> config = (ModConfigSpec.ConfigValue<Boolean>) AetherConfig.SERVER_SPEC.getValues().get(path);
+    public static BooleanConfigEntry deserialize(String string) {
+        List<String> path = AetherConfigFile.parseSerializedPath(string);
+        AetherConfigEntry<?> config = AetherConfig.SERVER_FILE.entries().get(path);
         if (config == null) {
-            config = (ModConfigSpec.ConfigValue<Boolean>) AetherConfig.COMMON_SPEC.getValues().get(path);
+            config = AetherConfig.COMMON_FILE.entries().get(path);
         }
-        return config;
+        if (config instanceof BooleanConfigEntry booleanConfig) {
+            return booleanConfig;
+        }
+        throw new JsonSyntaxException("Unknown or non-boolean Aether config entry " + string);
     }
 }

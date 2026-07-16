@@ -1,0 +1,150 @@
+package com.aetherteam.aether.resource;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.CompositePackResources;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.resources.IoSupplier;
+import net.minecraft.util.FileUtil;
+
+import javax.annotation.Nullable;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Merges the shared classic assets with a release-specific classic resource pack.
+ */
+public final class CombinedPackResources extends AbstractPackResources {
+    private final PackMetadataSection packInfo;
+    private final List<PackResources> packs;
+    private final Map<String, List<PackResources>> assets;
+    private final Map<String, List<PackResources>> data;
+    private final Path source;
+
+    public CombinedPackResources(PackLocationInfo id, PackMetadataSection packInfo,
+                                 List<? extends PackResources> packs, Path sourcePack) {
+        super(id);
+        this.packInfo = packInfo;
+        this.packs = List.copyOf(packs);
+        this.assets = this.buildNamespaceMap(PackType.CLIENT_RESOURCES, packs);
+        this.data = this.buildNamespaceMap(PackType.SERVER_DATA, packs);
+        this.source = sourcePack;
+    }
+
+    private Map<String, List<PackResources>> buildNamespaceMap(PackType type,
+                                                                List<? extends PackResources> packList) {
+        Map<String, List<PackResources>> map = new HashMap<>();
+        for (PackResources pack : packList) {
+            for (String namespace : pack.getNamespaces(type)) {
+                map.computeIfAbsent(namespace, key -> new ArrayList<>()).add(pack);
+            }
+        }
+        map.replaceAll((key, list) -> List.copyOf(list));
+        return Map.copyOf(map);
+    }
+
+    public Path getSource() {
+        return this.source;
+    }
+
+    @Nullable
+    @Override
+    public IoSupplier<InputStream> getRootResource(String... paths) {
+        FileUtil.validatePath(paths);
+        Path path = FileUtil.resolvePath(this.getSource(), List.of(paths));
+        return Files.exists(path) ? IoSupplier.create(path) : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    @Override
+    public <T> T getMetadataSection(MetadataSectionType<T> deserializer) {
+        return "pack".equals(deserializer.name()) ? (T) this.packInfo : null;
+    }
+
+    @Nullable
+    @Override
+    public IoSupplier<InputStream> getResource(PackType type, Identifier location) {
+        for (PackResources pack : this.getCandidatePacks(type, location)) {
+            IoSupplier<InputStream> resource = pack.getResource(type, location);
+            if (resource != null) {
+                return resource;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void listResources(PackType type, String namespace, String path, ResourceOutput output) {
+        for (PackResources pack : this.packs) {
+            pack.listResources(type, namespace, path, output);
+        }
+    }
+
+    @Override
+    public Set<String> getNamespaces(PackType type) {
+        return type == PackType.CLIENT_RESOURCES ? this.assets.keySet() : this.data.keySet();
+    }
+
+    @Override
+    public void close() {
+        for (PackResources pack : this.packs) {
+            pack.close();
+        }
+    }
+
+    @Nullable
+    public Collection<PackResources> getChildren() {
+        return this.packs;
+    }
+
+    private List<PackResources> getCandidatePacks(PackType type, Identifier location) {
+        Map<String, List<PackResources>> map = type == PackType.CLIENT_RESOURCES ? this.assets : this.data;
+        return map.getOrDefault(location.getNamespace(), Collections.emptyList());
+    }
+
+    @Override
+    public String toString() {
+        return "%s: %s".formatted(this.getClass().getName(), this.getSource());
+    }
+
+    public record CombinedResourcesSupplier(PackMetadataSection packInfo, List<Path> packPaths,
+                                            Path sourcePack) implements Pack.ResourcesSupplier {
+        @Override
+        public PackResources openPrimary(PackLocationInfo location) {
+            List<PathPackResources> packs = this.packPaths.stream()
+                    .map(path -> new PathPackResources(location, path))
+                    .toList();
+            return new CombinedPackResources(location, this.packInfo, packs, this.sourcePack);
+        }
+
+        @Override
+        public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+            PackResources primary = this.openPrimary(location);
+            if (metadata.overlays().isEmpty()) {
+                return primary;
+            }
+
+            List<PackResources> overlays = new ArrayList<>(metadata.overlays().size());
+            for (String overlay : metadata.overlays()) {
+                overlays.add(new CombinedPackResources(location, this.packInfo, List.of(),
+                        this.sourcePack.resolve(overlay)));
+            }
+            return new CompositePackResources(primary, overlays);
+        }
+    }
+}

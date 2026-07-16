@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
-    @Inject(method = "addCloudsPass", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "addCloudsPass", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$cancelAetherCloudPass(FrameGraphBuilder frameGraphBuilder, CloudStatus cloudStatus, Vec3 cloudColor, long gameTime, float partialTick, int packedCloudColor, float cloudHeight, int cloudRenderDistance, CallbackInfo ci) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null

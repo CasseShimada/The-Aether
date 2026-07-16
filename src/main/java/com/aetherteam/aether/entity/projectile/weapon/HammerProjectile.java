@@ -2,7 +2,6 @@ package com.aetherteam.aether.entity.projectile.weapon;
 
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.item.AetherItems;
-import com.aetherteam.aether.network.packet.serverbound.HammerProjectileLaunchPacket;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import com.aetherteam.aether.network.AetherPacketSender;
 
 import java.util.List;
 
@@ -106,7 +104,6 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
             this.launchTarget(target);
             this.level().broadcastEntityEvent(this, (byte) 70);
         } else {
-            AetherPacketSender.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
             this.spawnParticles();
         }
     }
@@ -119,15 +116,11 @@ public class HammerProjectile extends ThrowableProjectile implements ItemSupplie
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(5.0));
-        for (Entity target : list) {
-            if (!this.level().isClientSide()) {
-                this.launchTarget(target);
-            } else {
-                AetherPacketSender.sendToServer(new HammerProjectileLaunchPacket(target.getId(), this.getId()));
-            }
-        }
         if (!this.level().isClientSide()) {
+            List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(5.0));
+            for (Entity target : list) {
+                this.launchTarget(target);
+            }
             this.level().broadcastEntityEvent(this, (byte) 70);
         } else {
             this.spawnParticles();

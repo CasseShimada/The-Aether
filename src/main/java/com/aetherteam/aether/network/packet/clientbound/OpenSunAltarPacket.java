@@ -1,6 +1,8 @@
 package com.aetherteam.aether.network.packet.clientbound;
 
 import com.aetherteam.aether.Aether;
+import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -12,7 +14,7 @@ import net.minecraft.resources.Identifier;
 /**
  * Opens {@link SunAltarScreen} from {@link com.aetherteam.aether.block.utility.SunAltarBlock}.
  */
-public record OpenSunAltarPacket(Component name, int timeScale) implements CustomPacketPayload {
+public record OpenSunAltarPacket(Component name, int timeScale, BlockPos altarPos) implements CustomPacketPayload {
     public static final Type<OpenSunAltarPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "open_sun_altar"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenSunAltarPacket> STREAM_CODEC = StreamCodec.composite(
@@ -20,6 +22,8 @@ public record OpenSunAltarPacket(Component name, int timeScale) implements Custo
         OpenSunAltarPacket::name,
         ByteBufCodecs.INT,
         OpenSunAltarPacket::timeScale,
+        BlockPos.STREAM_CODEC,
+        OpenSunAltarPacket::altarPos,
         OpenSunAltarPacket::new);
 
     @Override

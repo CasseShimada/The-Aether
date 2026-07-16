@@ -2,6 +2,7 @@ package com.aetherteam.aether.command;
 
 import com.aetherteam.aether.attachment.AetherTimeAttachment;
 import com.aetherteam.aether.util.LevelTimeUtil;
+import com.aetherteam.aether.world.AetherTimeController;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -48,14 +49,14 @@ public class AetherTimeCommand {
 
     private static int setTime(CommandSourceStack source, int time) {
         ServerLevel level = source.getLevel();
-        LevelTimeUtil.setTime(level, time);
+        AetherTimeController.setTime(level, time);
         source.sendSuccess(() -> Component.translatable("commands.time.set", time), true);
         return getDayTime(source.getLevel());
     }
 
     private static int addTime(CommandSourceStack source, int amount) {
         ServerLevel level = source.getLevel();
-        LevelTimeUtil.setTime(level, LevelTimeUtil.getTime(level) + amount);
+        AetherTimeController.setTime(level, LevelTimeUtil.getTime(level) + amount);
         int i = getDayTime(source.getLevel());
         source.sendSuccess(() -> Component.translatable("commands.time.set", i), true);
         return i;

@@ -22,9 +22,14 @@ import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public final class AetherTravelController {
+    private static final Map<UUID, Integer> TELEPORTATION_TIMERS = new HashMap<>();
+
     private AetherTravelController() {
     }
 
@@ -77,8 +82,8 @@ public final class AetherTravelController {
                 Set.of(),
                 TeleportTransition.DO_NOTHING);
         Entity target = entity.teleport(transition);
-        if (target instanceof ServerPlayer) {
-            AetherTravelState.teleportationTimer = 500;
+        if (target instanceof ServerPlayer player) {
+            TELEPORTATION_TIMERS.put(player.getUUID(), 500);
         }
         return target;
     }
@@ -91,7 +96,7 @@ public final class AetherTravelController {
     }
 
     public static void dimensionTravel(Entity entity, ResourceKey<Level> dimension) {
-        if (!(entity instanceof Player player) || player.level().isClientSide()) {
+        if (!(entity instanceof ServerPlayer player)) {
             return;
         }
 
@@ -104,15 +109,15 @@ public final class AetherTravelController {
         }
 
         if (entity.level().dimension() == LevelUtil.destinationDimension() && dimension == LevelUtil.returnDimension()) {
-            updateTravelDisplay(true, true);
+            updateTravelDisplay(player, true, true);
             return;
         }
         if (entity.level().dimension() == LevelUtil.returnDimension() && dimension == LevelUtil.destinationDimension()) {
-            updateTravelDisplay(true, false);
+            updateTravelDisplay(player, true, false);
             return;
         }
 
-        updateTravelDisplay(false, AetherTravelState.playerLeavingAether);
+        updateTravelDisplay(player, false, false);
     }
 
     public static void removePlayerAerbunny(Entity entity) {
@@ -123,26 +128,28 @@ public final class AetherTravelController {
 
     public static void travelling(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if (AetherTravelState.teleportationTimer > 0) {
+            int teleportationTimer = TELEPORTATION_TIMERS.getOrDefault(serverPlayer.getUUID(), 0);
+            if (teleportationTimer > 0) {
                 ServerGamePacketListenerImplAccessor accessor = (ServerGamePacketListenerImplAccessor) serverPlayer.connection;
                 accessor.aether$setAboveGroundTickCount(0);
                 accessor.aether$setAboveGroundVehicleTickCount(0);
-                AetherTravelState.teleportationTimer--;
+                teleportationTimer--;
             }
-            if (AetherTravelState.teleportationTimer < 0 || serverPlayer.verticalCollisionBelow) {
-                AetherTravelState.teleportationTimer = 0;
+            if (serverPlayer.verticalCollisionBelow) {
+                teleportationTimer = 0;
+            }
+            if (teleportationTimer > 0) {
+                TELEPORTATION_TIMERS.put(serverPlayer.getUUID(), teleportationTimer);
+            } else {
+                TELEPORTATION_TIMERS.remove(serverPlayer.getUUID());
             }
         }
     }
 
-    private static void updateTravelDisplay(boolean visible, boolean leavingAether) {
-        AetherTravelState.displayAetherTravel = visible;
+    private static void updateTravelDisplay(ServerPlayer player, boolean visible, boolean leavingAether) {
+        AetherPacketSender.sendToPlayer(player, new AetherTravelPacket(visible));
         if (visible) {
-            AetherTravelState.playerLeavingAether = leavingAether;
-        }
-        AetherPacketSender.sendToAllPlayers(new AetherTravelPacket(visible));
-        if (visible) {
-            AetherPacketSender.sendToAllPlayers(new LeavingAetherPacket(leavingAether));
+            AetherPacketSender.sendToPlayer(player, new LeavingAetherPacket(leavingAether));
         }
     }
 }

@@ -7,12 +7,16 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public final class AetherPacketSender {
@@ -59,6 +63,20 @@ public final class AetherPacketSender {
 
         for (ServerPlayer serverPlayer : PlayerLookup.all(server)) {
             ServerPlayNetworking.send(serverPlayer, payload);
+        }
+    }
+
+    public static void sendToTrackingAndSelf(Entity entity, CustomPacketPayload payload) {
+        if (!(entity.level() instanceof ServerLevel)) {
+            return;
+        }
+        Set<UUID> recipients = new HashSet<>();
+        for (ServerPlayer trackingPlayer : PlayerLookup.tracking(entity)) {
+            recipients.add(trackingPlayer.getUUID());
+            sendToPlayer(trackingPlayer, payload);
+        }
+        if (entity instanceof ServerPlayer serverPlayer && recipients.add(serverPlayer.getUUID())) {
+            sendToPlayer(serverPlayer, payload);
         }
     }
 

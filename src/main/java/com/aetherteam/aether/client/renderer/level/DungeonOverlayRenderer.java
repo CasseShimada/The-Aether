@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.renderer.level;
 
 import com.aetherteam.aether.Aether;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.phys.AABB;
@@ -19,8 +20,8 @@ import net.minecraft.world.phys.AABB;
 import javax.annotation.Nullable;
 import java.util.List;
 
-final class DungeonOverlayRenderHooks {
-    private DungeonOverlayRenderHooks() {
+final class DungeonOverlayRenderer {
+    private DungeonOverlayRenderer() {
     }
 
     static void renderOverlays(List<BlockPos> positions, net.minecraft.client.multiplayer.ClientLevel level, PoseStack poseStack, SubmitNodeCollector collector, Camera camera, @Nullable Frustum frustum, int type) {
@@ -96,7 +97,7 @@ final class DungeonOverlayRenderHooks {
 
     @Nullable
     private static TextureAtlasSprite spriteForId(int id) {
-        TextureAtlas blockAtlas = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS);
+        TextureAtlas blockAtlas = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
         return switch (id) {
             case 0 -> blockAtlas.getSprite(Identifier.fromNamespaceAndPath(Aether.MODID, "block/dungeon/lock"));
             case 1 -> blockAtlas.getSprite(Identifier.fromNamespaceAndPath(Aether.MODID, "block/dungeon/exclamation"));

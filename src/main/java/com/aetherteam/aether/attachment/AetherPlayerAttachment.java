@@ -29,9 +29,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.PlayerList;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
@@ -68,7 +66,6 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public static final String INVISIBILITY_ENABLED_SYNC_KEY = "setInvisibilityEnabled";
     public static final String WEARING_INVISIBILITY_CLOAK_SYNC_KEY = "setWearingInvisibilityCloak";
     public static final String LAST_RIDDEN_MOA_SYNC_KEY = "setLastRiddenMoa";
-    public static final String SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY = "setShouldSyncBetweenClients";
 
     private static final Identifier LIFE_SHARD_HEALTH_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_max_health");
 
@@ -149,11 +146,9 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         Map.entry(INVISIBILITY_ENABLED_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setInvisibilityEnabled((boolean) object), this::isInvisibilityEnabled)),
         Map.entry(WEARING_INVISIBILITY_CLOAK_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setWearingInvisibilityCloak((boolean) object), this::isWearingInvisibilityCloak)),
         Map.entry(LIFE_SHARD_COUNT_SYNC_KEY, new SyncField(ValueType.INT, (object) -> this.setLifeShardCount((int) object), this::getLifeShardCount)),
-        Map.entry(LAST_RIDDEN_MOA_SYNC_KEY, new SyncField(ValueType.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa)),
-        Map.entry(SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, new SyncField(ValueType.BOOLEAN, (object) -> this.setShouldSyncBetweenClients((boolean) object), this::shouldSyncBetweenClients))
+        Map.entry(LAST_RIDDEN_MOA_SYNC_KEY, new SyncField(ValueType.UUID, (object) -> this.setLastRiddenMoa((UUID) object), this::getLastRiddenMoa))
     );
     private boolean shouldSyncAfterJoin;
-    private boolean shouldSyncBetweenClients;
 
     public static final Codec<AetherPlayerAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.BOOL.fieldOf("can_get_portal").forGetter(AetherPlayerAttachment::canGetPortal),
@@ -183,6 +178,19 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         this.setLastRiddenMoa(lastRiddenMoa.orElse(null));
         this.canShowPatreonMessage = showPatreonMessage;
         this.loginsUntilPatreonMessage = loginUntilMessage;
+    }
+
+    public void copyPersistentStateFrom(AetherPlayerAttachment source) {
+        this.setCanGetPortal(source.canGetPortal());
+        this.setCanSpawnInAether(source.canSpawnInAether());
+        this.setSavedHealth(source.getSavedHealth());
+        this.setLifeShardCount(source.getLifeShardCount());
+        this.setSeenSunSpiritDialogue(source.hasSeenSunSpiritDialogue());
+        this.setRemedyStartDuration(source.getRemedyStartDuration());
+        this.setMountedAerbunnyTag(source.getMountedAerbunnyTag().map(CompoundTag::copy));
+        this.setLastRiddenMoa(source.getLastRiddenMoa());
+        this.canShowPatreonMessage = source.canShowPatreonMessage;
+        this.loginsUntilPatreonMessage = source.loginsUntilPatreonMessage;
     }
 
     public Map<String, SyncField> getSyncFields() {
@@ -216,7 +224,6 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
     public void onJoinLevel(Player player) {
         if (player.level().isClientSide() && player.isLocalPlayer()) {
             CustomizationsOptions.INSTANCE.load();
-            this.setSyncedToServer(player.getId(), SHOULD_SYNC_BETWEEN_CLIENTS_SYNC_KEY, true);
         }
     }
 
@@ -238,7 +245,6 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
      */
     public void onUpdate(Player player) {
         this.syncAfterJoin(player);
-        this.syncClients(player);
         this.handleAetherPortal(player);
         this.activateParachute(player);
         this.handleRemoveDarts(player);
@@ -258,25 +264,8 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
     private void syncAfterJoin(Player player) {
         if (this.shouldSyncAfterJoin) {
-            this.forceSyncToClients(player.getId());
+            this.forceSyncToClients(player);
             this.shouldSyncAfterJoin = false;
-        }
-    }
-
-    private void syncClients(Player player) {
-        if (this.shouldSyncBetweenClients()) {
-            if (!player.level().isClientSide()) {
-                MinecraftServer server = player.level().getServer();
-                if (server != null) {
-                    PlayerList playerList = server.getPlayerList();
-                    for (ServerPlayer serverPlayer : playerList.getPlayers()) {
-                        if (!serverPlayer.getUUID().equals(player.getUUID())) {
-                            player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSyncToClients(player.getId());
-                        }
-                    }
-                }
-            }
-            this.setShouldSyncBetweenClients(false);
         }
     }
 
@@ -363,7 +352,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeGoldenDartTime;
                 if (this.removeGoldenDartTime <= 0) {
-                    this.setSyncedToClients(player.getId(), GOLDEN_DART_COUNT_SYNC_KEY, this.getGoldenDartCount() - 1);
+                    this.setSyncedToClients(player, GOLDEN_DART_COUNT_SYNC_KEY, this.getGoldenDartCount() - 1);
                 }
             }
             if (this.getPoisonDartCount() > 0) {
@@ -373,7 +362,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removePoisonDartTime;
                 if (this.removePoisonDartTime <= 0) {
-                    this.setSyncedToClients(player.getId(), POISON_DART_COUNT_SYNC_KEY, this.getPoisonDartCount() - 1);
+                    this.setSyncedToClients(player, POISON_DART_COUNT_SYNC_KEY, this.getPoisonDartCount() - 1);
                 }
             }
             if (this.getEnchantedDartCount() > 0) {
@@ -383,7 +372,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
 
                 --this.removeEnchantedDartTime;
                 if (this.removeEnchantedDartTime <= 0) {
-                    this.setSyncedToClients(player.getId(), ENCHANTED_DART_COUNT_SYNC_KEY, this.getEnchantedDartCount() - 1);
+                    this.setSyncedToClients(player, ENCHANTED_DART_COUNT_SYNC_KEY, this.getEnchantedDartCount() - 1);
                 }
             }
         }
@@ -433,7 +422,7 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
             if (this.attackedWithInvisibility()) {
                 --this.invisibilityAttackCooldown;
                 if (this.invisibilityAttackCooldown <= 0) {
-                    this.setSyncedToClients(player.getId(), ATTACKED_WITH_INVISIBILITY_SYNC_KEY, false);
+                    this.setSyncedToClients(player, ATTACKED_WITH_INVISIBILITY_SYNC_KEY, false);
                 }
             } else {
                 this.invisibilityAttackCooldown = AetherConfig.SERVER.invisibility_visibility_time.get();
@@ -964,17 +953,6 @@ public class AetherPlayerAttachment implements AttachmentSyncable {
         if (player instanceof ServerPlayer serverPlayer && !player.level().isClientSide()) {
             AetherPacketSender.sendToPlayer(serverPlayer, new CloudMinionPacket(player.getId(), cloudMinionRight.getId(), cloudMinionLeft.getId()));
         }
-    }
-
-    /**
-     * @return Whether the player attachment should sync server values to nearby clients.
-     */
-    private boolean shouldSyncBetweenClients() {
-        return this.shouldSyncBetweenClients;
-    }
-
-    private void setShouldSyncBetweenClients(boolean shouldSyncBetweenClients) {
-        this.shouldSyncBetweenClients = shouldSyncBetweenClients;
     }
 
     @Override

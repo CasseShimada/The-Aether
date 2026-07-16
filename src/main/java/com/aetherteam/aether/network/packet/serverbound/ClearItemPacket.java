@@ -7,7 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -27,9 +26,8 @@ public record ClearItemPacket(int playerID) implements CustomPacketPayload {
     }
 
     public static void execute(ClearItemPacket payload, ServerPlayer player) {
-        Player playerEntity = player;
-        if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer serverPlayer) {
-            serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);
+        if (payload.playerID() == player.getId()) {
+            player.containerMenu.setCarried(ItemStack.EMPTY);
         }
     }
 }

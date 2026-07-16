@@ -1,10 +1,9 @@
 package com.aetherteam.aether.client;
 
-import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherConfig;
+import com.aetherteam.aether.Aether;
 import com.aetherteam.aether.AetherTags;
 import com.aetherteam.aether.api.AetherAdvancementSoundOverrides;
-import com.aetherteam.aether.client.event.hooks.DungeonOverlayClientHooks;
 import com.aetherteam.aether.client.gui.AetherScreenController;
 import com.aetherteam.aether.client.gui.AbilityTooltips;
 import com.aetherteam.aether.client.gui.screen.inventory.SunAltarScreen;
@@ -13,6 +12,7 @@ import com.aetherteam.aether.client.renderer.AetherOverlays;
 import com.aetherteam.aether.client.renderer.AetherBlockRenderLayers;
 import com.aetherteam.aether.client.renderer.AetherRenderers;
 import com.aetherteam.aether.client.renderer.level.AetherRenderEffects;
+import com.aetherteam.aether.client.renderer.level.DungeonOverlayRendering;
 import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -168,20 +169,24 @@ public class AetherClient {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             AetherMusicController.stop();
             ToolAbilities.resetDebuffToolsState();
+            DungeonOverlayRendering.clearTrackedPositions();
+            AetherConfig.clearSynchronizedServerValues();
+            Aether.LOGGER.info("Cleared synchronized Aether server config values (Beds explode: {})",
+                    AetherConfig.SERVER.enable_bed_explosions.get());
         });
     }
 
     private static void registerLevelRenderCallbacks() {
         LevelRenderEvents.COLLECT_SUBMITS.register(context -> {
             Minecraft minecraft = Minecraft.getInstance();
-            DungeonOverlayClientHooks.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
+            DungeonOverlayRendering.renderDungeonBlockOverlays(context.poseStack(), context.submitNodeCollector(), minecraft.gameRenderer.mainCamera(), context.levelState().cameraRenderState.cullFrustum, minecraft);
         });
     }
 
     /**
      * Used to work around a classloading crash on the server.
      */
-    public static void setToSunAltarScreen(Component name, int timeScale) {
-        ClientAccess.setScreen(Minecraft.getInstance(), new SunAltarScreen(name, timeScale));
+    public static void setToSunAltarScreen(Component name, int timeScale, BlockPos altarPos) {
+        ClientAccess.setScreen(Minecraft.getInstance(), new SunAltarScreen(name, timeScale, altarPos));
     }
 }

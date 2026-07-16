@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientLevel.class)
 public class ClientLevelMixin {
-    @Inject(method = "addEnvironmentAttributeLayers", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "addEnvironmentAttributeLayers", at = @At("RETURN"), cancellable = true, require = 1)
     private void aether$addAetherSkyWeatherLayers(EnvironmentAttributeSystem.Builder builder, CallbackInfoReturnable<EnvironmentAttributeSystem.Builder> cir) {
         ClientLevel level = (ClientLevel) (Object) this;
         if (!level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {

@@ -73,9 +73,17 @@ public final class AetherTimeController {
                 && player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).isEternalDay();
     }
 
+    public static void setTime(ServerLevel level, long time) {
+        LevelTimeUtil.setTime(level, time);
+        if (level.dimension().equals(AetherDimensions.AETHER_LEVEL)) {
+            level.getAttachedOrCreate(AetherDataAttachments.AETHER_TIME)
+                    .setSyncedToDimension(-1, AetherTimeAttachment.DAY_TIME_SYNC_KEY, time, level);
+        }
+    }
+
     public static void syncAetherTime(Player player) {
         if (player instanceof ServerPlayer serverPlayer && player.level().dimension().equals(AetherDimensions.AETHER_LEVEL)) {
-            player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).updateEternalDay(serverPlayer);
+            player.level().getAttachedOrCreate(AetherDataAttachments.AETHER_TIME).syncToPlayer(serverPlayer);
         }
     }
 }

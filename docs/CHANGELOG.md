@@ -281,5 +281,7 @@ This branch tracks Fabric-specific development notes for the current codebase.
 - Completed keyed entity registration for Lightning Knife and Hammer Projectile, then removed the duplicate entity key helper and prebuilt-value registration overload; every Aether entity builder now receives the exact `ResourceKey<EntityType<?>>` used by vanilla registration.
 - Renamed the retained client sky implementation away from generic hook terminology while preserving its Minecraft Mixin injection points, environment attribute layers, celestial rendering, and Aether time calculations.
 - Renamed the vignette implementation away from generic hook terminology while preserving Fabric HUD registration, portal intensity rendering, effect textures, and alpha calculations.
+- Renamed the status HUD implementation away from generic hook terminology while preserving Hammer cooldown rendering, Moa jump indicators, resource identifiers, and the public jump-texture lookup boundary.
+- Restored released Boss NBT fallbacks and added an idempotent Fabric player-data migration that archives unknown Forge/NeoForge payloads before importing Aether state, Curios stacks, and released Accessories holder data.
 
 Historical release notes for other platform branches are not duplicated in this Fabric branch changelog.

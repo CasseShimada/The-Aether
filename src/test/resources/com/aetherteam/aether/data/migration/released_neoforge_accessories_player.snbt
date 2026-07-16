@@ -1,0 +1,49 @@
+{
+  DataVersion: 3955,
+  "neoforge:attachments": {
+    "accessories:inventory_holder": {
+      accessories_containers: {
+        "aether:ring_slot": {
+          slot_name: "aether:ring_slot",
+          base_size: 2,
+          current_size: 2,
+          render_options: [1b, 0b],
+          items: [
+            {
+              Slot: 0b,
+              id: "minecraft:stone",
+              count: 2,
+              components: {
+                "minecraft:damage": 3
+              }
+            }
+          ],
+          cosmetics: [
+            {
+              Slot: 1b,
+              id: "minecraft:stick",
+              count: 1
+            }
+          ]
+        },
+        "thirdparty:unknown_slot": {
+          slot_name: "thirdparty:unknown_slot",
+          base_size: 3,
+          current_size: 3,
+          render_options: [1b, 1b, 1b],
+          items: [
+            {
+              Slot: 2b,
+              id: "minecraft:diamond",
+              count: 4
+            }
+          ],
+          cosmetics: []
+        }
+      }
+    },
+    "thirdparty:attachment": {
+      opaque: "keep-me"
+    }
+  }
+}

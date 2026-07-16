@@ -1,0 +1,17 @@
+[Gameplay]
+	#Removed released option must survive migration saves
+	"Use default Accessories' menu" = true
+	#Known options retain their released section and key names
+	"Gives player Aether Portal Frame item" = true
+	"Gives starting loot on entry" = false
+	"Show Patreon message" = true # keep this operator note
+
+["Data Pack"]
+	"Add Temporary Freezing automatically" = true
+	"Add Ruined Portals automatically" = false
+
+[Modpack]
+	"Enables Immersive Portals compatibility" = false
+
+[ThirdParty]
+	"Opaque integration value" = { enabled = true, mode = "legacy" }

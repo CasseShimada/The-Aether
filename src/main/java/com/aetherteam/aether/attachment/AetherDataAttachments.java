@@ -27,6 +27,9 @@ public final class AetherDataAttachments {
     public static final AttachmentType<AetherTimeAttachment> AETHER_TIME = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "aether_time"),
             builder -> builder.initializer(AetherTimeAttachment::new).persistent(AetherTimeAttachment.CODEC));
 
+    public static final AttachmentType<LegacyDataArchiveAttachment> LEGACY_DATA_ARCHIVE = AttachmentRegistry.create(Identifier.fromNamespaceAndPath(Aether.MODID, "legacy_data_archive"),
+            builder -> builder.initializer(LegacyDataArchiveAttachment::new).persistent(LegacyDataArchiveAttachment.CODEC).copyOnDeath());
+
     private AetherDataAttachments() {
     }
 

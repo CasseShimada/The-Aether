@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ArmorStandRenderer.class)
 public abstract class ArmorStandRendererMixin {
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"), require = 1)
     private void aether$addCapeLayer(EntityRendererProvider.Context context, CallbackInfo ci) {
         ((LivingEntityRendererAccessor) this).aether$getLayers().add(new ArmorStandCapeLayer((ArmorStandRenderer) (Object) this, new CapeModel<>(context.bakeLayer(AetherModelLayers.CAPE))));
     }
 
-    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/decoration/ArmorStand;Lnet/minecraft/client/renderer/entity/state/ArmorStandRenderState;F)V", at = @At("TAIL"), require = 0)
+    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/decoration/ArmorStand;Lnet/minecraft/client/renderer/entity/state/ArmorStandRenderState;F)V", at = @At("TAIL"), require = 1)
     private void aether$extractCapeAccessory(ArmorStand armorStand, ArmorStandRenderState renderState, float partialTick, CallbackInfo ci) {
         ((ArmorStandCapeRenderState) renderState).aether$setCapeAccessory(AccessoryRendering.getVisibleAccessory(armorStand, CapeItem.getStaticSlotType(), 0).copy());
     }

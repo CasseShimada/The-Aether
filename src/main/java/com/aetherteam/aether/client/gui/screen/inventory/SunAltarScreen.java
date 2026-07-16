@@ -6,6 +6,7 @@ import com.aetherteam.aether.util.LevelTimeUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
@@ -13,10 +14,12 @@ import net.minecraft.util.FormattedCharSequence;
 public class SunAltarScreen extends Screen {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Aether.MODID, "textures/gui/menu/sun_altar.png");
     private final int timeScale;
+    private final BlockPos altarPos;
 
-    public SunAltarScreen(Component title, int timeScale) {
+    public SunAltarScreen(Component title, int timeScale, BlockPos altarPos) {
         super(title);
         this.timeScale = timeScale;
+        this.altarPos = altarPos;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class SunAltarScreen extends Screen {
         super.init();
         if (this.minecraft != null && this.minecraft.level != null) {
             double sliderValue = (LevelTimeUtil.getTime(this.minecraft.level) % (long) this.timeScale) / (double) this.timeScale; // What position the slider bar should be at.
-            this.addRenderableWidget(new SunAltarSlider(this.width / 2 - 75, this.height / 2, 150, 20, Component.translatable("gui.aether.sun_altar.time"), sliderValue, this.timeScale));
+            this.addRenderableWidget(new SunAltarSlider(this.width / 2 - 75, this.height / 2, 150, 20, Component.translatable("gui.aether.sun_altar.time"), sliderValue, this.timeScale, this.altarPos));
         }
     }
 

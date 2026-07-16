@@ -1,0 +1,18 @@
+[Gameplay]
+	"Beds explode" = true
+	"Maximum consumable Life Shards" = 1_024
+	#Invalid known values must not replace defaults or be silently rewritten
+	"Gummy Swets restore health" = "yes"
+
+[Multiplayer]
+	"Configure Sun Altar dimensions" = [
+		"aether:the_aether",
+		'thirdparty:sky', # literal TOML strings were valid in old files
+	]
+
+[Modpack]
+	"Sets portal destination dimension" = "thirdparty:destination"
+	"Sets portal return dimension" = 'minecraft:the_nether'
+
+[UnknownSection]
+	"Unknown key" = [1, 2, 3]

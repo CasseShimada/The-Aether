@@ -38,6 +38,7 @@ import com.aetherteam.aether.world.structurepiece.AetherStructurePieceTypes;
 import com.aetherteam.aether.world.treedecorator.AetherTreeDecoratorTypes;
 import com.aetherteam.aether.world.trunkplacer.AetherTrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 
@@ -62,6 +63,8 @@ public final class Aether {
         initialized = true;
 
         DIRECTORY.toFile().mkdirs();
+        AetherConfig.loadGlobal(FabricLoader.getInstance().getConfigDir(),
+                FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT);
 
         AetherDataAttachments.bootstrap();
         AetherGameEvents.bootstrap();

@@ -10,7 +10,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 
 /**
  * Called by mounts to sync their step height modifier to the server. This fixes a movement bug where step height occasionally would not work otherwise.
@@ -29,8 +28,8 @@ public record StepHeightPacket(int entityID) implements CustomPacketPayload {
     }
 
     public static void execute(StepHeightPacket payload, ServerPlayer player) {
-        Player playerEntity = player;
-        if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.entityID()) instanceof MountableAnimal mountableAnimal) {
+        if (player.level().getEntity(payload.entityID()) instanceof MountableAnimal mountableAnimal
+                && mountableAnimal.getControllingPassenger() == player) {
             AttributeInstance stepHeight = mountableAnimal.getAttribute(Attributes.STEP_HEIGHT);
             if (stepHeight != null) {
                 if (stepHeight.hasModifier(mountableAnimal.getDefaultStepHeightModifier().id())) {

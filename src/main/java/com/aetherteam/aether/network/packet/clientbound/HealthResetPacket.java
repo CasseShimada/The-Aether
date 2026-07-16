@@ -35,7 +35,7 @@ public record HealthResetPacket(int entityID, int value) implements CustomPacket
     public static void execute(HealthResetPacket payload, @Nullable Player contextPlayer) {
         if (contextPlayer != null && contextPlayer.level().getEntity(payload.entityID()) instanceof Player player) {
             var data = player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER);
-            data.setSyncedToServer(player.getId(), AetherPlayerAttachment.LIFE_SHARD_COUNT_SYNC_KEY, payload.value());
+            data.setLifeShardCount(payload.value());
             AttributeInstance attribute = player.getAttribute(Attributes.MAX_HEALTH);
             if (attribute != null) {
                 attribute.removeModifier(data.getLifeShardHealthAttributeModifier().id());

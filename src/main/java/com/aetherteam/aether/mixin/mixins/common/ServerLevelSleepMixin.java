@@ -16,7 +16,7 @@ public class ServerLevelSleepMixin {
         ServerLevel level = (ServerLevel) (Object) this;
         Long time = AetherTimeController.finishSleep(level, LevelTimeUtil.getTime(level));
         if (time != null) {
-            LevelTimeUtil.setTime(level, time);
+            AetherTimeController.setTime(level, time);
         }
     }
 }

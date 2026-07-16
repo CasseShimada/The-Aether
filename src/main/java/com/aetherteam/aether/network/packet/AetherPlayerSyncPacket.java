@@ -9,15 +9,24 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
  * Sync packet for values in the {@link AetherPlayerAttachment} class.
  */
 public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachment> {
     public static final Type<AetherPlayerSyncPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Aether.MODID, "sync_aether_player_attachment"));
+    private static final Set<String> CLIENT_WRITABLE_KEYS = Set.of(
+            AetherPlayerAttachment.HITTING_SYNC_KEY,
+            AetherPlayerAttachment.MOVING_SYNC_KEY,
+            AetherPlayerAttachment.JUMPING_SYNC_KEY,
+            AetherPlayerAttachment.GRAVITITE_JUMP_ACTIVE_SYNC_KEY,
+            AetherPlayerAttachment.INVISIBILITY_ENABLED_SYNC_KEY
+    );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AetherPlayerSyncPacket> STREAM_CODEC = CustomPacketPayload.codec(
         AetherPlayerSyncPacket::write,
@@ -45,7 +54,17 @@ public class AetherPlayerSyncPacket extends SyncEntityPacket<AetherPlayerAttachm
         return AetherDataAttachments.AETHER_PLAYER;
     }
 
-    public static void execute(AetherPlayerSyncPacket payload, @Nullable Player player) {
+    public static void executeClientbound(AetherPlayerSyncPacket payload, @Nullable Player player) {
         SyncEntityPacket.execute(payload, player);
+    }
+
+    public static void executeServerbound(AetherPlayerSyncPacket payload, ServerPlayer player) {
+        if (isValidServerboundUpdate(payload, player.getId())) {
+            SyncEntityPacket.execute(payload, player);
+        }
+    }
+
+    public static boolean isValidServerboundUpdate(AetherPlayerSyncPacket payload, int senderEntityId) {
+        return payload.entityID() == senderEntityId && CLIENT_WRITABLE_KEYS.contains(payload.key());
     }
 }

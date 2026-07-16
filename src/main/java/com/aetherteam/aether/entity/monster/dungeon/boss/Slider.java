@@ -939,7 +939,7 @@ public class Slider extends PathfinderMob implements AetherBossMob<Slider>, Enem
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
+        this.readBossSaveData(input);
         this.setAwake(input.getBooleanOr("Awake", this.isAwake()));
     }
 

@@ -32,7 +32,7 @@ public class LifeShardItem extends Item implements ConsumableItem {
                 player.swing(hand);
                 if (!level.isClientSide()) {
                     this.consume(this, heldStack, player);
-                    aetherPlayer.setSyncedToClients(player.getId(), AetherPlayerAttachment.LIFE_SHARD_COUNT_SYNC_KEY, aetherPlayer.getLifeShardCount() + 1);
+                    aetherPlayer.setSyncedToClients(player, AetherPlayerAttachment.LIFE_SHARD_COUNT_SYNC_KEY, aetherPlayer.getLifeShardCount() + 1);
                     return InteractionResult.CONSUME;
                 } else {
                     return InteractionResult.SUCCESS;

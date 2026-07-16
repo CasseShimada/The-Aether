@@ -34,7 +34,7 @@ public final class AetherPortalInteractions {
             return false;
         }
 
-        AetherPacketSender.sendToAllPlayers(new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
+        AetherPacketSender.sendToTrackingAndSelf(player, new PortalInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND));
         optional.get().createPortalBlocks();
         consumePortalActivationItem(player, stack, hand);
         return true;

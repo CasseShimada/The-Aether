@@ -34,7 +34,7 @@ public class ServerHaloPacket {
 
         public static void execute(ServerHaloPacket.Apply payload, ServerPlayer player) {
             Player playerEntity = player;
-            if (playerEntity.level().getServer() != null && payload.playerUUID() != null && payload.halo() != null) {
+            if (player.getUUID().equals(payload.playerUUID()) && playerEntity.level().getServer() != null && payload.halo() != null) {
                 ServerPerkData.HALO_INSTANCE.applyPerkWithVerification(playerEntity.level().getServer(), payload.playerUUID(), payload.halo());
             }
         }
@@ -58,7 +58,7 @@ public class ServerHaloPacket {
 
         public static void execute(ServerHaloPacket.Remove payload, ServerPlayer player) {
             Player playerEntity = player;
-            if (playerEntity.level().getServer() != null && payload.playerUUID() != null) {
+            if (player.getUUID().equals(payload.playerUUID()) && playerEntity.level().getServer() != null) {
                 ServerPerkData.HALO_INSTANCE.removePerk(playerEntity.level().getServer(), payload.playerUUID());
             }
         }

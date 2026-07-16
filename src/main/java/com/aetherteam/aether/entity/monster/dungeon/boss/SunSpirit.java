@@ -777,7 +777,7 @@ public class SunSpirit extends PathfinderMob implements AetherBossMob<SunSpirit>
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        input.read("BossData", CompoundTag.CODEC).ifPresent(tag -> this.readBossSaveData(tag, input.lookup()));
+        this.readBossSaveData(input);
         this.chatLine = input.getIntOr("ChatLine", this.chatLine);
         double offsetXRaw = input.getDoubleOr("OffsetX", Double.NaN);
         if (!Double.isNaN(offsetXRaw)) {

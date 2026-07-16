@@ -290,7 +290,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setLastRider(player.getUUID());
             }
             if (!player.level().isClientSide()) {
-                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSyncedToClients(player.getId(), AetherPlayerAttachment.LAST_RIDDEN_MOA_SYNC_KEY, this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).setSyncedToClients(player, AetherPlayerAttachment.LAST_RIDDEN_MOA_SYNC_KEY, this.getMoaUUID()); // Tracks the player as having last ridden this Moa.
                 if (player.level().getServer() != null) {
                     Map<UUID, MoaData> userSkinsData = ServerPerkData.MOA_SKIN_INSTANCE.getServerPerkData(player.level().getServer());
                     if (userSkinsData.containsKey(this.getLastRider())) { // Tracks a Moa Skin as being tied to this Moa and this passenger.
@@ -385,7 +385,7 @@ public class Moa extends MountableAnimal implements WingedBird {
                 this.setBaby(false);
             }
             this.setHungry(false);
-            AetherPacketSender.sendToAllPlayers(new MoaInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND)); // Packet necessary to play animation because this code segment is server-side only, so no animations.
+            AetherPacketSender.sendToTrackingAndSelf(player, new MoaInteractPacket(player.getId(), hand == InteractionHand.MAIN_HAND)); // Packet necessary to play animation because this code segment is server-side only, so no animations.
             return InteractionResult.CONSUME;
         } else if (this.isPlayerGrown() && !this.isBaby() && this.getHealth() < this.getMaxHealth() && itemStack.is(AetherTags.Items.MOA_FOOD_ITEMS)) { // Heals a tamed Moa.
             if (!player.getAbilities().instabuild) {

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LightmapRenderStateExtractor.class)
 public class LightTextureMixin {
-    @Inject(method = "extract", at = @At("TAIL"))
+    @Inject(method = "extract", at = @At("TAIL"), require = 1)
     private void aether$normalizeAetherSkyLightColor(LightmapRenderState state, float partialTick, CallbackInfo ci) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null

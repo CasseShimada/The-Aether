@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.renderer.level;
 
 import com.aetherteam.aether.data.resources.registries.AetherDimensions;
 import com.aetherteam.aether.item.EquipmentUtil;
@@ -15,8 +15,8 @@ import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
-public final class DimensionFogClientHooks {
-    private DimensionFogClientHooks() {
+public final class AetherFogRendering {
+    private AetherFogRendering() {
     }
 
     /**

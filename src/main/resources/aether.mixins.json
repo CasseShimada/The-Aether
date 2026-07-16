@@ -22,9 +22,9 @@
     "common.PiglinAiMixin",
     "common.PowderSnowBlockMixin",
     "common.ProjectileMixin",
-    "common.SlimeMixin",
+    "common.PackRepositoryMixin",
+    "common.AbstractCubeMobMixin",
     "common.ServerLevelSleepMixin",
-    "common.TimelineMixin",
     "common.accessor.AbstractContainerMenuAccessor",
     "common.accessor.AbstractFurnaceBlockEntityAccessor",
     "common.accessor.BaseSpawnerAccessor",
@@ -37,6 +37,7 @@
     "common.accessor.CraftingMenuAccessor",
     "common.accessor.EntityAccessor",
     "common.accessor.FireBlockAccessor",
+    "common.accessor.FolderRepositorySourceAccessor",
     "common.accessor.HoeItemAccessor",
     "common.accessor.LevelAccessor",
     "common.accessor.LivingEntityAccessor",
@@ -70,12 +71,10 @@
     "client.accessor.BossHealthOverlayAccessor",
     "client.accessor.ButtonAccessor",
     "client.accessor.ButtonBuilderAccessor",
-    "client.accessor.EntityRendererAccessor",
     "client.accessor.FogDataAccessor",
     "client.accessor.GhostSlotsAccessor",
     "client.accessor.GuiAccessor",
     "client.accessor.LivingEntityRendererAccessor",
-    "client.accessor.MinecraftAccessor",
     "client.accessor.PlayerModelAccessor",
     "client.accessor.QuadrupedModelAccessor",
     "client.accessor.ScreenAccessor",
@@ -84,6 +83,6 @@
     "client.accessor.TitleScreenAccessor"
   ],
   "injectors": {
-    "defaultRequire": 0
+    "defaultRequire": 1
   }
 }

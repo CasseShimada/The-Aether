@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 
 /**
  * This packet is sent to the server whenever the player chooses an important action in the NPC dialogue.
@@ -29,9 +29,11 @@ public record NpcPlayerInteractPacket(int entityID, byte interactionID) implemen
     }
 
     public static void execute(NpcPlayerInteractPacket payload, ServerPlayer player) {
-        Player playerEntity = player;
-        if (playerEntity.level().getServer() != null && playerEntity.level().getEntity(payload.entityID()) instanceof NpcDialogue npc) {
-            npc.handleNpcInteraction(playerEntity, payload.interactionID());
+        Entity entity = player.level().getEntity(payload.entityID());
+        if (entity instanceof NpcDialogue npc
+                && npc.getConversingPlayer() == player
+                && player.distanceToSqr(entity) <= 64.0) {
+            npc.handleNpcInteraction(player, payload.interactionID());
         }
     }
 }

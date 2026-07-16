@@ -38,7 +38,7 @@ public abstract class WingsLayerMixin {
     @Final
     private EquipmentLayerRenderer equipmentRenderer;
 
-    @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V", at = @At("HEAD"))
+    @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V", at = @At("HEAD"), require = 1)
     private void aether$renderAccessoryElytra(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, HumanoidRenderState renderState, float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (!(renderState instanceof AvatarRenderState avatarRenderState) || renderState.chestEquipment.is(Items.ELYTRA)) {
             return;

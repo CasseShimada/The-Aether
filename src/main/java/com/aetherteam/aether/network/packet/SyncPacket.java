@@ -8,6 +8,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import java.util.UUID;
 
 public abstract class SyncPacket<T extends AttachmentSyncable> implements CustomPacketPayload {
+    private static final int MAX_KEY_LENGTH = 128;
+    private static final int MAX_STRING_VALUE_LENGTH = 1_024;
     private final String key;
     private final AttachmentSyncable.ValueType valueType;
     private final Object value;
@@ -37,7 +39,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
     }
 
     public void write(RegistryFriendlyByteBuf buf) {
-        buf.writeUtf(this.key);
+        buf.writeUtf(this.key, MAX_KEY_LENGTH);
         buf.writeEnum(this.valueType);
         this.writeValue(buf, this.valueType, this.value);
     }
@@ -47,7 +49,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
     }
 
     protected static SyncValues decodeValues(RegistryFriendlyByteBuf buf) {
-        String key = buf.readUtf();
+        String key = buf.readUtf(MAX_KEY_LENGTH);
         AttachmentSyncable.ValueType valueType = buf.readEnum(AttachmentSyncable.ValueType.class);
         Object value = readValue(buf, valueType);
         return new SyncValues(key, valueType, value);
@@ -68,7 +70,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
                     buf.writeBoolean(false);
                 } else {
                     buf.writeBoolean(true);
-                    buf.writeUtf(text);
+                    buf.writeUtf(text, MAX_STRING_VALUE_LENGTH);
                 }
             }
             case UUID -> {
@@ -90,7 +92,7 @@ public abstract class SyncPacket<T extends AttachmentSyncable> implements Custom
             case LONG -> buf.readLong();
             case FLOAT -> buf.readFloat();
             case DOUBLE -> buf.readDouble();
-            case STRING -> buf.readBoolean() ? buf.readUtf() : null;
+            case STRING -> buf.readBoolean() ? buf.readUtf(MAX_STRING_VALUE_LENGTH) : null;
             case UUID -> buf.readBoolean() ? buf.readUUID() : null;
         };
     }

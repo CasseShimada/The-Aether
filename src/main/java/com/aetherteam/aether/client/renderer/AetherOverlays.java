@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class AetherOverlays {
     private static final Identifier OVERLAY_ELEMENT_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "overlay");
+    private static final Identifier LIFE_SHARD_HEARTS_ELEMENT_ID = Identifier.fromNamespaceAndPath(Aether.MODID, "life_shard_hearts");
 
     public static void registerOverlays() {
         HudElementRegistry.attachElementAfter(VanillaHudElements.MISC_OVERLAYS, OVERLAY_ELEMENT_ID, (guiGraphics, partialTicks) -> {
@@ -28,9 +29,15 @@ public class AetherOverlays {
                 AetherVignetteRendering.renderInebriationOverlay(guiGraphics, minecraft, window, player);
                 AetherVignetteRendering.renderRemedyOverlay(guiGraphics, minecraft, window, player);
                 AetherVignetteRendering.renderRepulsionOverlay(guiGraphics, minecraft, window, player);
-                AetherOverlayStatusHudHooks.renderHammerCooldownOverlay(guiGraphics, minecraft, window, player);
-                AetherOverlayStatusHudHooks.renderMoaJumps(guiGraphics, window, player);
-                AetherOverlayLifeShardHooks.renderSilverLifeShardHearts(guiGraphics, minecraft, window, gui, player);
+                AetherStatusHudRendering.renderHammerCooldownOverlay(guiGraphics, minecraft, window, player);
+                AetherStatusHudRendering.renderMoaJumps(guiGraphics, window, player);
+            }
+        });
+        HudElementRegistry.attachElementAfter(VanillaHudElements.HEALTH_BAR, LIFE_SHARD_HEARTS_ELEMENT_ID, (guiGraphics, partialTicks) -> {
+            Minecraft minecraft = Minecraft.getInstance();
+            LocalPlayer player = minecraft.player;
+            if (player != null) {
+                AetherOverlayLifeShardHooks.renderSilverLifeShardHearts(guiGraphics, minecraft, minecraft.getWindow(), minecraft.gui, player);
             }
         });
     }
@@ -41,6 +48,6 @@ public class AetherOverlays {
      * Uses the default Aether jumps texture as a fallback if no other texture has been specified inside the {@link MoaType}
      */
     public static Identifier getDefaultJumpsTexture(@Nullable MoaType type) {
-        return AetherOverlayStatusHudHooks.getDefaultJumpsTexture(type);
+        return AetherStatusHudRendering.getDefaultJumpsTexture(type);
     }
 }

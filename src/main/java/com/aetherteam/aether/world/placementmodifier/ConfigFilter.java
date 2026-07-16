@@ -1,7 +1,7 @@
 package com.aetherteam.aether.world.placementmodifier;
 
 import com.aetherteam.aether.data.ConfigSerializationUtil;
-import com.aetherteam.aether.config.ModConfigSpec;
+import com.aetherteam.aether.config.BooleanConfigEntry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -17,12 +17,12 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 public class ConfigFilter extends PlacementFilter {
     public static final MapCodec<ConfigFilter> CODEC = Codec.STRING.comapFlatMap(ConfigFilter::buildDeserialization, configFilter -> ConfigSerializationUtil.serialize(configFilter.config)).fieldOf("value");
 
-    private final ModConfigSpec.ConfigValue<Boolean> config;
+    private final BooleanConfigEntry config;
 
     /**
      * @param config The config value for the filter to use.
      */
-    public ConfigFilter(ModConfigSpec.ConfigValue<Boolean> config) {
+    public ConfigFilter(BooleanConfigEntry config) {
         this.config = config;
     }
 
@@ -37,10 +37,10 @@ public class ConfigFilter extends PlacementFilter {
     }
 
     private static DataResult<ConfigFilter> buildDeserialization(String configId) {
-        ModConfigSpec.ConfigValue<?> configEntry = ConfigSerializationUtil.deserialize(configId);
-        if (configEntry instanceof ModConfigSpec.BooleanValue booleanConfigEntry) {
-            return DataResult.success(new ConfigFilter(booleanConfigEntry));
+        try {
+            return DataResult.success(new ConfigFilter(ConfigSerializationUtil.deserialize(configId)));
+        } catch (RuntimeException exception) {
+            return DataResult.error(() -> "Config entry " + configId + " does not provide a boolean! Must be boolean (true/false), to be valid for ConfigFilter.");
         }
-        return DataResult.error(() -> "Config entry " + configId + " does not provide a boolean! Must be boolean (true/false), to be valid for ConfigFilter.");
     }
 }

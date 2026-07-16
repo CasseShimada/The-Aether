@@ -3,6 +3,7 @@ package com.aetherteam.aether.attachment;
 import com.aetherteam.aether.network.AttachmentSyncPacketDispatcher;
 import com.aetherteam.aether.network.packet.SyncPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
@@ -15,10 +16,17 @@ public interface AttachmentSyncable {
 
     SyncPacket<?> getSyncPacket(int entityID, String key, ValueType valueType, Object value);
 
-    default void forceSyncToClients(int entityID) {
+    default void forceSyncToClients(Entity entity) {
         for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
             SyncField value = entry.getValue();
-            AttachmentSyncPacketDispatcher.sendToClients(this.getSyncPacket(entityID, entry.getKey(), value.valueType(), value.getter().get()));
+            AttachmentSyncPacketDispatcher.sendToClients(this.getSyncPacket(entity.getId(), entry.getKey(), value.valueType(), value.getter().get()), entity);
+        }
+    }
+
+    default void forceSyncToPlayer(Entity entity, ServerPlayer player) {
+        for (Map.Entry<String, SyncField> entry : this.getSyncFields().entrySet()) {
+            SyncField value = entry.getValue();
+            AttachmentSyncPacketDispatcher.sendToPlayer(this.getSyncPacket(entity.getId(), entry.getKey(), value.valueType(), value.getter().get()), player);
         }
     }
 
@@ -26,13 +34,15 @@ public interface AttachmentSyncable {
         SyncPacket<?> packet = this.createSyncPacket(entityID, key, value);
         if (packet != null) {
             AttachmentSyncPacketDispatcher.sendToServer(packet);
+            this.executeSynced(key, packet.valueType(), value);
         }
     }
 
-    default void setSyncedToClients(int entityID, String key, @Nullable Object value) {
-        SyncPacket<?> packet = this.createSyncPacket(entityID, key, value);
+    default void setSyncedToClients(Entity entity, String key, @Nullable Object value) {
+        SyncPacket<?> packet = this.createSyncPacket(entity.getId(), key, value);
         if (packet != null) {
-            AttachmentSyncPacketDispatcher.sendToClients(packet);
+            AttachmentSyncPacketDispatcher.sendToClients(packet, entity);
+            this.executeSynced(key, packet.valueType(), value);
         }
     }
 
@@ -40,6 +50,7 @@ public interface AttachmentSyncable {
         SyncPacket<?> packet = this.createSyncPacket(entityID, key, value);
         if (packet != null) {
             AttachmentSyncPacketDispatcher.sendToPlayer(packet, player);
+            this.executeSynced(key, packet.valueType(), value);
         }
     }
 
@@ -47,6 +58,7 @@ public interface AttachmentSyncable {
         SyncPacket<?> packet = this.createSyncPacket(entityID, key, value);
         if (packet != null) {
             AttachmentSyncPacketDispatcher.sendToDimension(packet, level);
+            this.executeSynced(key, packet.valueType(), value);
         }
     }
 

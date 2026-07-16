@@ -27,7 +27,7 @@ public class GummySwetItem extends Item implements ConsumableItem {
      */
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!(AetherConfig.SERVER_SPEC.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
+        if (!(AetherConfig.SERVER_FILE.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
             FoodProperties foodProperties = AetherFoods.GUMMY_SWET;
             if (player.canEat(foodProperties.canAlwaysEat())) {
                 player.startUsingItem(hand);
@@ -56,7 +56,7 @@ public class GummySwetItem extends Item implements ConsumableItem {
      */
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
-        if (!(AetherConfig.SERVER_SPEC.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
+        if (!(AetherConfig.SERVER_FILE.isLoaded() && AetherConfig.SERVER.healing_gummy_swets.get())) { // Behaves as food.
             return super.finishUsingItem(stack, level, user);
         } else { // Behaves as direct healing.
             user.heal(user.getMaxHealth());

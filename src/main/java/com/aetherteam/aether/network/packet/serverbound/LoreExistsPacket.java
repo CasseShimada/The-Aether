@@ -8,7 +8,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -32,10 +31,7 @@ public record LoreExistsPacket(int playerID, ItemStack itemStack, boolean exists
     }
 
     public static void execute(LoreExistsPacket payload, ServerPlayer player) {
-        Player playerEntity = player;
-        if (playerEntity.level().getServer() != null
-            && playerEntity.level().getEntity(payload.playerID()) instanceof ServerPlayer
-            && playerEntity.containerMenu instanceof LoreBookMenu menu) {
+        if (payload.playerID() == player.getId() && player.containerMenu instanceof LoreBookMenu menu) {
             menu.setLoreEntryExists(payload.exists());
         }
     }

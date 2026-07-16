@@ -21,11 +21,11 @@ import com.aetherteam.aether.network.packet.clientbound.QueenDialoguePacket;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
 import com.aetherteam.aether.network.packet.clientbound.RemountAerbunnyPacket;
 import com.aetherteam.aether.network.packet.clientbound.SetInvisibilityPacket;
+import com.aetherteam.aether.network.packet.clientbound.ServerConfigSyncPacket;
 import com.aetherteam.aether.network.packet.clientbound.ToolDebuffPacket;
 import com.aetherteam.aether.network.packet.clientbound.ZephyrSnowballHitPacket;
 import com.aetherteam.aether.network.packet.serverbound.AerbunnyPuffPacket;
 import com.aetherteam.aether.network.packet.serverbound.ClearItemPacket;
-import com.aetherteam.aether.network.packet.serverbound.HammerProjectileLaunchPacket;
 import com.aetherteam.aether.network.packet.serverbound.LoreExistsPacket;
 import com.aetherteam.aether.network.packet.serverbound.NpcPlayerInteractPacket;
 import com.aetherteam.aether.network.packet.serverbound.NukeAccessoriesPacket;
@@ -90,13 +90,13 @@ public final class AetherNetworking {
         registerClientbound(RegisterMoaSkinsPacket.TYPE, RegisterMoaSkinsPacket.STREAM_CODEC);
         registerClientbound(RemountAerbunnyPacket.TYPE, RemountAerbunnyPacket.STREAM_CODEC);
         registerClientbound(SetInvisibilityPacket.TYPE, SetInvisibilityPacket.STREAM_CODEC);
+        registerClientbound(ServerConfigSyncPacket.TYPE, ServerConfigSyncPacket.STREAM_CODEC);
         registerClientbound(ToolDebuffPacket.TYPE, ToolDebuffPacket.STREAM_CODEC);
         registerClientbound(ZephyrSnowballHitPacket.TYPE, ZephyrSnowballHitPacket.STREAM_CODEC);
 
         // SERVERBOUND
         registerServerbound(AerbunnyPuffPacket.TYPE, AerbunnyPuffPacket.STREAM_CODEC);
         registerServerbound(ClearItemPacket.TYPE, ClearItemPacket.STREAM_CODEC);
-        registerServerbound(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket.STREAM_CODEC);
         registerServerbound(LoreExistsPacket.TYPE, LoreExistsPacket.STREAM_CODEC);
         registerServerbound(NukeAccessoriesPacket.TYPE, NukeAccessoriesPacket.STREAM_CODEC);
         registerServerbound(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket.STREAM_CODEC);
@@ -112,21 +112,17 @@ public final class AetherNetworking {
         registerServerbound(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
         registerServerbound(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket.STREAM_CODEC);
 
-        // BIDIRECTIONAL
+        // ATTACHMENT SYNC
         registerClientbound(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
         registerServerbound(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
 
         registerClientbound(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
-        registerServerbound(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket.STREAM_CODEC);
-
         registerClientbound(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
-        registerServerbound(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket.STREAM_CODEC);
     }
 
     private static void registerServerReceivers() {
         registerServerReceiver(AerbunnyPuffPacket.TYPE, AerbunnyPuffPacket::execute);
         registerServerReceiver(ClearItemPacket.TYPE, ClearItemPacket::execute);
-        registerServerReceiver(HammerProjectileLaunchPacket.TYPE, HammerProjectileLaunchPacket::execute);
         registerServerReceiver(LoreExistsPacket.TYPE, LoreExistsPacket::execute);
         registerServerReceiver(NukeAccessoriesPacket.TYPE, NukeAccessoriesPacket::execute);
         registerServerReceiver(NpcPlayerInteractPacket.TYPE, NpcPlayerInteractPacket::execute);
@@ -142,9 +138,7 @@ public final class AetherNetworking {
         registerServerReceiver(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket::execute);
         registerServerReceiver(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket::execute);
 
-        registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::execute);
-        registerServerReceiver(AetherTimeSyncPacket.TYPE, AetherTimeSyncPacket::execute);
-        registerServerReceiver(PhoenixArrowSyncPacket.TYPE, PhoenixArrowSyncPacket::execute);
+        registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::executeServerbound);
     }
 
     private static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> codec) {

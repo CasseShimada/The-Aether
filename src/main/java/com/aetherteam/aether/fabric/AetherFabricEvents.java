@@ -1,10 +1,12 @@
 package com.aetherteam.aether.fabric;
 
+import com.aetherteam.aether.AetherConfig;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
 import com.aetherteam.aether.accessories.impl.AccessoryItemInteractions;
 import com.aetherteam.aether.accessories.impl.ArmorStandAccessoryInteractions;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.command.AetherCommands;
+import com.aetherteam.aether.data.migration.LegacyPlayerDataMigration;
 import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.ai.goal.BeeGrowBerryBushGoal;
 import com.aetherteam.aether.entity.ai.goal.FoxEatBerryBushGoal;
@@ -15,6 +17,7 @@ import com.aetherteam.aether.item.miscellaneous.bucket.SkyrootBucketInteractions
 import com.aetherteam.aether.mixin.mixins.common.accessor.MobAccessor;
 import com.aetherteam.aether.network.AetherPacketSender;
 import com.aetherteam.aether.network.packet.clientbound.RegisterMoaSkinsPacket;
+import com.aetherteam.aether.network.packet.clientbound.ServerConfigSyncPacket;
 import com.aetherteam.aether.perk.data.ServerPerkData;
 import com.aetherteam.aether.perk.data.UserData;
 import com.aetherteam.aether.perk.types.MoaSkins;
@@ -28,6 +31,7 @@ import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -44,6 +48,7 @@ public final class AetherFabricEvents {
     }
 
     public static void registerCallbacks() {
+        registerServerLifecycleEvents();
         registerPlayerEvents();
         registerEntityEvents();
         registerLevelEvents();
@@ -52,8 +57,15 @@ public final class AetherFabricEvents {
         registerCommandEvents();
     }
 
+    private static void registerServerLifecycleEvents() {
+        ServerLifecycleEvents.SERVER_STARTING.register(AetherConfig::loadServer);
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> AetherConfig.unloadServer());
+    }
+
     private static void registerPlayerEvents() {
         ServerPlayerEvents.JOIN.register(player -> {
+            LegacyPlayerDataMigration.migrate(player);
+            AetherPacketSender.sendToPlayer(player, ServerConfigSyncPacket.create());
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).onLogin(player);
             AetherTimeController.syncAetherTime(player);
             var playerId = player.getGameProfile().id();
@@ -82,7 +94,7 @@ public final class AetherFabricEvents {
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
             player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).remountAerbunny(player);
             if (!player.level().isClientSide()) {
-                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSyncToClients(player.getId());
+                player.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSyncToClients(player);
             }
             AetherTimeController.syncAetherTime(player);
             AccessoryRuntime.forceSync(player);
@@ -122,7 +134,15 @@ public final class AetherFabricEvents {
     }
 
     private static void registerTrackingEvents() {
-        EntityTrackingEvents.START_TRACKING.register(AccessoryRuntime::syncToPlayer);
+        EntityTrackingEvents.START_TRACKING.register((entity, player) -> {
+            AccessoryRuntime.syncToPlayer(entity, player);
+            if (entity instanceof Player trackedPlayer) {
+                trackedPlayer.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).forceSyncToPlayer(trackedPlayer, player);
+            }
+            if (entity.hasAttached(AetherDataAttachments.PHOENIX_ARROW)) {
+                entity.getAttachedOrCreate(AetherDataAttachments.PHOENIX_ARROW).forceSyncToPlayer(entity, player);
+            }
+        });
     }
 
     private static void registerCommandEvents() {

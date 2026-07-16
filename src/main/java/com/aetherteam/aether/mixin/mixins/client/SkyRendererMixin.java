@@ -30,12 +30,12 @@ public abstract class SkyRendererMixin {
     private void renderStars(float alpha, PoseStack poseStack) {
     }
 
-    @Inject(method = "extractRenderState", at = @At("RETURN"))
+    @Inject(method = "extractRenderState", at = @At("RETURN"), require = 1)
     private void aether$adjustRenderState(ClientLevel level, float partialTick, Camera camera, SkyRenderState renderState, CallbackInfo ci) {
         AetherSkyRendering.adjustSkyRenderState(level, partialTick, renderState);
     }
 
-    @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$renderAetherCelestials(PoseStack poseStack, float sunAngle, float moonAngle, float starAngle, MoonPhase moonPhase, float rainBrightness, float starBrightness, CallbackInfo ci) {
         ClientLevel level = Minecraft.getInstance().level;
         if (!AetherSkyRendering.isCustomSkyEnabled(level)) {
@@ -75,7 +75,7 @@ public abstract class SkyRendererMixin {
         ci.cancel();
     }
 
-    @Inject(method = "shouldRenderDarkDisc", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "shouldRenderDarkDisc", at = @At("HEAD"), cancellable = true, require = 1)
     private void aether$disableDarkDiscInAether(float partialTick, ClientLevel level, CallbackInfoReturnable<Boolean> cir) {
         if (AetherSkyRendering.isAetherLevel(level)) {
             cir.setReturnValue(false);

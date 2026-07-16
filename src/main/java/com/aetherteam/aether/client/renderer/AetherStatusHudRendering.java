@@ -22,12 +22,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-final class AetherOverlayStatusHudHooks {
+final class AetherStatusHudRendering {
     private static final Identifier TEXTURE_COOLDOWN_BAR = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/cooldown");
     private static final Identifier TEXTURE_COOLDOWN_BAR_BACKGROUND = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/cooldown_background");
     static final Identifier TEXTURE_DEFAULT_JUMPS = Identifier.fromNamespaceAndPath(Aether.MODID, "hud/jumps");
 
-    private AetherOverlayStatusHudHooks() {
+    private AetherStatusHudRendering() {
     }
 
     static void renderHammerCooldownOverlay(GuiGraphicsExtractor guiGraphics, Minecraft minecraft, Window window, LocalPlayer player) {

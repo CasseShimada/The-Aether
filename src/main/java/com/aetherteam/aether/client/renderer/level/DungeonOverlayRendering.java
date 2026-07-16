@@ -1,4 +1,4 @@
-package com.aetherteam.aether.client.event.hooks;
+package com.aetherteam.aether.client.renderer.level;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-public final class DungeonOverlayClientHooks {
-    private DungeonOverlayClientHooks() {
+public final class DungeonOverlayRendering {
+    private DungeonOverlayRendering() {
     }
 
     /**
@@ -24,19 +24,24 @@ public final class DungeonOverlayClientHooks {
         if (minecraft.level != null) {
             LocalPlayer player = minecraft.player;
             ClientLevel level = minecraft.level;
+            DungeonOverlayTracker.prepareForLevel(level);
             int range = 32;
             if (player != null && player.isCreative()) {
                 BlockPos playerPos = player.blockPosition();
                 ItemStack stack = player.getMainHandItem();
-                int type = DungeonOverlayStateHooks.idForItem(stack);
+                int type = DungeonOverlayTracker.idForItem(stack);
                 if (type != -1) {
-                    DungeonOverlayStateHooks.updateTrackedPositions(playerPos, level, stack, range, type, false);
+                    DungeonOverlayTracker.updateTrackedPositions(playerPos, level, stack, range, type, false);
                 }
-                for (int i = 0; i < DungeonOverlayStateHooks.trackedTypeCount(); i++) {
-                    DungeonOverlayRenderHooks.renderOverlays(DungeonOverlayStateHooks.positionsForType(i), level, poseStack, collector, camera, frustum, i);
-                    DungeonOverlayStateHooks.updateTrackedPositions(playerPos, level, stack, range, i, true);
+                for (int i = 0; i < DungeonOverlayTracker.trackedTypeCount(); i++) {
+                    DungeonOverlayRenderer.renderOverlays(DungeonOverlayTracker.positionsForType(i), level, poseStack, collector, camera, frustum, i);
+                    DungeonOverlayTracker.updateTrackedPositions(playerPos, level, stack, range, i, true);
                 }
             }
         }
+    }
+
+    public static void clearTrackedPositions() {
+        DungeonOverlayTracker.clear();
     }
 }
