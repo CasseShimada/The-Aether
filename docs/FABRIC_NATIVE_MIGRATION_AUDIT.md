@@ -2,7 +2,7 @@
 
 ## 0. 接力摘要
 - 最后更新时间：2026-07-16（Asia/Shanghai）
-- 当前分支与 HEAD：`codex/fabric-native-refactor` / `8ceaaf2cd8e89dc1f8a14d1d2d5f552d8de7df8a`
+- 当前分支：`26.2-develop-fabric`；GitHub 预发布基线：`5aeaac042bc02b53fae2b75b4995c2cec5ea9682`
 - 当前阶段：MIGRATING
 - 本轮正在处理：用户提供的真实 Fabric `26.1.2` 世界已在只读副本上完成 `26.2` 升级、维度往返、容器、旧 Moa、死亡复制和幂等重启；既有 Slider/Valkyrie Queen 现又完成玩家归因击杀、进度触发、房门/地牢解锁及重启持久化。新增源级稳定 ID 回归守卫（28 个 native 注册声明类、585 个标识符）和资源完整性测试（2,768 个 JSON、核心 model/texture/atlas/sound/particle 引用）。
 - 下一步唯一优先任务：只继续 The Aether 自身在该 fixture 未出现的方块实体/物品行为、事件与动态世界生成矩阵；原档没有持久 Sun Spirit，当前实体的渲染/对话/激活/AI 已通过但不声称完整击杀。Forge/NeoForge fixture 与其他 Mod 明确不在用户验收范围内。
@@ -23,7 +23,7 @@
 | 证据 | 位置/版本 | 结论 | 状态 |
 |---|---|---|---|
 | 当前构建元数据 | `gradle.properties`、`build.gradle`、`fabric.mod.json` | 目标版本与提示词一致；`runtimeClasspath` 只有 Minecraft/Fabric 与游戏运行库，JEI/Jade 为 `compileOnly` | DONE |
-| 当前祖先与迁移历史 | `codex/fabric-native-refactor`，HEAD `8ceaaf2cd`；`git log` | 已长期迁移，不能重新生成；近期完成 keyed item/block/entity 注册与客户端 hook 重命名 | DONE |
+| 当前祖先与迁移历史 | `26.2-develop-fabric`；release baseline `5aeaac042`；`git log` | 分支按官方 `<Minecraft>-develop-fabric` 规则命名；已长期迁移，不能重新生成 | DONE |
 | 官方 NeoForge 参考 | tag `1.21.1-1.5.10-neoforge`，merge-base `04875348b6`；Accessories `1.1.0-beta.48+1.21.1` sources | 证明 attachment ID `accessories:inventory_holder` 及 `accessories_containers`/`items`/`cosmetics`/`render_options` 格式 | DONE |
 | 官方 Fabric 参考 | tag `1.21.1-1.5.10-fabric`、`upstream/1.21.1-develop-fabric`，merge-base `bad33a9cac` | 用于确认历史 Fabric 移植意图，不作为缺失功能免责依据 | IN_PROGRESS |
 | 最近目标版本基线 | tag `26.1.2-fabric`，merge-base `9156c21150`；分支 `origin/1.21.11-fabric`，merge-base `7b1f763935` | 用于 26.x API 迁移差异 | IN_PROGRESS |

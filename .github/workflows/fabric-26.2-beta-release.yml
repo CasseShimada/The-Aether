@@ -3,7 +3,7 @@ name: Build and release Fabric 26.2 beta
 on:
   push:
     branches:
-      - codex/fabric-native-refactor
+      - 26.2-develop-fabric
   workflow_dispatch:
 
 permissions:
@@ -48,16 +48,24 @@ jobs:
           path: build/libs/aether-26.2-fabric-1.0.0-beta*.jar
           if-no-files-found: error
 
+      - name: Prepare release notes
+        run: |
+          cp docs/releases/26.2-1.0.0-beta-fabric.md "$RUNNER_TEMP/release-notes.md"
+          main_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.0-beta.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          sources_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.0-beta-sources.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          printf '\n## Release asset checksums\n\n`aether-26.2-fabric-1.0.0-beta.jar`\n\nSHA-256: `%s`\n\n`aether-26.2-fabric-1.0.0-beta-sources.jar`\n\nSHA-256: `%s`\n' "$main_sha" "$sources_sha" >> "$RUNNER_TEMP/release-notes.md"
+
       - name: Create GitHub prerelease
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: 26.2-1.0.0-beta-fabric
         run: |
+          gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
           gh release create "$TAG" \
             build/libs/aether-26.2-fabric-1.0.0-beta.jar#"The Aether 26.2 Fabric beta" \
             build/libs/aether-26.2-fabric-1.0.0-beta-sources.jar#"Sources" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "The Aether - $TAG" \
-            --notes-file docs/releases/26.2-1.0.0-beta-fabric.md \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
             --prerelease
