@@ -3,6 +3,10 @@ package com.aetherteam.aether.mixin.mixins.common;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.effect.AccessoryEffectBridge;
 import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.accessories.impl.AccessoryItemInteractions;
+import com.aetherteam.aether.accessories.impl.AccessoryUsingEntity;
+import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.impl.MobAccessorySpawning;
 import com.aetherteam.aether.entity.AetherBossCombatRules;
 import com.aetherteam.aether.entity.AetherCombat;
@@ -26,6 +30,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,7 +47,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin implements AccessoryUsingEntity {
+    @Shadow
+    protected ItemStack useItem;
+    @Shadow
+    protected int useItemRemaining;
+    @Shadow
+    protected abstract void setLivingEntityFlag(int flag, boolean value);
+
     @Unique
     private boolean aether$trackingDeathDrops;
     @Unique
@@ -48,6 +63,30 @@ public abstract class LivingEntityMixin {
     private EquipmentSlot aether$breakingAccessoryEquipmentSlot;
     @Unique
     private boolean aether$checkingAccessoryDeathProtection;
+    @Unique
+    private SlotReference aether$usingAccessoryReference;
+
+    @Override
+    public void aether$startUsingAccessory(SlotReference reference, InteractionHand hand) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        ItemStack stack = reference == null ? ItemStack.EMPTY : reference.getStack();
+        if (stack.isEmpty() || livingEntity.isUsingItem()) {
+            return;
+        }
+        this.aether$usingAccessoryReference = reference;
+        this.useItem = stack;
+        this.useItemRemaining = stack.getUseDuration(livingEntity);
+        if (!livingEntity.level().isClientSide()) {
+            this.setLivingEntityFlag(1, true);
+            this.setLivingEntityFlag(2, hand == InteractionHand.OFF_HAND);
+            this.useItem.causeUseVibration(livingEntity, net.minecraft.world.level.gameevent.GameEvent.ITEM_INTERACT_START);
+        }
+    }
+
+    @Override
+    public boolean aether$isUsingAccessory() {
+        return this.aether$usingAccessoryReference != null && !this.useItem.isEmpty();
+    }
 
     /**
      * Handles vertical swimming for Phoenix Armor in lava without being affected by the upwards speed debuff from lava.
@@ -163,7 +202,8 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "checkTotemDeathProtection(Lnet/minecraft/world/damagesource/DamageSource;)Z", at = @At("RETURN"), cancellable = true)
     private void aether$checkAccessoryDeathProtection(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValueZ() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || this.aether$checkingAccessoryDeathProtection) {
+        if (!AccessoryEffectBridge.shouldTryAccessoryDeathProtection(cir.getReturnValueZ(), source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            || this.aether$checkingAccessoryDeathProtection) {
             return;
         }
 
@@ -181,12 +221,11 @@ public abstract class LivingEntityMixin {
     @WrapOperation(method = {"canGlide()Z", "updateFallFlying()V", "onEquippedItemBroken(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/entity/EquipmentSlot;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack aether$useAccessoryElytraForVanillaFlightChecks(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         ItemStack stack = original.call(instance, slot);
-        if (slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
-            return stack;
-        }
-
         if (this.aether$breakingAccessoryEquipmentSlot == slot && !this.aether$breakingAccessoryEquipmentStack.isEmpty()) {
             return this.aether$breakingAccessoryEquipmentStack;
+        }
+        if (slot != EquipmentSlot.CHEST || stack.is(Items.ELYTRA)) {
+            return stack;
         }
 
         SlotEntryReference accessoryReference = AccessoryEffectBridge.findFirstElytraReference(instance);
@@ -238,6 +277,64 @@ public abstract class LivingEntityMixin {
         if (accessoryReference != null) {
             AccessoryEffectBridge.syncAccessorySlotMutation(entity, accessoryReference, previousStack);
         }
+    }
+
+    @WrapOperation(method = "applyItemBlocking(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)F", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/component/BlocksAttacks;hurtBlockingItem(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/InteractionHand;F)V"))
+    private void aether$damageAccessoryShield(BlocksAttacks instance, Level level, ItemStack stack, LivingEntity user, InteractionHand hand, float damage, Operation<Void> original) {
+        SlotReference reference = this.aether$usingAccessoryReference;
+        if (reference == null || reference.getStack() != stack) {
+            original.call(instance, level, stack, user, hand, damage);
+            return;
+        }
+
+        var accessories = AccessoriesAPI.getAccessories(user);
+        if (accessories == null) {
+            original.call(instance, level, stack, user, hand, damage);
+            return;
+        }
+
+        this.aether$breakingAccessoryEquipmentStack = stack.copy();
+        this.aether$breakingAccessoryEquipmentSlot = EquipmentSlot.OFFHAND;
+        try {
+            accessories.mutateAccessory(reference, liveStack -> original.call(instance, level, liveStack, user, hand, damage));
+        } finally {
+            this.aether$breakingAccessoryEquipmentStack = ItemStack.EMPTY;
+            this.aether$breakingAccessoryEquipmentSlot = null;
+        }
+    }
+
+    @WrapOperation(method = {"updatingUsingItem()V", "releaseUsingItem()V", "completeUsingItem()V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;"))
+    private ItemStack aether$keepUsingAccessoryItem(LivingEntity instance, InteractionHand hand, Operation<ItemStack> original) {
+        if (this.aether$usingAccessoryReference != null) {
+            return this.aether$usingAccessoryReference.getStack();
+        }
+        return original.call(instance, hand);
+    }
+
+    @Inject(method = "onSyncedDataUpdated(Lnet/minecraft/network/syncher/EntityDataAccessor;)V", at = @At("TAIL"))
+    private void aether$resolveSyncedAccessoryUse(EntityDataAccessor<?> accessor, CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (!livingEntity.level().isClientSide()) {
+            return;
+        }
+        if (!livingEntity.isUsingItem()) {
+            this.aether$usingAccessoryReference = null;
+            return;
+        }
+        if (this.useItem.getUseDuration(livingEntity) > 0 || !(livingEntity instanceof net.minecraft.world.entity.player.Player player)) {
+            return;
+        }
+        SlotEntryReference shield = AccessoryItemInteractions.findBlockingShield(player);
+        if (shield != null) {
+            this.aether$usingAccessoryReference = shield.reference();
+            this.useItem = shield.stack();
+            this.useItemRemaining = this.useItem.getUseDuration(livingEntity);
+        }
+    }
+
+    @Inject(method = "stopUsingItem()V", at = @At("TAIL"))
+    private void aether$clearAccessoryUseReference(CallbackInfo ci) {
+        this.aether$usingAccessoryReference = null;
     }
 
 }

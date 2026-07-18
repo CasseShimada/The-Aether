@@ -9,9 +9,11 @@ import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
 import com.aetherteam.aether.accessories.api.slot.SlotTypeReference;
 import com.aetherteam.aether.accessories.impl.AccessoriesState;
+import com.aetherteam.aether.accessories.impl.AtomicAccessoryMutation;
 import com.aetherteam.aether.attachment.AccessoryInventoryAttachment;
 import com.aetherteam.aether.attachment.AetherDataAttachments;
 import com.aetherteam.aether.network.packet.clientbound.AccessorySyncPacket;
+import com.aetherteam.aether.network.AccessorySyncPacketDispatcher;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 final class EntityAccessoryStorage implements AccessoriesStorage {
     private final LivingEntity entity;
@@ -103,6 +106,16 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
         return null;
     }
 
+    public synchronized List<SlotEntryReference> getAllEquipped(Predicate<ItemStack> predicate) {
+        List<SlotEntryReference> matches = new ArrayList<>();
+        for (SlotEntryReference reference : this.getAllEquipped()) {
+            if (predicate.test(reference.stack())) {
+                matches.add(reference);
+            }
+        }
+        return matches;
+    }
+
     public synchronized List<SlotEntryReference> getAllEquipped() {
         this.ensureContainers();
         List<SlotEntryReference> references = new ArrayList<>();
@@ -116,6 +129,89 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
             }
         }
         return references;
+    }
+
+    @Nullable
+    public synchronized VisibleAccessory getFirstVisible(Predicate<ItemStack> predicate) {
+        List<VisibleAccessory> visible = this.getAllVisible(predicate);
+        return visible.isEmpty() ? null : visible.getFirst();
+    }
+
+    public synchronized List<VisibleAccessory> getAllVisible(Predicate<ItemStack> predicate) {
+        List<VisibleAccessory> visible = new ArrayList<>();
+        for (SlotEntryReference equipped : this.getAllEquipped()) {
+            SlotReference reference = equipped.reference();
+            AccessoriesContainer container = this.containers.get(reference.slotName());
+            if (container == null || !container.shouldRender(reference.slot())) {
+                continue;
+            }
+            ItemStack displayStack = container.getCosmeticAccessories().getItem(reference.slot());
+            if (displayStack.isEmpty()) {
+                displayStack = equipped.stack();
+            }
+            if (!displayStack.isEmpty() && predicate.test(displayStack)) {
+                visible.add(new VisibleAccessory(reference, displayStack.copy()));
+            }
+        }
+        return visible;
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult consumeFirst(Predicate<ItemStack> predicate) {
+        return this.consumeFirst(predicate, reference -> true);
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult consumeFirst(Predicate<ItemStack> predicate, Predicate<SlotReference> slotFilter) {
+        if (!this.isServerSide()) {
+            return null;
+        }
+        for (SlotEntryReference entry : List.copyOf(this.getAllEquipped())) {
+            if (slotFilter.test(entry.reference()) && predicate.test(entry.stack())) {
+                return this.consumeOne(entry.reference());
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult consumeOne(SlotReference reference) {
+        ItemStack current = this.getLiveStack(reference);
+        if (!this.isServerSide() || current == null || current.isEmpty()) {
+            return null;
+        }
+        ItemStack replacement = AtomicAccessoryMutation.consumeOneCopy(current);
+        return this.finishAtomicMutation(reference, current.copy(), replacement, false);
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult replaceAccessory(SlotReference reference, ItemStack replacement) {
+        ItemStack current = this.getLiveStack(reference);
+        if (!this.isServerSide() || current == null || replacement == null) {
+            return null;
+        }
+        return this.finishAtomicMutation(reference, current.copy(), replacement.copy(), false);
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult mutateAccessory(SlotReference reference, Consumer<ItemStack> mutation) {
+        ItemStack current = this.getLiveStack(reference);
+        if (!this.isServerSide() || current == null || current.isEmpty() || mutation == null) {
+            return null;
+        }
+        ItemStack previous = current.copy();
+        ItemStack replacement = current.copy();
+        mutation.accept(replacement);
+        return this.finishAtomicMutation(reference, previous, replacement, false);
+    }
+
+    @Nullable
+    public synchronized AccessoryMutationResult commitAccessoryMutation(SlotReference reference, ItemStack previousStack) {
+        ItemStack current = this.getLiveStack(reference);
+        if (!this.isServerSide() || current == null || previousStack == null) {
+            return null;
+        }
+        return this.finishAtomicMutation(reference, previousStack.copy(), current.copy(), true);
     }
 
     public synchronized void clearAccessories(boolean clearCosmeticAccessories) {
@@ -338,6 +434,65 @@ final class EntityAccessoryStorage implements AccessoriesStorage {
             ));
         }
         attachment.retainSlots(this.containers.keySet());
+    }
+
+    @Nullable
+    private ItemStack getLiveStack(SlotReference reference) {
+        if (reference == null || reference.entity() != this.entity) {
+            return null;
+        }
+        this.ensureContainers();
+        AccessoriesContainer container = this.containers.get(reference.slotName());
+        if (container == null || reference.slot() < 0 || reference.slot() >= container.getAccessories().getContainerSize()) {
+            return null;
+        }
+        return container.getAccessories().getItem(reference.slot());
+    }
+
+    private AccessoryMutationResult finishAtomicMutation(SlotReference reference, ItemStack previous, ItemStack replacement, boolean alreadyApplied) {
+        ItemStack normalizedReplacement = replacement.isEmpty() ? ItemStack.EMPTY : replacement.copy();
+        if (sameStack(previous, normalizedReplacement)) {
+            return new AccessoryMutationResult(reference, previous, normalizedReplacement);
+        }
+
+        AccessoriesContainer container = this.containers.get(reference.slotName());
+        if (container == null) {
+            return null;
+        }
+
+        String key = slotKey(reference.slotName(), reference.slot());
+        boolean unequipped = !previous.isEmpty()
+            && (normalizedReplacement.isEmpty() || !ItemStack.isSameItem(previous, normalizedReplacement));
+        AtomicAccessoryMutation.commit(
+            previous,
+            normalizedReplacement,
+            () -> AccessoriesAPI.getOrDefaultAccessory(previous).onUnequip(previous.copy(), reference),
+            () -> {
+                if (!alreadyApplied || normalizedReplacement.isEmpty()) {
+                    container.setEquippedSilently(reference.slot(), normalizedReplacement);
+                }
+            },
+            () -> {
+                if (normalizedReplacement.isEmpty()) {
+                    this.previousEquipped.remove(key);
+                    this.removeDynamicModifiersForSlot(key);
+                } else {
+                    this.previousEquipped.put(key, normalizedReplacement.copy());
+                    if (unequipped) {
+                        this.removeDynamicModifiersForSlot(key);
+                    }
+                }
+                this.persistToAttachment();
+            },
+            () -> {
+                if (this.isServerSide()) {
+                    this.syncDirty = true;
+                    AccessorySyncPacketDispatcher.sendToTrackingAndSelf(this.entity, this.createSyncPacket());
+                    this.syncDirty = false;
+                }
+            }
+        );
+        return new AccessoryMutationResult(reference, previous, normalizedReplacement);
     }
 
     private Map<String, ItemStack> captureEquippedCopies(@Nullable Map<String, SlotReference> references) {

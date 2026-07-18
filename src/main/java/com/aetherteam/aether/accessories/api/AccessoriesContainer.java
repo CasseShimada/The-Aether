@@ -85,6 +85,18 @@ public class AccessoriesContainer {
         return Arrays.copyOf(this.renderFlags, this.renderFlags.length);
     }
 
+    void setEquippedSilently(int slotIndex, ItemStack stack) {
+        if (slotIndex < 0 || slotIndex >= this.accessories.getContainerSize()) {
+            return;
+        }
+        this.suppressUpdates = true;
+        try {
+            this.accessories.setItem(slotIndex, stack == null ? ItemStack.EMPTY : stack);
+        } finally {
+            this.suppressUpdates = false;
+        }
+    }
+
     private void onContainerChanged() {
         if (!this.suppressUpdates) {
             this.owner.onContainerChanged();

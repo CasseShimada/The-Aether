@@ -37,6 +37,7 @@ import com.aetherteam.aether.network.packet.serverbound.ServerMoaSkinPacket;
 import com.aetherteam.aether.network.packet.serverbound.StepHeightPacket;
 import com.aetherteam.aether.network.packet.serverbound.SunAltarUpdatePacket;
 import com.aetherteam.aether.network.packet.serverbound.ToggleAccessoryRenderPacket;
+import com.aetherteam.aether.network.packet.serverbound.UseAccessoryPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -111,6 +112,7 @@ public final class AetherNetworking {
         registerServerbound(StepHeightPacket.TYPE, StepHeightPacket.STREAM_CODEC);
         registerServerbound(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket.STREAM_CODEC);
         registerServerbound(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket.STREAM_CODEC);
+        registerServerbound(UseAccessoryPacket.TYPE, UseAccessoryPacket.STREAM_CODEC);
 
         // ATTACHMENT SYNC
         registerClientbound(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket.STREAM_CODEC);
@@ -137,6 +139,7 @@ public final class AetherNetworking {
         registerServerReceiver(StepHeightPacket.TYPE, StepHeightPacket::execute);
         registerServerReceiver(SunAltarUpdatePacket.TYPE, SunAltarUpdatePacket::execute);
         registerServerReceiver(ToggleAccessoryRenderPacket.TYPE, ToggleAccessoryRenderPacket::execute);
+        registerServerReceiver(UseAccessoryPacket.TYPE, UseAccessoryPacket::execute);
 
         registerServerReceiver(AetherPlayerSyncPacket.TYPE, AetherPlayerSyncPacket::executeServerbound);
     }

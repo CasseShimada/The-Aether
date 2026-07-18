@@ -2,6 +2,7 @@ package com.aetherteam.aether.accessories.api;
 
 import com.aetherteam.aether.accessories.api.core.Accessory;
 import com.aetherteam.aether.accessories.api.slot.SlotBasedPredicate;
+import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.api.slot.SlotReference;
 import com.aetherteam.aether.accessories.api.slot.SlotType;
 import com.aetherteam.aether.accessories.impl.AccessoriesState;
@@ -12,12 +13,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public final class AccessoriesAPI {
     private static final Map<LivingEntity, EntityAccessoryStorage> STORAGE_BY_ENTITY = Collections.synchronizedMap(new WeakHashMap<>());
@@ -86,20 +91,69 @@ public final class AccessoriesAPI {
         return validTypes;
     }
 
+    @Nullable
+    public static SlotEntryReference getFirstEquipped(LivingEntity entity, Predicate<ItemStack> predicate) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? null : accessories.getFirstEquipped(predicate);
+    }
+
+    public static List<SlotEntryReference> getAllEquipped(LivingEntity entity, Predicate<ItemStack> predicate) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? List.of() : accessories.getAllEquipped(predicate);
+    }
+
+    public static List<VisibleAccessory> getAllVisible(LivingEntity entity, Predicate<ItemStack> predicate) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? List.of() : accessories.getAllVisible(predicate);
+    }
+
+    @Nullable
+    public static VisibleAccessory getFirstVisible(LivingEntity entity, Predicate<ItemStack> predicate) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? null : accessories.getFirstVisible(predicate);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult consumeFirst(LivingEntity entity, Predicate<ItemStack> predicate) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? null : accessories.consumeFirst(predicate);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult consumeFirst(LivingEntity entity, Predicate<ItemStack> predicate, Predicate<SlotReference> slotFilter) {
+        AccessoriesStorage accessories = getAccessories(entity);
+        return accessories == null ? null : accessories.consumeFirst(predicate, slotFilter);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult consumeOne(SlotReference reference) {
+        AccessoriesStorage accessories = reference == null ? null : getAccessories(reference.entity());
+        return accessories == null ? null : accessories.consumeOne(reference);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult replaceAccessory(SlotReference reference, ItemStack replacement) {
+        AccessoriesStorage accessories = reference == null ? null : getAccessories(reference.entity());
+        return accessories == null ? null : accessories.replaceAccessory(reference, replacement);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult mutateAccessory(SlotReference reference, Consumer<ItemStack> mutation) {
+        AccessoriesStorage accessories = reference == null ? null : getAccessories(reference.entity());
+        return accessories == null ? null : accessories.mutateAccessory(reference, mutation);
+    }
+
+    @Nullable
+    public static AccessoryMutationResult commitAccessoryMutation(SlotReference reference, ItemStack previousStack) {
+        AccessoriesStorage accessories = reference == null ? null : getAccessories(reference.entity());
+        return accessories == null ? null : accessories.commitAccessoryMutation(reference, previousStack);
+    }
+
     public static void breakStack(SlotReference reference) {
         if (reference == null) {
             return;
         }
-        ItemStack current = reference.getStack();
-        if (!current.isEmpty()) {
-            Accessory accessory = getOrDefaultAccessory(current);
-            accessory.onUnequip(current, reference);
-            reference.setStack(ItemStack.EMPTY);
-            AccessoriesStorage accessories = getAccessories(reference.entity());
-            if (accessories != null) {
-                accessories.handleImmediateUnequip(reference);
-            }
-        }
+        replaceAccessory(reference, ItemStack.EMPTY);
     }
 
     private static boolean supportsEntity(Set<EntityType<?>> validTypes, EntityType<?> entityType) {

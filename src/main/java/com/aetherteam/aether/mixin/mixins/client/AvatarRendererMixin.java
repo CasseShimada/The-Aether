@@ -5,11 +5,13 @@ import com.aetherteam.aether.client.renderer.AetherModelLayers;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerGlovesLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerPendantLayer;
 import com.aetherteam.aether.client.renderer.accessory.layer.PlayerShieldOfRepulsionLayer;
+import com.aetherteam.aether.client.renderer.accessory.layer.PlayerTagAccessoryLayer;
 import com.aetherteam.aether.client.renderer.accessory.model.GlovesModel;
 import com.aetherteam.aether.client.renderer.accessory.model.PendantModel;
 import com.aetherteam.aether.item.accessories.gloves.GlovesItem;
 import com.aetherteam.aether.item.accessories.miscellaneous.ShieldOfRepulsionItem;
 import com.aetherteam.aether.client.renderer.accessory.AccessoryRendering;
+import com.aetherteam.aether.accessories.impl.AccessoryUsingEntity;
 import com.aetherteam.aether.mixin.mixins.client.accessor.LivingEntityRendererAccessor;
 import com.aetherteam.aether.mixin.mixins.client.accessor.PlayerModelAccessor;
 import com.aetherteam.aether.util.EntityMotionUtil;
@@ -72,12 +74,17 @@ public abstract class AvatarRendererMixin {
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION), false),
             new PlayerModel(context.bakeLayer(AetherModelLayers.SHIELD_OF_REPULSION_SLIM), true)));
         ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerPendantLayer((AvatarRenderer) (Object) this, new PendantModel<>(context.bakeLayer(AetherModelLayers.PENDANT))));
+        ((LivingEntityRendererAccessor) this).aether$getLayers().add(new PlayerTagAccessoryLayer((AvatarRenderer) (Object) this, context.getItemModelResolver()));
     }
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"), require = 1)
     private void aether$hideInvisibilityCloakAvatar(Avatar avatar, AvatarRenderState renderState, float partialTick, CallbackInfo ci) {
         if (avatar.getAttachedOrCreate(AetherDataAttachments.AETHER_PLAYER).isWearingInvisibilityCloak()) {
             renderState.isInvisibleToPlayer = true;
+        }
+        if (avatar instanceof AccessoryUsingEntity usingEntity && usingEntity.aether$isUsingAccessory()) {
+            renderState.leftHandItemStack = ItemStack.EMPTY;
+            renderState.leftHandItemState.clear();
         }
     }
 

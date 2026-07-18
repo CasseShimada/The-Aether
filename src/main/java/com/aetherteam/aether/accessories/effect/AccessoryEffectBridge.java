@@ -1,9 +1,10 @@
 package com.aetherteam.aether.accessories.effect;
 
 import com.aetherteam.aether.accessories.api.AccessoriesAPI;
+import com.aetherteam.aether.accessories.api.AccessoryMutationResult;
 import com.aetherteam.aether.accessories.api.slot.SlotEntryReference;
 import com.aetherteam.aether.accessories.slot.AccessorySlotResolver;
-import com.aetherteam.aether.accessories.impl.AccessoryRuntime;
+import com.aetherteam.aether.inventory.AetherAccessorySlots;
 import com.aetherteam.aether.item.accessories.abilities.AllowWalkingOnSnow;
 import com.aetherteam.aether.item.accessories.abilities.PiglinNeutralInducer;
 import net.fabricmc.fabric.api.util.TriState;
@@ -77,12 +78,13 @@ public final class AccessoryEffectBridge {
     @Nullable
     public static SlotEntryReference findFirstElytraReference(LivingEntity entity) {
         var accessories = AccessoriesAPI.getAccessories(entity);
-        if (accessories == null) {
+        var backSlot = AetherAccessorySlots.getBackSlotType();
+        if (accessories == null || backSlot == null) {
             return null;
         }
 
         for (SlotEntryReference reference : accessories.getAllEquipped()) {
-            if (reference.stack().is(Items.ELYTRA)) {
+            if (reference.slotName().equals(backSlot.slotName()) && reference.stack().is(Items.ELYTRA)) {
                 return reference;
             }
         }
@@ -95,26 +97,13 @@ public final class AccessoryEffectBridge {
      */
     @Nullable
     public static DeathProtectionResult consumeDeathProtection(LivingEntity entity) {
-        var accessories = AccessoriesAPI.getAccessories(entity);
-        if (accessories == null) {
+        AccessoryMutationResult mutation = AccessoriesAPI.consumeFirst(entity, stack -> stack.has(DataComponents.DEATH_PROTECTION));
+        if (mutation == null) {
             return null;
         }
-
-        for (SlotEntryReference reference : accessories.getAllEquipped()) {
-            ItemStack stack = reference.stack();
-            DeathProtection deathProtection = stack.get(DataComponents.DEATH_PROTECTION);
-            if (deathProtection == null) {
-                continue;
-            }
-
-            ItemStack previousStack = stack.copy();
-            ItemStack usedStack = stack.copyWithCount(1);
-            stack.shrink(1);
-            setAccessoryStack(entity, reference, stack, previousStack);
-            return new DeathProtectionResult(usedStack, deathProtection);
-        }
-
-        return null;
+        ItemStack usedStack = mutation.previousStack().copyWithCount(1);
+        DeathProtection deathProtection = usedStack.get(DataComponents.DEATH_PROTECTION);
+        return deathProtection == null ? null : new DeathProtectionResult(usedStack, deathProtection);
     }
 
     public static boolean applyDeathProtection(LivingEntity entity) {
@@ -136,11 +125,18 @@ public final class AccessoryEffectBridge {
         return true;
     }
 
+    public static boolean shouldTryAccessoryDeathProtection(boolean vanillaSucceeded, boolean bypassesInvulnerability) {
+        return !vanillaSucceeded && !bypassesInvulnerability;
+    }
+
     public static void syncAccessorySlotMutation(LivingEntity entity, SlotEntryReference reference, ItemStack previousStack) {
         if (sameStack(previousStack, reference.stack())) {
             return;
         }
-        setAccessoryStack(entity, reference, reference.stack(), previousStack);
+        var accessories = AccessoriesAPI.getAccessories(entity);
+        if (accessories != null) {
+            AccessoriesAPI.commitAccessoryMutation(reference.reference(), previousStack);
+        }
     }
 
     public static void syncAccessoryStackMutation(LivingEntity entity, ItemStack mutatedStack, ItemStack previousStack) {
@@ -233,30 +229,6 @@ public final class AccessoryEffectBridge {
         }
 
         return null;
-    }
-
-    private static void setAccessoryStack(LivingEntity entity, SlotEntryReference reference, ItemStack stack, ItemStack previousStack) {
-        boolean removed = stack.isEmpty();
-
-        if (removed) {
-            AccessoriesAPI.getOrDefaultAccessory(previousStack).onUnequip(previousStack.copy(), reference.reference());
-        }
-
-        reference.reference().setStack(removed ? ItemStack.EMPTY : stack);
-
-        if (removed) {
-            var accessories = AccessoriesAPI.getAccessories(entity);
-            if (accessories != null) {
-                accessories.handleImmediateUnequip(reference.reference());
-            }
-        } else {
-            var accessories = AccessoriesAPI.getAccessories(entity);
-            if (accessories != null) {
-                accessories.handleImmediateStackMutation(reference.reference());
-            }
-        }
-
-        AccessoryRuntime.forceSync(entity);
     }
 
     private static EquipmentSlot resolveEquipmentSlot(LivingEntity entity, ItemStack stack) {

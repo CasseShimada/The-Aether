@@ -17,6 +17,7 @@ import com.aetherteam.aether.item.tools.abilities.ToolAbilities;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.inventory.menu.LoreBookMenu;
 import com.aetherteam.aether.item.AetherItems;
+import com.aetherteam.aether.integration.twilightforest.client.TwilightForestClientIntegration;
 import com.aetherteam.aether.perk.CustomizationsOptions;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -47,6 +48,7 @@ public class AetherClient {
         initialized = true;
         registerClientContent();
         registerClientCallbacks();
+        TwilightForestClientIntegration.init();
     }
 
     public static void registerItemModelProperties() {

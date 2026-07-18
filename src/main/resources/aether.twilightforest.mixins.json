@@ -1,0 +1,14 @@
+{
+  "required": false,
+  "package": "com.aetherteam.aether.integration.twilightforest.mixin",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_25",
+  "refmap": "aether.refmap.json",
+  "plugin": "com.aetherteam.aether.integration.twilightforest.mixin.TwilightForestMixinPlugin",
+  "mixins": [
+    "TFItemStackUtilsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

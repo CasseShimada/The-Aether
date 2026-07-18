@@ -31,17 +31,8 @@ public final class AccessoryRendering {
     }
 
     public static ItemStack getVisibleWingsAccessory(LivingEntity livingEntity) {
-        var accessories = AccessoriesAPI.getAccessories(livingEntity);
-        if (accessories != null) {
-            for (SlotEntryReference reference : accessories.getAllEquipped()) {
-                AccessoriesContainer accessoriesContainer = accessories.getContainer(reference.reference().type());
-                ItemStack stack = getVisibleAccessory(accessoriesContainer, reference.reference().slot());
-                if (stack.is(Items.ELYTRA)) {
-                    return stack;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
+        ItemStack stack = getVisibleAccessory(livingEntity, com.aetherteam.aether.inventory.AetherAccessorySlots.getBackSlotType(), 0);
+        return stack.is(Items.ELYTRA) ? stack : ItemStack.EMPTY;
     }
 
     /**

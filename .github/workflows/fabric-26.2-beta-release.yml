@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build-release:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release 26.2-1.0.0-beta-fabric]')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release 26.2-1.0.1-beta-fabric]')
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -39,31 +39,31 @@ jobs:
           ./gradlew clean build --console=plain
 
       - name: Record checksums
-        run: sha256sum build/libs/aether-26.2-fabric-1.0.0-beta*.jar
+        run: sha256sum build/libs/aether-26.2-fabric-1.0.1-beta*.jar
 
       - name: Preserve workflow artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: aether-26.2-fabric-1.0.0-beta
-          path: build/libs/aether-26.2-fabric-1.0.0-beta*.jar
+          name: aether-26.2-fabric-1.0.1-beta
+          path: build/libs/aether-26.2-fabric-1.0.1-beta*.jar
           if-no-files-found: error
 
       - name: Prepare release notes
         run: |
-          cp docs/releases/26.2-1.0.0-beta-fabric.md "$RUNNER_TEMP/release-notes.md"
-          main_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.0-beta.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
-          sources_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.0-beta-sources.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
-          printf '\n## Release asset checksums\n\n`aether-26.2-fabric-1.0.0-beta.jar`\n\nSHA-256: `%s`\n\n`aether-26.2-fabric-1.0.0-beta-sources.jar`\n\nSHA-256: `%s`\n' "$main_sha" "$sources_sha" >> "$RUNNER_TEMP/release-notes.md"
+          cp docs/releases/26.2-1.0.1-beta-fabric.md "$RUNNER_TEMP/release-notes.md"
+          main_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.1-beta.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          sources_sha=$(sha256sum build/libs/aether-26.2-fabric-1.0.1-beta-sources.jar | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          printf '\n## Release asset checksums\n\n`aether-26.2-fabric-1.0.1-beta.jar`\n\nSHA-256: `%s`\n\n`aether-26.2-fabric-1.0.1-beta-sources.jar`\n\nSHA-256: `%s`\n' "$main_sha" "$sources_sha" >> "$RUNNER_TEMP/release-notes.md"
 
       - name: Create GitHub prerelease
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: 26.2-1.0.0-beta-fabric
+          TAG: 26.2-1.0.1-beta-fabric
         run: |
           gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
           gh release create "$TAG" \
-            build/libs/aether-26.2-fabric-1.0.0-beta.jar#"The Aether 26.2 Fabric beta" \
-            build/libs/aether-26.2-fabric-1.0.0-beta-sources.jar#"Sources" \
+            build/libs/aether-26.2-fabric-1.0.1-beta.jar#"The Aether 26.2 Fabric beta" \
+            build/libs/aether-26.2-fabric-1.0.1-beta-sources.jar#"Sources" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "The Aether - $TAG" \

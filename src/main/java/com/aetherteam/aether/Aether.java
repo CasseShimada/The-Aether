@@ -15,6 +15,7 @@ import com.aetherteam.aether.effect.AetherEffects;
 import com.aetherteam.aether.entity.AetherEntityTypes;
 import com.aetherteam.aether.entity.ai.attribute.AetherAttributes;
 import com.aetherteam.aether.inventory.AetherAccessorySlots;
+import com.aetherteam.aether.integration.twilightforest.TwilightForestIntegration;
 import com.aetherteam.aether.inventory.menu.AetherMenuTypes;
 import com.aetherteam.aether.item.AetherCreativeTabs;
 import com.aetherteam.aether.item.AetherItems;
@@ -119,5 +120,6 @@ public final class Aether {
         AetherCauldronInteractions.registerCauldronInteractions();
 
         AetherAccessorySlots.register();
+        TwilightForestIntegration.init();
     }
 }
