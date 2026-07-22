@@ -1,0 +1,13 @@
+{
+  "aether:viewer_privacy": {
+    "entrypoints": {
+      "common": "com.aetherteam.aether.integration.wthit.AetherWthitCommonPlugin",
+      "client": "com.aetherteam.aether.integration.wthit.AetherWthitClientPlugin"
+    },
+    "side": "*",
+    "required": {
+      "wthit": ">=20.0.0 <21.0.0"
+    },
+    "defaultEnabled": true
+  }
+}

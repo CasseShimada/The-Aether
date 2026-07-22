@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "#aether:dungeon_entities",
+    "aether:mimic",
+    "aether:aechor_plant",
+    "aether:cockatrice",
+    "aether:zephyr",
+    "aether:whirlwind",
+    "aether:evil_whirlwind",
+    "aether:cloud_minion",
+    "aether:cold_parachute",
+    "aether:golden_parachute",
+    "aether:floating_block",
+    "aether:tnt_present",
+    "aether:zephyr_snowball",
+    "aether:cloud_crystal",
+    "aether:fire_crystal",
+    "aether:ice_crystal",
+    "aether:thunder_crystal",
+    "aether:golden_dart",
+    "aether:poison_dart",
+    "aether:enchanted_dart",
+    "aether:poison_needle",
+    "aether:lightning_knife",
+    "aether:hammer_projectile"
+  ]
+}

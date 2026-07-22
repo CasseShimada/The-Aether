@@ -24,6 +24,9 @@
     ],
     "jei_mod_plugin": [
       "com.aetherteam.aether.integration.jei.AetherJEIPlugin"
+    ],
+    "jade": [
+      "com.aetherteam.aether.integration.jade.AetherJadePlugin"
     ]
   },
   "mixins": [
@@ -37,6 +40,10 @@
     "fabric-api": "*"
   },
   "suggests": {
-    "jei": "*"
+    "jei": "*",
+    "jade": "*",
+    "diggusmaximus": ">=1.5.9-beta.1+26.2 <2.0.0",
+    "carryon": ">=2.9.1 <3.0.0",
+    "wthit": ">=20.0.0 <21.0.0"
   }
 }

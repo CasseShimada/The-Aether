@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "aether:altar",
+    "aether:freezer",
+    "aether:incubator",
+    "aether:purple_flower",
+    "aether:white_flower",
+    "aether:icestone",
+    "aether:icestone_slab",
+    "aether:icestone_stairs",
+    "aether:icestone_wall",
+    "aether:skyroot_sign",
+    "aether:skyroot_wall_sign",
+    "aether:skyroot_hanging_sign",
+    "aether:skyroot_wall_hanging_sign"
+  ]
+}

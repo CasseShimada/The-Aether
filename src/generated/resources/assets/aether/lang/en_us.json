@@ -1362,5 +1362,6 @@
   "item.aether.unstable_obsidian": "Unstable Obsidian",
   "item.aether.white_flower": "White Flower",
   "item.aether.zanite_block": "Block of Zanite",
-  "item.aether.zanite_ore": "Zanite Ore"
+  "item.aether.zanite_ore": "Zanite Ore",
+  "tooltip.aether.viewer.inventory_not_generated": "Inventory contents have not been generated"
 }
