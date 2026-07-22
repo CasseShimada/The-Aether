@@ -1,0 +1,94 @@
+name: Restore Fabric 26.2 beta release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: restore-fabric-26.2-beta-release
+  cancel-in-progress: false
+
+jobs:
+  restore-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out current release notes
+        uses: actions/checkout@v4
+
+      - name: Download the validated beta workflow artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aether-26.2-1.0.2-beta-fabric
+          path: release-assets
+          github-token: ${{ github.token }}
+          run-id: 29915058549
+
+      - name: Validate recovery inputs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          main=release-assets/aether-26.2-fabric-1.0.2-beta.jar
+          sources=release-assets/aether-26.2-fabric-1.0.2-beta-sources.jar
+          test -f "$main"
+          test -f "$sources"
+          echo '912fd22ae9705603784d151c4648e1f31bff5f2131f31de04b16fd3a2be4a30a  release-assets/aether-26.2-fabric-1.0.2-beta.jar' | sha256sum --check --strict
+          echo 'ed61bd0f838eaca21f3a22ebb43c4b982ecd2e41c8487929e8e85296960d5579  release-assets/aether-26.2-fabric-1.0.2-beta-sources.jar' | sha256sum --check --strict
+
+          if git ls-remote --exit-code --tags origin refs/tags/26.2-1.0.2-beta-fabric >/dev/null 2>&1; then
+            echo 'Beta tag already exists' >&2
+            exit 1
+          fi
+          if gh release view 26.2-1.0.2-beta-fabric --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Beta release already exists' >&2
+            exit 1
+          fi
+
+      - name: Prepare Chinese release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp docs/releases/26.2-1.0.2-beta-fabric.md "$RUNNER_TEMP/release-notes.md"
+          printf '\n## 发布文件校验和\n\n`aether-26.2-fabric-1.0.2-beta.jar`\n\nSHA-256: `%s`\n\n`aether-26.2-fabric-1.0.2-beta-sources.jar`\n\nSHA-256: `%s`\n' \
+            '912FD22AE9705603784D151C4648E1F31BFF5F2131F31DE04B16FD3A2BE4A30A' \
+            'ED61BD0F838EACA21F3A22EBB43C4B982ECD2E41C8487929E8E85296960D5579' \
+            >> "$RUNNER_TEMP/release-notes.md"
+
+      - name: Recreate GitHub prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create 26.2-1.0.2-beta-fabric \
+            'release-assets/aether-26.2-fabric-1.0.2-beta.jar#The Aether 26.2 Fabric beta' \
+            'release-assets/aether-26.2-fabric-1.0.2-beta-sources.jar#Sources' \
+            --repo "$GITHUB_REPOSITORY" \
+            --target c303747b08450f958596e6caf26044c409e4fb9f \
+            --title 'The Aether - 26.2-1.0.2-beta-fabric' \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --prerelease \
+            --latest=false
+
+      - name: Verify restored prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          release=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/26.2-1.0.2-beta-fabric")
+          jq -e '
+            .draft == false
+            and .prerelease == true
+            and .target_commitish == "c303747b08450f958596e6caf26044c409e4fb9f"
+            and ([.assets[] | select(.name == "aether-26.2-fabric-1.0.2-beta.jar" and .size == 37988058 and .digest == "sha256:912fd22ae9705603784d151c4648e1f31bff5f2131f31de04b16fd3a2be4a30a")] | length == 1)
+            and ([.assets[] | select(.name == "aether-26.2-fabric-1.0.2-beta-sources.jar" and .size == 36964503 and .digest == "sha256:ed61bd0f838eaca21f3a22ebb43c4b982ecd2e41c8487929e8e85296960d5579")] | length == 1)
+          ' <<< "$release" >/dev/null
+
+          test "$(git ls-remote --tags origin refs/tags/26.2-1.0.2-beta-fabric | cut -f1)" = c303747b08450f958596e6caf26044c409e4fb9f
