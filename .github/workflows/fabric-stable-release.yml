@@ -1,0 +1,198 @@
+name: Build and release Fabric stable
+
+on:
+  push:
+    branches:
+      - 26.1.2-fabric
+      - 26.2-develop-fabric
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fabric-stable-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-release:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out the release commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve and validate release metadata
+        id: release
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          minecraft_version=$(awk -F= '$1 == "minecraft_version" { print $2 }' gradle.properties)
+          mod_version=$(awk -F= '$1 == "mod_version" { print $2 }' gradle.properties)
+          tag="${minecraft_version}-${mod_version}-fabric"
+          archive="aether-${minecraft_version}-fabric-${mod_version}"
+          marker="[release ${tag}]"
+          notes="docs/releases/${tag}.md"
+
+          test -n "$minecraft_version"
+          [[ "$mod_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test -f "$notes"
+
+          case "$minecraft_version" in
+            26.1.2) expected_branch=26.1.2-fabric ;;
+            26.2) expected_branch=26.2-develop-fabric ;;
+            *) echo "Unsupported stable Minecraft version: $minecraft_version" >&2; exit 1 ;;
+          esac
+          test "$GITHUB_REF_NAME" = "$expected_branch"
+
+          if [[ "$EVENT_NAME" == "push" && "$HEAD_COMMIT_MESSAGE" != *"$marker"* ]]; then
+            echo "Release commit message is missing the exact marker: $marker" >&2
+            exit 1
+          fi
+
+          jq -e --arg tag "$tag" --arg latest "${minecraft_version}-latest" \
+            --arg recommended "${minecraft_version}-recommended" \
+            '.promos[$latest] == $tag and .promos[$recommended] == $tag' update.json >/dev/null
+
+          echo "minecraft_version=$minecraft_version" >> "$GITHUB_OUTPUT"
+          echo "mod_version=$mod_version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "archive=$archive" >> "$GITHUB_OUTPUT"
+          echo "notes=$notes" >> "$GITHUB_OUTPUT"
+
+      - name: Refuse an occupied tag or release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "Tag already exists: $TAG" >&2
+            exit 1
+          fi
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists: $TAG" >&2
+            exit 1
+          fi
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build and test
+        run: |
+          set -euo pipefail
+          sed -i 's/\r$//' ./gradlew
+          chmod +x ./gradlew
+          ./gradlew clean test build --console=plain --no-build-cache --refresh-dependencies
+
+      - name: Inspect release artifacts
+        shell: bash
+        env:
+          MINECRAFT_VERSION: ${{ steps.release.outputs.minecraft_version }}
+          MOD_VERSION: ${{ steps.release.outputs.mod_version }}
+          ARCHIVE: ${{ steps.release.outputs.archive }}
+        run: |
+          set -euo pipefail
+          main="build/libs/${ARCHIVE}.jar"
+          sources="build/libs/${ARCHIVE}-sources.jar"
+          test -f "$main"
+          test -f "$sources"
+
+          embedded_version=$(unzip -p "$main" fabric.mod.json | jq -r '.version')
+          test "$embedded_version" = "$MOD_VERSION"
+          jar tf "$main" > "$RUNNER_TEMP/main-jar-entries.txt"
+          if grep -Eq '(GameTest|compatTest|/test/)' "$RUNNER_TEMP/main-jar-entries.txt"; then
+            echo 'Release JAR contains test classes or resources' >&2
+            exit 1
+          fi
+
+          if [[ "$MINECRAFT_VERSION" == "26.2" ]]; then
+            grep -Fxq 'waila_plugins.json' "$RUNNER_TEMP/main-jar-entries.txt"
+            grep -Fxq 'data/diggusmaximus/tags/block/included_blocks.json' "$RUNNER_TEMP/main-jar-entries.txt"
+            grep -Fxq 'data/carryon/tags/block/block_blacklist.json' "$RUNNER_TEMP/main-jar-entries.txt"
+            if grep -Eq '^(net/kyrptonaught/diggusmaximus/|tschipp/carryon/|mcp/mobius/waila/|snownee/jade/)' \
+                "$RUNNER_TEMP/main-jar-entries.txt"; then
+              echo 'Release JAR contains forbidden third-party implementation classes' >&2
+              exit 1
+            fi
+          fi
+
+      - name: Record checksums
+        shell: bash
+        env:
+          ARCHIVE: ${{ steps.release.outputs.archive }}
+        run: |
+          set -euo pipefail
+          sha256sum "build/libs/${ARCHIVE}.jar" "build/libs/${ARCHIVE}-sources.jar" \
+            | tee "$RUNNER_TEMP/release-sha256.txt"
+
+      - name: Preserve workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aether-${{ steps.release.outputs.tag }}
+          path: |
+            build/libs/${{ steps.release.outputs.archive }}.jar
+            build/libs/${{ steps.release.outputs.archive }}-sources.jar
+          if-no-files-found: error
+
+      - name: Prepare release notes
+        shell: bash
+        env:
+          ARCHIVE: ${{ steps.release.outputs.archive }}
+          NOTES: ${{ steps.release.outputs.notes }}
+        run: |
+          set -euo pipefail
+          cp "$NOTES" "$RUNNER_TEMP/release-notes.md"
+          main_sha=$(sha256sum "build/libs/${ARCHIVE}.jar" | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          sources_sha=$(sha256sum "build/libs/${ARCHIVE}-sources.jar" | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]')
+          printf '\n## 发布文件校验和\n\n`%s.jar`\n\nSHA-256: `%s`\n\n`%s-sources.jar`\n\nSHA-256: `%s`\n' \
+            "$ARCHIVE" "$main_sha" "$ARCHIVE" "$sources_sha" >> "$RUNNER_TEMP/release-notes.md"
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          ARCHIVE: ${{ steps.release.outputs.archive }}
+          MINECRAFT_VERSION: ${{ steps.release.outputs.minecraft_version }}
+        run: |
+          set -euo pipefail
+          gh release create "$TAG" \
+            "build/libs/${ARCHIVE}.jar#The Aether ${MINECRAFT_VERSION} Fabric" \
+            "build/libs/${ARCHIVE}-sources.jar#Sources" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "The Aether - $TAG" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --latest=false
+
+      - name: Verify GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          ARCHIVE: ${{ steps.release.outputs.archive }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,isDraft,isPrerelease,targetCommitish,assets \
+            | jq -e --arg tag "$TAG" --arg sha "$GITHUB_SHA" \
+              --arg main "${ARCHIVE}.jar" --arg sources "${ARCHIVE}-sources.jar" \
+              '.tagName == $tag and .isDraft == false and .isPrerelease == false
+               and .targetCommitish == $sha
+               and ([.assets[].name] | index($main) != null)
+               and ([.assets[].name] | index($sources) != null)' >/dev/null
